@@ -1,2 +1,11 @@
-import { defineConfig } from "vite";
-export default defineConfig({ server:{host:true}, preview:{host:true} });
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [],
+  server: {
+    host: true
+  },
+  preview: {
+    host: true
+  }
+})
