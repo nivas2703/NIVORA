@@ -2,7 +2,7 @@
   "name": "nivora",
   "version": "1.0.0",
   "private": true,
-  "description": "NIVORA \u2014 The Nivas Universe. Founder-led technology and innovation ecosystem.",
+  "description": "NIVORA — The Nivas Universe. Founder-led technology and innovation ecosystem.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
