@@ -1,233 +1,3041 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#05050b">
-<meta name="description" content="NIVORA — The Nivas Universe. A cinematic founder-led technology ecosystem by Nivas Bennabatthula.">
-<title>NIVORA — The Nivas Universe</title>
-<link rel="stylesheet" href="css/style.css">
-<!-- NIVORA — The Nivas Universe | Complete Antigravity Project -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#04050b">
+  <meta name="description" content="NIVORA is the technology and innovation universe founded by Nivas Bennabatthula — where ambitious ideas become intelligent products, meaningful experiences and new digital possibilities.">
+  <title>NIVORA — Turning Ideas Into Intelligent Products</title>
+  
+  <style>
+    /* =========================================================
+       NIVORA CORE DESIGN SYSTEM — CINEMATIC LUXURY & PRECISION
+       ========================================================= */
+    :root {
+      --bg: #04050b;
+      --bg-alt: #080914;
+      --surface: rgba(14, 15, 30, 0.72);
+      --surface-hover: rgba(22, 24, 46, 0.85);
+      --border: rgba(255, 255, 255, 0.10);
+      --border-focus: rgba(168, 102, 255, 0.45);
+      --text: #f7f7ff;
+      --text-muted: #9fa2b8;
+      --text-dim: #71748a;
+      
+      --purple: #9d5cff;
+      --purple-glow: rgba(157, 92, 255, 0.28);
+      --cyan: #21d9ff;
+      --cyan-glow: rgba(33, 217, 255, 0.24);
+      --blue: #4b8cff;
+      --pink: #ec6dff;
+      --emerald: #24d8a7;
+      
+      --font-stack: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --shadow-ambient: 0 30px 90px rgba(0, 0, 0, 0.48);
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+      color-scheme: dark;
+    }
+
+    body {
+      font-family: var(--font-stack);
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(ellipse 70% 55% at 68% 8%, rgba(138, 73, 255, 0.18), transparent 60%),
+        radial-gradient(ellipse 55% 45% at 18% 32%, rgba(28, 209, 255, 0.08), transparent 60%),
+        radial-gradient(ellipse 65% 50% at 82% 70%, rgba(95, 60, 255, 0.10), transparent 65%),
+        radial-gradient(ellipse 50% 40% at 20% 90%, rgba(36, 216, 167, 0.06), transparent 60%);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Ambient Subtle Grid */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -3;
+      background-image:
+        linear-gradient(rgba(140, 110, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(140, 110, 255, 0.025) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at 50% 40%, black 30%, transparent 85%);
+      -webkit-mask-image: radial-gradient(circle at 50% 40%, black 30%, transparent 85%);
+    }
+
+    /* Cinematic Film Grain */
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+    }
+
+    /* Interactive Background Stars Canvas */
+    #stars {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -4;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    /* Interactive Radial Cursor Glow */
+    .cursor-glow {
+      position: fixed;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -2;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(140, 85, 255, 0.08), transparent 70%);
+      filter: blur(12px);
+      transition: opacity 0.5s ease;
+    }
+
+    /* Scroll progress indicator */
+    .scroll-progress {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 0%;
+      height: 2.5px;
+      z-index: 100;
+      background: linear-gradient(90deg, #9d5cff, #ec6dff 40%, #21d9ff 85%, #24d8a7);
+      box-shadow: 0 0 16px rgba(157, 92, 255, 0.8);
+    }
+
+    /* Common typography and layout */
+    a {
+      color: inherit;
+      text-decoration: none;
+      outline: none;
+    }
+
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+      outline: 2px solid var(--purple);
+      outline-offset: 3px;
+    }
+
+    button {
+      background: none;
+      border: 0;
+      font-family: inherit;
+      cursor: pointer;
+      color: inherit;
+    }
+
+    .container {
+      width: min(1240px, 92vw);
+      margin-inline: auto;
+    }
+
+    .section {
+      padding: 120px 0;
+      position: relative;
+    }
+
+    .section-divider {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(980px, 80vw);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(160, 100, 255, 0.16), rgba(33, 217, 255, 0.12), transparent);
+      pointer-events: none;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 36px;
+      margin-bottom: 56px;
+    }
+
+    .kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .kicker::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--purple);
+      box-shadow: 0 0 10px var(--purple);
+    }
+
+    .section h2 {
+      font-size: clamp(34px, 4.4vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      font-weight: 850;
+    }
+
+    .section-head p {
+      max-width: 460px;
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .grad {
+      background: linear-gradient(105deg, #ffffff 0%, #e2d7ff 32%, #a567ff 65%, #35ddff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      display: inline-block;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 22px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      white-space: nowrap;
+    }
+
+    .btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 25%, rgba(255, 255, 255, 0.22) 50%, transparent 75%);
+      transform: translateX(-120%);
+      transition: transform 0.65s ease;
+      pointer-events: none;
+    }
+
+    .btn:hover::after {
+      transform: translateX(120%);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+    }
+
+    .btn.primary {
+      background: linear-gradient(105deg, #9a4dff, #cf62ff 48%, #21d9ff);
+      color: #ffffff;
+      border: 0;
+      box-shadow: 0 12px 36px rgba(154, 77, 255, 0.30), 0 0 24px rgba(33, 217, 255, 0.15);
+    }
+
+    .btn.primary:hover {
+      box-shadow: 0 16px 44px rgba(154, 77, 255, 0.42), 0 0 30px rgba(33, 217, 255, 0.22);
+    }
+
+    .btn.secondary {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .btn-arrow {
+      transition: transform 0.25s ease;
+    }
+
+    .btn:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+
+    /* =========================================================
+       NAVIGATION BAR
+       ========================================================= */
+    .topbar {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1180px, calc(100vw - 24px));
+      max-width: 100%;
+      box-sizing: border-box;
+      z-index: 50;
+      border: 1px solid rgba(190, 145, 255, 0.18);
+      background: rgba(8, 9, 20, 0.72);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: 22px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      transition: var(--transition-smooth);
+    }
+
+    .nav {
+      height: 68px;
+      padding: 0 12px 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 850;
+      letter-spacing: 0.10em;
+    }
+
+    .brand img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 14px rgba(157, 92, 255, 0.65));
+      transition: transform 0.3s ease;
+    }
+
+    .brand:hover img {
+      transform: scale(1.06);
+    }
+
+    .brand-text span {
+      font-size: 17px;
+      font-weight: 850;
+      color: #ffffff;
+      letter-spacing: 0.08em;
+    }
+
+    .brand-text small {
+      display: block;
+      color: var(--text-dim);
+      font-size: 8.5px;
+      letter-spacing: 0.22em;
+      margin-top: -2px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .navlinks {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .navlinks a {
+      font-size: 13px;
+      font-weight: 600;
+      color: #c4c6db;
+      padding: 10px 14px;
+      border-radius: 12px;
+      transition: var(--transition-smooth);
+    }
+
+    .navlinks a:hover, .navlinks a.active {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-cta {
+      padding: 10px 18px !important;
+      color: #ffffff !important;
+      border: 1px solid rgba(190, 120, 255, 0.5) !important;
+      background: linear-gradient(100deg, rgba(157, 92, 255, 0.32), rgba(33, 217, 255, 0.18)) !important;
+      box-shadow: 0 0 20px rgba(157, 92, 255, 0.20);
+      margin-left: 8px;
+    }
+
+    .nav-cta:hover {
+      background: linear-gradient(100deg, rgba(157, 92, 255, 0.50), rgba(33, 217, 255, 0.30)) !important;
+      border-color: rgba(200, 140, 255, 0.75) !important;
+      box-shadow: 0 0 30px rgba(157, 92, 255, 0.35);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      z-index: 60;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #ffffff;
+      border-radius: 2px;
+      transition: var(--transition-smooth);
+    }
+
+    .menu-toggle.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .menu-toggle.open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    .menu-toggle.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Mobile Drawer */
+    .mobile-drawer {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 6, 15, 0.96);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      z-index: 45;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 22px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      transform: translateY(-10px);
+    }
+
+    .mobile-drawer.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .mobile-drawer a {
+      font-size: 20px;
+      font-weight: 700;
+      color: #c4c6db;
+      padding: 8px 24px;
+      border-radius: 14px;
+      transition: var(--transition-smooth);
+    }
+
+    .mobile-drawer a:hover, .mobile-drawer a.active {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* =========================================================
+       HERO SECTION
+       ========================================================= */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      padding: 160px 0 90px;
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .hero-glow-orbit {
+      position: absolute;
+      width: 720px;
+      height: 720px;
+      right: -120px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(138, 73, 255, 0.16) 0%, rgba(33, 217, 255, 0.06) 40%, transparent 70%);
+      filter: blur(24px);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid rgba(190, 126, 255, 0.35);
+      background: linear-gradient(90deg, rgba(140, 70, 255, 0.16), rgba(33, 217, 255, 0.08));
+      padding: 8px 16px;
+      border-radius: 999px;
+      color: #e5d7ff;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 650;
+      box-shadow: 0 0 25px rgba(157, 92, 255, 0.14);
+    }
+
+    .eyebrow i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--purple);
+      box-shadow: 0 0 12px var(--purple);
+    }
+
+    .hero h1 {
+      font-size: clamp(54px, 6.8vw, 92px);
+      line-height: 0.94;
+      letter-spacing: -0.055em;
+      margin: 24px 0 16px;
+      font-weight: 850;
+      color: #ffffff;
+      text-wrap: balance;
+    }
+
+    .hero-tagline-badge {
+      display: inline-block;
+      font-size: clamp(16px, 2vw, 21px);
+      font-weight: 750;
+      letter-spacing: -0.01em;
+      color: #dcd7ff;
+      margin-bottom: 20px;
+    }
+
+    .hero-tagline-badge span {
+      color: var(--cyan);
+    }
+
+    .hero-copy {
+      max-width: 620px;
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .hero-copy strong {
+      color: #ffffff;
+      font-weight: 650;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 34px;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 34px;
+      margin-top: 44px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-dim);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-weight: 600;
+    }
+
+    .hero-meta > div {
+      position: relative;
+    }
+
+    .hero-meta strong {
+      display: block;
+      font-size: 24px;
+      letter-spacing: 0;
+      text-transform: none;
+      margin-bottom: 2px;
+      font-weight: 850;
+      background: linear-gradient(100deg, #ffffff, #cfbbfb, #43ddff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    /* Hero Art: Planetary Central Universe */
+    .hero-art {
+      position: relative;
+      min-height: 600px;
+      display: grid;
+      place-items: center;
+      transform-style: preserve-3d;
+    }
+
+    .hero-art::before {
+      content: "";
+      position: absolute;
+      width: 580px;
+      height: 580px;
+      border-radius: 50%;
+      border: 1px solid rgba(157, 92, 255, 0.16);
+      box-shadow: 0 0 100px rgba(138, 73, 255, 0.12), inset 0 0 100px rgba(33, 217, 255, 0.05);
+      animation: spinSlow 36s linear infinite;
+    }
+
+    .hero-art::after {
+      content: "";
+      position: absolute;
+      width: 440px;
+      height: 440px;
+      border-radius: 50%;
+      border: 1px dashed rgba(33, 217, 255, 0.20);
+      animation: spinReverse 24s linear infinite;
+    }
+
+    .orbit {
+      position: absolute;
+      border: 1px solid rgba(157, 92, 255, 0.15);
+      border-radius: 50%;
+      transform: rotateX(68deg);
+      box-shadow: 0 0 70px rgba(138, 73, 255, 0.08);
+    }
+    .orbit.o1 { width: 560px; height: 560px; }
+    .orbit.o2 { width: 420px; height: 420px; }
+    .orbit.o3 { width: 300px; height: 300px; }
+
+    .core {
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      position: relative;
+      background: radial-gradient(circle at 50% 30%, rgba(65, 48, 120, 0.90), rgba(7, 8, 20, 0.98) 65%);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow:
+        inset 0 0 90px rgba(157, 92, 255, 0.24),
+        inset 0 0 35px rgba(33, 217, 255, 0.10),
+        0 0 90px rgba(138, 73, 255, 0.25),
+        0 25px 80px rgba(0, 0, 0, 0.6);
+      animation: floatSmooth 6s ease-in-out infinite;
+      z-index: 3;
+    }
+
+    .core::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      padding: 2px;
+      background: conic-gradient(from 20deg, transparent, #9d5cff, #21d9ff, transparent 70%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: spinSlow 9s linear infinite;
+    }
+
+    .core img {
+      width: 240px;
+      height: 240px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 28px rgba(157, 92, 255, 0.65)) drop-shadow(0 0 50px rgba(33, 217, 255, 0.20));
+      z-index: 2;
+    }
+
+    .core-label {
+      position: absolute;
+      bottom: 28px;
+      text-align: center;
+      z-index: 3;
+    }
+
+    .core-label b {
+      display: block;
+      font-size: 19px;
+      letter-spacing: 0.24em;
+      color: #ffffff;
+      text-shadow: 0 0 20px rgba(168, 102, 255, 0.4);
+    }
+
+    .core-label span {
+      font-size: 9px;
+      color: #9ea1b8;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+    }
+
+    .satellite {
+      position: absolute;
+      width: 104px;
+      height: 104px;
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(20, 20, 42, 0.88), rgba(7, 8, 18, 0.92));
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5), 0 0 30px rgba(157, 92, 255, 0.18);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      animation: floatSmooth 5.2s ease-in-out infinite;
+      z-index: 4;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .satellite:hover {
+      transform: scale(1.08) translateY(-4px) !important;
+      border-color: rgba(190, 140, 255, 0.5);
+    }
+
+    .satellite img {
+      max-width: 82px;
+      max-height: 82px;
+      object-fit: contain;
+      border-radius: 18px;
+      filter: drop-shadow(0 0 12px rgba(157, 92, 255, 0.3));
+    }
+
+    .satellite::after {
+      position: absolute;
+      bottom: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 8.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #9da1ba;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .s-checkra { top: 38px; right: 50px; }
+    .s-checkra::after { content: "CHECKRA"; }
+
+    .s-homora { bottom: 75px; left: 35px; animation-delay: -1.8s; }
+    .s-homora::after { content: "HOMORA"; }
+
+    .s-bubora { top: 190px; left: 10px; animation-delay: -3.2s; }
+    .s-bubora::after { content: "BUBORA"; }
+
+    .s-sayora { bottom: 65px; right: 30px; animation-delay: -2.4s; }
+    .s-sayora::after { content: "SAYORA"; }
+
+    .sayora-satellite-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, #0a4f5c, #072a38 60%, #0d6d58);
+      border: 1px solid rgba(49, 225, 193, 0.35);
+      box-shadow: 0 0 25px rgba(36, 216, 167, 0.22);
+      color: #e5fff8;
+    }
+
+    .sayora-satellite-icon svg {
+      width: 38px;
+      height: 38px;
+      fill: currentColor;
+    }
+
+    /* Ambient pulsing stars in hero */
+    .hero-star {
+      position: absolute;
+      color: #ffffff;
+      font-size: 22px;
+      text-shadow: 0 0 20px #c178ff;
+      animation: pulseStar 2.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .hero-star.a { top: 60px; left: 55px; }
+    .hero-star.b { right: 18px; bottom: 130px; font-size: 15px; animation-delay: 1.2s; }
+
+    /* =========================================================
+       PRODUCT UNIVERSE SECTION (#products)
+       ========================================================= */
+    .worlds-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .world-card {
+      min-height: 520px;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      position: relative;
+      background: #080913;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .world-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 255, 255, 0.22);
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.48);
+    }
+
+    .world-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), transparent 30%, rgba(157, 92, 255, 0.18), transparent 70%, rgba(33, 217, 255, 0.14));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .world-media {
+      height: 270px;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .world-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(8, 9, 19, 0.70) 80%, rgba(8, 9, 19, 0.98) 100%);
+      pointer-events: none;
+    }
+
+    .world-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.7s ease;
+      filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.5));
+      position: relative;
+      z-index: 1;
+    }
+
+    .world-card:hover .world-media img {
+      transform: scale(1.05);
+    }
+
+    /* Subtle world themes */
+    .w-checkra .world-media {
+      background:
+        radial-gradient(circle at 50% 40%, rgba(165, 85, 255, 0.24), transparent 45%),
+        linear-gradient(145deg, #090714, #120921 55%, #070712);
+    }
+    .w-checkra {
+      box-shadow: inset 0 -100px 160px rgba(157, 92, 255, 0.08), 0 24px 70px rgba(0, 0, 0, 0.32);
+    }
+
+    .w-homora .world-media {
+      background:
+        radial-gradient(circle at 50% 40%, rgba(28, 209, 255, 0.22), transparent 45%),
+        linear-gradient(145deg, #041018, #071c26 55%, #050b12);
+    }
+    .w-homora {
+      box-shadow: inset 0 -100px 160px rgba(33, 217, 255, 0.08), 0 24px 70px rgba(0, 0, 0, 0.32);
+    }
+
+    .w-bubora .world-media {
+      background:
+        radial-gradient(circle at 50% 40%, rgba(240, 108, 255, 0.22), transparent 45%),
+        linear-gradient(145deg, #120713, #1e0b20 55%, #090712);
+    }
+    .w-bubora {
+      box-shadow: inset 0 -100px 160px rgba(236, 109, 255, 0.08), 0 24px 70px rgba(0, 0, 0, 0.32);
+    }
+
+    .w-sayora .world-media {
+      background:
+        radial-gradient(circle at 50% 40%, rgba(36, 216, 167, 0.22), transparent 45%),
+        linear-gradient(145deg, #041312, #072224 55%, #050d12);
+    }
+    .w-sayora {
+      box-shadow: inset 0 -100px 160px rgba(36, 216, 167, 0.08), 0 24px 70px rgba(0, 0, 0, 0.32);
+    }
+
+    /* SAYORA custom glowing shield emblem */
+    .sayora-emblem {
+      width: 140px;
+      height: 140px;
+      border-radius: 36px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, #0b6766, #05333f 60%, #0d463b);
+      border: 1px solid rgba(49, 225, 193, 0.4);
+      box-shadow: 0 0 60px rgba(36, 216, 167, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      position: relative;
+      z-index: 1;
+      transition: transform 0.5s ease;
+    }
+
+    .world-card:hover .sayora-emblem {
+      transform: scale(1.06);
+    }
+
+    .sayora-emblem svg {
+      width: 72px;
+      height: 72px;
+      fill: #e8fff8;
+      filter: drop-shadow(0 0 16px rgba(49, 225, 193, 0.45));
+    }
+
+    .world-body {
+      padding: 0 32px 32px;
+      margin-top: -24px;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .world-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .world-name-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .world h3 {
+      font-size: 28px;
+      letter-spacing: -0.035em;
+      font-weight: 850;
+      color: #ffffff;
+    }
+
+    .status-badge {
+      font-size: 8.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #d6d7e6;
+    }
+
+    .status-badge.live {
+      border-color: rgba(36, 216, 167, 0.35);
+      color: #8affd4;
+      background: rgba(36, 216, 167, 0.08);
+    }
+
+    .status-badge.concept {
+      border-color: rgba(33, 217, 255, 0.35);
+      color: #8ee9ff;
+      background: rgba(33, 217, 255, 0.08);
+    }
+
+    .status-badge.dev {
+      border-color: rgba(180, 115, 255, 0.35);
+      color: #d8b4ff;
+      background: rgba(180, 115, 255, 0.08);
+    }
+
+    .legacy-tag {
+      font-size: 8.5px;
+      color: #9295aa;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .world-positioning {
+      color: var(--purple);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      margin-bottom: 12px;
+    }
+
+    .w-homora .world-positioning { color: var(--cyan); }
+    .w-bubora .world-positioning { color: var(--pink); }
+    .w-sayora .world-positioning { color: var(--emerald); }
+
+    .world p {
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .capabilities-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 26px;
+      margin-top: auto;
+    }
+
+    .cap-pill {
+      font-size: 10px;
+      color: #b0b3c6;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 5px 9px;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+
+    .world-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .world-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+      transition: color 0.25s ease;
+    }
+
+    .world-link:hover {
+      color: var(--purple);
+    }
+
+    .w-homora .world-link:hover { color: var(--cyan); }
+    .w-bubora .world-link:hover { color: var(--pink); }
+    .w-sayora .world-link:hover { color: var(--emerald); }
+
+    /* =========================================================
+       ABOUT SECTION: IDEA -> DESIGN -> BUILD -> PRODUCT -> IMPACT
+       ========================================================= */
+    .about-ecosystem {
+      margin-top: 36px;
+    }
+
+    .pipeline-wrapper {
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: var(--radius-xl);
+      background: linear-gradient(145deg, rgba(16, 17, 36, 0.85), rgba(7, 8, 17, 0.94));
+      padding: 48px 36px;
+      box-shadow: var(--shadow-ambient);
+      overflow: hidden;
+    }
+
+    .pipeline-wrapper::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 20%, rgba(157, 92, 255, 0.10), transparent 50%),
+                  radial-gradient(circle at 10% 80%, rgba(33, 217, 255, 0.07), transparent 40%);
+      pointer-events: none;
+    }
+
+    .pipeline-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 46px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pipeline-header h3 {
+      font-size: 26px;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+
+    .pipeline-header p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .pipeline-steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pipe-step {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 24px 18px;
+      transition: var(--transition-smooth);
+      position: relative;
+    }
+
+    .pipe-step:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(168, 102, 255, 0.35);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+    }
+
+    .pipe-number {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      color: var(--purple);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pipe-step:nth-child(2) .pipe-number { color: #cf62ff; }
+    .pipe-step:nth-child(3) .pipe-number { color: #4b8cff; }
+    .pipe-step:nth-child(4) .pipe-number { color: #21d9ff; }
+    .pipe-step:nth-child(5) .pipe-number { color: #24d8a7; }
+
+    .pipe-step b {
+      display: block;
+      font-size: 17px;
+      color: #ffffff;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .pipe-step p {
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* Principles & Focus Pillars */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 24px;
+    }
+
+    .principle-card {
+      padding: 28px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 255, 255, 0.025);
+      transition: var(--transition-smooth);
+    }
+
+    .principle-card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.045);
+      transform: translateY(-3px);
+    }
+
+    .principle-card .p-tag {
+      font-size: 9.5px;
+      font-weight: 750;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 10px;
+    }
+
+    .principle-card h4 {
+      font-size: 16px;
+      color: #ffffff;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .principle-card p {
+      color: var(--text-muted);
+      font-size: 12.5px;
+      line-height: 1.65;
+    }
+
+    /* =========================================================
+       FOUNDER & PORTFOLIO SECTION (#portfolio)
+       ========================================================= */
+    .founder-card {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      min-height: 560px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid rgba(190, 140, 255, 0.18);
+      background: linear-gradient(115deg, #101020, #0a0a13 55%, #181230);
+      box-shadow: 0 35px 110px rgba(0, 0, 0, 0.46), 0 0 55px rgba(138, 73, 255, 0.08);
+      position: relative;
+    }
+
+    .founder-photo {
+      position: relative;
+      min-height: 560px;
+      overflow: hidden;
+    }
+
+    .founder-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: saturate(0.96) contrast(1.02);
+      transition: transform 0.7s ease, filter 0.7s ease;
+    }
+
+    .founder-card:hover .founder-photo img {
+      transform: scale(1.03);
+      filter: saturate(1.05) contrast(1.04);
+    }
+
+    .founder-photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 60%, #101020 100%),
+                  linear-gradient(0deg, #101020 0%, transparent 35%);
+      pointer-events: none;
+    }
+
+    .founder-content {
+      padding: 60px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .founder-kicker {
+      color: var(--purple);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      margin-bottom: 12px;
+      font-weight: 750;
+    }
+
+    .founder-content h3 {
+      font-size: clamp(38px, 4.2vw, 58px);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      margin-bottom: 14px;
+      font-weight: 850;
+    }
+
+    .founder-role {
+      color: #ded6ff;
+      font-size: 15px;
+      font-weight: 650;
+      margin-bottom: 22px;
+    }
+
+    .founder-content p {
+      color: var(--text-muted);
+      max-width: 540px;
+      font-size: 14.5px;
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+
+    .founder-pills {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+      margin-bottom: 34px;
+    }
+
+    .founder-pill {
+      font-size: 11px;
+      font-weight: 600;
+      color: #cfd2e5;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    /* =========================================================
+       VISION & ECOSYSTEM SECTION (#vision)
+       ========================================================= */
+    .vision-panel {
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(17, 18, 38, 0.88), rgba(6, 7, 16, 0.95));
+      box-shadow: var(--shadow-ambient);
+      padding: 56px 40px;
+    }
+
+    .vision-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(138, 73, 255, 0.12), transparent 45%),
+                  radial-gradient(circle at 80% 80%, rgba(33, 217, 255, 0.08), transparent 35%);
+      pointer-events: none;
+    }
+
+    .vision-quote {
+      text-align: center;
+      max-width: 660px;
+      margin: 0 auto 50px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .vision-quote .quote-phrase {
+      font-size: clamp(24px, 3.2vw, 38px);
+      font-weight: 850;
+      letter-spacing: -0.035em;
+      line-height: 1.2;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .vision-quote .quote-sub {
+      color: var(--text-dim);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .ecosystem-diagram {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 36px;
+    }
+
+    /* Central Hub */
+    .hub-nivora {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 38px;
+      border-radius: 28px;
+      background: radial-gradient(circle, rgba(140, 75, 255, 0.22), rgba(12, 13, 28, 0.95) 75%);
+      border: 1px solid rgba(190, 140, 255, 0.35);
+      box-shadow: 0 0 70px rgba(157, 92, 255, 0.30), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      text-align: center;
+    }
+
+    .hub-nivora img {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 16px rgba(157, 92, 255, 0.6));
+      margin-bottom: 10px;
+    }
+
+    .hub-nivora b {
+      font-size: 20px;
+      letter-spacing: 0.16em;
+      color: #ffffff;
+    }
+
+    .hub-nivora span {
+      font-size: 10px;
+      color: #afb2cb;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* Connective Tree Lines */
+    .conduit-down {
+      width: 2px;
+      height: 38px;
+      background: linear-gradient(180deg, var(--purple), rgba(33, 217, 255, 0.8));
+      box-shadow: 0 0 12px var(--purple);
+    }
+
+    .worlds-orbit-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      width: 100%;
+    }
+
+    .orbit-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 22px 16px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      transition: var(--transition-smooth);
+    }
+
+    .orbit-node:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .orbit-node img {
+      width: 58px;
+      height: 48px;
+      object-fit: contain;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 0 12px rgba(157, 92, 255, 0.3));
+    }
+
+    .orbit-node .orbit-emblem-sayora {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, #0b6766, #05333f);
+      border: 1px solid rgba(49, 225, 193, 0.35);
+      margin-bottom: 12px;
+      color: #e5fff8;
+    }
+
+    .orbit-node .orbit-emblem-sayora svg {
+      width: 26px;
+      height: 26px;
+      fill: currentColor;
+    }
+
+    .orbit-node b {
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .orbit-node span {
+      font-size: 9.5px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    /* Distinct Separate Stream: FOLIVIO */
+    .separate-stream-divider {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+    .separate-stream-divider span {
+      font-size: 10.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #7b809a;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .separate-stream-divider::before,
+    .separate-stream-divider::after {
+      content: "";
+      flex-grow: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.10), transparent);
+    }
+
+    .stream-folivio-node {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      width: 100%;
+      padding: 22px 28px;
+      border-radius: 20px;
+      border: 1px dashed rgba(60, 180, 255, 0.35);
+      background: linear-gradient(145deg, rgba(16, 25, 48, 0.65), rgba(8, 12, 26, 0.75));
+      transition: var(--transition-smooth);
+    }
+
+    .stream-folivio-node:hover {
+      border-color: rgba(60, 180, 255, 0.65);
+      box-shadow: 0 16px 45px rgba(33, 217, 255, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .sfn-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .sfn-left img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .sfn-info b {
+      font-size: 15px;
+      color: #ffffff;
+      letter-spacing: 0.04em;
+    }
+
+    .sfn-info span {
+      display: block;
+      font-size: 11px;
+      color: #8ecfff;
+      margin-top: 2px;
+    }
+
+    .sfn-tag {
+      font-size: 9px;
+      font-weight: 750;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(33, 217, 255, 0.12);
+      border: 1px solid rgba(33, 217, 255, 0.3);
+      color: #bbf0ff;
+    }
+
+    /* =========================================================
+       FOLIVIO SECTION (#folivio)
+       ========================================================= */
+    .folivio-premium {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .folivio-identity,
+    .folivio-services {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-xl);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015)), rgba(7, 8, 18, 0.85);
+      box-shadow: 0 30px 100px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .folivio-identity {
+      padding: 38px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .folivio-identity::before {
+      content: "";
+      position: absolute;
+      width: 440px;
+      height: 440px;
+      left: -160px;
+      top: -160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(33, 217, 255, 0.16), rgba(157, 92, 255, 0.10) 40%, transparent 70%);
+      filter: blur(16px);
+      pointer-events: none;
+    }
+
+    .folivio-logo-wrap {
+      width: 100%;
+      height: 250px;
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at 50% 45%, rgba(65, 175, 255, 0.12), transparent 55%),
+                  linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      overflow: hidden;
+    }
+
+    .folivio-logo-wrap img {
+      width: 230px;
+      height: 230px;
+      object-fit: contain;
+      filter: drop-shadow(0 16px 36px rgba(50, 140, 255, 0.20));
+      transition: transform 0.5s ease;
+    }
+
+    .folivio-identity:hover .folivio-logo-wrap img {
+      transform: scale(1.05) rotate(-1deg);
+    }
+
+    .folivio-brand-copy {
+      position: relative;
+      z-index: 2;
+      margin-top: 24px;
+    }
+
+    .folivio-overline {
+      color: #8cc9ff;
+      font-size: 9.5px;
+      font-weight: 750;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .folivio-brand-copy h3 {
+      font-size: 48px;
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+      margin-bottom: 8px;
+      background: linear-gradient(105deg, #ffffff 10%, #d8e7ff 35%, #4fc9ff 68%, #9b62ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    .folivio-tagline {
+      font-size: 17px;
+      font-weight: 750;
+      color: #e5e8f8;
+      letter-spacing: 0.01em;
+      margin-bottom: 12px;
+    }
+
+    .folivio-tagline span { color: var(--purple); }
+    .folivio-tagline b { color: var(--cyan); }
+
+    .folivio-brand-copy p {
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .folivio-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .folivio-handle {
+      font-size: 11px;
+      color: #8a8fa8;
+      letter-spacing: 0.04em;
+    }
+
+    .folivio-services {
+      padding: 40px;
+      background: radial-gradient(circle at 90% 10%, rgba(33, 217, 255, 0.08), transparent 35%),
+                  radial-gradient(circle at 10% 90%, rgba(157, 92, 255, 0.08), transparent 38%),
+                  rgba(7, 8, 18, 0.88);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .service-intro h4 {
+      font-size: 30px;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin: 8px 0 10px;
+      color: #ffffff;
+    }
+
+    .service-intro h4 em {
+      font-style: normal;
+      color: var(--cyan);
+    }
+
+    .service-intro p {
+      color: var(--text-muted);
+      font-size: 12.5px;
+      line-height: 1.7;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 26px 0;
+    }
+
+    .service-box {
+      padding: 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.025);
+      position: relative;
+      transition: var(--transition-smooth);
+    }
+
+    .service-box:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(116, 205, 255, 0.3);
+    }
+
+    .service-box-num {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 9px;
+      color: #60647c;
+      letter-spacing: 0.14em;
+      font-weight: 750;
+    }
+
+    .service-box-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, rgba(33, 217, 255, 0.20), rgba(157, 92, 255, 0.20));
+      border: 1px solid rgba(131, 201, 255, 0.22);
+      color: #dcefff;
+      font-size: 10px;
+      font-weight: 850;
+      margin-bottom: 12px;
+    }
+
+    .service-box b {
+      display: block;
+      font-size: 14px;
+      color: #ffffff;
+      margin-bottom: 5px;
+    }
+
+    .service-box span {
+      display: block;
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .folivio-footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .folivio-footer-bar strong {
+      font-size: 13px;
+      color: #ffffff;
+    }
+
+    .folivio-footer-bar span {
+      color: var(--text-dim);
+      font-size: 12px;
+    }
+
+    /* =========================================================
+       CONTACT SECTION (#contact)
+       ========================================================= */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    .contact-info-panel {
+      padding: 40px;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: linear-gradient(145deg, rgba(16, 17, 34, 0.85), rgba(7, 8, 17, 0.94));
+      box-shadow: var(--shadow-ambient);
+    }
+
+    .contact-info-panel h3 {
+      font-size: 32px;
+      letter-spacing: -0.04em;
+      margin-bottom: 14px;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .contact-info-panel p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.75;
+      margin-bottom: 30px;
+    }
+
+    .contact-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-card-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: var(--transition-smooth);
+    }
+
+    .contact-card-link:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(168, 102, 255, 0.4);
+      transform: translateX(4px);
+    }
+
+    .ccl-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(145deg, rgba(157, 92, 255, 0.25), rgba(33, 217, 255, 0.15));
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+    }
+
+    .ccl-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    .ccl-text b {
+      display: block;
+      font-size: 14px;
+      color: #ffffff;
+    }
+
+    .ccl-text span {
+      display: block;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .folivio-redirect-notice {
+      margin-top: 28px;
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(33, 217, 255, 0.22);
+      background: rgba(33, 217, 255, 0.04);
+      font-size: 12px;
+      color: #bcefff;
+      line-height: 1.6;
+    }
+
+    .folivio-redirect-notice strong {
+      display: block;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .folivio-redirect-notice a {
+      color: var(--cyan);
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    /* Contact Form */
+    .contact-form-panel {
+      padding: 40px;
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: linear-gradient(145deg, rgba(20, 21, 42, 0.75), rgba(8, 9, 20, 0.90));
+      box-shadow: var(--shadow-ambient);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 650;
+      color: #c5c7dc;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 13px 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-sm);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 14px;
+      transition: var(--transition-smooth);
+    }
+
+    .form-control:focus {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: var(--purple);
+      box-shadow: 0 0 20px rgba(157, 92, 255, 0.22);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-submit-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 26px;
+    }
+
+    .form-status-msg {
+      font-size: 12px;
+      color: #87ffce;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .form-status-msg.visible {
+      opacity: 1;
+    }
+
+    /* =========================================================
+       FOOTER SECTION
+       ========================================================= */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 80px 0 45px;
+      position: relative;
+      overflow: hidden;
+      background: #030408;
+    }
+
+    footer::before {
+      content: "NIVORA";
+      position: absolute;
+      left: 50%;
+      bottom: -60px;
+      transform: translateX(-50%);
+      font-size: clamp(80px, 18vw, 240px);
+      font-weight: 950;
+      letter-spacing: -0.07em;
+      color: rgba(255, 255, 255, 0.018);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 36px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-brand-col img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(157, 92, 255, 0.5));
+      margin-bottom: 12px;
+    }
+
+    .footer-brand-col h4 {
+      font-size: 20px;
+      font-weight: 850;
+      letter-spacing: 0.08em;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .footer-brand-col p {
+      color: var(--text-dim);
+      font-size: 12px;
+      line-height: 1.7;
+      max-width: 290px;
+    }
+
+    .footer-col h5 {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.20em;
+      color: #afb1c5;
+      margin-bottom: 16px;
+      font-weight: 750;
+    }
+
+    .footer-col a {
+      display: block;
+      color: var(--text-dim);
+      font-size: 12.5px;
+      margin-bottom: 10px;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .footer-col a:hover {
+      color: #ffffff;
+      transform: translateX(2px);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-top: 60px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      color: #63667c;
+      font-size: 11.5px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-bottom a {
+      color: #8f92ab;
+      font-weight: 600;
+    }
+
+    .footer-bottom a:hover {
+      color: #ffffff;
+    }
+
+    /* Scroll Reveal Animation */
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .js-ready .reveal:not(.show) {
+        opacity: 0;
+        transform: translateY(28px);
+      }
+      .js-ready .reveal.show {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @keyframes spinSlow { to { transform: rotate(360deg); } }
+    @keyframes spinReverse { to { transform: rotate(-360deg); } }
+    @keyframes floatSmooth { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+    @keyframes pulseStar { 0%, 100% { opacity: 0.35; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.15); } }
+
+    /* =========================================================
+       RESPONSIVE DESIGN BREAKPOINTS
+       ========================================================= */
+    @media (max-width: 1024px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero-art { min-height: 520px; order: -1; }
+      .worlds-grid { grid-template-columns: 1fr; }
+      .founder-card { grid-template-columns: 1fr; }
+      .founder-photo { min-height: 420px; }
+      .founder-content { padding: 44px 34px; }
+      .folivio-premium { grid-template-columns: 1fr; }
+      .pipeline-steps { grid-template-columns: 1fr 1fr; }
+      .principles-grid { grid-template-columns: 1fr 1fr; }
+      .worlds-orbit-row { grid-template-columns: 1fr 1fr; }
+      .contact-wrapper { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+
+    @media (max-width: 900px) {
+      .navlinks { display: none; }
+      .menu-toggle { display: flex; }
+      .hero { padding-top: 130px; }
+      .hero h1 { font-size: clamp(48px, 9vw, 68px); }
+    }
+
+    @media (max-width: 640px) {
+      .topbar { top: 10px; border-radius: 18px; width: calc(100vw - 20px); }
+      .nav { height: 58px; padding: 0 10px 0 12px; }
+      .brand { gap: 8px; min-width: 0; flex-shrink: 1; }
+      .brand img { width: 32px; height: 32px; flex-shrink: 0; }
+      .brand-text { min-width: 0; overflow: hidden; }
+      .brand-text span { font-size: 14.5px; white-space: nowrap; }
+      .brand-text small { font-size: 7.5px; letter-spacing: 0.16em; }
+      .hero { padding-top: 110px; }
+      .hero h1 { font-size: 42px; }
+      .hero-art { min-height: 400px; }
+      .core { width: 240px; height: 240px; }
+      .core img { width: 160px; height: 160px; }
+      .hero-art::before { width: 360px; height: 360px; }
+      .hero-art::after { width: 270px; height: 270px; }
+      .satellite { width: 78px; height: 78px; border-radius: 20px; }
+      .satellite img { max-width: 60px; max-height: 60px; }
+      .sayora-satellite-icon { width: 56px; height: 56px; border-radius: 16px; }
+      .sayora-satellite-icon svg { width: 28px; height: 28px; }
+      .s-checkra { top: 15px; right: 8px; }
+      .s-homora { bottom: 15px; left: 8px; }
+      .s-bubora { top: 125px; left: 0px; }
+      .s-sayora { bottom: 15px; right: 8px; }
+      .section { padding: 80px 0; }
+      .section-head { flex-direction: column; align-items: flex-start; gap: 14px; margin-bottom: 38px; }
+      .pipeline-wrapper { padding: 30px 20px; }
+      .pipeline-steps { grid-template-columns: 1fr; }
+      .principles-grid { grid-template-columns: 1fr; }
+      .worlds-orbit-row { grid-template-columns: 1fr; }
+      .stream-folivio-node { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .folivio-identity { padding: 26px 20px; }
+      .folivio-services { padding: 28px 20px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .folivio-footer-bar { flex-direction: column; align-items: flex-start; }
+      .contact-info-panel, .contact-form-panel { padding: 28px 20px; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
 </head>
-<body>
-<div class="scroll-progress" id="scrollProgress"></div>
-<div class="universe-pill"><i></i><b>NIVORA</b> · The Nivas Universe</div>
-<canvas id="stars"></canvas><div class="noise"></div><div class="cursor" id="cursor"></div>
+<body id="home">
 
-<header class="topbar">
-  <nav class="nav">
-    <a class="brand" href="#top">
-      <img src="assets/logos/nivora-logo-9f58eb40f4.png" alt="NIVORA">
-      <div><span>NIVORA</span><small>TECHNOLOGY · INNOVATION</small></div>
-    </a>
-    <div class="navlinks">
-      <a href="#top" class="active">Home</a>
-      <a href="#universe">Universe</a>
-      <a href="#products">Products</a>
-      <a href="#founder">Founder</a>
-      <a href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">FOLIVIO ↗</a>
-      <a href="https://nivas2703.vercel.app/" target="_blank" rel="noopener" class="navcta">Meet Nivas ↗</a>
-    </div>
-    <button class="menu" aria-label="Open navigation">☰</button>
-  </nav>
-</header>
+  <div class="noise"></div>
+  <div class="cursor-glow" id="cursorGlow"></div>
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <canvas id="stars"></canvas>
 
-<main id="top">
-<section class="hero">
- <div class="container hero-grid">
-  <div class="reveal">
-   <div class="eyebrow"><i></i> A Nivas Initiative · Technology & Innovation</div>
-   <h1>Welcome to<br><span class="grad">NIVORA.</span></h1>
-   <p class="hero-copy">NIVORA is the <strong>technology and innovation universe built by Nivas Bennabatthula</strong> — where ambitious ideas become intelligent products, meaningful experiences and new digital possibilities.</p>
-   <div class="actions">
-    <a class="btn primary" href="#products">Explore the Universe <span>→</span></a>
-    <a class="btn secondary" href="https://nivas2703.vercel.app/" target="_blank" rel="noopener">View Nivas's World ↗</a>
-   </div>
-   <div class="hero-meta">
-    <div><strong>04</strong>Product Worlds</div>
-    <div><strong>01</strong>Founder & Builder</div>
-    <div><strong>∞</strong>Ideas Ahead</div>
-   </div>
-  </div>
-  <div class="hero-art reveal">
-   <div class="orbit o1"></div><div class="orbit o2"></div><div class="orbit o3"></div>
-   <div class="star a">✦</div><div class="star b">✦</div>
-   <div class="core"><img src="assets/logos/nivora-logo-9f58eb40f4.png" alt="NIVORA symbol"><div class="core-label"><b>NIVORA</b><span>One vision · many worlds</span></div></div>
-   <div class="satellite s1"><img src="assets/products/checkra-logo-bf9223cd83.png" alt="CHECKRA"></div>
-   <div class="satellite s2"><img src="assets/products/homora-logo-a5a3baa10f.png" alt="HOMORA"></div>
-   <div class="satellite s3"><img src="assets/products/bubora-logo-03b82d1de8.png" alt="BUBORA"></div>
-  </div>
- </div>
-</section>
-
-
-<section class="section" id="universe">
- <div class="container">
-  <div class="section-head reveal">
-   <div><div class="kicker">01 · The Universe</div><h2>One mind.<br><span class="grad">Many worlds.</span></h2></div>
-   <p>NIVORA is intentionally designed as an ecosystem. Each product explores a different problem space while sharing the same founder-led philosophy: think deeply, build beautifully, create real utility.</p>
-  </div>
-  <div class="universe-panel reveal">
-   <div class="universe-map">
-    <div class="map-ring"></div><div class="map-ring r2"></div>
-    <div class="map-line l1"></div><div class="map-line l2"></div><div class="map-line l3"></div><div class="map-line l4"></div>
-    <div class="map-core"><img src="assets/logos/nivora-logo-9f58eb40f4.png" alt="NIVORA"></div>
-    <a class="node n-checkra" href="#products"><img src="assets/products/checkra-logo-bf9223cd83.png" alt="CHECKRA"><b>CHECKRA</b><small>Writing Integrity</small></a>
-    <a class="node n-homora" href="https://homora-ai.vercel.app/" target="_blank" rel="noopener"><img src="assets/products/homora-logo-a5a3baa10f.png" alt="HOMORA"><b>HOMORA</b><small>Shared Living</small></a>
-    <a class="node n-bubora" href="https://bubora.netlify.app/" target="_blank" rel="noopener"><img src="assets/products/bubora-logo-03b82d1de8.png" alt="BUBORA"><b>BUBORA</b><small>Couples Space</small></a>
-    <a class="node n-sayora" href="#products"><div class="saymark">S</div><b>SAYORA</b><small>Worker Protection</small></a>
-   </div>
-  </div>
- </div>
-</section>
-
-<section class="section" id="products">
- <div class="container">
-  <div class="section-head reveal">
-   <div><div class="kicker">02 · Product Worlds</div><h2>Products with<br><span class="grad">a purpose.</span></h2></div>
-   <p>Four different worlds. One connected philosophy. Product status is intentionally transparent — concepts remain concepts until they are ready to become real products.</p>
-  </div>
-  <div class="worlds">
-   <article class="world w-checkra reveal">
-    <div class="world-media"><img src="assets/products/checkra-logo-bf9223cd83.png" alt="CHECKRA logo"></div>
-    <div class="world-body"><div class="world-top"><h3>CHECKRA</h3><span class="status">In Development</span></div>
-    <p>Writing Integrity & Plagiarism Intelligence — designed to check, verify and improve written work with a modern integrity-first workflow.</p>
-    <a class="world-link" href="#top">Explore CHECKRA →</a></div>
-   </article>
-   <article class="world w-homora reveal">
-    <div class="world-media"><img src="assets/products/homora-logo-a5a3baa10f.png" alt="HOMORA logo"></div>
-    <div class="world-body"><div class="world-top"><h3>HOMORA</h3><span class="status">Prototype</span></div>
-    <p>AI-powered financial harmony for shared living — helping roommates organise contributions, expenses, bills and everyday money together.</p>
-    <a class="world-link" href="https://homora-ai.vercel.app/" target="_blank" rel="noopener">Open HOMORA ↗</a></div>
-   </article>
-   <article class="world w-bubora reveal">
-    <div class="world-media"><img src="assets/products/bubora-logo-03b82d1de8.png" alt="BUBORA logo"></div>
-    <div class="world-body"><div class="world-top"><h3>BUBORA</h3><span class="status">In Development</span></div>
-    <p>A digital space for couples — bringing memories, moments, communication and shared experiences into one private little world.</p>
-    <a class="world-link" href="https://bubora.netlify.app/" target="_blank" rel="noopener">Open BUBORA ↗</a></div>
-   </article>
-   <article class="world w-sayora reveal">
-    <div class="world-media" style="display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,rgba(25,221,192,.18),transparent 38%),linear-gradient(145deg,#07121a,#071018 60%,#0a1514)">
-      <div style="width:145px;height:145px;border-radius:40px;display:grid;place-items:center;border:1px solid rgba(83,240,191,.35);background:linear-gradient(145deg,#0e7b75,#06354c);box-shadow:0 0 70px rgba(49,225,193,.18);font-size:70px;font-weight:900;color:#eafffb;font-style:italic">S</div>
-    </div>
-    <div class="world-body"><div class="world-top"><h3>SAYORA</h3><span class="status">Concept</span></div>
-    <p>A gig-worker protection fund concept focused on emergency support, contribution systems and a stronger safety net for people behind the gig economy.</p>
-    <a class="world-link" href="#universe">Explore SAYORA →</a></div>
-   </article>
-  </div>
- </div>
-</section>
-
-<section class="section">
- <div class="container manifesto">
-  <div class="quote reveal">
-   <div><div class="kicker">03 · The Philosophy</div><div class="big">“Don't just build an app.<br><span>Build a world people want to enter.</span>”</div></div>
-   <small>NIVORA · Nivas Universe</small>
-  </div>
-  <div class="principles reveal">
-   <div class="principle"><b>01 · Start with the problem</b><p>Every experience begins with a real friction, not a feature checklist.</p></div>
-   <div class="principle"><b>02 · Make technology feel human</b><p>Powerful systems should still feel clear, intuitive and effortless.</p></div>
-   <div class="principle"><b>03 · Design with intention</b><p>Every screen, interaction and detail has a reason to exist.</p></div>
-   <div class="principle"><b>04 · Build for the next chapter</b><p>NIVORA is a living universe — new worlds can emerge as ideas evolve.</p></div>
-  </div>
- </div>
-</section>
-
-<section class="section" id="founder">
- <div class="container">
-  <div class="section-head reveal">
-   <div><div class="kicker">04 · The Builder</div><h2>Meet the mind<br><span class="grad">behind the worlds.</span></h2></div>
-   <p>NIVORA is founder-led. The products, experiments and direction are shaped by Nivas's interest in finance, technology, AI, product design and innovation.</p>
-  </div>
-  <div class="founder reveal">
-   <div class="founder-photo"><img src="assets/founder/nivas-founder-20af849312.png" alt="Nivas Bennabatthula"></div>
-   <div class="founder-content">
-    <div class="founder-tag">Founder · Product Builder</div>
-    <h2>Nivas<br><span class="grad">Bennabatthula</span></h2>
-    <div class="role">Finance × Technology × AI × Product Innovation</div>
-    <p>Nivas is building NIVORA as a place where ideas can move beyond notes and prototypes into tangible digital experiences. The goal is simple: create useful technology, explore new possibilities and build products with a distinct point of view.</p>
-    <div class="founder-pills"><span class="pill">Finance</span><span class="pill">Technology</span><span class="pill">AI</span><span class="pill">Product Design</span><span class="pill">Innovation</span><span class="pill">Entrepreneurship</span></div>
-    <div class="actions"><a class="btn primary" href="https://nivas2703.vercel.app/" target="_blank" rel="noopener">View Nivas's Portfolio ↗</a></div>
-   </div>
-  </div>
- </div>
-</section>
-
-
-<section class="section folivio-section" id="folivio">
- <div class="container">
-  <div class="section-head reveal">
-   <div>
-    <div class="kicker">05 · Beyond NIVORA</div>
-    <h2>Build your<br><span class="grad">career presence.</span></h2>
-   </div>
-   <p>FOLIVIO is a separate professional career-branding service by Nivas — helping students, freshers and professionals turn their education, skills, projects, certifications and experience into polished career profiles.</p>
-  </div>
-
-  <div class="folivio-premium">
-   <div class="folivio-identity reveal">
-    <div class="folivio-logo-wrap">
-      <img src="assets/folivio/folivio-logo-7770f9b2cc.webp" alt="FOLIVIO — Build. Showcase. Grow.">
-    </div>
-    <div class="folivio-brand-copy">
-      <div class="folivio-overline">CAREER BRANDING · DIGITAL PRESENCE</div>
-      <h3>FOLIVIO</h3>
-      <div class="folivio-tagline">Build. <span>Showcase.</span> <b>Grow.</b></div>
-      <p>Professional career branding for people who want their work to look as strong online as it is on paper.</p>
-      <a class="btn folivio-cta" href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
-        Connect on Instagram <span>↗</span>
+  <!-- TOPBAR NAVIGATION -->
+  <header class="topbar">
+    <nav class="nav">
+      <a class="brand" href="#home" aria-label="NIVORA Home">
+        <img src="assets/images/nivora-logo.png" alt="NIVORA Logo">
+        <div class="brand-text">
+          <span>NIVORA</span>
+          <small>Technology · Innovation</small>
+        </div>
       </a>
-      <div class="folivio-handle">@folivio.ai · Official contact</div>
-    </div>
-   </div>
+      
+      <div class="navlinks">
+        <a href="#home" class="active">Home</a>
+        <a href="#products">Products</a>
+        <a href="#about">About</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#vision">Vision</a>
+        <a href="#contact">Contact</a>
+        <a href="#products" class="btn nav-cta">Explore Products</a>
+      </div>
 
-   <div class="folivio-services reveal">
-    <div class="service-intro">
-      <span class="service-kicker">WHAT FOLIVIO BUILDS</span>
-      <h4>Turn your experience into a <em>career asset.</em></h4>
-      <p>From first resume to personal digital presence, FOLIVIO helps you present your journey with clarity, credibility and a professional visual identity.</p>
-    </div>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
 
-    <div class="service-grid">
-      <div class="service-card"><span class="service-no">01</span><div class="service-icon">CV</div><b>Professional Resumes</b><span>Clear, polished and opportunity-ready resumes.</span></div>
-      <div class="service-card"><span class="service-no">02</span><div class="service-icon">PF</div><b>Personal Portfolios</b><span>Showcase projects, skills, certifications and work.</span></div>
-      <div class="service-card"><span class="service-no">03</span><div class="service-icon">in</div><b>LinkedIn Makeovers</b><span>Build a stronger professional identity on LinkedIn.</span></div>
-      <div class="service-card"><span class="service-no">04</span><div class="service-icon">WEB</div><b>Portfolio Websites</b><span>Modern personal websites designed around your story.</span></div>
-    </div>
-
-    <div class="folivio-bottom">
-      <div><strong>For students.</strong><span> Freshers. Professionals.</span></div>
-      <a href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">Start with FOLIVIO <span>→</span></a>
-    </div>
-   </div>
+  <!-- MOBILE NAVIGATION DRAWER -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="#home" class="mobile-link">Home</a>
+    <a href="#products" class="mobile-link">Products</a>
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#portfolio" class="mobile-link">Portfolio</a>
+    <a href="#vision" class="mobile-link">Vision</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+    <a href="#products" class="btn primary mobile-link" style="margin-top:10px;">Explore Products</a>
   </div>
- </div>
-</section>
 
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-glow-orbit"></div>
+      <div class="container hero-grid">
+        <div class="reveal">
+          <div class="eyebrow"><i></i> A Nivas Bennabatthula Initiative</div>
+          <h1>Welcome to<br><span class="grad">NIVORA.</span></h1>
+          
+          <div class="hero-tagline-badge">
+            Turning Ideas Into <span>Intelligent Products.</span>
+          </div>
 
-<section class="final-cta">
- <div class="container reveal">
-  <div class="orb"><img src="assets/logos/nivora-logo-9f58eb40f4.png" alt="NIVORA"></div>
-  <div class="kicker">06 · Keep Exploring</div>
-  <h2>There is always<br><span class="grad">another world.</span></h2>
-  <p>NIVORA is not a finished destination. It is an evolving universe of ideas, products, experiments and possibilities — built one world at a time.</p>
-  <div class="actions" style="justify-content:center"><a class="btn primary" href="https://nivas2703.vercel.app/" target="_blank" rel="noopener">Enter Nivas's Portfolio ↗</a><a class="btn secondary" href="#products">Explore Products →</a></div>
- </div>
-</section>
-</main>
+          <p class="hero-copy">
+            NIVORA is the <strong>technology and innovation universe built by Nivas Bennabatthula</strong> — where ambitious ideas become intelligent products, meaningful experiences and new digital possibilities.
+          </p>
 
-<footer>
- <div class="container">
-  <div class="footer-grid">
-   <div><div class="footer-brand"><img src="assets/logos/nivora-logo-9f58eb40f4.png" alt=""><b>NIVORA</b></div><p>Technology & Innovation.<br>Turning ideas into intelligent products.</p></div>
-   <div><h4>Universe</h4><a href="#universe">NIVORA</a><a href="#products">CHECKRA</a><a href="https://homora-ai.vercel.app/" target="_blank">HOMORA</a><a href="https://bubora.netlify.app/" target="_blank">BUBORA</a><a href="#products">SAYORA</a></div>
-   <div><h4>Explore</h4><a href="#founder">Founder</a><a href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">FOLIVIO ↗</a><a href="https://nivas2703.vercel.app/" target="_blank">Nivas Portfolio</a></div>
-   <div><h4>Connect</h4><a href="https://nivas2703.vercel.app/" target="_blank">View Nivas ↗</a><a href="#top">Back to top ↑</a></div>
-  </div>
-  <div class="copyright"><span>© 2026 NIVORA. All rights reserved.</span><span>Built by Nivas Bennabatthula · The Nivas Universe</span></div>
- </div>
-</footer>
+          <div class="hero-actions">
+            <a class="btn primary" href="#products">
+              Explore Products <span class="btn-arrow">→</span>
+            </a>
+            <a class="btn secondary" href="#portfolio">
+              Meet the Founder <span class="btn-arrow">→</span>
+            </a>
+          </div>
 
-<script src="js/script.js" defer></script>
+          <div class="hero-meta">
+            <div><strong>4</strong>Ecosystem Worlds</div>
+            <div><strong>1</strong>Founder & Builder</div>
+            <div><strong>∞</strong>Digital Possibilities</div>
+          </div>
+        </div>
+
+        <div class="hero-art reveal">
+          <div class="orbit o1"></div>
+          <div class="orbit o2"></div>
+          <div class="orbit o3"></div>
+          <div class="hero-star a">✦</div>
+          <div class="hero-star b">✦</div>
+
+          <div class="core">
+            <img src="assets/images/nivora-logo.png" alt="NIVORA symbol">
+            <div class="core-label">
+              <b>NIVORA</b>
+              <span>One vision · many worlds</span>
+            </div>
+          </div>
+
+          <div class="satellite s-checkra">
+            <img src="assets/images/checkra-logo.png" alt="CHECKRA">
+          </div>
+          <div class="satellite s-homora">
+            <img src="assets/images/homora-logo.png" alt="HOMORA">
+          </div>
+          <div class="satellite s-bubora">
+            <img src="assets/images/bubora-logo.png" alt="BUBORA">
+          </div>
+          <div class="satellite s-sayora">
+            <div class="sayora-satellite-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCT UNIVERSE SECTION -->
+    <section class="section" id="products">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">01 · The Product Universe</div>
+            <h2>Products with<br><span class="grad">a Purpose.</span></h2>
+          </div>
+          <p>
+            Inside the NIVORA ecosystem, ideas transform into focused digital worlds. Each product addresses real human frictions with high-grade engineering, AI intelligence, and deliberate craftsmanship.
+          </p>
+        </div>
+
+        <div class="worlds-grid">
+          <!-- CHECKRA CARD -->
+          <article class="world-card w-checkra reveal">
+            <div class="world-media">
+              <img src="assets/images/checkra-logo.png" alt="CHECKRA logo" loading="lazy">
+            </div>
+            <div class="world-body">
+              <div class="world-top">
+                <div class="world-name-group">
+                  <h3>CHECKRA</h3>
+                  <span class="legacy-tag">Formerly VeriWrite</span>
+                </div>
+                <span class="status-badge dev">In Development</span>
+              </div>
+              <div class="world-positioning">Writing Integrity & Plagiarism Intelligence</div>
+              <p>
+                Advanced verification engine designed to check, verify, and elevate written work through multi-layer plagiarism detection, source authenticity signals, and real-time grammar intelligence.
+              </p>
+              
+              <div class="capabilities-list">
+                <span class="cap-pill">Plagiarism Detection</span>
+                <span class="cap-pill">Exact & Near Matching</span>
+                <span class="cap-pill">Semantic Similarity</span>
+                <span class="cap-pill">Source Verification</span>
+                <span class="cap-pill">AI-Writing Signals</span>
+                <span class="cap-pill">Grammar Analysis</span>
+                <span class="cap-pill">Integrity Reports</span>
+              </div>
+
+              <div class="world-footer">
+                <span class="world-link">Explore CHECKRA <span class="btn-arrow">→</span></span>
+                <span style="font-size:11px;color:#8f92a9;">NIVORA Integrity World</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- HOMORA CARD -->
+          <article class="world-card w-homora reveal">
+            <div class="world-media">
+              <img src="assets/images/homora-logo.png" alt="HOMORA logo" loading="lazy">
+            </div>
+            <div class="world-body">
+              <div class="world-top">
+                <div class="world-name-group">
+                  <h3>HOMORA</h3>
+                </div>
+                <span class="status-badge live">Active Prototype</span>
+              </div>
+              <div class="world-positioning">Smart Living & Shared Finance</div>
+              <p>
+                AI-powered financial harmony platform for shared households, roommates, and co-living spaces — effortlessly coordinating contributions, expenses, budgeting, and recurring bills with complete transparency.
+              </p>
+              
+              <div class="capabilities-list">
+                <span class="cap-pill">Shared Household Finances</span>
+                <span class="cap-pill">Expense Tracking</span>
+                <span class="cap-pill">Fair Contributions</span>
+                <span class="cap-pill">Household Budgeting</span>
+                <span class="cap-pill">Bill Splitting</span>
+                <span class="cap-pill">Member Analytics</span>
+                <span class="cap-pill">Financial Reports</span>
+              </div>
+
+              <div class="world-footer">
+                <a class="world-link" href="https://homora-ai.vercel.app/" target="_blank" rel="noopener noreferrer">
+                  Visit HOMORA <span class="btn-arrow">↗</span>
+                </a>
+                <span style="font-size:11px;color:#8f92a9;">Official Website</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- BUBORA CARD -->
+          <article class="world-card w-bubora reveal">
+            <div class="world-media">
+              <img src="assets/images/bubora-logo.png" alt="BUBORA logo" loading="lazy">
+            </div>
+            <div class="world-body">
+              <div class="world-top">
+                <div class="world-name-group">
+                  <h3>BUBORA</h3>
+                </div>
+                <span class="status-badge dev">In Development</span>
+              </div>
+              <div class="world-positioning">A Digital Space for Couples</div>
+              <p>
+                An intimate, private digital universe designed exclusively for two — bringing cherished memories, real-time shared communication, date planning, photo vaults, and everyday moments into one encrypted haven.
+              </p>
+              
+              <div class="capabilities-list">
+                <span class="cap-pill">Private Memories</span>
+                <span class="cap-pill">Couples Communication</span>
+                <span class="cap-pill">Shared Activities</span>
+                <span class="cap-pill">Date Planning</span>
+                <span class="cap-pill">Photo Vaults</span>
+                <span class="cap-pill">Shared Notes</span>
+                <span class="cap-pill">Private Experiences</span>
+              </div>
+
+              <div class="world-footer">
+                <a class="world-link" href="https://bubora.netlify.app/" target="_blank" rel="noopener noreferrer">
+                  Visit BUBORA <span class="btn-arrow">↗</span>
+                </a>
+                <span style="font-size:11px;color:#8f92a9;">Official Website</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- SAYORA CARD -->
+          <article class="world-card w-sayora reveal">
+            <div class="world-media">
+              <div class="sayora-emblem">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm1 14.5h-2v-2h2v2zm0-4h-2V7h2v5.5z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="world-body">
+              <div class="world-top">
+                <div class="world-name-group">
+                  <h3>SAYORA</h3>
+                </div>
+                <span class="status-badge concept">Concept</span>
+              </div>
+              <div class="world-positioning">Gig Worker Protection Fund</div>
+              <p>
+                A high-impact social protection architecture conceived to empower gig workers with emergency safety nets, micro-contribution reserves, transparent claim management, and communal crisis resilience.
+              </p>
+              
+              <div class="capabilities-list">
+                <span class="cap-pill">Gig-Worker Protection</span>
+                <span class="cap-pill">Emergency Support Fund</span>
+                <span class="cap-pill">Micro-Contributions</span>
+                <span class="cap-pill">Rapid Claim Verification</span>
+                <span class="cap-pill">Fund Management</span>
+                <span class="cap-pill">Community Support</span>
+                <span class="cap-pill">Social Impact</span>
+              </div>
+
+              <div class="world-footer">
+                <span class="world-link">Explore Concept <span class="btn-arrow">→</span></span>
+                <span style="font-size:11px;color:#8f92a9;">Concept Phase</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="section" id="about">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">02 · Methodology & Craft</div>
+            <h2>Building What<br><span class="grad">Comes Next.</span></h2>
+          </div>
+          <p>
+            NIVORA is an independent, founder-led ecosystem where ideas move with purpose from theoretical notebooks into scalable, production-grade products that solve real human frictions.
+          </p>
+        </div>
+
+        <div class="pipeline-wrapper reveal">
+          <div class="pipeline-header">
+            <h3>The NIVORA Lifecycle Pipeline</h3>
+            <p>From initial spark to lasting social footprint — every product in the universe traverses five deliberate stages of creation.</p>
+          </div>
+
+          <div class="pipeline-steps">
+            <div class="pipe-step">
+              <div class="pipe-number">STAGE 01</div>
+              <b>Idea</b>
+              <p>Identifying unaddressed frictions in finance, writing integrity, relationships, and modern labor markets.</p>
+            </div>
+
+            <div class="pipe-step">
+              <div class="pipe-number">STAGE 02</div>
+              <b>Design</b>
+              <p>Crafting high-fidelity, cinematic digital interfaces rooted in intuitive glassmorphism and clear visual hierarchy.</p>
+            </div>
+
+            <div class="pipe-step">
+              <div class="pipe-number">STAGE 03</div>
+              <b>Build</b>
+              <p>Architecting resilient software systems using modern web frameworks, AI models, and clean engineering paradigms.</p>
+            </div>
+
+            <div class="pipe-step">
+              <div class="pipe-number">STAGE 04</div>
+              <b>Product</b>
+              <p>Refining functional prototypes into cohesive, standalone digital universes with distinct brand identities.</p>
+            </div>
+
+            <div class="pipe-step">
+              <div class="pipe-number">STAGE 05</div>
+              <b>Impact</b>
+              <p>Deploying solutions that safeguard trust, streamline shared living, and create meaningful real-world utility.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="principles-grid reveal">
+          <div class="principle-card">
+            <div class="p-tag">Pillar 01</div>
+            <h4>Practical Technology</h4>
+            <p>Focusing on genuine human problems rather than vanity features or empty startup buzzwords.</p>
+          </div>
+
+          <div class="principle-card">
+            <div class="p-tag">Pillar 02</div>
+            <h4>AI & Intelligence</h4>
+            <p>Leveraging machine intelligence to provide transparent signals, verifiable integrity, and financial harmony.</p>
+          </div>
+
+          <div class="principle-card">
+            <div class="p-tag">Pillar 03</div>
+            <h4>Deliberate Craftsmanship</h4>
+            <p>Every pixel, transition, and workflow exists for a reason — engineered with obsessively refined aesthetics.</p>
+          </div>
+
+          <div class="principle-card">
+            <div class="p-tag">Pillar 04</div>
+            <h4>Living Ecosystem</h4>
+            <p>A resilient launchpad designed to incubate bold new worlds as technological possibilities evolve.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOUNDER & PORTFOLIO SECTION -->
+    <section class="section" id="portfolio">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">03 · The Architect</div>
+            <h2>Meet the<br><span class="grad">Builder.</span></h2>
+          </div>
+          <p>
+            NIVORA is founder-led. The vision, architectural direction, design language, and execution are driven directly by Nivas Bennabatthula.
+          </p>
+        </div>
+
+        <div class="founder-card reveal">
+          <div class="founder-photo">
+            <img src="assets/images/founder-nivas.png" alt="Nivas Bennabatthula" loading="lazy">
+          </div>
+
+          <div class="founder-content">
+            <div class="founder-kicker">Founder · Product Builder</div>
+            <h3>Nivas<br><span class="grad">Bennabatthula</span></h3>
+            <div class="founder-role">Founder · Product Builder · Finance & Technology Enthusiast</div>
+
+            <p>
+              Nivas is building NIVORA as a sanctuary where ambitious ideas transcend notes and prototypes to become tangible, intelligent digital products. His work spans finance, artificial intelligence, product architecture, and social-impact technology — creating software that balances technical precision with profound human resonance.
+            </p>
+
+            <div class="founder-pills">
+              <span class="founder-pill">Finance</span>
+              <span class="founder-pill">Technology</span>
+              <span class="founder-pill">AI</span>
+              <span class="founder-pill">Product Innovation</span>
+              <span class="founder-pill">Digital Products</span>
+              <span class="founder-pill">Full-Stack Systems</span>
+            </div>
+
+            <div>
+              <a class="btn primary" href="https://nivas2703.vercel.app/" target="_blank" rel="noopener noreferrer">
+                View Founder Profile <span class="btn-arrow">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISION SECTION -->
+    <section class="section" id="vision">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">04 · Ecosystem Architecture</div>
+            <h2>The NIVORA<br><span class="grad">Universe.</span></h2>
+          </div>
+          <p>
+            A multi-dimensional ecosystem uniting distinct product worlds under a singular technological thesis: purposeful intelligence and immaculate execution.
+          </p>
+        </div>
+
+        <div class="vision-panel reveal">
+          <div class="vision-quote">
+            <div class="quote-phrase">
+              “One builder. Multiple ideas.<br><span class="grad">Different worlds. One vision.</span>”
+            </div>
+            <div class="quote-sub">NIVORA Ecosystem Map</div>
+          </div>
+
+          <div class="ecosystem-diagram">
+            <!-- Core NIVORA Hub -->
+            <div class="hub-nivora">
+              <img src="assets/images/nivora-logo.png" alt="NIVORA">
+              <b>NIVORA</b>
+              <span>Central Technology Universe</span>
+            </div>
+
+            <div class="conduit-down"></div>
+
+            <!-- Core Product Worlds -->
+            <div class="worlds-orbit-row">
+              <div class="orbit-node">
+                <img src="assets/images/checkra-logo.png" alt="CHECKRA" loading="lazy">
+                <b>CHECKRA</b>
+                <span>Writing Integrity & AI</span>
+              </div>
+
+              <div class="orbit-node">
+                <img src="assets/images/homora-logo.png" alt="HOMORA" loading="lazy">
+                <b>HOMORA</b>
+                <span>Shared Finance & Living</span>
+              </div>
+
+              <div class="orbit-node">
+                <img src="assets/images/bubora-logo.png" alt="BUBORA" loading="lazy">
+                <b>BUBORA</b>
+                <span>Couples Digital Space</span>
+              </div>
+
+              <div class="orbit-node">
+                <div class="orbit-emblem-sayora">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm1 14.5h-2v-2h2v2zm0-4h-2V7h2v5.5z"/>
+                  </svg>
+                </div>
+                <b>SAYORA</b>
+                <span>Gig Protection Fund</span>
+              </div>
+            </div>
+
+            <!-- Separate Stream: FOLIVIO -->
+            <div class="separate-stream-divider">
+              <span>Specialized Digital Presence Stream · Non-Core Product</span>
+            </div>
+
+            <div class="stream-folivio-node">
+              <div class="sfn-left">
+                <img src="assets/images/folivio-logo.webp" alt="FOLIVIO" loading="lazy">
+                <div class="sfn-info">
+                  <b>FOLIVIO — Build. Showcase. Grow.</b>
+                  <span>Career Branding & Digital Presence Service by Nivas Bennabatthula</span>
+                </div>
+              </div>
+              <span class="sfn-tag">Independent Service</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOLIVIO SECTION -->
+    <section class="section" id="folivio">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">05 · Beyond NIVORA</div>
+            <h2>Build your<br><span class="grad">Career Presence.</span></h2>
+          </div>
+          <p>
+            FOLIVIO is an independent professional career-branding service founded by Nivas — helping students, freshers, and professionals turn their education, skills, projects, certifications, and experience into polished career profiles.
+          </p>
+        </div>
+
+        <div class="folivio-premium reveal">
+          <div class="folivio-identity">
+            <div class="folivio-logo-wrap">
+              <img src="assets/images/folivio-logo.webp" alt="FOLIVIO — Build. Showcase. Grow." loading="lazy">
+            </div>
+
+            <div class="folivio-brand-copy">
+              <div class="folivio-overline">CAREER BRANDING · DIGITAL PRESENCE</div>
+              <h3>FOLIVIO</h3>
+              <div class="folivio-tagline">Build. <span>Showcase.</span> <b>Grow.</b></div>
+              
+              <p>
+                Professional career branding for ambitious individuals who want their work, credentials, and digital footprint to look as formidable online as they are on paper.
+              </p>
+
+              <div class="folivio-cta-group">
+                <a class="btn primary" href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
+                  Connect on Instagram <span class="btn-arrow">↗</span>
+                </a>
+                <span class="folivio-handle">@folivio.ai · Official Contact</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="folivio-services">
+            <div class="service-intro">
+              <span class="folivio-overline">WHAT FOLIVIO CRAFTS</span>
+              <h4>Turn your experience into a <em>career asset.</em></h4>
+              <p>
+                From your earliest resume to a fully customized personal web presence, FOLIVIO empowers you to articulate your professional journey with credibility, aesthetic elegance, and authority.
+              </p>
+            </div>
+
+            <div class="services-grid">
+              <div class="service-box">
+                <span class="service-box-num">01</span>
+                <div class="service-box-icon">CV</div>
+                <b>Professional Resumes</b>
+                <span>Tailored, ATS-optimized, and opportunity-ready resumes engineered to win interviews.</span>
+              </div>
+
+              <div class="service-box">
+                <span class="service-box-num">02</span>
+                <div class="service-box-icon">PF</div>
+                <b>Personal Portfolios</b>
+                <span>Visually compelling portfolios highlighting projects, certifications, and measurable impact.</span>
+              </div>
+
+              <div class="service-box">
+                <span class="service-box-num">03</span>
+                <div class="service-box-icon">in</div>
+                <b>LinkedIn Makeovers</b>
+                <span>Strategic headline, summary, and experience transformations to attract recruiters and partners.</span>
+              </div>
+
+              <div class="service-box">
+                <span class="service-box-num">04</span>
+                <div class="service-box-icon">WEB</div>
+                <b>Portfolio Websites</b>
+                <span>Bespoke personal websites designed to showcase your unique identity and technical skills.</span>
+              </div>
+            </div>
+
+            <div class="folivio-footer-bar">
+              <div>
+                <strong>Designed for Students. Freshers. Professionals.</strong><br>
+                <span>Take the next definitive step in your career journey.</span>
+              </div>
+              <a class="btn secondary" href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
+                Start with FOLIVIO <span class="btn-arrow">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="section" id="contact">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="kicker">06 · Collaboration & Inquiries</div>
+            <h2>Have an Idea?<br><span class="grad">Let's Build It.</span></h2>
+          </div>
+          <p>
+            NIVORA is always exploring new ideas, products, and possibilities. Whether you are interested in a product collaboration, technology discussion, or ecosystem partnership, let us connect.
+          </p>
+        </div>
+
+        <div class="contact-wrapper reveal">
+          <div class="contact-info-panel">
+            <h3>Enter the Universe.</h3>
+            <p>
+              Connect directly with Nivas Bennabatthula regarding NIVORA initiatives, product development, or new technology ventures.
+            </p>
+
+            <div class="contact-methods">
+              <a class="contact-card-link" href="https://nivas2703.vercel.app/" target="_blank" rel="noopener noreferrer">
+                <div class="ccl-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                  </svg>
+                </div>
+                <div class="ccl-text">
+                  <b>Official Founder Website</b>
+                  <span>Explore Nivas's projects & profile</span>
+                </div>
+              </a>
+            </div>
+
+            <div class="folivio-redirect-notice">
+              <strong>Looking for Career Branding?</strong>
+              For resumes, portfolios, and LinkedIn profile makeovers, please reach out directly through the official <a href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">FOLIVIO Instagram</a>.
+            </div>
+          </div>
+
+          <div class="contact-form-panel">
+            <form id="nivoraContactForm" onsubmit="handleContactSubmit(event)">
+              <div class="form-group">
+                <label for="contactName">Your Name</label>
+                <input type="text" id="contactName" class="form-control" placeholder="e.g. Alex Morgan" required>
+              </div>
+
+              <div class="form-group">
+                <label for="contactEmail">Email Address</label>
+                <input type="email" id="contactEmail" class="form-control" placeholder="alex@example.com" required>
+              </div>
+
+              <div class="form-group">
+                <label for="contactTopic">Area of Interest</label>
+                <select id="contactTopic" class="form-control" required>
+                  <option value="" disabled selected>Select an area...</option>
+                  <option value="Product Collaboration">Product Collaboration (CHECKRA, HOMORA, BUBORA, SAYORA)</option>
+                  <option value="New Venture Idea">New Venture / Innovation Idea</option>
+                  <option value="Technology Discussion">Technology & AI Discussion</option>
+                  <option value="General Inquiry">General Inquiry</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="contactMessage">Your Message</label>
+                <textarea id="contactMessage" class="form-control" placeholder="Tell us about your idea, perspective, or inquiry..." required></textarea>
+              </div>
+
+              <div class="form-submit-row">
+                <button type="submit" class="btn primary">
+                  Transmit Message <span class="btn-arrow">→</span>
+                </button>
+                <span class="form-status-msg" id="formStatusMsg">Message transmitted successfully!</span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand-col">
+          <img src="assets/images/nivora-logo.png" alt="NIVORA Logo" loading="lazy">
+          <h4>NIVORA</h4>
+          <p>
+            Technology & Innovation.<br>
+            Turning ideas into intelligent products.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <a href="#home">Home</a>
+          <a href="#products">Products</a>
+          <a href="#about">About</a>
+          <a href="#portfolio">Portfolio</a>
+          <a href="#vision">Vision</a>
+          <a href="#contact">Contact</a>
+        </div>
+
+        <div class="footer-col">
+          <h5>Product Worlds</h5>
+          <a href="#products">CHECKRA</a>
+          <a href="https://homora-ai.vercel.app/" target="_blank" rel="noopener noreferrer">HOMORA ↗</a>
+          <a href="https://bubora.netlify.app/" target="_blank" rel="noopener noreferrer">BUBORA ↗</a>
+          <a href="#products">SAYORA</a>
+        </div>
+
+        <div class="footer-col">
+          <h5>Ecosystem</h5>
+          <a href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">FOLIVIO on Instagram ↗</a>
+          <a href="https://nivas2703.vercel.app/" target="_blank" rel="noopener noreferrer">Built by Nivas ↗</a>
+          <a href="#home">Back to Top ↑</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 NIVORA. All rights reserved.</span>
+        <span>Built by <a href="https://nivas2703.vercel.app/" target="_blank" rel="noopener noreferrer">Nivas Bennabatthula</a> · The NIVORA Universe</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    document.documentElement.classList.add('js-ready');
+    /* 1. STARFIELD PARTICLES SIMULATION */
+    (function initStars() {
+      const canvas = document.getElementById('stars');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let w = window.innerWidth, h = window.innerHeight;
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+      let particles = [];
+
+      function resize() {
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        
+        const count = Math.min(180, Math.floor((w * h) / 8000));
+        particles = Array.from({ length: count }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 1.3 + 0.2,
+          a: Math.random() * 0.65 + 0.2,
+          speed: Math.random() * 0.16 + 0.03
+        }));
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.y += p.speed;
+          if (p.y > h) p.y = -2;
+          
+          ctx.globalAlpha = p.a * (0.65 + 0.35 * Math.sin(Date.now() / 900 + p.x));
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', resize, { passive: true });
+      resize();
+      draw();
+    })();
+
+    /* 2. CURSOR RADIAL GLOW */
+    (function initCursorGlow() {
+      const glow = document.getElementById('cursorGlow');
+      if (!glow) return;
+      window.addEventListener('pointermove', (e) => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+      }, { passive: true });
+    })();
+
+    /* 3. SCROLL PROGRESS & ACTIVE LINK OBSERVER */
+    (function initScrollEffects() {
+      const bar = document.getElementById('scrollProgress');
+      const navLinks = document.querySelectorAll('.navlinks a[href^="#"]');
+      const sections = document.querySelectorAll('section[id], body[id]');
+
+      function onScroll() {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        if (bar) {
+          bar.style.width = (total > 0 ? (window.scrollY / total) * 100 : 0) + '%';
+        }
+
+        let currentId = 'home';
+        sections.forEach(sec => {
+          const rect = sec.getBoundingClientRect();
+          if (rect.top <= 180 && rect.bottom >= 180) {
+            currentId = sec.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(link => {
+          if (link.getAttribute('href') === '#' + currentId) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+
+    /* 4. SCROLL REVEAL OBSERVER */
+    (function initRevealObserver() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    })();
+
+    /* 5. MOBILE MENU DRAWER */
+    (function initMobileMenu() {
+      const toggle = document.getElementById('menuToggle');
+      const drawer = document.getElementById('mobileDrawer');
+      const links = document.querySelectorAll('.mobile-link');
+
+      if (!toggle || !drawer) return;
+
+      function toggleMenu() {
+        const isOpen = drawer.classList.contains('open');
+        if (isOpen) {
+          drawer.classList.remove('open');
+          toggle.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        } else {
+          drawer.classList.add('open');
+          toggle.classList.add('open');
+          toggle.setAttribute('aria-expanded', 'true');
+          document.body.style.overflow = 'hidden';
+        }
+      }
+
+      toggle.addEventListener('click', toggleMenu);
+      links.forEach(l => l.addEventListener('click', () => {
+        drawer.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }));
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawer.classList.contains('open')) {
+          toggleMenu();
+        }
+      });
+    })();
+
+    /* 6. 3D CARD TILT FOR DESKTOP */
+    (function initCardTilt() {
+      if (window.innerWidth <= 900) return;
+      const cards = document.querySelectorAll('.world-card, .pipe-step, .orbit-node');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const rx = ((e.clientY - rect.top) / rect.height - 0.5) * -5;
+          const ry = ((e.clientX - rect.left) / rect.width - 0.5) * 5;
+          card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = '';
+        });
+      });
+    })();
+
+    /* 7. CONTACT FORM SUBMISSION HANDLER */
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const statusMsg = document.getElementById('formStatusMsg');
+      const form = document.getElementById('nivoraContactForm');
+      if (statusMsg) {
+        statusMsg.classList.add('visible');
+        setTimeout(() => {
+          statusMsg.classList.remove('visible');
+          form.reset();
+        }, 3500);
+      }
+    }
+  </script>
 </body>
 </html>
