@@ -7,10 +7,10 @@
   <meta name="description" content="NIVORA is the technology and innovation universe built by Nivas Bennabatthula — home to Checkra, Homora, Bubora, and Sayora.">
   <link rel="icon" type="image/png" href="assets/images/nivora-logo.png">
 
-  <!-- GOOGLE FONTS -->
+  <!-- GOOGLE FONTS: Sora, Space Grotesk, Inter, Instrument Serif, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- THREE.JS, GSAP & LENIS CDNS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -19,12 +19,11 @@
 
   <style>
     /* =========================================================
-       NIVORA 3D ZOOM UNIVERSE DESIGN SYSTEM (APPLE + LINEAR + VERCEL)
+       NIVORA CINEMATIC 3D UNIVERSE DESIGN SYSTEM
        ========================================================= */
     :root {
-      --bg-space: #020308;
+      --bg-space-base: #010206;
       --bg-space-deep: #000103;
-      --bg-radial-atmosphere: radial-gradient(ellipse at 50% 0%, #0d122e 0%, #06091a 45%, #020308 85%, #000103 100%);
       
       --text-main: #f8faff;
       --text-secondary: #b8c0d9;
@@ -38,12 +37,13 @@
       --glass-surface-dense: rgba(6, 8, 20, 0.94);
       --glass-surface-elevated: rgba(14, 20, 44, 0.78);
 
-      /* NIVORA Signature Animated Gradient: Violet -> Blue -> Cyan */
-      --accent-violet: #8b5cf6;
-      --accent-blue: #4f7cff;
-      --accent-cyan: #22d3ee;
-      --accent-emerald: #10b981;
-      --accent-pink: #ec4899;
+      /* NIVORA Brand Palette: Violet -> Purple -> Blue -> Cyan -> Magenta */
+      --color-violet: #8b5cf6;
+      --color-purple: #a855f7;
+      --color-blue: #4f7cff;
+      --color-cyan: #22d3ee;
+      --color-magenta: #ec4899;
+      --color-emerald: #10b981;
 
       /* Product Identity Colors & Glows */
       --color-checkra: #8b5cf6;
@@ -56,13 +56,12 @@
       --glow-sayora: rgba(16, 185, 129, 0.45);
 
       /* Typographic System */
-      --font-display: 'Space Grotesk', 'Sora', -apple-system, sans-serif;
+      --font-display: 'Sora', 'Space Grotesk', -apple-system, sans-serif;
       --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-editorial: 'Instrument Serif', Georgia, serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
 
-    /* Reset & Base Setup */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -86,7 +85,7 @@
     }
 
     html {
-      background: #020308;
+      background: #010206;
       color: var(--text-main);
       font-family: var(--font-body);
       font-size: 16px;
@@ -95,8 +94,7 @@
     }
 
     body {
-      background: var(--bg-radial-atmosphere);
-      background-attachment: fixed;
+      background: #010206;
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
@@ -128,7 +126,7 @@
     }
 
     /* =========================================================
-       THREE.JS WEBGL CANVAS (FULL-SCREEN 3D UNIVERSE)
+       CINEMATIC MULTI-LAYER COSMIC ENVIRONMENT
        ========================================================= */
     #webglCanvas {
       position: fixed;
@@ -140,7 +138,62 @@
       z-index: 0;
     }
 
-    /* Cosmic Grid Overlay */
+    /* Layer 2: Rich Nebula Clouds Background */
+    .cosmic-nebulae-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+      opacity: 0.85;
+      transition: transform 0.2s ease-out;
+    }
+
+    /* Deep Navy Atmospheric Wash */
+    .nebula-wash {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at 50% 10%, #0c1236 0%, #06091d 45%, #010208 85%, #000103 100%);
+    }
+
+    /* Vibrant Purple & Electric Blue Nebula Behind Globe */
+    .nebula-globe-aura {
+      position: absolute;
+      top: 15%;
+      right: 5%;
+      width: 750px;
+      height: 750px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.45) 0%, rgba(79, 124, 255, 0.3) 35%, rgba(34, 211, 238, 0.15) 55%, transparent 75%);
+      filter: blur(120px);
+      animation: nebulaPulse 12s ease-in-out infinite alternate;
+    }
+
+    /* Subtle Magenta / Violet Cloud on Left */
+    .nebula-left-cloud {
+      position: absolute;
+      top: 30%;
+      left: -10%;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, rgba(139, 92, 246, 0.18) 40%, transparent 70%);
+      filter: blur(140px);
+      animation: nebulaPulse 14s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes nebulaPulse {
+      0% { transform: scale(0.92) translate(0, 0); opacity: 0.8; }
+      100% { transform: scale(1.1) translate(20px, -15px); opacity: 1; }
+    }
+
+    /* Fine Celestial Grid Overlay */
     .cosmic-grid-overlay {
       position: fixed;
       top: 0;
@@ -150,86 +203,60 @@
       pointer-events: none;
       z-index: 1;
       background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-      background-size: 90px 90px;
+        linear-gradient(to right, rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+      background-size: 100px 100px;
     }
 
-    /* Atmospheric Ambient Glows behind sections */
-    .ambient-glow {
+    /* =========================================================
+       PLANETARY FOREGROUND (BOTTOM EDGES FOR CINEMATIC SCALE)
+       ========================================================= */
+    .foreground-planet-left {
       position: absolute;
-      pointer-events: none;
-      border-radius: 50%;
-      filter: blur(140px);
-      opacity: 0.28;
-      z-index: 1;
-      transition: opacity 0.6s ease;
-    }
-
-    .ambient-hero {
-      top: 2%;
-      right: 6%;
-      width: 620px;
-      height: 620px;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, rgba(79, 124, 255, 0.35) 50%, transparent 70%);
-    }
-
-    .ambient-products {
-      top: 22%;
-      left: 5%;
-      width: 680px;
-      height: 680px;
-      background: radial-gradient(circle, rgba(6, 182, 212, 0.45) 0%, rgba(139, 92, 246, 0.25) 55%, transparent 70%);
-    }
-
-    .ambient-lifecycle {
-      top: 42%;
-      right: 10%;
-      width: 620px;
-      height: 620px;
-      background: radial-gradient(circle, rgba(99, 102, 241, 0.45) 0%, rgba(16, 185, 129, 0.25) 60%, transparent 70%);
-    }
-
-    .ambient-founder {
-      top: 58%;
-      left: 15%;
+      bottom: -320px;
+      left: -200px;
       width: 580px;
       height: 580px;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.5) 0%, rgba(6, 182, 212, 0.3) 50%, transparent 70%);
+      border-radius: 50%;
+      background: radial-gradient(circle at 75% 25%, #080f2d 0%, #030614 60%, #010208 95%);
+      box-shadow: 
+        inset -10px -10px 40px rgba(0, 0, 0, 0.95),
+        inset 15px 15px 50px rgba(34, 211, 238, 0.28),
+        0 0 80px rgba(79, 124, 255, 0.25);
+      border-top: 1.5px solid rgba(34, 211, 238, 0.35);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.75;
+      transform: rotate(-15deg);
     }
 
-    .ambient-philosophy {
-      top: 72%;
-      right: 12%;
-      width: 720px;
-      height: 720px;
-      background: radial-gradient(circle, rgba(79, 124, 255, 0.45) 0%, rgba(236, 72, 153, 0.25) 60%, transparent 70%);
-    }
-
-    .ambient-folivio {
-      top: 85%;
-      left: 8%;
-      width: 620px;
-      height: 620px;
-      background: radial-gradient(circle, rgba(6, 182, 212, 0.45) 0%, rgba(139, 92, 246, 0.25) 60%, transparent 70%);
-    }
-
-    .ambient-contact {
-      bottom: 2%;
-      right: 18%;
-      width: 780px;
-      height: 780px;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.55) 0%, rgba(34, 211, 238, 0.35) 60%, transparent 70%);
+    .foreground-planet-right {
+      position: absolute;
+      bottom: -360px;
+      right: -220px;
+      width: 640px;
+      height: 640px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 25% 25%, #120b29 0%, #050312 60%, #010208 95%);
+      box-shadow: 
+        inset 10px 10px 40px rgba(0, 0, 0, 0.95),
+        inset -15px -15px 50px rgba(236, 72, 153, 0.25),
+        0 0 90px rgba(139, 92, 246, 0.28);
+      border-top: 1.5px solid rgba(236, 72, 153, 0.35);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.7;
+      transform: rotate(20deg);
     }
 
     /* Container */
     .container {
       width: 100%;
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 0 auto;
-      padding: 0 2rem;
+      padding: 0 2.5rem;
       position: relative;
-      z-index: 2;
+      z-index: 3;
     }
 
     /* =========================================================
@@ -268,8 +295,8 @@
     }
 
     .custom-cursor-ring.cursor-hover {
-      width: 54px;
-      height: 54px;
+      width: 56px;
+      height: 56px;
       border-color: rgba(34, 211, 238, 0.9);
       background: rgba(34, 211, 238, 0.08);
       box-shadow: 0 0 28px rgba(34, 211, 238, 0.4);
@@ -282,44 +309,743 @@
     }
 
     /* =========================================================
-       ANIMATED GRADIENTS & TYPOGRAPHY STYLES
+       NAVIGATION BAR (FLOATING LUXURY CONTROL CAPSULE)
        ========================================================= */
-    .grad-nivora {
-      background: linear-gradient(135deg, #8b5cf6 0%, #4f7cff 35%, #22d3ee 70%, #8b5cf6 100%);
-      background-size: 300% 300%;
-      animation: gradFlow 8s ease-in-out infinite;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .site-nav {
+      position: fixed;
+      top: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 4rem);
+      max-width: 1260px;
+      height: 66px;
+      background: rgba(6, 9, 24, 0.7);
+      backdrop-filter: blur(28px) saturate(190%);
+      -webkit-backdrop-filter: blur(28px) saturate(190%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.65rem;
+      z-index: 1000;
+      box-shadow: 
+        0 20px 50px -15px rgba(0, 0, 0, 0.8),
+        0 0 35px rgba(139, 92, 246, 0.15),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .site-nav.scrolled {
+      background: rgba(4, 6, 18, 0.88);
+      border-color: rgba(255, 255, 255, 0.18);
+      box-shadow: 
+        0 25px 60px -12px rgba(0, 0, 0, 0.95),
+        0 0 45px rgba(139, 92, 246, 0.25);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      text-decoration: none;
+    }
+
+    .nav-brand-logo {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 14px rgba(99, 102, 241, 0.7));
+    }
+
+    .nav-brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-brand-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .nav-brand-tag {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+    }
+
+    .nav-item {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      position: relative;
+      padding: 0.4rem 0.85rem;
+      border-radius: 9999px;
+      transition: all 0.25s ease;
+    }
+
+    .nav-item:hover {
+      color: #ffffff;
+    }
+
+    .nav-item.active {
+      color: #ffffff;
+      background: rgba(139, 92, 246, 0.2);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      box-shadow: 0 0 16px rgba(139, 92, 246, 0.3);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .nav-telemetry {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      color: var(--color-cyan);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid rgba(34, 211, 238, 0.22);
+      border-radius: 9999px;
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+      animation: pulseDotAnim 2s infinite;
+    }
+
+    @keyframes pulseDotAnim {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .btn-nav-explore {
+      font-family: var(--font-display);
+      font-size: 0.825rem;
+      font-weight: 700;
+      padding: 0.6rem 1.35rem;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #8b5cf6 0%, #4f7cff 50%, #22d3ee 100%);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 
+        0 8px 25px -4px rgba(139, 92, 246, 0.6),
+        0 0 16px rgba(34, 211, 238, 0.35);
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-nav-explore:hover {
+      transform: translateY(-1px) scale(1.02);
+      box-shadow: 
+        0 12px 30px -4px rgba(139, 92, 246, 0.85),
+        0 0 25px rgba(34, 211, 238, 0.55);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* =========================================================
+       HERO SECTION — 3D DIGITAL UNIVERSE
+       ========================================================= */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 8rem;
+      padding-bottom: 6rem;
+      position: relative;
+      z-index: 3;
+      overflow: visible;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      gap: 3rem;
+      position: relative;
+    }
+
+    .hero-left {
+      position: relative;
+      z-index: 4;
+    }
+
+    /* Badge: Glass pill with violet border & cyan dot */
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-cyan);
+      padding: 0.45rem 1.1rem;
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      border-radius: 9999px;
+      margin-bottom: 1.85rem;
+      box-shadow: 0 0 20px rgba(139, 92, 246, 0.2);
+    }
+
+    .badge-pulse-cyan {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--color-cyan);
+      box-shadow: 0 0 10px var(--color-cyan);
       display: inline-block;
     }
 
-    @keyframes gradFlow {
+    /* Main Headline */
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.6rem, 6.5vw, 6rem);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: -0.045em;
+      margin-bottom: 1.35rem;
+    }
+
+    .hero-sub-lead {
+      color: #ffffff;
+      display: block;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    /* Animated Brand Gradient: Violet -> Purple -> Blue -> Cyan */
+    .grad-nivora {
+      background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 30%, #4f7cff 65%, #22d3ee 100%);
+      background-size: 300% 300%;
+      animation: brandGradFlow 8s ease-in-out infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+      filter: drop-shadow(0 0 35px rgba(139, 92, 246, 0.4));
+    }
+
+    @keyframes brandGradFlow {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
 
-    .grad-accent {
-      background: linear-gradient(135deg, #22d3ee 0%, #4f7cff 60%, #8b5cf6 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      display: inline-block;
+    /* Tagline with Editorial Luxury Accent */
+    .hero-tagline-wrap {
+      font-family: var(--font-body);
+      font-size: clamp(1.25rem, 2.1vw, 1.7rem);
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 1.65rem;
+      line-height: 1.45;
     }
 
     .editorial-accent {
       font-family: var(--font-editorial);
       font-style: italic;
       font-weight: 400;
+      font-size: 1.2em;
+      color: #ffffff;
       letter-spacing: 0.01em;
-      color: #f8faff;
-      display: inline;
+      position: relative;
+      display: inline-block;
     }
 
-    /* Common Section Header */
+    /* Luminous Magenta/Purple Underline beneath Ideas and Products */
+    .editorial-accent::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #ec4899 0%, #a855f7 100%);
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.7);
+      border-radius: 9999px;
+    }
+
+    .hero-copy {
+      font-size: 1.12rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      max-width: 560px;
+      margin-bottom: 2.75rem;
+    }
+
+    .hero-copy strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    /* Hero CTA Actions */
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.35rem;
+      margin-bottom: 3.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-enter-universe {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 0.95rem 2.2rem;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 40%, #22d3ee 100%);
+      background-size: 200% 200%;
+      animation: btnGradShift 6s ease-in-out infinite alternate;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 
+        0 14px 35px -6px rgba(139, 92, 246, 0.65),
+        0 0 28px rgba(34, 211, 238, 0.35),
+        inset 0 1px 2px rgba(255, 255, 255, 0.6);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes btnGradShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    .btn-enter-universe:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 
+        0 18px 45px -6px rgba(139, 92, 246, 0.85),
+        0 0 40px rgba(34, 211, 238, 0.6);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .btn-explore-products {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.9rem 1.85rem;
+      border-radius: 9999px;
+      background: rgba(14, 20, 48, 0.6);
+      color: var(--text-main);
+      border: 1px solid rgba(139, 92, 246, 0.35);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.28s ease;
+    }
+
+    .btn-explore-products:hover {
+      background: rgba(20, 30, 70, 0.8);
+      border-color: rgba(34, 211, 238, 0.6);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(34, 211, 238, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .play-icon-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(139, 92, 246, 0.25);
+      border: 1px solid rgba(139, 92, 246, 0.5);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      color: var(--color-cyan);
+    }
+
+    /* Hero Metrics with Elegant Icons */
+    .hero-metrics {
+      display: flex;
+      align-items: center;
+      gap: 3.5rem;
+      padding-top: 2.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .metric-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .metric-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(14, 20, 48, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-cyan);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+    }
+
+    .metric-icon-wrap.m-purple {
+      color: var(--color-purple);
+      border-color: rgba(168, 85, 247, 0.3);
+      background: rgba(168, 85, 247, 0.08);
+    }
+    .metric-icon-wrap.m-cyan {
+      color: var(--color-cyan);
+      border-color: rgba(34, 211, 238, 0.3);
+      background: rgba(34, 211, 238, 0.08);
+    }
+    .metric-icon-wrap.m-magenta {
+      color: var(--color-magenta);
+      border-color: rgba(236, 72, 153, 0.3);
+      background: rgba(236, 72, 153, 0.08);
+    }
+
+    .metric-info strong {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1;
+      color: #ffffff;
+      display: block;
+    }
+
+    .metric-info span {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* =========================================================
+       HERO RIGHT: 3D DIGITAL PLANET / NIVORA GLOBE STAGE
+       ========================================================= */
+    .hero-art-stage {
+      position: relative;
+      width: 100%;
+      height: 640px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1400px;
+      z-index: 4;
+    }
+
+    /* Interactive 3D Parallax Container */
+    .globe-pivot-container {
+      position: relative;
+      width: 480px;
+      height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Galaxy Energy Platform Beneath Globe */
+    .galaxy-platform-wrap {
+      position: absolute;
+      bottom: -60px;
+      left: 50%;
+      transform: translateX(-50%) rotateX(75deg);
+      width: 480px;
+      height: 480px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .galaxy-platform-vortex {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, rgba(139, 92, 246, 0.7), rgba(34, 211, 238, 0.6), rgba(236, 72, 153, 0.6), rgba(79, 124, 255, 0.7), rgba(139, 92, 246, 0.7));
+      filter: blur(12px);
+      box-shadow: 
+        0 0 60px rgba(34, 211, 238, 0.5),
+        0 0 100px rgba(139, 92, 246, 0.5),
+        inset 0 0 40px rgba(255, 255, 255, 0.8);
+      animation: spinVortex 20s linear infinite;
+      opacity: 0.85;
+    }
+
+    @keyframes spinVortex {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Vertical Light Pillar Connecting Galaxy Platform to Globe */
+    .galaxy-energy-beam {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 140px;
+      height: 180px;
+      background: linear-gradient(to top, rgba(34, 211, 238, 0.45) 0%, rgba(139, 92, 246, 0.25) 50%, transparent 100%);
+      filter: blur(20px);
+      pointer-events: none;
+      z-index: 2;
+      animation: beamPulse 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes beamPulse {
+      0% { opacity: 0.6; transform: translateX(-50%) scaleX(0.85); }
+      100% { opacity: 1; transform: translateX(-50%) scaleX(1.15); }
+    }
+
+    /* Central 3D Globe Body */
+    .nivora-globe-core {
+      position: relative;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #151b42 0%, #070c26 55%, #020412 100%);
+      box-shadow: 
+        inset 0 0 60px rgba(34, 211, 238, 0.45),
+        inset -20px -20px 80px rgba(0, 0, 0, 0.95),
+        inset 15px 15px 50px rgba(255, 255, 255, 0.35),
+        0 0 70px rgba(34, 211, 238, 0.45),
+        0 0 130px rgba(139, 92, 246, 0.4),
+        0 0 190px rgba(236, 72, 153, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      cursor: pointer;
+      overflow: hidden;
+      animation: globeFloat 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes globeFloat {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-12px) rotate(1deg); }
+    }
+
+    /* Digital Latitude / Longitude Mesh on Globe Surface */
+    .globe-digital-mesh {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-image: 
+        radial-gradient(circle at 50% 50%, transparent 60%, rgba(34, 211, 238, 0.25) 100%),
+        repeating-linear-gradient(0deg, transparent, transparent 18px, rgba(34, 211, 238, 0.15) 19px, transparent 20px),
+        repeating-linear-gradient(90deg, transparent, transparent 18px, rgba(139, 92, 246, 0.15) 19px, transparent 20px);
+      background-size: 100% 100%, 100% 100%, 100% 100%;
+      opacity: 0.8;
+      animation: rotateGlobeMesh 40s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes rotateGlobeMesh {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Glowing Digital Data Points on Globe */
+    .globe-data-points {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, rgba(255,255,255,0.9) 1px, transparent 2px),
+                  radial-gradient(circle at 65% 25%, rgba(34,211,238,0.9) 1.5px, transparent 3px),
+                  radial-gradient(circle at 25% 65%, rgba(139,92,246,0.9) 1.5px, transparent 3px),
+                  radial-gradient(circle at 75% 70%, rgba(236,72,153,0.9) 1.5px, transparent 3px);
+      background-size: 70px 70px;
+      opacity: 0.65;
+      pointer-events: none;
+    }
+
+    /* Official Floating NIVORA Logo inside Core */
+    .globe-center-logo {
+      width: 130px;
+      height: 130px;
+      object-fit: contain;
+      filter: 
+        drop-shadow(0 0 25px rgba(139, 92, 246, 0.85))
+        drop-shadow(0 0 45px rgba(34, 211, 238, 0.65));
+      position: relative;
+      z-index: 10;
+      animation: logoBreathing 4s ease-in-out infinite alternate;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes logoBreathing {
+      0% { transform: scale(0.96) translateY(0); filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.7)); }
+      100% { transform: scale(1.04) translateY(-4px); filter: drop-shadow(0 0 35px rgba(34, 211, 238, 0.9)); }
+    }
+
+    .nivora-globe-core:hover .globe-center-logo {
+      transform: scale(1.12);
+    }
+
+    /* Thin 3D Orbital Rings (4 Tilted Rings) */
+    .globe-orbital-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      pointer-events: none;
+      transform-style: preserve-3d;
+    }
+
+    /* Ring 1: Cyan (Passes front-left to back-right) */
+    .ring-1 {
+      width: 470px;
+      height: 470px;
+      margin-top: -235px;
+      margin-left: -235px;
+      border: 1.5px solid rgba(34, 211, 238, 0.5);
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.4);
+      transform: rotateX(68deg) rotateY(15deg);
+      animation: spinRing1 35s linear infinite;
+      z-index: 6;
+    }
+
+    /* Ring 2: Electric Blue */
+    .ring-2 {
+      width: 530px;
+      height: 530px;
+      margin-top: -265px;
+      margin-left: -265px;
+      border: 1.5px dashed rgba(79, 124, 255, 0.45);
+      box-shadow: 0 0 20px rgba(79, 124, 255, 0.35);
+      transform: rotateX(55deg) rotateY(-25deg);
+      animation: spinRing2 45s linear infinite reverse;
+      z-index: 4;
+    }
+
+    /* Ring 3: Violet */
+    .ring-3 {
+      width: 590px;
+      height: 590px;
+      margin-top: -295px;
+      margin-left: -295px;
+      border: 1.5px solid rgba(139, 92, 246, 0.4);
+      box-shadow: 0 0 22px rgba(139, 92, 246, 0.3);
+      transform: rotateX(75deg) rotateY(42deg);
+      animation: spinRing3 55s linear infinite;
+      z-index: 6;
+    }
+
+    /* Ring 4: Magenta */
+    .ring-4 {
+      width: 650px;
+      height: 650px;
+      margin-top: -325px;
+      margin-left: -325px;
+      border: 1.5px dashed rgba(236, 72, 153, 0.35);
+      box-shadow: 0 0 25px rgba(236, 72, 153, 0.25);
+      transform: rotateX(62deg) rotateY(-40deg);
+      animation: spinRing4 65s linear infinite reverse;
+      z-index: 4;
+    }
+
+    @keyframes spinRing1 { from { transform: rotateX(68deg) rotateY(15deg) rotateZ(0deg); } to { transform: rotateX(68deg) rotateY(15deg) rotateZ(360deg); } }
+    @keyframes spinRing2 { from { transform: rotateX(55deg) rotateY(-25deg) rotateZ(0deg); } to { transform: rotateX(55deg) rotateY(-25deg) rotateZ(360deg); } }
+    @keyframes spinRing3 { from { transform: rotateX(75deg) rotateY(42deg) rotateZ(0deg); } to { transform: rotateX(75deg) rotateY(42deg) rotateZ(360deg); } }
+    @keyframes spinRing4 { from { transform: rotateX(62deg) rotateY(-40deg) rotateZ(0deg); } to { transform: rotateX(62deg) rotateY(-40deg) rotateZ(360deg); } }
+
+    /* =========================================================
+       SCROLL INDICATOR (FUTURISTIC BOTTOM CENTER HUD)
+       ========================================================= */
+    .hero-scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 10;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.25s ease;
+    }
+
+    .hero-scroll-indicator:hover {
+      color: var(--color-cyan);
+    }
+
+    .scroll-mouse-icon {
+      width: 20px;
+      height: 32px;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      border-radius: 9999px;
+      position: relative;
+    }
+
+    .scroll-mouse-wheel {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 6px;
+      background: var(--color-cyan);
+      border-radius: 9999px;
+      box-shadow: 0 0 8px var(--color-cyan);
+      animation: mouseWheelAnim 2s infinite;
+    }
+
+    @keyframes mouseWheelAnim {
+      0% { top: 6px; opacity: 1; }
+      100% { top: 18px; opacity: 0; }
+    }
+
+    .scroll-hud-text {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .scroll-arrow-bounce {
+      font-size: 0.85rem;
+      animation: arrowBounce 1.8s infinite;
+    }
+
+    @keyframes arrowBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(5px); }
+    }
+
+    /* Common Section Styles */
     .section {
       padding: 7.5rem 0;
       position: relative;
-      z-index: 2;
+      z-index: 3;
     }
 
     .section-divider {
@@ -345,7 +1071,7 @@
       font-size: 0.76rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--accent-cyan);
+      color: var(--color-cyan);
       margin-bottom: 0.85rem;
       display: flex;
       align-items: center;
@@ -354,7 +1080,7 @@
 
     .kicker::before {
       content: '//';
-      color: var(--accent-violet);
+      color: var(--color-violet);
       font-weight: 600;
     }
 
@@ -374,643 +1100,14 @@
       line-height: 1.65;
     }
 
-    /* =========================================================
-       NAVIGATION BAR (FLOATING CONTROL CAPSULE)
-       ========================================================= */
-    .site-nav {
-      position: fixed;
-      top: 1.25rem;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 3rem);
-      max-width: 1240px;
-      height: 64px;
-      background: rgba(6, 9, 22, 0.72);
-      backdrop-filter: blur(24px) saturate(190%);
-      -webkit-backdrop-filter: blur(24px) saturate(190%);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 9999px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1.5rem;
-      z-index: 1000;
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.75), 0 0 30px rgba(139, 92, 246, 0.12);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .site-nav.scrolled {
-      background: rgba(4, 6, 16, 0.88);
-      border-color: rgba(255, 255, 255, 0.16);
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9), 0 0 35px rgba(139, 92, 246, 0.2);
-    }
-
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      text-decoration: none;
-    }
-
-    .nav-brand-logo {
-      width: 32px;
-      height: 32px;
-      object-fit: contain;
-      filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.6));
-    }
-
-    .nav-brand-text {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .nav-brand-title {
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #fff;
-    }
-
-    .nav-brand-tag {
-      font-family: var(--font-mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent-cyan);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 1.6rem;
-    }
-
-    .nav-item {
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      position: relative;
-      padding: 0.35rem 0;
-      transition: color 0.2s ease;
-    }
-
-    .nav-item:hover, .nav-item.active {
-      color: #ffffff;
-    }
-
-    .nav-item.active::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #8b5cf6, #22d3ee);
-      border-radius: 9999px;
-      box-shadow: 0 0 8px #22d3ee;
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-    }
-
-    .nav-telemetry {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      color: var(--accent-cyan);
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.3rem 0.75rem;
-      background: rgba(34, 211, 238, 0.08);
-      border: 1px solid rgba(34, 211, 238, 0.22);
-      border-radius: 9999px;
-    }
-
-    .pulse-dot {
-      width: 6px;
-      height: 6px;
-      background: #10b981;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #10b981;
-      animation: pulseAnim 2s infinite;
-    }
-
-    @keyframes pulseAnim {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-    }
-
-    .btn-nav-explore {
-      font-family: var(--font-body);
-      font-size: 0.825rem;
-      font-weight: 600;
-      padding: 0.55rem 1.15rem;
-      border-radius: 9999px;
-      background: linear-gradient(135deg, #8b5cf6, #4f7cff);
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 20px -6px rgba(139, 92, 246, 0.5);
-      transition: all 0.25s ease;
-    }
-
-    .btn-nav-explore:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 12px 28px -6px rgba(139, 92, 246, 0.75);
-      border-color: rgba(255, 255, 255, 0.4);
-    }
-
-    /* =========================================================
-       HERO — 3D ZOOM ENTRY
-       ========================================================= */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding-top: 7.5rem;
-      padding-bottom: 5rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      align-items: center;
-      gap: 3.5rem;
-    }
-
-    .hero-left {
-      position: relative;
-      z-index: 2;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: var(--font-mono);
-      font-size: 0.74rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent-cyan);
-      padding: 0.4rem 0.9rem;
-      background: rgba(34, 211, 238, 0.08);
-      border: 1px solid rgba(34, 211, 238, 0.22);
-      border-radius: 9999px;
-      margin-bottom: 1.75rem;
-    }
-
-    .eyebrow i {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent-violet);
-      box-shadow: 0 0 10px var(--accent-violet);
-      display: inline-block;
-    }
-
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(3.4rem, 6.2vw, 5.6rem);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -0.04em;
-      color: var(--text-main);
-      margin-bottom: 1.35rem;
-    }
-
-    .hero-sub-lead {
-      color: #f8faff;
-      display: block;
-      font-weight: 700;
-    }
-
-    .hero-tagline-badge {
-      display: inline-block;
-      font-family: var(--font-body);
-      font-size: clamp(1.2rem, 2vw, 1.6rem);
-      font-weight: 500;
-      color: var(--text-secondary);
-      margin-bottom: 1.5rem;
-      line-height: 1.4;
-    }
-
-    .hero-tagline-badge .editorial-accent {
-      font-size: 1.18em;
-      color: #ffffff;
-      font-weight: 400;
-    }
-
-    .hero-copy {
-      font-size: 1.12rem;
-      line-height: 1.68;
-      color: var(--text-secondary);
-      max-width: 560px;
-      margin-bottom: 2.5rem;
-    }
-
-    .hero-copy strong {
-      color: #ffffff;
-      font-weight: 600;
-    }
-
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      margin-bottom: 3.5rem;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      font-size: 0.95rem;
-      font-weight: 600;
-      padding: 0.85rem 1.85rem;
-      border-radius: 9999px;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      text-decoration: none;
-      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn.primary {
-      background: linear-gradient(135deg, #8b5cf6 0%, #4f7cff 50%, #22d3ee 100%);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      box-shadow: 0 12px 32px -8px rgba(139, 92, 246, 0.55), 0 0 20px rgba(34, 211, 238, 0.2);
-    }
-
-    .btn.primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 16px 40px -8px rgba(139, 92, 246, 0.75), 0 0 28px rgba(34, 211, 238, 0.35);
-      border-color: rgba(255, 255, 255, 0.45);
-    }
-
-    .btn.secondary {
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-main);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-
-    .btn.secondary:hover {
-      background: rgba(255, 255, 255, 0.09);
-      border-color: rgba(255, 255, 255, 0.3);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.5);
-    }
-
-    .btn-arrow {
-      transition: transform 0.25s ease;
-      font-size: 1.1em;
-    }
-
-    .btn:hover .btn-arrow {
-      transform: translateX(4px);
-    }
-
-    .hero-meta {
-      display: flex;
-      align-items: center;
-      gap: 3rem;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .hero-meta div {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      font-size: 0.84rem;
-      color: var(--text-muted);
-      letter-spacing: 0.02em;
-    }
-
-    .hero-meta strong {
-      font-family: var(--font-display);
-      font-size: 2.2rem;
-      font-weight: 800;
-      line-height: 1;
-      color: #ffffff;
-      background: linear-gradient(135deg, #ffffff 30%, #b8c0d9 100%);
+    .grad-accent {
+      background: linear-gradient(135deg, #22d3ee 0%, #4f7cff 60%, #8b5cf6 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      display: inline-block;
     }
 
-    /* Hero 3D Stage Container */
-    .hero-art {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      max-width: 560px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      perspective: 1200px;
-      transform-style: preserve-3d;
-      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* Pulsing Aura behind Core */
-    .hero-core-aura {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 340px;
-      height: 340px;
-      transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.35) 0%, rgba(34, 211, 238, 0.2) 45%, transparent 70%);
-      filter: blur(40px);
-      border-radius: 50%;
-      pointer-events: none;
-      animation: auraPulse 6s ease-in-out infinite alternate;
-    }
-
-    @keyframes auraPulse {
-      0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
-      100% { transform: translate(-50%, -50%) scale(1.18); opacity: 1; }
-    }
-
-    /* Elliptical Orbital Rings */
-    .orbit {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      pointer-events: none;
-      transition: all 0.4s ease;
-    }
-
-    .orbit.o1 {
-      width: 280px;
-      height: 280px;
-      border: 1px dashed rgba(139, 92, 246, 0.3);
-      animation: spinOrbit 45s linear infinite;
-    }
-
-    .orbit.o2 {
-      width: 410px;
-      height: 410px;
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      box-shadow: inset 0 0 20px rgba(34, 211, 238, 0.05);
-      animation: spinOrbitRev 65s linear infinite;
-    }
-
-    .orbit.o3 {
-      width: 530px;
-      height: 530px;
-      border: 1px dashed rgba(255, 255, 255, 0.05);
-    }
-
-    @keyframes spinOrbit {
-      from { transform: translate(-50%, -50%) rotate(0deg); }
-      to { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-
-    @keyframes spinOrbitRev {
-      from { transform: translate(-50%, -50%) rotate(360deg); }
-      to { transform: translate(-50%, -50%) rotate(0deg); }
-    }
-
-    /* SVG Connecting Laser Rays */
-    .hero-laser-paths {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .laser-line {
-      stroke-width: 1.25;
-      stroke-dasharray: 4 6;
-      animation: laserDash 30s linear infinite;
-      transition: stroke 0.3s ease, stroke-width 0.3s ease, opacity 0.3s ease;
-      opacity: 0.38;
-    }
-
-    @keyframes laserDash {
-      to { stroke-dashoffset: -200; }
-    }
-
-    /* Central Holographic Core */
-    .core {
-      position: relative;
-      z-index: 3;
-      width: 180px;
-      height: 180px;
-      border-radius: 36px;
-      background: radial-gradient(circle at 30% 30%, rgba(20, 28, 60, 0.85) 0%, rgba(6, 8, 20, 0.95) 100%);
-      border: 1.5px solid rgba(255, 255, 255, 0.18);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.65rem;
-      box-shadow: 
-        0 24px 60px -12px rgba(0, 0, 0, 0.9),
-        0 0 50px rgba(139, 92, 246, 0.4),
-        inset 0 1px 2px rgba(255, 255, 255, 0.45);
-      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      animation: floatCore 5s ease-in-out infinite;
-      cursor: pointer;
-    }
-
-    @keyframes floatCore {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-8px) rotate(0.5deg); }
-    }
-
-    .core:hover {
-      box-shadow: 
-        0 30px 70px -10px rgba(0, 0, 0, 0.95),
-        0 0 65px rgba(139, 92, 246, 0.6),
-        inset 0 1px 3px rgba(255, 255, 255, 0.65);
-      border-color: rgba(255, 255, 255, 0.4);
-    }
-
-    .core-inner-ring {
-      position: absolute;
-      top: -10px;
-      left: -10px;
-      right: -10px;
-      bottom: -10px;
-      border-radius: 44px;
-      border: 1px dashed rgba(34, 211, 238, 0.35);
-      pointer-events: none;
-      animation: spinCoreRing 30s linear infinite;
-    }
-
-    @keyframes spinCoreRing {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .core img {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-      filter: drop-shadow(0 0 18px rgba(99, 102, 241, 0.75));
-      transition: transform 0.3s ease;
-    }
-
-    .core:hover img {
-      transform: scale(1.08);
-    }
-
-    .core-label {
-      text-align: center;
-      line-height: 1.25;
-    }
-
-    .core-label b {
-      font-family: var(--font-display);
-      font-size: 0.95rem;
-      letter-spacing: 0.18em;
-      color: #ffffff;
-      display: block;
-    }
-
-    .core-label span {
-      font-family: var(--font-mono);
-      font-size: 0.58rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--accent-cyan);
-    }
-
-    /* Orbiting Product Satellite Nodes */
-    .satellite {
-      position: absolute;
-      z-index: 4;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .sat-icon-wrap {
-      width: 76px;
-      height: 76px;
-      border-radius: 22px;
-      background: rgba(10, 15, 34, 0.78);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-      position: relative;
-      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8);
-      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .sat-icon-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      transition: transform 0.3s ease;
-    }
-
-    .sat-tag {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #ffffff;
-      padding: 0.25rem 0.6rem;
-      background: rgba(5, 7, 16, 0.88);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 9999px;
-      margin-top: 0.55rem;
-      white-space: nowrap;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
-      transition: all 0.3s ease;
-    }
-
-    /* Satellite Positions & Color Accents */
-    .s-checkra { top: 6%; right: 12%; }
-    .s-checkra .sat-icon-wrap {
-      border-color: rgba(139, 92, 246, 0.3);
-      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(139, 92, 246, 0.3);
-    }
-    .s-checkra:hover .sat-icon-wrap {
-      transform: translateY(-8px) scale(1.08);
-      border-color: var(--color-checkra);
-      box-shadow: 0 22px 45px -8px rgba(0, 0, 0, 0.9), 0 0 45px var(--glow-checkra);
-    }
-    .s-checkra:hover .sat-tag {
-      border-color: var(--color-checkra);
-      color: #c4b5fd;
-    }
-
-    .s-homora { bottom: 10%; right: 6%; }
-    .s-homora .sat-icon-wrap {
-      border-color: rgba(6, 182, 212, 0.3);
-      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(6, 182, 212, 0.3);
-    }
-    .s-homora:hover .sat-icon-wrap {
-      transform: translateY(-8px) scale(1.08);
-      border-color: var(--color-homora);
-      box-shadow: 0 22px 45px -8px rgba(0, 0, 0, 0.9), 0 0 45px var(--glow-homora);
-    }
-    .s-homora:hover .sat-tag {
-      border-color: var(--color-homora);
-      color: #67e8f9;
-    }
-
-    .s-bubora { bottom: 8%; left: 14%; }
-    .s-bubora .sat-icon-wrap {
-      border-color: rgba(236, 72, 153, 0.3);
-      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(236, 72, 153, 0.3);
-    }
-    .s-bubora:hover .sat-icon-wrap {
-      transform: translateY(-8px) scale(1.08);
-      border-color: var(--color-bubora);
-      box-shadow: 0 22px 45px -8px rgba(0, 0, 0, 0.9), 0 0 45px var(--glow-bubora);
-    }
-    .s-bubora:hover .sat-tag {
-      border-color: var(--color-bubora);
-      color: #f472b6;
-    }
-
-    .s-sayora { top: 14%; left: 6%; }
-    .s-sayora .sat-icon-wrap {
-      border-color: rgba(16, 185, 129, 0.3);
-      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(16, 185, 129, 0.3);
-    }
-    .s-sayora:hover .sat-icon-wrap {
-      transform: translateY(-8px) scale(1.08);
-      border-color: var(--color-sayora);
-      box-shadow: 0 22px 45px -8px rgba(0, 0, 0, 0.9), 0 0 45px var(--glow-sayora);
-    }
-    .s-sayora:hover .sat-tag {
-      border-color: var(--color-sayora);
-      color: #6ee7b7;
-    }
-
-    /* =========================================================
-       SECTION 01: PRODUCTS WITH A PURPOSE (#products)
-       THE PRODUCT CONSTELLATION
-       ========================================================= */
+    /* Products Grid */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -1036,7 +1133,6 @@
       transform-style: preserve-3d;
     }
 
-    /* Large faint watermark emblem inside card */
     .card-watermark {
       position: absolute;
       top: -10%;
@@ -1105,6 +1201,18 @@
       transform: scale(1.05);
     }
 
+    .card-checkra .world-art-wrap img {
+      mix-blend-mode: screen;
+      filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.6));
+    }
+    .card-homora .world-art-wrap img {
+      mix-blend-mode: screen;
+      filter: drop-shadow(0 0 25px rgba(6, 182, 212, 0.6));
+    }
+    .card-watermark {
+      mix-blend-mode: screen;
+    }
+
     .world-header {
       display: flex;
       align-items: baseline;
@@ -1162,7 +1270,7 @@
       font-family: var(--font-body);
       font-size: 1.02rem;
       font-weight: 500;
-      color: var(--accent-cyan);
+      color: var(--color-cyan);
       margin-bottom: 1.15rem;
       position: relative;
       z-index: 1;
@@ -1244,10 +1352,7 @@
       color: #ffffff;
     }
 
-    /* =========================================================
-       SECTION 02: METHODOLOGY & CRAFT (#about)
-       FUTURISTIC 3D LIFECYCLE PATHWAY & 3 PILLARS
-       ========================================================= */
+    /* Lifecycle Pipeline */
     .pipeline-wrapper {
       background: rgba(8, 12, 28, 0.6);
       backdrop-filter: blur(20px);
@@ -1343,7 +1448,7 @@
       font-size: 0.68rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--accent-cyan);
+      color: var(--color-cyan);
       margin-bottom: 0.75rem;
       display: flex;
       align-items: center;
@@ -1355,8 +1460,8 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--accent-cyan);
-      box-shadow: 0 0 8px var(--accent-cyan);
+      background: var(--color-cyan);
+      box-shadow: 0 0 8px var(--color-cyan);
     }
 
     .pipe-step-node b {
@@ -1374,7 +1479,7 @@
       color: var(--text-secondary);
     }
 
-    /* 3 Pillars */
+    /* Methodology 3 Pillars */
     .methodology-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1411,10 +1516,7 @@
       color: var(--text-secondary);
     }
 
-    /* =========================================================
-       SECTION 03: THE ARCHITECT (#portfolio)
-       CINEMATIC FOUNDER PORTRAIT & METADATA
-       ========================================================= */
+    /* Founder Section */
     .portfolio-grid {
       display: grid;
       grid-template-columns: 0.9fr 1.1fr;
@@ -1465,21 +1567,18 @@
       pointer-events: none;
       z-index: 2;
     }
-    .bracket-tl { top: 12px; left: 12px; border-top: 2px solid var(--accent-cyan); border-left: 2px solid var(--accent-cyan); }
-    .bracket-tr { top: 12px; right: 12px; border-top: 2px solid var(--accent-cyan); border-right: 2px solid var(--accent-cyan); }
-    .bracket-bl { bottom: 12px; left: 12px; border-bottom: 2px solid var(--accent-cyan); border-left: 2px solid var(--accent-cyan); }
-    .bracket-br { bottom: 12px; right: 12px; border-bottom: 2px solid var(--accent-cyan); border-right: 2px solid var(--accent-cyan); }
+    .bracket-tl { top: 12px; left: 12px; border-top: 2px solid var(--color-cyan); border-left: 2px solid var(--color-cyan); }
+    .bracket-tr { top: 12px; right: 12px; border-top: 2px solid var(--color-cyan); border-right: 2px solid var(--color-cyan); }
+    .bracket-bl { bottom: 12px; left: 12px; border-bottom: 2px solid var(--color-cyan); border-left: 2px solid var(--color-cyan); }
+    .bracket-br { bottom: 12px; right: 12px; border-bottom: 2px solid var(--color-cyan); border-right: 2px solid var(--color-cyan); }
 
-    .founder-content {
-      position: relative;
-    }
-
+    .founder-content { position: relative; }
     .founder-eyebrow {
       font-family: var(--font-mono);
       font-size: 0.74rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--accent-cyan);
+      color: var(--color-cyan);
       margin-bottom: 0.65rem;
       display: flex;
       align-items: center;
@@ -1500,7 +1599,7 @@
       font-family: var(--font-mono);
       font-size: 0.85rem;
       letter-spacing: 0.08em;
-      color: var(--accent-cyan);
+      color: var(--color-cyan);
       margin-bottom: 1.75rem;
       display: flex;
       flex-wrap: wrap;
@@ -1533,7 +1632,7 @@
     }
 
     .founder-quote {
-      border-left: 2px solid var(--accent-violet);
+      border-left: 2px solid var(--color-violet);
       padding-left: 1.5rem;
       font-style: italic;
       color: var(--text-secondary);
@@ -1542,9 +1641,7 @@
       margin-bottom: 2.25rem;
     }
 
-    /* =========================================================
-       SECTION 04: ECOSYSTEM PHILOSOPHY & ARCHITECTURE (#vision)
-       ========================================================= */
+    /* Philosophy Constellation */
     .central-thesis-wrap {
       text-align: center;
       margin-bottom: 4rem;
@@ -1566,7 +1663,7 @@
       font-size: 0.85rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--accent-cyan);
+      color: var(--color-cyan);
     }
 
     .philosophy-constellation {
@@ -1710,10 +1807,7 @@
       color: var(--text-secondary);
     }
 
-    /* =========================================================
-       SECTION 05: FOLIVIO (#folivio)
-       CAREER BRANDING · DIGITAL PRESENCE
-       ========================================================= */
+    /* FOLIVIO Section */
     .folivio-banner {
       background: rgba(8, 12, 32, 0.65);
       backdrop-filter: blur(20px);
@@ -1765,7 +1859,7 @@
     }
 
     .folivio-tagline b {
-      color: var(--accent-cyan);
+      color: var(--color-cyan);
     }
 
     .folivio-desc {
@@ -1810,10 +1904,7 @@
       color: var(--text-secondary);
     }
 
-    /* =========================================================
-       SECTION 06: CONTACT (#contact)
-       DIGITAL PORTAL & TRANSMISSION POINT
-       ========================================================= */
+    /* Contact Section */
     .contact-wrapper {
       display: grid;
       grid-template-columns: 0.9fr 1.1fr;
@@ -1872,26 +1963,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--accent-cyan);
+      color: var(--color-cyan);
     }
 
-    .ccl-icon svg {
-      width: 22px;
-      height: 22px;
-      fill: currentColor;
-    }
-
-    .ccl-text b {
-      font-family: var(--font-display);
-      font-size: 1rem;
-      color: #ffffff;
-      display: block;
-    }
-
-    .ccl-text span {
-      font-size: 0.825rem;
-      color: var(--text-secondary);
-    }
+    .ccl-icon svg { width: 22px; height: 22px; fill: currentColor; }
+    .ccl-text b { font-family: var(--font-display); font-size: 1rem; color: #ffffff; display: block; }
+    .ccl-text span { font-size: 0.825rem; color: var(--text-secondary); }
 
     .folivio-redirect-notice {
       padding: 1.25rem;
@@ -1904,7 +1981,7 @@
     }
 
     .folivio-redirect-notice strong {
-      color: var(--accent-cyan);
+      color: var(--color-cyan);
       display: block;
       margin-bottom: 0.35rem;
     }
@@ -1915,10 +1992,7 @@
       font-weight: 600;
     }
 
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-
+    .form-group { margin-bottom: 1.5rem; }
     .form-group label {
       display: block;
       font-family: var(--font-mono);
@@ -1943,15 +2017,12 @@
     }
 
     .form-control:focus {
-      border-color: var(--accent-cyan);
+      border-color: var(--color-cyan);
       box-shadow: 0 0 20px rgba(34, 211, 238, 0.25);
       background: rgba(10, 15, 34, 0.9);
     }
 
-    textarea.form-control {
-      resize: vertical;
-      min-height: 130px;
-    }
+    textarea.form-control { resize: vertical; min-height: 130px; }
 
     .btn-submit {
       width: 100%;
@@ -1984,15 +2055,13 @@
       text-align: center;
     }
 
-    /* =========================================================
-       FOOTER
-       ========================================================= */
+    /* Footer */
     .site-footer {
       padding: 5rem 0 3rem;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       position: relative;
       background: rgba(2, 3, 8, 0.85);
-      z-index: 2;
+      z-index: 3;
     }
 
     .footer-grid {
@@ -2019,23 +2088,10 @@
       letter-spacing: -0.01em;
     }
 
-    .footer-col ul {
-      list-style: none;
-    }
-
-    .footer-col li {
-      margin-bottom: 0.75rem;
-    }
-
-    .footer-col a {
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-      transition: color 0.2s ease;
-    }
-
-    .footer-col a:hover {
-      color: #ffffff;
-    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.75rem; }
+    .footer-col a { color: var(--text-secondary); font-size: 0.875rem; transition: color 0.2s ease; }
+    .footer-col a:hover { color: #ffffff; }
 
     .footer-bottom {
       display: flex;
@@ -2047,9 +2103,7 @@
       color: var(--text-muted);
     }
 
-    /* =========================================================
-       CONCEPT MODAL SYSTEM (FIXED GLASS OVERLAY)
-       ========================================================= */
+    /* Concept Modal */
     #conceptModalOverlay {
       position: fixed;
       top: 0;
@@ -2067,10 +2121,7 @@
       transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    #conceptModalOverlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    #conceptModalOverlay.active { opacity: 1; pointer-events: auto; }
 
     .modal-top-bar {
       height: 72px;
@@ -2084,12 +2135,7 @@
       z-index: 10;
     }
 
-    .modal-top-left {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-
+    .modal-top-left { display: flex; align-items: center; gap: 1.5rem; }
     .btn-return-modal {
       display: inline-flex;
       align-items: center;
@@ -2104,31 +2150,11 @@
       transition: all 0.25s ease;
     }
 
-    .btn-return-modal:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.3);
-    }
+    .btn-return-modal:hover { background: rgba(255, 255, 255, 0.12); color: #ffffff; border-color: rgba(255, 255, 255, 0.3); }
 
-    .modal-brand-subtle {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      font-family: var(--font-display);
-      font-size: 1rem;
-      color: #ffffff;
-    }
-
-    .mbs-nivora {
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .mbs-product-name {
-      font-weight: 700;
-      color: #ffffff;
-    }
-
+    .modal-brand-subtle { display: flex; align-items: center; gap: 0.65rem; font-family: var(--font-display); font-size: 1rem; color: #ffffff; }
+    .mbs-nivora { color: var(--text-muted); font-weight: 500; }
+    .mbs-product-name { font-weight: 700; color: #ffffff; }
     .mbs-status-badge {
       font-family: var(--font-mono);
       font-size: 0.65rem;
@@ -2136,7 +2162,7 @@
       text-transform: uppercase;
       padding: 0.2rem 0.55rem;
       background: rgba(34, 211, 238, 0.12);
-      color: var(--accent-cyan);
+      color: var(--color-cyan);
       border: 1px solid rgba(34, 211, 238, 0.3);
       border-radius: 9999px;
     }
@@ -2160,21 +2186,10 @@
       transition: all 0.2s ease;
     }
 
-    .modal-nav-tab:hover {
-      color: #ffffff;
-    }
+    .modal-nav-tab:hover { color: #ffffff; }
+    .modal-nav-tab.active { background: rgba(255, 255, 255, 0.12); color: #ffffff; }
 
-    .modal-nav-tab.active {
-      background: rgba(255, 255, 255, 0.12);
-      color: #ffffff;
-    }
-
-    .modal-top-right {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-    }
-
+    .modal-top-right { display: flex; align-items: center; gap: 1.25rem; }
     .modal-launch-btn {
       font-size: 0.85rem;
       font-weight: 600;
@@ -2188,10 +2203,7 @@
       box-shadow: 0 6px 18px rgba(139, 92, 246, 0.4);
     }
 
-    .modal-launch-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 24px rgba(139, 92, 246, 0.6);
-    }
+    .modal-launch-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(139, 92, 246, 0.6); }
 
     .modal-close-x {
       width: 40px;
@@ -2206,44 +2218,49 @@
       transition: all 0.2s ease;
     }
 
-    .modal-close-x:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: #ffffff;
-      transform: scale(1.05);
-    }
+    .modal-close-x:hover { background: rgba(255, 255, 255, 0.15); color: #ffffff; transform: scale(1.05); }
 
-    .modal-scrollable-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 3rem 2rem 5rem;
-    }
-
-    .modal-product-view {
-      display: none;
-      max-width: 1140px;
-      margin: 0 auto;
-    }
-
-    .modal-product-view.active {
-      display: block;
-      animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+    .modal-scrollable-body { flex: 1; overflow-y: auto; padding: 3rem 2rem 5rem; }
+    .modal-product-view { display: none; max-width: 1140px; margin: 0 auto; }
+    .modal-product-view.active { display: block; animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
 
     @keyframes modalFadeIn {
       from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .modal-hero-sec {
-      margin-bottom: 4rem;
+    .modal-hero-sec { margin-bottom: 4rem; }
+    .modal-product-branding {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1.25rem;
     }
-
+    .modal-brand-emblem-icon {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      mix-blend-mode: screen;
+      filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
+      flex-shrink: 0;
+    }
+    @media (max-width: 640px) {
+      .modal-product-branding {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+    }
     .modal-kicker {
       font-family: var(--font-mono);
       font-size: 0.76rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--accent-cyan);
+      color: var(--color-cyan);
       margin-bottom: 0.75rem;
     }
 
@@ -2259,7 +2276,7 @@
     .modal-lead-box {
       background: rgba(8, 12, 28, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-left: 3px solid var(--accent-violet);
+      border-left: 3px solid var(--color-violet);
       border-radius: 20px;
       padding: 2rem 2.25rem;
       font-size: 1.15rem;
@@ -2307,7 +2324,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--accent-violet);
+      color: var(--color-violet);
       margin-bottom: 1.15rem;
     }
 
@@ -2325,12 +2342,12 @@
       color: var(--text-secondary);
     }
 
-    /* Responsive */
+    /* Responsive Design */
     @media (max-width: 1024px) {
       .hero-grid { grid-template-columns: 1fr; gap: 4rem; text-align: center; }
       .hero-copy { margin-left: auto; margin-right: auto; }
       .hero-actions { justify-content: center; }
-      .hero-meta { justify-content: center; }
+      .hero-metrics { justify-content: center; }
       .products-grid { grid-template-columns: 1fr; }
       .portfolio-grid { grid-template-columns: 1fr; gap: 3rem; }
       .constellation-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2347,7 +2364,7 @@
     @media (max-width: 640px) {
       .site-nav { width: calc(100% - 1.5rem); padding: 0 1rem; }
       .nav-links { display: none; }
-      .hero-meta { flex-direction: column; gap: 1.5rem; }
+      .hero-metrics { flex-direction: column; gap: 1.5rem; }
       .constellation-grid { grid-template-columns: 1fr; }
       .ecosystem-pillars-grid { grid-template-columns: 1fr; }
       .folivio-services-grid { grid-template-columns: 1fr; }
@@ -2355,6 +2372,8 @@
       .methodology-grid { grid-template-columns: 1fr; }
       .modal-caps-grid { grid-template-columns: 1fr; }
       .modal-nav-tabs { display: none; }
+      .nivora-globe-core { width: 300px; height: 300px; }
+      .ring-1, .ring-2, .ring-3, .ring-4 { transform: scale(0.7); }
     }
   </style>
 </head>
@@ -2364,18 +2383,22 @@
   <div class="custom-cursor-ring" id="cursorRing"></div>
   <div class="custom-cursor-dot" id="cursorDot"></div>
 
-  <!-- THREE.JS WEBGL CANVAS (REAL 3D UNIVERSE) -->
+  <!-- THREE.JS WEBGL CANVAS (REAL 3D STARFIELD) -->
   <canvas id="webglCanvas"></canvas>
+
+  <!-- LAYER 2: RICH COSMIC NEBULAE ENVIRONMENT -->
+  <div class="cosmic-nebulae-container" id="cosmicNebulae">
+    <div class="nebula-wash"></div>
+    <div class="nebula-globe-aura"></div>
+    <div class="nebula-left-cloud"></div>
+  </div>
+
+  <!-- CELESTIAL GRID OVERLAY -->
   <div class="cosmic-grid-overlay"></div>
 
-  <!-- ATMOSPHERIC AMBIENT GLOW FIELDS -->
-  <div class="ambient-glow ambient-hero"></div>
-  <div class="ambient-glow ambient-products"></div>
-  <div class="ambient-glow ambient-lifecycle"></div>
-  <div class="ambient-glow ambient-founder"></div>
-  <div class="ambient-glow ambient-philosophy"></div>
-  <div class="ambient-glow ambient-folivio"></div>
-  <div class="ambient-glow ambient-contact"></div>
+  <!-- PLANETARY FOREGROUND (BOTTOM EDGES FOR SCALE) -->
+  <div class="foreground-planet-left"></div>
+  <div class="foreground-planet-right"></div>
 
   <!-- NAVIGATION BAR (FLOATING CONTROL CAPSULE) -->
   <header class="site-nav" id="mainNav">
@@ -2383,12 +2406,12 @@
       <img src="assets/images/nivora-logo.png" alt="NIVORA Core Logo" class="nav-brand-logo">
       <div class="nav-brand-text">
         <span class="nav-brand-title">NIVORA</span>
-        <span class="nav-brand-tag">3D Universe v3.5</span>
+        <span class="nav-brand-tag">DIGITAL UNIVERSE</span>
       </div>
     </a>
 
     <nav class="nav-links" aria-label="Main Navigation">
-      <a href="#hero" class="nav-item">Home</a>
+      <a href="#hero" class="nav-item active">Home</a>
       <a href="#products" class="nav-item">Products</a>
       <a href="#about" class="nav-item">About</a>
       <a href="#portfolio" class="nav-item">Portfolio</a>
@@ -2409,23 +2432,27 @@
     </div>
   </header>
 
-  <!-- MAIN SCROLLABLE CONTENT (3D CAMERA JOURNEY) -->
+  <!-- MAIN SCROLLABLE CONTENT -->
   <main>
 
     <!-- =========================================================
-         HERO — 3D ZOOM ENTRY
+         HERO — CINEMATIC 3D DIGITAL PLANET & UNIVERSE
          ========================================================= -->
     <section class="hero" id="hero">
       <div class="container hero-grid">
+        <!-- LEFT HERO CONTENT -->
         <div class="hero-left">
-          <div class="eyebrow"><i></i> GALAXY_SECTOR: CORE_ORBIT &middot; A NIVAS BENNABATTHULA INITIATIVE</div>
+          <div class="hero-badge-pill">
+            <span class="badge-pulse-cyan"></span>
+            <span>A NIVAS BENNABATTHULA INITIATIVE</span>
+          </div>
           
           <h1 class="hero-title">
             <span class="hero-sub-lead">Welcome to</span>
             <span class="grad-nivora">NIVORA.</span>
           </h1>
 
-          <div class="hero-tagline-badge">
+          <div class="hero-tagline-wrap">
             Turning <em class="editorial-accent">Ideas</em> Into Intelligent <em class="editorial-accent">Products</em>.
           </div>
 
@@ -2434,99 +2461,83 @@
           </p>
 
           <div class="hero-actions">
-            <button type="button" class="btn primary" onclick="enterUniverseZoom()">
-              <span>Enter the Universe</span>
-              <span class="btn-arrow">&rarr;</span>
+            <button type="button" class="btn-enter-universe" onclick="enterUniverseZoom()">
+              <span>Enter the Universe &rarr;</span>
             </button>
-            <a class="btn secondary" href="#portfolio">
-              <span>Meet the Founder</span>
-              <span class="btn-arrow">&rarr;</span>
+            <a class="btn-explore-products" href="#products">
+              <span class="play-icon-circle">&#9658;</span>
+              <span>Explore Products</span>
             </a>
           </div>
 
-          <div class="hero-meta">
-            <div><strong>4</strong>Ecosystem Worlds</div>
-            <div><strong>1</strong>Founder &amp; Builder</div>
-            <div><strong>&infin;</strong>Digital Possibilities</div>
+          <!-- Hero Metrics with Elegant Icons -->
+          <div class="hero-metrics">
+            <div class="metric-card">
+              <div class="metric-icon-wrap m-purple">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
+              <div class="metric-info">
+                <strong>4</strong>
+                <span>Ecosystem Worlds</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon-wrap m-cyan">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              </div>
+              <div class="metric-info">
+                <strong>1</strong>
+                <span>Founder &amp; Builder</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon-wrap m-magenta">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+              </div>
+              <div class="metric-info">
+                <strong>&infin;</strong>
+                <span>Digital Possibilities</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- HERO 3D INTERACTIVE STAGE -->
-        <div class="hero-art" id="hero3DStage">
-          <!-- Pulsing Aura Behind Core -->
-          <div class="hero-core-aura"></div>
-
-          <!-- Elliptical Orbit Rings -->
-          <div class="orbit o1"></div>
-          <div class="orbit o2"></div>
-          <div class="orbit o3"></div>
-
-          <!-- SVG Laser Rays Connecting Core to Satellites -->
-          <svg class="hero-laser-paths" viewBox="0 0 560 560">
-            <line x1="280" y1="280" x2="410" y2="80" stroke="url(#laserGradCheckra)" class="laser-line" id="rayCheckra" />
-            <line x1="280" y1="280" x2="430" y2="440" stroke="url(#laserGradHomora)" class="laser-line" id="rayHomora" />
-            <line x1="280" y1="280" x2="140" y2="430" stroke="url(#laserGradBubora)" class="laser-line" id="rayBubora" />
-            <line x1="280" y1="280" x2="110" y2="130" stroke="url(#laserGradSayora)" class="laser-line" id="raySayora" />
-
-            <defs>
-              <linearGradient id="laserGradCheckra" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.2"/>
-                <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.9"/>
-              </linearGradient>
-              <linearGradient id="laserGradHomora" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.2"/>
-                <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.9"/>
-              </linearGradient>
-              <linearGradient id="laserGradBubora" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#ec4899" stop-opacity="0.2"/>
-                <stop offset="100%" stop-color="#ec4899" stop-opacity="0.9"/>
-              </linearGradient>
-              <linearGradient id="laserGradSayora" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#10b981" stop-opacity="0.2"/>
-                <stop offset="100%" stop-color="#10b981" stop-opacity="0.9"/>
-              </linearGradient>
-            </defs>
-          </svg>
-
-          <!-- Central Holographic Core -->
-          <div class="core" onclick="enterUniverseZoom()" title="Click to Enter the NIVORA Universe">
-            <div class="core-inner-ring"></div>
-            <img src="assets/images/nivora-logo.png" alt="NIVORA Core Symbol">
-            <div class="core-label">
-              <b>NIVORA</b>
-              <span>DIGITAL CORE</span>
+        <!-- RIGHT HERO CONTENT: 3D DIGITAL PLANET & GALAXY PLATFORM -->
+        <div class="hero-art-stage" id="heroArtStage">
+          <div class="globe-pivot-container" id="globePivot">
+            <!-- Galaxy Platform Beneath Globe -->
+            <div class="galaxy-platform-wrap">
+              <div class="galaxy-platform-vortex"></div>
             </div>
-          </div>
 
-          <!-- 4 Interactive Product Satellite Nodes -->
-          <div class="satellite s-checkra" onclick="openConceptModal('checkra')" title="Explore CHECKRA Concept">
-            <div class="sat-icon-wrap">
-              <img src="assets/images/checkra-emblem.png" alt="CHECKRA">
-            </div>
-            <span class="sat-tag">CHECKRA &middot; Live</span>
-          </div>
+            <!-- Vertical Energy Beam -->
+            <div class="galaxy-energy-beam"></div>
 
-          <div class="satellite s-homora" onclick="openConceptModal('homora')" title="Explore HOMORA Concept">
-            <div class="sat-icon-wrap">
-              <img src="assets/images/homora-logo.png" alt="HOMORA">
+            <!-- Central Futuristic Globe / Digital Planet -->
+            <div class="nivora-globe-core" onclick="enterUniverseZoom()" title="Click to Enter the NIVORA Universe">
+              <div class="globe-digital-mesh"></div>
+              <div class="globe-data-points"></div>
+              <img src="assets/images/nivora-logo.png" alt="Official NIVORA Core Logo" class="globe-center-logo">
             </div>
-            <span class="sat-tag">HOMORA &middot; Active</span>
-          </div>
 
-          <div class="satellite s-bubora" onclick="openConceptModal('bubora')" title="Explore BUBORA Concept">
-            <div class="sat-icon-wrap">
-              <img src="assets/images/bubora-logo.png" alt="BUBORA">
-            </div>
-            <span class="sat-tag">BUBORA &middot; Live</span>
-          </div>
-
-          <div class="satellite s-sayora" onclick="openConceptModal('sayora')" title="Explore SAYORA Concept">
-            <div class="sat-icon-wrap">
-              <img src="assets/images/sayora-emblem.png" alt="SAYORA">
-            </div>
-            <span class="sat-tag">SAYORA &middot; Concept</span>
+            <!-- 4 Thin 3D Orbital Rings with Independent Rotation -->
+            <div class="globe-orbital-ring ring-1"></div>
+            <div class="globe-orbital-ring ring-2"></div>
+            <div class="globe-orbital-ring ring-3"></div>
+            <div class="globe-orbital-ring ring-4"></div>
           </div>
         </div>
+      </div>
+
+      <!-- SCROLL INDICATOR (HUD FOOTER) -->
+      <div class="hero-scroll-indicator" onclick="enterUniverseZoom()">
+        <div class="scroll-mouse-icon">
+          <div class="scroll-mouse-wheel"></div>
+        </div>
+        <span class="scroll-hud-text">SCROLL TO EXPLORE THE UNIVERSE</span>
+        <span class="scroll-arrow-bounce">&darr;</span>
       </div>
     </section>
 
@@ -2723,7 +2734,6 @@
           </p>
         </div>
 
-        <!-- 5-STAGE LIFECYCLE PATHWAY -->
         <div class="pipeline-wrapper">
           <div class="pipeline-header">
             <h3>The NIVORA Lifecycle Pipeline</h3>
@@ -2767,27 +2777,18 @@
           </div>
         </div>
 
-        <!-- 3 METHODOLOGY PILLARS -->
         <div class="methodology-grid">
           <div class="meth-card">
             <h3>Practical Technology</h3>
-            <p>
-              Technology is built to solve actual, measurable human problems &mdash; not to chase temporary tech hype or produce discardable features.
-            </p>
+            <p>Technology is built to solve actual, measurable human problems &mdash; not to chase temporary tech hype or produce discardable features.</p>
           </div>
-
           <div class="meth-card">
             <h3>AI &amp; Intelligence</h3>
-            <p>
-              Integrating modern machine learning and contextual reasoning into everyday workflows &mdash; making verification, financial tracking, and connection effortless.
-            </p>
+            <p>Integrating modern machine learning and contextual reasoning into everyday workflows &mdash; making verification, financial tracking, and connection effortless.</p>
           </div>
-
           <div class="meth-card">
             <h3>Deliberate Craftsmanship</h3>
-            <p>
-              Every layout, animation, database schema, and micro-interaction is executed with obsessive care for durability, speed, and aesthetic refinement.
-            </p>
+            <p>Every layout, animation, database schema, and micro-interaction is executed with obsessive care for durability, speed, and aesthetic refinement.</p>
           </div>
         </div>
       </div>
@@ -2845,9 +2846,9 @@
               &ldquo;True innovation is never about adding noise to an already loud world. It is about distilling complex human challenges into products so elegant and natural they feel inevitable.&rdquo;
             </div>
 
-            <a class="btn primary" href="https://nivas2703.vercel.app/" target="_blank" rel="noopener noreferrer">
+            <a class="btn-enter-universe" href="https://nivas2703.vercel.app/" target="_blank" rel="noopener noreferrer">
               <span>Visit Official Founder Portfolio</span>
-              <span class="btn-arrow">&nearr;</span>
+              <span>&nearr;</span>
             </a>
           </div>
         </div>
@@ -2879,28 +2880,21 @@
 
         <div class="philosophy-constellation">
           <div class="constellation-grid">
-            <!-- CHECKRA NODE -->
             <div class="constellation-node node-checkra">
               <span class="node-theme-tag">INTEGRITY</span>
               <h4>CHECKRA</h4>
               <p>Writing Integrity &amp; AI Plagiarism Intelligence &mdash; safeguarding truth and authenticity across scholarly and creative content.</p>
             </div>
-
-            <!-- HOMORA NODE -->
             <div class="constellation-node node-homora">
               <span class="node-theme-tag">HARMONY</span>
               <h4>HOMORA</h4>
               <p>Shared Living &amp; Financial OS &mdash; automating collaborative household contributions and removing domestic friction.</p>
             </div>
-
-            <!-- BUBORA NODE -->
             <div class="constellation-node node-bubora">
               <span class="node-theme-tag">CONNECTION</span>
               <h4>BUBORA</h4>
               <p>Couples Private Digital Sanctuary &mdash; preserving intimacy, shared memories, and emotional resonance in an ad-free space.</p>
             </div>
-
-            <!-- SAYORA NODE -->
             <div class="constellation-node node-sayora">
               <span class="node-theme-tag">RESILIENCE</span>
               <h4>SAYORA</h4>
@@ -2909,7 +2903,6 @@
           </div>
         </div>
 
-        <!-- 4 Pillars -->
         <div class="ecosystem-pillars-grid">
           <div class="eco-pillar-card">
             <h4>Autonomous Utility</h4>
@@ -2952,18 +2945,15 @@
           <div class="folivio-logo-wrap">
             <img src="assets/images/folivio-logo.webp" alt="FOLIVIO Official Brand Logo" loading="lazy">
           </div>
-
           <div class="folivio-content">
             <h3>FOLIVIO</h3>
-            <div class="folivio-tagline">
-              Build. <b>Showcase.</b> Grow.
-            </div>
+            <div class="folivio-tagline">Build. <b>Showcase.</b> Grow.</div>
             <p class="folivio-desc">
               Professional career branding for ambitious individuals who want their work, credentials, and digital footprint to look as formidable online as they are on paper.
             </p>
-            <a class="btn primary" href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
+            <a class="btn-enter-universe" href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
               <span>Connect on Instagram</span>
-              <span class="btn-arrow">&nearr;</span>
+              <span>&nearr;</span>
             </a>
           </div>
         </div>
@@ -2991,7 +2981,6 @@
 
     <!-- =========================================================
        SECTION 06: CONTACT (#contact)
-       DIGITAL PORTAL & TRANSMISSION POINT
        ========================================================= -->
     <section class="section" id="contact">
       <div class="section-divider"></div>
@@ -3087,12 +3076,10 @@
             <img src="assets/images/nivora-logo.png" alt="NIVORA Logo" class="nav-brand-logo">
             <div class="nav-brand-text">
               <span class="nav-brand-title">NIVORA</span>
-              <span class="nav-brand-tag">3D Universe v3.5</span>
+              <span class="nav-brand-tag">DIGITAL UNIVERSE</span>
             </div>
           </div>
-          <p>
-            Turning ideas into intelligent products. An independent technology universe architected and engineered by Nivas Bennabatthula.
-          </p>
+          <p>Turning ideas into intelligent products. An independent technology universe architected and engineered by Nivas Bennabatthula.</p>
         </div>
 
         <div class="footer-col">
@@ -3175,8 +3162,13 @@
       <!-- 1. CHECKRA MODAL VIEW -->
       <div class="modal-product-view active" id="modal-view-checkra">
         <div class="modal-hero-sec" id="msec-checkra-overview">
-          <div class="modal-kicker">// CONCEPT OVERVIEW &middot; WRITING INTEGRITY SPACE</div>
-          <h2>Empowering Writing Truth &amp; Source Accuracy</h2>
+          <div class="modal-product-branding">
+            <img src="assets/images/checkra-emblem.png" alt="CHECKRA Emblem" class="modal-brand-emblem-icon">
+            <div class="modal-brand-text-col">
+              <div class="modal-kicker">// CONCEPT OVERVIEW &middot; WRITING INTEGRITY SPACE</div>
+              <h2>Empowering Writing Truth &amp; Source Accuracy</h2>
+            </div>
+          </div>
           <div class="modal-lead-box">
             CHECKRA is an AI-powered writing integrity and source verification platform designed to help students, researchers, educators, professionals, and content creators check, verify, and improve their writing in one connected workspace.
           </div>
@@ -3238,8 +3230,13 @@
       <!-- 2. HOMORA MODAL VIEW -->
       <div class="modal-product-view" id="modal-view-homora">
         <div class="modal-hero-sec" id="msec-homora-overview">
-          <div class="modal-kicker">// CONCEPT OVERVIEW &middot; SHARED LIVING OS</div>
-          <h2>Smart Living &amp; Financial Harmony for Households</h2>
+          <div class="modal-product-branding">
+            <img src="assets/images/homora-logo.png" alt="HOMORA Emblem" class="modal-brand-emblem-icon" style="filter: drop-shadow(0 0 20px rgba(6, 182, 212, 0.5));">
+            <div class="modal-brand-text-col">
+              <div class="modal-kicker">// CONCEPT OVERVIEW &middot; SHARED LIVING OS</div>
+              <h2>Smart Living &amp; Financial Harmony for Households</h2>
+            </div>
+          </div>
           <div class="modal-lead-box">
             HOMORA is an AI-powered financial harmony platform for shared households, roommates, and co-living spaces &mdash; effortlessly coordinating contributions, expenses, and domestic agreements without confrontation.
           </div>
@@ -3275,8 +3272,13 @@
       <!-- 3. BUBORA MODAL VIEW -->
       <div class="modal-product-view" id="modal-view-bubora">
         <div class="modal-hero-sec" id="msec-bubora-overview">
-          <div class="modal-kicker">// CONCEPT OVERVIEW &middot; COUPLES PRIVATE SPACE</div>
-          <h2>An Intimate Digital Sanctuary for Two</h2>
+          <div class="modal-product-branding">
+            <img src="assets/images/bubora-logo.png" alt="BUBORA Emblem" class="modal-brand-emblem-icon" style="filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.5));">
+            <div class="modal-brand-text-col">
+              <div class="modal-kicker">// CONCEPT OVERVIEW &middot; COUPLES PRIVATE SPACE</div>
+              <h2>An Intimate Digital Sanctuary for Two</h2>
+            </div>
+          </div>
           <div class="modal-lead-box">
             BUBORA is an intimate digital sanctuary engineered exclusively for two &mdash; uniting private messaging, shared memory vaults, collaborative bucket lists, and relationship milestones away from public social feeds and noise.
           </div>
@@ -3312,8 +3314,13 @@
       <!-- 4. SAYORA MODAL VIEW -->
       <div class="modal-product-view" id="modal-view-sayora">
         <div class="modal-hero-sec" id="msec-sayora-overview">
-          <div class="modal-kicker">// CONCEPT OVERVIEW &middot; SOCIAL IMPACT &amp; FINANCIAL SHIELD</div>
-          <h2>Financial Resilience for Workers &amp; Communities</h2>
+          <div class="modal-product-branding">
+            <img src="assets/images/sayora-emblem.png" alt="SAYORA Emblem" class="modal-brand-emblem-icon" style="filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.5));">
+            <div class="modal-brand-text-col">
+              <div class="modal-kicker">// CONCEPT OVERVIEW &middot; SOCIAL IMPACT &amp; FINANCIAL SHIELD</div>
+              <h2>Financial Resilience for Workers &amp; Communities</h2>
+            </div>
+          </div>
           <div class="modal-lead-box">
             SAYORA is a social impact fintech initiative architected to shield informal laborers, gig delivery workers, and daily wage earners against sudden income shocks, health emergencies, and catastrophic climate disruptions.
           </div>
@@ -3377,12 +3384,10 @@
     }
 
     /* -------------------------------------------------------------
-       2. THREE.JS 3D UNIVERSE & CAMERA CONTROLLER
+       2. THREE.JS 3D STARFIELD & COSMIC ENGINE
        ------------------------------------------------------------- */
     let scene, camera, renderer;
     let starParticles, particleGeo;
-    let coreGroup, gyroRing1, gyroRing2;
-    let productNodes = {};
     let mouseX = 0, mouseY = 0;
     let targetMouseX = 0, targetMouseY = 0;
     let isZooming = false;
@@ -3401,18 +3406,18 @@
       let width = canvas.width = window.innerWidth;
       let height = canvas.height = window.innerHeight;
 
-      const numStars = window.innerWidth < 768 ? 200 : 500;
+      const numStars = window.innerWidth < 768 ? 240 : 650;
       fallbackStars = [];
-      const colors = ['#ffffff', '#c7d2fe', '#8b5cf6', '#22d3ee', '#ec4899', '#10b981'];
+      const colors = ['#ffffff', '#ffffff', '#c7d2fe', '#8b5cf6', '#22d3ee', '#ec4899', '#10b981'];
 
       for (let i = 0; i < numStars; i++) {
         fallbackStars.push({
-          x: (Math.random() - 0.5) * 2400,
-          y: (Math.random() - 0.5) * 1800,
-          z: Math.random() * 2000 + 1,
-          size: Math.random() * 2 + 0.6,
+          x: (Math.random() - 0.5) * 2600,
+          y: (Math.random() - 0.5) * 1900,
+          z: Math.random() * 2200 + 1,
+          size: Math.random() * 2.2 + 0.6,
           color: colors[Math.floor(Math.random() * colors.length)],
-          alpha: Math.random() * 0.6 + 0.4
+          alpha: Math.random() * 0.65 + 0.35
         });
       }
 
@@ -3425,7 +3430,7 @@
         if (!canvas2DFallbackActive) return;
         requestAnimationFrame(renderCanvas3D);
 
-        ctx.fillStyle = '#020308';
+        ctx.fillStyle = '#010206';
         ctx.fillRect(0, 0, width, height);
 
         mouseX += (targetMouseX - mouseX) * 0.05;
@@ -3439,9 +3444,9 @@
           const s = fallbackStars[i];
           s.z -= fallbackSpeed;
           if (s.z <= 2) {
-            s.z = 2000;
-            s.x = (Math.random() - 0.5) * 2400;
-            s.y = (Math.random() - 0.5) * 1800;
+            s.z = 2200;
+            s.x = (Math.random() - 0.5) * 2600;
+            s.y = (Math.random() - 0.5) * 1900;
           }
 
           const k = fov / s.z;
@@ -3450,7 +3455,7 @@
 
           if (px < -60 || px > width + 60 || py < -60 || py > height + 60) continue;
 
-          const rad = Math.max(0.4, (1 - s.z / 2000) * s.size * 1.8);
+          const rad = Math.max(0.4, (1 - s.z / 2200) * s.size * 1.8);
 
           if (fallbackSpeed > 2) {
             const prevZ = s.z + fallbackSpeed * 2.5;
@@ -3463,13 +3468,13 @@
             ctx.lineTo(px, py);
             ctx.strokeStyle = s.color;
             ctx.lineWidth = rad * 0.85;
-            ctx.globalAlpha = Math.min(1, s.alpha * (1 - s.z / 2000) * 1.4);
+            ctx.globalAlpha = Math.min(1, s.alpha * (1 - s.z / 2200) * 1.4);
             ctx.stroke();
           } else {
             ctx.beginPath();
             ctx.arc(px, py, rad, 0, Math.PI * 2);
             ctx.fillStyle = s.color;
-            ctx.globalAlpha = Math.min(1, s.alpha * (1 - s.z / 2000));
+            ctx.globalAlpha = Math.min(1, s.alpha * (1 - s.z / 2200));
             ctx.fill();
           }
         }
@@ -3479,17 +3484,18 @@
 
     function initThreeUniverse() {
       const canvas = document.getElementById('webglCanvas');
-      if (!canvas || !window.THREE) return;
+      if (!canvas || !window.THREE) {
+        initCanvas3DUniverse();
+        return;
+      }
 
       const width = window.innerWidth;
       const height = window.innerHeight;
 
-      // Scene & Camera
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 4000);
       camera.position.set(0, 0, 600);
 
-      // Robust WebGL Renderer initialization with safe fallbacks
       try {
         renderer = new THREE.WebGLRenderer({
           canvas: canvas,
@@ -3501,35 +3507,33 @@
         try {
           renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
         } catch (e2) {
-          console.warn('WebGL renderer unavailable, falling back to 3D Canvas engine:', e2);
+          console.warn('WebGL renderer unavailable, falling back to 3D Canvas:', e2);
           initCanvas3DUniverse();
           return;
         }
       }
+
       if (renderer) {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(width, height);
       }
 
-      // 1. STARFIELD & COSMIC PARTICLES (BufferGeometry)
-      const particleCount = window.innerWidth < 768 ? 1200 : 2600;
+      // Starfield BufferGeometry
+      const particleCount = window.innerWidth < 768 ? 1400 : 3000;
       particleGeo = new THREE.BufferGeometry();
       const positions = new Float32Array(particleCount * 3);
       const colors = new Float32Array(particleCount * 3);
-      const sizes = new Float32Array(particleCount);
 
       const palette = [
         new THREE.Color('#ffffff'),
-        new THREE.Color('#c7d2fe'),
+        new THREE.Color('#e0e7ff'),
         new THREE.Color('#8b5cf6'),
         new THREE.Color('#22d3ee'),
         new THREE.Color('#4f7cff'),
-        new THREE.Color('#ec4899'),
-        new THREE.Color('#10b981')
+        new THREE.Color('#ec4899')
       ];
 
       for (let i = 0; i < particleCount; i++) {
-        // Deep universe field distribution
         positions[i * 3] = (Math.random() - 0.5) * 2800;
         positions[i * 3 + 1] = (Math.random() - 0.5) * 2200;
         positions[i * 3 + 2] = (Math.random() - 0.5) * 3600 - 400;
@@ -3538,14 +3542,12 @@
         colors[i * 3] = col.r;
         colors[i * 3 + 1] = col.g;
         colors[i * 3 + 2] = col.b;
-
-        sizes[i] = Math.random() * 2.8 + 0.8;
       }
 
       particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
       particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-      // Circular particle texture generator
+      // Circular texture
       const canvasTexture = document.createElement('canvas');
       canvasTexture.width = 32;
       canvasTexture.height = 32;
@@ -3562,11 +3564,11 @@
       const particleTex = new THREE.CanvasTexture(canvasTexture);
 
       const particleMat = new THREE.PointsMaterial({
-        size: 3.2,
+        size: 3.4,
         vertexColors: true,
         map: particleTex,
         transparent: true,
-        opacity: 0.8,
+        opacity: 0.82,
         depthWrite: false,
         blending: THREE.AdditiveBlending
       });
@@ -3574,117 +3576,34 @@
       starParticles = new THREE.Points(particleGeo, particleMat);
       scene.add(starParticles);
 
-      // 2. 3D HOLOGRAPHIC NIVORA CORE (at z = 0)
-      coreGroup = new THREE.Group();
-      coreGroup.position.set(0, 0, 0);
-
-      // Outer geometric gyroscopic cages
-      const gyroGeo1 = new THREE.IcosahedronGeometry(75, 1);
-      const gyroMat1 = new THREE.MeshBasicMaterial({
-        color: 0x8b5cf6,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.35
+      window.addEventListener('resize', () => {
+        if (!camera || !renderer) return;
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
       });
-      gyroRing1 = new THREE.Mesh(gyroGeo1, gyroMat1);
-      coreGroup.add(gyroRing1);
-
-      const gyroGeo2 = new THREE.TorusGeometry(95, 0.8, 16, 64);
-      const gyroMat2 = new THREE.MeshBasicMaterial({
-        color: 0x22d3ee,
-        transparent: true,
-        opacity: 0.45
-      });
-      gyroRing2 = new THREE.Mesh(gyroGeo2, gyroMat2);
-      gyroRing2.rotation.x = Math.PI / 3;
-      coreGroup.add(gyroRing2);
-
-      // Inner glowing core sphere
-      const sphereGeo = new THREE.SphereGeometry(55, 32, 32);
-      const sphereMat = new THREE.MeshStandardMaterial({
-        color: 0x070b24,
-        roughness: 0.15,
-        metalness: 0.9,
-        emissive: 0x4f7cff,
-        emissiveIntensity: 0.3,
-        transparent: true,
-        opacity: 0.85
-      });
-      const coreSphere = new THREE.Mesh(sphereGeo, sphereMat);
-      coreGroup.add(coreSphere);
-
-      // Lighting
-      const coreLight1 = new THREE.PointLight(0x8b5cf6, 3, 600);
-      coreLight1.position.set(60, 60, 60);
-      coreGroup.add(coreLight1);
-
-      const coreLight2 = new THREE.PointLight(0x22d3ee, 3, 600);
-      coreLight2.position.set(-60, -60, 60);
-      coreGroup.add(coreLight2);
-
-      scene.add(coreGroup);
-
-      // 3. 4 ORBITING 3D PRODUCT NODES
-      const nodeConfigs = [
-        { id: 'checkra', pos: [220, 110, 20], color: 0x8b5cf6 },
-        { id: 'homora', pos: [240, -120, -30], color: 0x06b6d4 },
-        { id: 'bubora', pos: [-210, -130, 30], color: 0xec4899 },
-        { id: 'sayora', pos: [-230, 120, -20], color: 0x10b981 }
-      ];
-
-      nodeConfigs.forEach(cfg => {
-        const nodeGrp = new THREE.Group();
-        nodeGrp.position.set(cfg.pos[0], cfg.pos[1], cfg.pos[2]);
-
-        const nodeSphere = new THREE.Mesh(
-          new THREE.SphereGeometry(14, 16, 16),
-          new THREE.MeshBasicMaterial({ color: cfg.color, wireframe: true, transparent: true, opacity: 0.7 })
-        );
-        nodeGrp.add(nodeSphere);
-
-        const nodeGlow = new THREE.PointLight(cfg.color, 1.5, 200);
-        nodeGrp.add(nodeGlow);
-
-        // Laser beam connecting core to node
-        const lineGeo = new THREE.BufferGeometry().setFromPoints([
-          new THREE.Vector3(0, 0, 0),
-          new THREE.Vector3(cfg.pos[0], cfg.pos[1], cfg.pos[2])
-        ]);
-        const lineMat = new THREE.LineDashedMaterial({
-          color: cfg.color,
-          dashSize: 6,
-          gapSize: 4,
-          transparent: true,
-          opacity: 0.4
-        });
-        const laser = new THREE.Line(lineGeo, lineMat);
-        laser.computeLineDistances();
-        scene.add(laser);
-
-        coreGroup.add(nodeGrp);
-        productNodes[cfg.id] = { group: nodeGrp, light: nodeGlow, basePos: cfg.pos };
-      });
-
-      // Window resize
-      window.addEventListener('resize', onWindowResize);
-    }
-
-    function onWindowResize() {
-      if (!camera || !renderer) return;
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
     }
 
     // Mouse movement listener
     window.addEventListener('mousemove', (e) => {
       targetMouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
       targetMouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+
+      // Parallax for 3D globe and background nebulae
+      const globePivot = document.getElementById('globePivot');
+      if (globePivot) {
+        globePivot.style.transform = `perspective(1200px) rotateX(${-targetMouseY * 8}deg) rotateY(${targetMouseX * 8}deg)`;
+      }
+
+      const nebulae = document.getElementById('cosmicNebulae');
+      if (nebulae) {
+        nebulae.style.transform = `translate(${-targetMouseX * 18}px, ${-targetMouseY * 18}px)`;
+      }
     });
 
-    // Scroll listener for Camera Z Travel
+    // Scroll listener for camera journey
     window.addEventListener('scroll', () => {
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       scrollProgress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
@@ -3692,41 +3611,29 @@
     }, { passive: true });
 
     /* -------------------------------------------------------------
-       3. THE BIG ZOOM — CINEMATIC GSAP + THREE.JS WARP
+       3. THE BIG ZOOM — CINEMATIC GSAP CAMERA WARP
        ------------------------------------------------------------- */
     function enterUniverseZoom() {
       if (isZooming) return;
       isZooming = true;
 
-      const heroStage = document.getElementById('hero3DStage');
+      const globePivot = document.getElementById('globePivot');
 
       if (window.gsap) {
         const tl = gsap.timeline({
           onComplete: () => {
             isZooming = false;
-            if (heroStage) gsap.set(heroStage, { clearProps: 'transform,opacity' });
+            if (globePivot) gsap.set(globePivot, { clearProps: 'transform,opacity' });
           }
         });
 
-        if (camera && coreGroup) {
+        if (camera) {
           tl.to(camera.position, {
             z: -380,
             x: targetMouseX * 40,
             y: targetMouseY * 30,
             duration: 1.6,
             ease: 'power3.inOut'
-          }, 0)
-          .to(coreGroup.scale, {
-            x: 4.5,
-            y: 4.5,
-            z: 4.5,
-            duration: 1.2,
-            ease: 'power2.in'
-          }, 0)
-          .to(coreGroup.rotation, {
-            y: coreGroup.rotation.y + Math.PI,
-            duration: 1.6,
-            ease: 'power2.inOut'
           }, 0);
         }
 
@@ -3745,11 +3652,11 @@
           }, 0.8);
         }
 
-        if (heroStage) {
-          tl.to(heroStage, {
-            scale: 2.8,
+        if (globePivot) {
+          tl.to(globePivot, {
+            scale: 3.2,
             opacity: 0,
-            duration: 1.2,
+            duration: 1.3,
             ease: 'power2.in'
           }, 0);
         }
@@ -3769,31 +3676,13 @@
     function animateUniverse(time) {
       requestAnimationFrame(animateUniverse);
 
-      // Smooth mouse lerp
       mouseX += (targetMouseX - mouseX) * 0.05;
       mouseY += (targetMouseY - mouseY) * 0.05;
 
-      // Three.js Core Rotation & Float
-      if (coreGroup) {
-        coreGroup.rotation.y += 0.003;
-        coreGroup.rotation.x = Math.sin(time * 0.0008) * 0.12;
-
-        if (gyroRing1) {
-          gyroRing1.rotation.x += 0.005;
-          gyroRing1.rotation.y += 0.007;
-        }
-        if (gyroRing2) {
-          gyroRing2.rotation.z += 0.006;
-        }
-      }
-
-      // Camera Position calculation (Scroll = 3D Space Travel)
       if (camera && !isZooming) {
-        // As scrollProgress moves 0 -> 1, camera travels through the deep universe: z = 600 -> -2400
         const targetZ = 600 - scrollProgress * 3000;
         camera.position.z += (targetZ - camera.position.z) * 0.08;
 
-        // Mouse Parallax
         const targetCamX = mouseX * 65;
         const targetCamY = -mouseY * 45;
         camera.position.x += (targetCamX - camera.position.x) * 0.06;
@@ -3801,13 +3690,11 @@
         camera.lookAt(0, 0, camera.position.z - 400);
       }
 
-      // Render WebGL frame
       if (renderer && scene && camera) {
         renderer.render(scene, camera);
       }
     }
 
-    // Start Three.js when loaded
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => {
         initThreeUniverse();
@@ -3847,7 +3734,7 @@
       }
       loopCursor();
 
-      const hoverTargets = document.querySelectorAll('a, button, .satellite, .world-card, .pipe-step-node, .constellation-node, .core');
+      const hoverTargets = document.querySelectorAll('a, button, .world-card, .pipe-step-node, .constellation-node, .nivora-globe-core, .hero-scroll-indicator');
       hoverTargets.forEach(el => {
         el.addEventListener('mouseenter', () => ring.classList.add('cursor-hover'));
         el.addEventListener('mouseleave', () => ring.classList.remove('cursor-hover'));
@@ -3855,23 +3742,9 @@
     })();
 
     /* -------------------------------------------------------------
-       6. HERO 3D PARALLAX & CARD TILT ENGINE
+       6. CARD 3D TILT ENGINE
        ------------------------------------------------------------- */
-    (function init3DParallax() {
-      const heroStage = document.getElementById('hero3DStage');
-      if (heroStage) {
-        window.addEventListener('mousemove', (e) => {
-          const rect = heroStage.getBoundingClientRect();
-          const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
-          const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-          heroStage.style.transform = `perspective(1200px) rotateX(${-y * 7}deg) rotateY(${x * 7}deg)`;
-        });
-        heroStage.addEventListener('mouseleave', () => {
-          heroStage.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)';
-        });
-      }
-
-      // Card 3D tilt
+    (function initCardTilt() {
       document.querySelectorAll('.world-card').forEach(card => {
         card.addEventListener('mousemove', (e) => {
           const rect = card.getBoundingClientRect();
