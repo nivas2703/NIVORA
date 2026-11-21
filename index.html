@@ -12,14 +12,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
 
+  <!-- THREE.JS, GSAP & LENIS CDNS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
   <style>
     /* =========================================================
-       NIVORA CINEMATIC 3D DESIGN SYSTEM (APPLE + LINEAR + VERCEL)
+       NIVORA 3D ZOOM UNIVERSE DESIGN SYSTEM (APPLE + LINEAR + VERCEL)
        ========================================================= */
     :root {
       --bg-space: #020308;
       --bg-space-deep: #000103;
-      --bg-radial-atmosphere: radial-gradient(ellipse at 50% 0%, #0c102b 0%, #060919 45%, #020308 85%, #000103 100%);
+      --bg-radial-atmosphere: radial-gradient(ellipse at 50% 0%, #0d122e 0%, #06091a 45%, #020308 85%, #000103 100%);
       
       --text-main: #f8faff;
       --text-secondary: #b8c0d9;
@@ -27,12 +32,11 @@
       --text-dim: #454d63;
 
       --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.24);
-      --border-active: rgba(255, 255, 255, 0.38);
+      --border-hover: rgba(255, 255, 255, 0.25);
       
-      --glass-surface: rgba(10, 15, 32, 0.62);
-      --glass-surface-dense: rgba(6, 8, 18, 0.94);
-      --glass-surface-elevated: rgba(14, 20, 42, 0.75);
+      --glass-surface: rgba(10, 15, 34, 0.65);
+      --glass-surface-dense: rgba(6, 8, 20, 0.94);
+      --glass-surface-elevated: rgba(14, 20, 44, 0.78);
 
       /* NIVORA Signature Animated Gradient: Violet -> Blue -> Cyan */
       --accent-violet: #8b5cf6;
@@ -52,7 +56,7 @@
       --glow-sayora: rgba(16, 185, 129, 0.45);
 
       /* Typographic System */
-      --font-display: 'Space Grotesk', -apple-system, sans-serif;
+      --font-display: 'Space Grotesk', 'Sora', -apple-system, sans-serif;
       --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-editorial: 'Instrument Serif', Georgia, serif;
       --font-mono: 'JetBrains Mono', monospace;
@@ -65,8 +69,23 @@
       padding: 0;
     }
 
+    html.lenis, html.lenis body {
+      height: auto;
+    }
+
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+
+    .lenis.lenis-stopped {
+      overflow: hidden;
+    }
+
     html {
-      scroll-behavior: smooth;
       background: #020308;
       color: var(--text-main);
       font-family: var(--font-body);
@@ -109,7 +128,112 @@
     }
 
     /* =========================================================
-       CUSTOM DESKTOP CURSOR (SMOOTH & SUBTLE)
+       THREE.JS WEBGL CANVAS (FULL-SCREEN 3D UNIVERSE)
+       ========================================================= */
+    #webglCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Cosmic Grid Overlay */
+    .cosmic-grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 90px 90px;
+    }
+
+    /* Atmospheric Ambient Glows behind sections */
+    .ambient-glow {
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.28;
+      z-index: 1;
+      transition: opacity 0.6s ease;
+    }
+
+    .ambient-hero {
+      top: 2%;
+      right: 6%;
+      width: 620px;
+      height: 620px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, rgba(79, 124, 255, 0.35) 50%, transparent 70%);
+    }
+
+    .ambient-products {
+      top: 22%;
+      left: 5%;
+      width: 680px;
+      height: 680px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.45) 0%, rgba(139, 92, 246, 0.25) 55%, transparent 70%);
+    }
+
+    .ambient-lifecycle {
+      top: 42%;
+      right: 10%;
+      width: 620px;
+      height: 620px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.45) 0%, rgba(16, 185, 129, 0.25) 60%, transparent 70%);
+    }
+
+    .ambient-founder {
+      top: 58%;
+      left: 15%;
+      width: 580px;
+      height: 580px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.5) 0%, rgba(6, 182, 212, 0.3) 50%, transparent 70%);
+    }
+
+    .ambient-philosophy {
+      top: 72%;
+      right: 12%;
+      width: 720px;
+      height: 720px;
+      background: radial-gradient(circle, rgba(79, 124, 255, 0.45) 0%, rgba(236, 72, 153, 0.25) 60%, transparent 70%);
+    }
+
+    .ambient-folivio {
+      top: 85%;
+      left: 8%;
+      width: 620px;
+      height: 620px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.45) 0%, rgba(139, 92, 246, 0.25) 60%, transparent 70%);
+    }
+
+    .ambient-contact {
+      bottom: 2%;
+      right: 18%;
+      width: 780px;
+      height: 780px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.55) 0%, rgba(34, 211, 238, 0.35) 60%, transparent 70%);
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* =========================================================
+       CUSTOM DESKTOP 3D CURSOR
        ========================================================= */
     .custom-cursor-ring {
       position: fixed;
@@ -144,121 +268,17 @@
     }
 
     .custom-cursor-ring.cursor-hover {
-      width: 52px;
-      height: 52px;
-      border-color: rgba(34, 211, 238, 0.85);
+      width: 54px;
+      height: 54px;
+      border-color: rgba(34, 211, 238, 0.9);
       background: rgba(34, 211, 238, 0.08);
-      box-shadow: 0 0 24px rgba(34, 211, 238, 0.4);
+      box-shadow: 0 0 28px rgba(34, 211, 238, 0.4);
     }
 
     @media (hover: none) or (pointer: coarse) {
       .custom-cursor-ring, .custom-cursor-dot {
         display: none !important;
       }
-    }
-
-    /* =========================================================
-       3D UNIVERSE CANVAS & ATMOSPHERIC GLOWS
-       ========================================================= */
-    #universeCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: -2;
-    }
-
-    .ambient-glow {
-      position: absolute;
-      pointer-events: none;
-      border-radius: 50%;
-      filter: blur(140px);
-      opacity: 0.28;
-      z-index: -1;
-      transition: opacity 0.6s ease;
-    }
-
-    .ambient-hero {
-      top: 3%;
-      right: 8%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.55) 0%, rgba(79, 124, 255, 0.35) 50%, transparent 70%);
-    }
-
-    .ambient-products {
-      top: 24%;
-      left: 4%;
-      width: 650px;
-      height: 650px;
-      background: radial-gradient(circle, rgba(6, 182, 212, 0.4) 0%, rgba(139, 92, 246, 0.25) 55%, transparent 70%);
-    }
-
-    .ambient-lifecycle {
-      top: 44%;
-      right: 12%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(99, 102, 241, 0.45) 0%, rgba(16, 185, 129, 0.25) 60%, transparent 70%);
-    }
-
-    .ambient-founder {
-      top: 60%;
-      left: 18%;
-      width: 550px;
-      height: 550px;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.45) 0%, rgba(6, 182, 212, 0.28) 50%, transparent 70%);
-    }
-
-    .ambient-philosophy {
-      top: 74%;
-      right: 14%;
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle, rgba(79, 124, 255, 0.4) 0%, rgba(236, 72, 153, 0.22) 60%, transparent 70%);
-    }
-
-    .ambient-folivio {
-      top: 86%;
-      left: 8%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(6, 182, 212, 0.45) 0%, rgba(139, 92, 246, 0.25) 60%, transparent 70%);
-    }
-
-    .ambient-contact {
-      bottom: 2%;
-      right: 20%;
-      width: 750px;
-      height: 750px;
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.5) 0%, rgba(34, 211, 238, 0.3) 60%, transparent 70%);
-    }
-
-    /* Hairline Cosmic Grid Lines */
-    .cosmic-grid-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: -1;
-      background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-      background-size: 80px 80px;
-    }
-
-    /* Container */
-    .container {
-      width: 100%;
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 2rem;
-      position: relative;
-      z-index: 1;
     }
 
     /* =========================================================
@@ -299,6 +319,7 @@
     .section {
       padding: 7.5rem 0;
       position: relative;
+      z-index: 2;
     }
 
     .section-divider {
@@ -354,7 +375,7 @@
     }
 
     /* =========================================================
-       NAVIGATION BAR
+       NAVIGATION BAR (FLOATING CONTROL CAPSULE)
        ========================================================= */
     .site-nav {
       position: fixed;
@@ -507,7 +528,7 @@
     }
 
     /* =========================================================
-       HERO — THE INTERACTIVE 3D UNIVERSE
+       HERO — 3D ZOOM ENTRY
        ========================================================= */
     .hero {
       min-height: 100vh;
@@ -516,6 +537,7 @@
       padding-top: 7.5rem;
       padding-bottom: 5rem;
       position: relative;
+      z-index: 2;
     }
 
     .hero-grid {
@@ -685,9 +707,7 @@
       -webkit-text-fill-color: transparent;
     }
 
-    /* =========================================================
-       HERO 3D STAGE & HOLOGRAPHIC DIGITAL CORE
-       ========================================================= */
+    /* Hero 3D Stage Container */
     .hero-art {
       position: relative;
       width: 100%;
@@ -702,15 +722,15 @@
       transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* Ambient Pulsing Aura behind Core */
+    /* Pulsing Aura behind Core */
     .hero-core-aura {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 320px;
-      height: 320px;
+      width: 340px;
+      height: 340px;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(139, 92, 246, 0.32) 0%, rgba(34, 211, 238, 0.18) 45%, transparent 70%);
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.35) 0%, rgba(34, 211, 238, 0.2) 45%, transparent 70%);
       filter: blur(40px);
       border-radius: 50%;
       pointer-events: none;
@@ -719,7 +739,7 @@
 
     @keyframes auraPulse {
       0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
-      100% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1.18); opacity: 1; }
     }
 
     /* Elliptical Orbital Rings */
@@ -736,15 +756,15 @@
     .orbit.o1 {
       width: 280px;
       height: 280px;
-      border: 1px dashed rgba(139, 92, 246, 0.25);
+      border: 1px dashed rgba(139, 92, 246, 0.3);
       animation: spinOrbit 45s linear infinite;
     }
 
     .orbit.o2 {
       width: 410px;
       height: 410px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: inset 0 0 20px rgba(34, 211, 238, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: inset 0 0 20px rgba(34, 211, 238, 0.05);
       animation: spinOrbitRev 65s linear infinite;
     }
 
@@ -780,7 +800,7 @@
       stroke-dasharray: 4 6;
       animation: laserDash 30s linear infinite;
       transition: stroke 0.3s ease, stroke-width 0.3s ease, opacity 0.3s ease;
-      opacity: 0.35;
+      opacity: 0.38;
     }
 
     @keyframes laserDash {
@@ -795,7 +815,7 @@
       height: 180px;
       border-radius: 36px;
       background: radial-gradient(circle at 30% 30%, rgba(20, 28, 60, 0.85) 0%, rgba(6, 8, 20, 0.95) 100%);
-      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       display: flex;
@@ -805,10 +825,11 @@
       gap: 0.65rem;
       box-shadow: 
         0 24px 60px -12px rgba(0, 0, 0, 0.9),
-        0 0 45px rgba(139, 92, 246, 0.35),
-        inset 0 1px 2px rgba(255, 255, 255, 0.4);
+        0 0 50px rgba(139, 92, 246, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.45);
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       animation: floatCore 5s ease-in-out infinite;
+      cursor: pointer;
     }
 
     @keyframes floatCore {
@@ -819,9 +840,9 @@
     .core:hover {
       box-shadow: 
         0 30px 70px -10px rgba(0, 0, 0, 0.95),
-        0 0 60px rgba(139, 92, 246, 0.55),
-        inset 0 1px 3px rgba(255, 255, 255, 0.6);
-      border-color: rgba(255, 255, 255, 0.35);
+        0 0 65px rgba(139, 92, 246, 0.6),
+        inset 0 1px 3px rgba(255, 255, 255, 0.65);
+      border-color: rgba(255, 255, 255, 0.4);
     }
 
     .core-inner-ring {
@@ -831,7 +852,7 @@
       right: -10px;
       bottom: -10px;
       border-radius: 44px;
-      border: 1px dashed rgba(34, 211, 238, 0.3);
+      border: 1px dashed rgba(34, 211, 238, 0.35);
       pointer-events: none;
       animation: spinCoreRing 30s linear infinite;
     }
@@ -889,8 +910,8 @@
       width: 76px;
       height: 76px;
       border-radius: 22px;
-      background: rgba(10, 15, 34, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(10, 15, 34, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       display: flex;
@@ -916,7 +937,7 @@
       text-transform: uppercase;
       color: #ffffff;
       padding: 0.25rem 0.6rem;
-      background: rgba(5, 7, 16, 0.85);
+      background: rgba(5, 7, 16, 0.88);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 9999px;
       margin-top: 0.55rem;
@@ -926,10 +947,7 @@
     }
 
     /* Satellite Positions & Color Accents */
-    .s-checkra {
-      top: 6%;
-      right: 12%;
-    }
+    .s-checkra { top: 6%; right: 12%; }
     .s-checkra .sat-icon-wrap {
       border-color: rgba(139, 92, 246, 0.3);
       box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(139, 92, 246, 0.3);
@@ -944,10 +962,7 @@
       color: #c4b5fd;
     }
 
-    .s-homora {
-      bottom: 10%;
-      right: 6%;
-    }
+    .s-homora { bottom: 10%; right: 6%; }
     .s-homora .sat-icon-wrap {
       border-color: rgba(6, 182, 212, 0.3);
       box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(6, 182, 212, 0.3);
@@ -962,10 +977,7 @@
       color: #67e8f9;
     }
 
-    .s-bubora {
-      bottom: 8%;
-      left: 14%;
-    }
+    .s-bubora { bottom: 8%; left: 14%; }
     .s-bubora .sat-icon-wrap {
       border-color: rgba(236, 72, 153, 0.3);
       box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(236, 72, 153, 0.3);
@@ -980,10 +992,7 @@
       color: #f472b6;
     }
 
-    .s-sayora {
-      top: 14%;
-      left: 6%;
-    }
+    .s-sayora { top: 14%; left: 6%; }
     .s-sayora .sat-icon-wrap {
       border-color: rgba(16, 185, 129, 0.3);
       box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(16, 185, 129, 0.3);
@@ -1237,7 +1246,7 @@
 
     /* =========================================================
        SECTION 02: METHODOLOGY & CRAFT (#about)
-       FUTURISTIC LIFECYCLE PATHWAY & 3 PILLARS
+       FUTURISTIC 3D LIFECYCLE PATHWAY & 3 PILLARS
        ========================================================= */
     .pipeline-wrapper {
       background: rgba(8, 12, 28, 0.6);
@@ -1271,7 +1280,6 @@
       font-size: 1rem;
     }
 
-    /* Flowing Pathway Track */
     .pipeline-pathway {
       position: relative;
       display: grid;
@@ -1280,7 +1288,6 @@
       z-index: 2;
     }
 
-    /* Glowing Connecting Circuit Line */
     .pathway-circuit-line {
       position: absolute;
       top: 42px;
@@ -1292,7 +1299,6 @@
       opacity: 0.55;
     }
 
-    /* Moving Laser Pulse */
     .pathway-laser-pulse {
       position: absolute;
       top: -2px;
@@ -1425,7 +1431,6 @@
       box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.9), 0 0 40px rgba(139, 92, 246, 0.25);
     }
 
-    /* Halo behind portrait */
     .founder-halo {
       position: absolute;
       top: 50%;
@@ -1453,7 +1458,6 @@
       transform: scale(1.03);
     }
 
-    /* Targeting Corner Brackets */
     .corner-bracket {
       position: absolute;
       width: 12px;
@@ -1540,7 +1544,6 @@
 
     /* =========================================================
        SECTION 04: ECOSYSTEM PHILOSOPHY & ARCHITECTURE (#vision)
-       CENTRAL THESIS & 4-NODE CONSTELLATION
        ========================================================= */
     .central-thesis-wrap {
       text-align: center;
@@ -1578,7 +1581,6 @@
       box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.85);
     }
 
-    /* 4 Connected Nodes Grid */
     .constellation-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -1611,9 +1613,7 @@
       font-weight: 600;
     }
 
-    .node-checkra {
-      border-color: rgba(139, 92, 246, 0.25);
-    }
+    .node-checkra { border-color: rgba(139, 92, 246, 0.25); }
     .node-checkra .node-theme-tag {
       background: rgba(139, 92, 246, 0.15);
       color: #c4b5fd;
@@ -1625,9 +1625,7 @@
       transform: translateY(-8px);
     }
 
-    .node-homora {
-      border-color: rgba(6, 182, 212, 0.25);
-    }
+    .node-homora { border-color: rgba(6, 182, 212, 0.25); }
     .node-homora .node-theme-tag {
       background: rgba(6, 182, 212, 0.15);
       color: #67e8f9;
@@ -1639,9 +1637,7 @@
       transform: translateY(-8px);
     }
 
-    .node-bubora {
-      border-color: rgba(236, 72, 153, 0.25);
-    }
+    .node-bubora { border-color: rgba(236, 72, 153, 0.25); }
     .node-bubora .node-theme-tag {
       background: rgba(236, 72, 153, 0.15);
       color: #f472b6;
@@ -1653,9 +1649,7 @@
       transform: translateY(-8px);
     }
 
-    .node-sayora {
-      border-color: rgba(16, 185, 129, 0.25);
-    }
+    .node-sayora { border-color: rgba(16, 185, 129, 0.25); }
     .node-sayora .node-theme-tag {
       background: rgba(16, 185, 129, 0.15);
       color: #6ee7b7;
@@ -1997,7 +1991,8 @@
       padding: 5rem 0 3rem;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       position: relative;
-      background: rgba(2, 3, 8, 0.8);
+      background: rgba(2, 3, 8, 0.85);
+      z-index: 2;
     }
 
     .footer-grid {
@@ -2365,12 +2360,12 @@
 </head>
 <body>
 
-  <!-- CUSTOM DESKTOP CURSOR -->
+  <!-- CUSTOM DESKTOP 3D CURSOR -->
   <div class="custom-cursor-ring" id="cursorRing"></div>
   <div class="custom-cursor-dot" id="cursorDot"></div>
 
-  <!-- BACKGROUND 3D GALAXY CANVAS & COSMIC GRID -->
-  <canvas id="universeCanvas"></canvas>
+  <!-- THREE.JS WEBGL CANVAS (REAL 3D UNIVERSE) -->
+  <canvas id="webglCanvas"></canvas>
   <div class="cosmic-grid-overlay"></div>
 
   <!-- ATMOSPHERIC AMBIENT GLOW FIELDS -->
@@ -2382,13 +2377,13 @@
   <div class="ambient-glow ambient-folivio"></div>
   <div class="ambient-glow ambient-contact"></div>
 
-  <!-- NAVIGATION BAR -->
+  <!-- NAVIGATION BAR (FLOATING CONTROL CAPSULE) -->
   <header class="site-nav" id="mainNav">
     <a href="#hero" class="nav-brand" aria-label="NIVORA Home">
       <img src="assets/images/nivora-logo.png" alt="NIVORA Core Logo" class="nav-brand-logo">
       <div class="nav-brand-text">
         <span class="nav-brand-title">NIVORA</span>
-        <span class="nav-brand-tag">Universe v3.0</span>
+        <span class="nav-brand-tag">3D Universe v3.5</span>
       </div>
     </a>
 
@@ -2407,18 +2402,18 @@
         <span class="pulse-dot"></span>
         <span id="navTelemetryText">STATUS: ONLINE</span>
       </div>
-      <a href="#products" class="btn-nav-explore">
-        <span>Explore Products</span>
+      <button type="button" class="btn-nav-explore" onclick="enterUniverseZoom()">
+        <span>Explore Universe</span>
         <span class="btn-arrow">→</span>
-      </a>
+      </button>
     </div>
   </header>
 
-  <!-- MAIN SCROLLABLE CONTENT -->
+  <!-- MAIN SCROLLABLE CONTENT (3D CAMERA JOURNEY) -->
   <main>
 
     <!-- =========================================================
-         HERO — THE SIGNATURE FUTURISTIC 3D UNIVERSE
+         HERO — 3D ZOOM ENTRY
          ========================================================= -->
     <section class="hero" id="hero">
       <div class="container hero-grid">
@@ -2439,11 +2434,13 @@
           </p>
 
           <div class="hero-actions">
-            <a class="btn primary" href="#products">
-              Explore Products <span class="btn-arrow">→</span>
-            </a>
+            <button type="button" class="btn primary" onclick="enterUniverseZoom()">
+              <span>Enter the Universe</span>
+              <span class="btn-arrow">&rarr;</span>
+            </button>
             <a class="btn secondary" href="#portfolio">
-              Meet the Founder <span class="btn-arrow">→</span>
+              <span>Meet the Founder</span>
+              <span class="btn-arrow">&rarr;</span>
             </a>
           </div>
 
@@ -2466,13 +2463,9 @@
 
           <!-- SVG Laser Rays Connecting Core to Satellites -->
           <svg class="hero-laser-paths" viewBox="0 0 560 560">
-            <!-- Ray to Checkra (top right: 410, 80) -->
             <line x1="280" y1="280" x2="410" y2="80" stroke="url(#laserGradCheckra)" class="laser-line" id="rayCheckra" />
-            <!-- Ray to Homora (bottom right: 430, 440) -->
             <line x1="280" y1="280" x2="430" y2="440" stroke="url(#laserGradHomora)" class="laser-line" id="rayHomora" />
-            <!-- Ray to Bubora (bottom left: 140, 430) -->
             <line x1="280" y1="280" x2="140" y2="430" stroke="url(#laserGradBubora)" class="laser-line" id="rayBubora" />
-            <!-- Ray to Sayora (top left: 110, 130) -->
             <line x1="280" y1="280" x2="110" y2="130" stroke="url(#laserGradSayora)" class="laser-line" id="raySayora" />
 
             <defs>
@@ -2496,7 +2489,7 @@
           </svg>
 
           <!-- Central Holographic Core -->
-          <div class="core" title="NIVORA Central Universe Core">
+          <div class="core" onclick="enterUniverseZoom()" title="Click to Enter the NIVORA Universe">
             <div class="core-inner-ring"></div>
             <img src="assets/images/nivora-logo.png" alt="NIVORA Core Symbol">
             <div class="core-label">
@@ -3071,7 +3064,7 @@
               </div>
 
               <button type="submit" class="btn-submit" id="contactSubmitBtn">
-                <span>Transmit to NIVORA &rarr;</span>
+                <span>Start a Conversation &rarr;</span>
               </button>
 
               <div class="form-toast" id="contactToast"></div>
@@ -3094,7 +3087,7 @@
             <img src="assets/images/nivora-logo.png" alt="NIVORA Logo" class="nav-brand-logo">
             <div class="nav-brand-text">
               <span class="nav-brand-title">NIVORA</span>
-              <span class="nav-brand-tag">Universe v3.0</span>
+              <span class="nav-brand-tag">3D Universe v3.5</span>
             </div>
           </div>
           <p>
@@ -3144,7 +3137,7 @@
   <!-- =========================================================
        PREMIUM FIXED PRODUCT CONCEPT MODAL SYSTEM
        ========================================================= -->
-  <div id="conceptModalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+  <div id="conceptModalOverlay" role="dialog" aria-modal="true" aria-hidden="true" data-lenis-prevent>
     <header class="modal-top-bar">
       <div class="modal-top-left">
         <button type="button" class="btn-return-modal" onclick="closeConceptModal()" aria-label="Return to NIVORA Universe (ESC)">
@@ -3178,7 +3171,7 @@
       </div>
     </header>
 
-    <div class="modal-scrollable-body" id="modalScrollBody">
+    <div class="modal-scrollable-body" id="modalScrollBody" data-lenis-prevent>
       <!-- 1. CHECKRA MODAL VIEW -->
       <div class="modal-product-view active" id="modal-view-checkra">
         <div class="modal-hero-sec" id="msec-checkra-overview">
@@ -3356,178 +3349,346 @@
   </div>
 
   <!-- =========================================================
-       3D UNIVERSE ENGINE & INTERACTION SCRIPTS
+       THREE.JS + GSAP + LENIS 3D UNIVERSE ENGINE
        ========================================================= -->
   <script>
     /* -------------------------------------------------------------
-       1. MULTI-LAYER 3D GALAXY / STARFIELD SIMULATION (4 LAYERS)
+       1. LENIS SMOOTH SCROLL INITIALIZATION
        ------------------------------------------------------------- */
-    (function initUniverseStarfield() {
-      const canvas = document.getElementById('universeCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-
-      let width = canvas.width = window.innerWidth;
-      let height = canvas.height = window.innerHeight;
-
-      const isMobile = width < 768;
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      // 4 Depth Layers:
-      // Layer 1: Distant stars (slow, tiny)
-      // Layer 2: Medium particles (medium)
-      // Layer 3: Colorful cosmic particles (violet, cyan, pink, emerald)
-      // Layer 4: Foreground dust motes (fast, larger)
-      const stars = [];
-      const numStars = prefersReducedMotion ? 140 : (isMobile ? 240 : 540);
-
-      const colorPalette = [
-        '#ffffff', '#ffffff', '#e0e7ff', '#c7d2fe',
-        '#8b5cf6', '#a78bfa', // Violet
-        '#22d3ee', '#67e8f9', // Cyan
-        '#ec4899', '#f472b6', // Pink
-        '#10b981', '#6ee7b7'  // Emerald
-      ];
-
-      function initStars() {
-        stars.length = 0;
-        for (let i = 0; i < numStars; i++) {
-          const layerType = i % 10; // 0-5: layer 1, 6-7: layer 2, 8: layer 3, 9: layer 4
-          let depthFactor = 1;
-          let baseSize = 0.8;
-          let color = '#ffffff';
-
-          if (layerType < 6) {
-            // Layer 1: Tiny distant
-            depthFactor = 0.5;
-            baseSize = Math.random() * 0.9 + 0.4;
-            color = Math.random() > 0.3 ? '#ffffff' : '#c7d2fe';
-          } else if (layerType < 8) {
-            // Layer 2: Medium
-            depthFactor = 0.8;
-            baseSize = Math.random() * 1.3 + 0.8;
-            color = Math.random() > 0.5 ? '#ffffff' : '#a5b4fc';
-          } else if (layerType === 8) {
-            // Layer 3: Colorful cosmic
-            depthFactor = 1.0;
-            baseSize = Math.random() * 1.6 + 1.1;
-            color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-          } else {
-            // Layer 4: Foreground dust
-            depthFactor = 1.4;
-            baseSize = Math.random() * 2.2 + 1.4;
-            color = Math.random() > 0.5 ? '#67e8f9' : '#c4b5fd';
-          }
-
-          stars.push({
-            x: (Math.random() - 0.5) * 2400,
-            y: (Math.random() - 0.5) * 1800,
-            z: Math.random() * 2000 + 1,
-            size: baseSize,
-            depthFactor: depthFactor,
-            color: color,
-            alpha: Math.random() * 0.6 + 0.4,
-            twinkleSpeed: Math.random() * 0.02 + 0.005
-          });
-        }
-      }
-
-      initStars();
-
-      window.addEventListener('resize', () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-        initStars();
+    let lenis;
+    try {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1.0,
+        touchMultiplier: 2.0,
       });
 
-      let mouseX = 0;
-      let mouseY = 0;
-      let targetMouseX = 0;
-      let targetMouseY = 0;
-      let scrollSpeed = 0;
-      let lastScrollY = window.scrollY;
-
-      window.addEventListener('mousemove', (e) => {
-        targetMouseX = (e.clientX - width / 2) * 0.15;
-        targetMouseY = (e.clientY - height / 2) * 0.15;
-      });
-
-      window.addEventListener('scroll', () => {
-        const curY = window.scrollY;
-        const delta = curY - lastScrollY;
-        lastScrollY = curY;
-        scrollSpeed = Math.min(Math.abs(delta) * 0.85, 45);
-        updateTelemetryOnScroll(curY);
-      }, { passive: true });
-
-      function render() {
-        ctx.fillStyle = '#020308';
-        ctx.fillRect(0, 0, width, height);
-
-        mouseX += (targetMouseX - mouseX) * 0.04;
-        mouseY += (targetMouseY - mouseY) * 0.04;
-
-        scrollSpeed *= 0.91;
-        if (scrollSpeed < 0.05) scrollSpeed = 0;
-
-        const fov = 350;
-        const cx = width / 2 + mouseX;
-        const cy = height / 2 + mouseY;
-        const baseSpeed = prefersReducedMotion ? 0.25 : 0.8;
-        const currentSpeed = baseSpeed + scrollSpeed;
-
-        for (let i = 0; i < stars.length; i++) {
-          const s = stars[i];
-          s.z -= currentSpeed * s.depthFactor;
-
-          if (s.z <= 2) {
-            s.z = 2000;
-            s.x = (Math.random() - 0.5) * 2400;
-            s.y = (Math.random() - 0.5) * 1800;
-          }
-
-          const k = fov / s.z;
-          const px = s.x * k + cx;
-          const py = s.y * k + cy;
-
-          if (px < -60 || px > width + 60 || py < -60 || py > height + 60) {
-            continue;
-          }
-
-          const rad = Math.max(0.4, (1 - s.z / 2000) * s.size * 1.9);
-
-          // Render streaks on fast scroll
-          if (scrollSpeed > 2 && !prefersReducedMotion) {
-            const prevZ = s.z + currentSpeed * s.depthFactor * 2.4;
-            const prevK = fov / prevZ;
-            const prevPx = s.x * prevK + cx;
-            const prevPy = s.y * prevK + cy;
-
-            ctx.beginPath();
-            ctx.moveTo(prevPx, prevPy);
-            ctx.lineTo(px, py);
-            ctx.strokeStyle = s.color;
-            ctx.lineWidth = rad * 0.85;
-            ctx.globalAlpha = Math.min(1, s.alpha * (1 - s.z / 2000) * 1.4);
-            ctx.stroke();
-          } else {
-            ctx.beginPath();
-            ctx.arc(px, py, rad, 0, Math.PI * 2);
-            ctx.fillStyle = s.color;
-            ctx.globalAlpha = Math.min(1, s.alpha * (1 - s.z / 2000));
-            ctx.fill();
-          }
-        }
-
-        ctx.globalAlpha = 1;
-        requestAnimationFrame(render);
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
       }
-
-      render();
-    })();
+      requestAnimationFrame(raf);
+    } catch(err) {
+      console.warn('Lenis smooth scroll fallback:', err);
+    }
 
     /* -------------------------------------------------------------
-       2. CUSTOM DESKTOP CURSOR ENGINE
+       2. THREE.JS 3D UNIVERSE & CAMERA CONTROLLER
+       ------------------------------------------------------------- */
+    let scene, camera, renderer;
+    let starParticles, particleGeo;
+    let coreGroup, gyroRing1, gyroRing2;
+    let productNodes = {};
+    let mouseX = 0, mouseY = 0;
+    let targetMouseX = 0, targetMouseY = 0;
+    let isZooming = false;
+    let scrollProgress = 0;
+
+    function initThreeUniverse() {
+      const canvas = document.getElementById('webglCanvas');
+      if (!canvas || !window.THREE) return;
+
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      // Scene & Camera
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 4000);
+      camera.position.set(0, 0, 600);
+
+      // WebGL Renderer with antialiasing and alpha
+      renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance'
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(width, height);
+
+      // 1. STARFIELD & COSMIC PARTICLES (BufferGeometry)
+      const particleCount = window.innerWidth < 768 ? 1200 : 2600;
+      particleGeo = new THREE.BufferGeometry();
+      const positions = new Float32Array(particleCount * 3);
+      const colors = new Float32Array(particleCount * 3);
+      const sizes = new Float32Array(particleCount);
+
+      const palette = [
+        new THREE.Color('#ffffff'),
+        new THREE.Color('#c7d2fe'),
+        new THREE.Color('#8b5cf6'),
+        new THREE.Color('#22d3ee'),
+        new THREE.Color('#4f7cff'),
+        new THREE.Color('#ec4899'),
+        new THREE.Color('#10b981')
+      ];
+
+      for (let i = 0; i < particleCount; i++) {
+        // Deep universe field distribution
+        positions[i * 3] = (Math.random() - 0.5) * 2800;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 2200;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 3600 - 400;
+
+        const col = palette[Math.floor(Math.random() * palette.length)];
+        colors[i * 3] = col.r;
+        colors[i * 3 + 1] = col.g;
+        colors[i * 3 + 2] = col.b;
+
+        sizes[i] = Math.random() * 2.8 + 0.8;
+      }
+
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      // Circular particle texture generator
+      const canvasTexture = document.createElement('canvas');
+      canvasTexture.width = 32;
+      canvasTexture.height = 32;
+      const ctx = canvasTexture.getContext('2d');
+      const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+      grad.addColorStop(0, 'rgba(255,255,255,1)');
+      grad.addColorStop(0.3, 'rgba(255,255,255,0.7)');
+      grad.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(16, 16, 16, 0, Math.PI * 2);
+      ctx.fill();
+
+      const particleTex = new THREE.CanvasTexture(canvasTexture);
+
+      const particleMat = new THREE.PointsMaterial({
+        size: 3.2,
+        vertexColors: true,
+        map: particleTex,
+        transparent: true,
+        opacity: 0.8,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+      });
+
+      starParticles = new THREE.Points(particleGeo, particleMat);
+      scene.add(starParticles);
+
+      // 2. 3D HOLOGRAPHIC NIVORA CORE (at z = 0)
+      coreGroup = new THREE.Group();
+      coreGroup.position.set(0, 0, 0);
+
+      // Outer geometric gyroscopic cages
+      const gyroGeo1 = new THREE.IcosahedronGeometry(75, 1);
+      const gyroMat1 = new THREE.MeshBasicMaterial({
+        color: 0x8b5cf6,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.35
+      });
+      gyroRing1 = new THREE.Mesh(gyroGeo1, gyroMat1);
+      coreGroup.add(gyroRing1);
+
+      const gyroGeo2 = new THREE.TorusGeometry(95, 0.8, 16, 64);
+      const gyroMat2 = new THREE.MeshBasicMaterial({
+        color: 0x22d3ee,
+        transparent: true,
+        opacity: 0.45
+      });
+      gyroRing2 = new THREE.Mesh(gyroGeo2, gyroMat2);
+      gyroRing2.rotation.x = Math.PI / 3;
+      coreGroup.add(gyroRing2);
+
+      // Inner glowing core sphere
+      const sphereGeo = new THREE.SphereGeometry(55, 32, 32);
+      const sphereMat = new THREE.MeshStandardMaterial({
+        color: 0x070b24,
+        roughness: 0.15,
+        metalness: 0.9,
+        emissive: 0x4f7cff,
+        emissiveIntensity: 0.3,
+        transparent: true,
+        opacity: 0.85
+      });
+      const coreSphere = new THREE.Mesh(sphereGeo, sphereMat);
+      coreGroup.add(coreSphere);
+
+      // Lighting
+      const coreLight1 = new THREE.PointLight(0x8b5cf6, 3, 600);
+      coreLight1.position.set(60, 60, 60);
+      coreGroup.add(coreLight1);
+
+      const coreLight2 = new THREE.PointLight(0x22d3ee, 3, 600);
+      coreLight2.position.set(-60, -60, 60);
+      coreGroup.add(coreLight2);
+
+      scene.add(coreGroup);
+
+      // 3. 4 ORBITING 3D PRODUCT NODES
+      const nodeConfigs = [
+        { id: 'checkra', pos: [220, 110, 20], color: 0x8b5cf6 },
+        { id: 'homora', pos: [240, -120, -30], color: 0x06b6d4 },
+        { id: 'bubora', pos: [-210, -130, 30], color: 0xec4899 },
+        { id: 'sayora', pos: [-230, 120, -20], color: 0x10b981 }
+      ];
+
+      nodeConfigs.forEach(cfg => {
+        const nodeGrp = new THREE.Group();
+        nodeGrp.position.set(cfg.pos[0], cfg.pos[1], cfg.pos[2]);
+
+        const nodeSphere = new THREE.Mesh(
+          new THREE.SphereGeometry(14, 16, 16),
+          new THREE.MeshBasicMaterial({ color: cfg.color, wireframe: true, transparent: true, opacity: 0.7 })
+        );
+        nodeGrp.add(nodeSphere);
+
+        const nodeGlow = new THREE.PointLight(cfg.color, 1.5, 200);
+        nodeGrp.add(nodeGlow);
+
+        // Laser beam connecting core to node
+        const lineGeo = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(0, 0, 0),
+          new THREE.Vector3(cfg.pos[0], cfg.pos[1], cfg.pos[2])
+        ]);
+        const lineMat = new THREE.LineDashedMaterial({
+          color: cfg.color,
+          dashSize: 6,
+          gapSize: 4,
+          transparent: true,
+          opacity: 0.4
+        });
+        const laser = new THREE.Line(lineGeo, lineMat);
+        laser.computeLineDistances();
+        scene.add(laser);
+
+        coreGroup.add(nodeGrp);
+        productNodes[cfg.id] = { group: nodeGrp, light: nodeGlow, basePos: cfg.pos };
+      });
+
+      // Window resize
+      window.addEventListener('resize', onWindowResize);
+    }
+
+    function onWindowResize() {
+      if (!camera || !renderer) return;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+
+    // Mouse movement listener
+    window.addEventListener('mousemove', (e) => {
+      targetMouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+      targetMouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+    });
+
+    // Scroll listener for Camera Z Travel
+    window.addEventListener('scroll', () => {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      scrollProgress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+      updateTelemetryOnScroll(window.scrollY);
+    }, { passive: true });
+
+    /* -------------------------------------------------------------
+       3. THE BIG ZOOM — CINEMATIC GSAP + THREE.JS WARP
+       ------------------------------------------------------------- */
+    function enterUniverseZoom() {
+      if (isZooming || !window.gsap || !camera) return;
+      isZooming = true;
+
+      // Animate camera zooming directly into and through the core
+      gsap.timeline({
+        onComplete: () => {
+          isZooming = false;
+        }
+      })
+      .to(camera.position, {
+        z: -380,
+        x: targetMouseX * 40,
+        y: targetMouseY * 30,
+        duration: 1.6,
+        ease: 'power3.inOut'
+      }, 0)
+      .to(coreGroup.scale, {
+        x: 4.5,
+        y: 4.5,
+        z: 4.5,
+        duration: 1.2,
+        ease: 'power2.in'
+      }, 0)
+      .to(coreGroup.rotation, {
+        y: coreGroup.rotation.y + Math.PI,
+        duration: 1.6,
+        ease: 'power2.inOut'
+      }, 0);
+
+      // Smooth scroll to the products section
+      if (lenis) {
+        lenis.scrollTo('#products', { duration: 1.8, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+      } else {
+        const prod = document.getElementById('products');
+        if (prod) prod.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    /* -------------------------------------------------------------
+       4. ANIMATION RENDER LOOP (60 FPS TARGET)
+       ------------------------------------------------------------- */
+    function animateUniverse(time) {
+      requestAnimationFrame(animateUniverse);
+
+      // Smooth mouse lerp
+      mouseX += (targetMouseX - mouseX) * 0.05;
+      mouseY += (targetMouseY - mouseY) * 0.05;
+
+      // Three.js Core Rotation & Float
+      if (coreGroup) {
+        coreGroup.rotation.y += 0.003;
+        coreGroup.rotation.x = Math.sin(time * 0.0008) * 0.12;
+
+        if (gyroRing1) {
+          gyroRing1.rotation.x += 0.005;
+          gyroRing1.rotation.y += 0.007;
+        }
+        if (gyroRing2) {
+          gyroRing2.rotation.z += 0.006;
+        }
+      }
+
+      // Camera Position calculation (Scroll = 3D Space Travel)
+      if (camera && !isZooming) {
+        // As scrollProgress moves 0 -> 1, camera travels through the deep universe: z = 600 -> -2400
+        const targetZ = 600 - scrollProgress * 3000;
+        camera.position.z += (targetZ - camera.position.z) * 0.08;
+
+        // Mouse Parallax
+        const targetCamX = mouseX * 65;
+        const targetCamY = -mouseY * 45;
+        camera.position.x += (targetCamX - camera.position.x) * 0.06;
+        camera.position.y += (targetCamY - camera.position.y) * 0.06;
+        camera.lookAt(0, 0, camera.position.z - 400);
+      }
+
+      // Render WebGL frame
+      if (renderer && scene && camera) {
+        renderer.render(scene, camera);
+      }
+    }
+
+    // Start Three.js when loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        initThreeUniverse();
+        requestAnimationFrame(animateUniverse);
+      });
+    } else {
+      initThreeUniverse();
+      requestAnimationFrame(animateUniverse);
+    }
+
+    /* -------------------------------------------------------------
+       5. CUSTOM DESKTOP 3D CURSOR ENGINE
        ------------------------------------------------------------- */
     (function initCustomCursor() {
       const ring = document.getElementById('cursorRing');
@@ -3555,7 +3716,7 @@
       }
       loopCursor();
 
-      const hoverTargets = document.querySelectorAll('a, button, .satellite, .world-card, .pipe-step-node, .constellation-node');
+      const hoverTargets = document.querySelectorAll('a, button, .satellite, .world-card, .pipe-step-node, .constellation-node, .core');
       hoverTargets.forEach(el => {
         el.addEventListener('mouseenter', () => ring.classList.add('cursor-hover'));
         el.addEventListener('mouseleave', () => ring.classList.remove('cursor-hover'));
@@ -3563,7 +3724,7 @@
     })();
 
     /* -------------------------------------------------------------
-       3. HERO 3D PARALLAX & CARD TILT ENGINE
+       6. HERO 3D PARALLAX & CARD TILT ENGINE
        ------------------------------------------------------------- */
     (function init3DParallax() {
       const heroStage = document.getElementById('hero3DStage');
@@ -3594,7 +3755,7 @@
     })();
 
     /* -------------------------------------------------------------
-       4. TELEMETRY & HUD UPDATE
+       7. TELEMETRY & HUD UPDATE
        ------------------------------------------------------------- */
     function updateTelemetryOnScroll(scrollY) {
       const text = document.getElementById('navTelemetryText');
@@ -3631,7 +3792,7 @@
     }
 
     /* -------------------------------------------------------------
-       5. PRODUCT CONCEPT MODAL CONTROLLER
+       8. PRODUCT CONCEPT MODAL CONTROLLER
        ------------------------------------------------------------- */
     const productMeta = {
       'checkra': {
@@ -3659,6 +3820,8 @@
     function openConceptModal(productId) {
       const overlay = document.getElementById('conceptModalOverlay');
       if (!overlay) return;
+
+      if (lenis) lenis.stop();
 
       const info = productMeta[productId] || { name: productId.toUpperCase(), badge: 'Product', url: '' };
       document.getElementById('modalTopProductName').innerText = info.name;
@@ -3695,6 +3858,8 @@
       overlay.classList.remove('active');
       overlay.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('world-open');
+
+      if (lenis) lenis.start();
     }
 
     function scrollModalSec(secId) {
@@ -3725,7 +3890,7 @@
     });
 
     /* -------------------------------------------------------------
-       6. CONTACT FORM TRANSMISSION HANDLER
+       9. CONTACT FORM TRANSMISSION HANDLER
        ------------------------------------------------------------- */
     function handleContactSubmit(e) {
       e.preventDefault();

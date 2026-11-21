@@ -1,0 +1,3950 @@
+# builder/assemble_3d_zoom_universe.py
+# NIVORA — PREMIUM 3D ZOOM UNIVERSE MASTER BUILDER
+import os
+import sys
+
+builder_dir = os.path.dirname(os.path.abspath(__file__))
+if builder_dir not in sys.path:
+    sys.path.append(builder_dir)
+
+def generate_3d_zoom_html():
+    return """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIVORA — Turning Ideas Into Intelligent Products</title>
+  <meta name="description" content="NIVORA is the technology and innovation universe built by Nivas Bennabatthula — home to Checkra, Homora, Bubora, and Sayora.">
+  <link rel="icon" type="image/png" href="assets/images/nivora-logo.png">
+
+  <!-- GOOGLE FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- THREE.JS, GSAP & LENIS CDNS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <style>
+    /* =========================================================
+       NIVORA 3D ZOOM UNIVERSE DESIGN SYSTEM (APPLE + LINEAR + VERCEL)
+       ========================================================= */
+    :root {
+      --bg-space: #020308;
+      --bg-space-deep: #000103;
+      --bg-radial-atmosphere: radial-gradient(ellipse at 50% 0%, #0d122e 0%, #06091a 45%, #020308 85%, #000103 100%);
+      
+      --text-main: #f8faff;
+      --text-secondary: #b8c0d9;
+      --text-muted: #707a96;
+      --text-dim: #454d63;
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.25);
+      
+      --glass-surface: rgba(10, 15, 34, 0.65);
+      --glass-surface-dense: rgba(6, 8, 20, 0.94);
+      --glass-surface-elevated: rgba(14, 20, 44, 0.78);
+
+      /* NIVORA Signature Animated Gradient: Violet -> Blue -> Cyan */
+      --accent-violet: #8b5cf6;
+      --accent-blue: #4f7cff;
+      --accent-cyan: #22d3ee;
+      --accent-emerald: #10b981;
+      --accent-pink: #ec4899;
+
+      /* Product Identity Colors & Glows */
+      --color-checkra: #8b5cf6;
+      --glow-checkra: rgba(139, 92, 246, 0.45);
+      --color-homora: #06b6d4;
+      --glow-homora: rgba(6, 182, 212, 0.45);
+      --color-bubora: #ec4899;
+      --glow-bubora: rgba(236, 72, 153, 0.45);
+      --color-sayora: #10b981;
+      --glow-sayora: rgba(16, 185, 129, 0.45);
+
+      /* Typographic System */
+      --font-display: 'Space Grotesk', 'Sora', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-editorial: 'Instrument Serif', Georgia, serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    /* Reset & Base Setup */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html.lenis, html.lenis body {
+      height: auto;
+    }
+
+    .lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+
+    .lenis.lenis-stopped {
+      overflow: hidden;
+    }
+
+    html {
+      background: #020308;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body {
+      background: var(--bg-radial-atmosphere);
+      background-attachment: fixed;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      cursor: default;
+    }
+
+    body.world-open {
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    button {
+      font-family: inherit;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      background: none;
+    }
+
+    /* =========================================================
+       THREE.JS WEBGL CANVAS (FULL-SCREEN 3D UNIVERSE)
+       ========================================================= */
+    #webglCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Cosmic Grid Overlay */
+    .cosmic-grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 90px 90px;
+    }
+
+    /* Atmospheric Ambient Glows behind sections */
+    .ambient-glow {
+      position: absolute;
+      pointer-events: none;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.28;
+      z-index: 1;
+      transition: opacity 0.6s ease;
+    }
+
+    .ambient-hero {
+      top: 2%;
+      right: 6%;
+      width: 620px;
+      height: 620px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.6) 0%, rgba(79, 124, 255, 0.35) 50%, transparent 70%);
+    }
+
+    .ambient-products {
+      top: 22%;
+      left: 5%;
+      width: 680px;
+      height: 680px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.45) 0%, rgba(139, 92, 246, 0.25) 55%, transparent 70%);
+    }
+
+    .ambient-lifecycle {
+      top: 42%;
+      right: 10%;
+      width: 620px;
+      height: 620px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.45) 0%, rgba(16, 185, 129, 0.25) 60%, transparent 70%);
+    }
+
+    .ambient-founder {
+      top: 58%;
+      left: 15%;
+      width: 580px;
+      height: 580px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.5) 0%, rgba(6, 182, 212, 0.3) 50%, transparent 70%);
+    }
+
+    .ambient-philosophy {
+      top: 72%;
+      right: 12%;
+      width: 720px;
+      height: 720px;
+      background: radial-gradient(circle, rgba(79, 124, 255, 0.45) 0%, rgba(236, 72, 153, 0.25) 60%, transparent 70%);
+    }
+
+    .ambient-folivio {
+      top: 85%;
+      left: 8%;
+      width: 620px;
+      height: 620px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.45) 0%, rgba(139, 92, 246, 0.25) 60%, transparent 70%);
+    }
+
+    .ambient-contact {
+      bottom: 2%;
+      right: 18%;
+      width: 780px;
+      height: 780px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.55) 0%, rgba(34, 211, 238, 0.35) 60%, transparent 70%);
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* =========================================================
+       CUSTOM DESKTOP 3D CURSOR
+       ========================================================= */
+    .custom-cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 32px;
+      height: 32px;
+      border: 1.5px solid rgba(139, 92, 246, 0.65);
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                  height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.3s ease,
+                  background-color 0.3s ease;
+      z-index: 99999;
+      box-shadow: 0 0 16px rgba(139, 92, 246, 0.25);
+    }
+
+    .custom-cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 5px;
+      background: #22d3ee;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 100000;
+      box-shadow: 0 0 8px #22d3ee;
+    }
+
+    .custom-cursor-ring.cursor-hover {
+      width: 54px;
+      height: 54px;
+      border-color: rgba(34, 211, 238, 0.9);
+      background: rgba(34, 211, 238, 0.08);
+      box-shadow: 0 0 28px rgba(34, 211, 238, 0.4);
+    }
+
+    @media (hover: none) or (pointer: coarse) {
+      .custom-cursor-ring, .custom-cursor-dot {
+        display: none !important;
+      }
+    }
+
+    /* =========================================================
+       ANIMATED GRADIENTS & TYPOGRAPHY STYLES
+       ========================================================= */
+    .grad-nivora {
+      background: linear-gradient(135deg, #8b5cf6 0%, #4f7cff 35%, #22d3ee 70%, #8b5cf6 100%);
+      background-size: 300% 300%;
+      animation: gradFlow 8s ease-in-out infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    @keyframes gradFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .grad-accent {
+      background: linear-gradient(135deg, #22d3ee 0%, #4f7cff 60%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .editorial-accent {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: #f8faff;
+      display: inline;
+    }
+
+    /* Common Section Header */
+    .section {
+      padding: 7.5rem 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .section-divider {
+      position: absolute;
+      top: 0;
+      left: 5%;
+      right: 5%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.12) 30%, rgba(139, 92, 246, 0.28) 50%, rgba(34, 211, 238, 0.28) 70%, transparent 100%);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2.5rem;
+      margin-bottom: 4.5rem;
+      position: relative;
+    }
+
+    .kicker {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .kicker::before {
+      content: '//';
+      color: var(--accent-violet);
+      font-weight: 600;
+    }
+
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.035em;
+      color: var(--text-main);
+    }
+
+    .section-head p {
+      max-width: 540px;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.65;
+    }
+
+    /* =========================================================
+       NAVIGATION BAR (FLOATING CONTROL CAPSULE)
+       ========================================================= */
+    .site-nav {
+      position: fixed;
+      top: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 3rem);
+      max-width: 1240px;
+      height: 64px;
+      background: rgba(6, 9, 22, 0.72);
+      backdrop-filter: blur(24px) saturate(190%);
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      z-index: 1000;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.75), 0 0 30px rgba(139, 92, 246, 0.12);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .site-nav.scrolled {
+      background: rgba(4, 6, 16, 0.88);
+      border-color: rgba(255, 255, 255, 0.16);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9), 0 0 35px rgba(139, 92, 246, 0.2);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+    }
+
+    .nav-brand-logo {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.6));
+    }
+
+    .nav-brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-brand-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .nav-brand-tag {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+    }
+
+    .nav-item {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      position: relative;
+      padding: 0.35rem 0;
+      transition: color 0.2s ease;
+    }
+
+    .nav-item:hover, .nav-item.active {
+      color: #ffffff;
+    }
+
+    .nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #8b5cf6, #22d3ee);
+      border-radius: 9999px;
+      box-shadow: 0 0 8px #22d3ee;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .nav-telemetry {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.3rem 0.75rem;
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid rgba(34, 211, 238, 0.22);
+      border-radius: 9999px;
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulseAnim 2s infinite;
+    }
+
+    @keyframes pulseAnim {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .btn-nav-explore {
+      font-family: var(--font-body);
+      font-size: 0.825rem;
+      font-weight: 600;
+      padding: 0.55rem 1.15rem;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #8b5cf6, #4f7cff);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 20px -6px rgba(139, 92, 246, 0.5);
+      transition: all 0.25s ease;
+    }
+
+    .btn-nav-explore:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 28px -6px rgba(139, 92, 246, 0.75);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* =========================================================
+       HERO — 3D ZOOM ENTRY
+       ========================================================= */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 7.5rem;
+      padding-bottom: 5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+      gap: 3.5rem;
+    }
+
+    .hero-left {
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      padding: 0.4rem 0.9rem;
+      background: rgba(34, 211, 238, 0.08);
+      border: 1px solid rgba(34, 211, 238, 0.22);
+      border-radius: 9999px;
+      margin-bottom: 1.75rem;
+    }
+
+    .eyebrow i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-violet);
+      box-shadow: 0 0 10px var(--accent-violet);
+      display: inline-block;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.4rem, 6.2vw, 5.6rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: var(--text-main);
+      margin-bottom: 1.35rem;
+    }
+
+    .hero-sub-lead {
+      color: #f8faff;
+      display: block;
+      font-weight: 700;
+    }
+
+    .hero-tagline-badge {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+
+    .hero-tagline-badge .editorial-accent {
+      font-size: 1.18em;
+      color: #ffffff;
+      font-weight: 400;
+    }
+
+    .hero-copy {
+      font-size: 1.12rem;
+      line-height: 1.68;
+      color: var(--text-secondary);
+      max-width: 560px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-copy strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 3.5rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.85rem 1.85rem;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, #8b5cf6 0%, #4f7cff 50%, #22d3ee 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 12px 32px -8px rgba(139, 92, 246, 0.55), 0 0 20px rgba(34, 211, 238, 0.2);
+    }
+
+    .btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px -8px rgba(139, 92, 246, 0.75), 0 0 28px rgba(34, 211, 238, 0.35);
+      border-color: rgba(255, 255, 255, 0.45);
+    }
+
+    .btn.secondary {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn-arrow {
+      transition: transform 0.25s ease;
+      font-size: 1.1em;
+    }
+
+    .btn:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .hero-meta div {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .hero-meta strong {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1;
+      color: #ffffff;
+      background: linear-gradient(135deg, #ffffff 30%, #b8c0d9 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Hero 3D Stage Container */
+    .hero-art {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      max-width: 560px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1200px;
+      transform-style: preserve-3d;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Pulsing Aura behind Core */
+    .hero-core-aura {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 340px;
+      height: 340px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.35) 0%, rgba(34, 211, 238, 0.2) 45%, transparent 70%);
+      filter: blur(40px);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: auraPulse 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes auraPulse {
+      0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.7; }
+      100% { transform: translate(-50%, -50%) scale(1.18); opacity: 1; }
+    }
+
+    /* Elliptical Orbital Rings */
+    .orbit {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      pointer-events: none;
+      transition: all 0.4s ease;
+    }
+
+    .orbit.o1 {
+      width: 280px;
+      height: 280px;
+      border: 1px dashed rgba(139, 92, 246, 0.3);
+      animation: spinOrbit 45s linear infinite;
+    }
+
+    .orbit.o2 {
+      width: 410px;
+      height: 410px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      box-shadow: inset 0 0 20px rgba(34, 211, 238, 0.05);
+      animation: spinOrbitRev 65s linear infinite;
+    }
+
+    .orbit.o3 {
+      width: 530px;
+      height: 530px;
+      border: 1px dashed rgba(255, 255, 255, 0.05);
+    }
+
+    @keyframes spinOrbit {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    @keyframes spinOrbitRev {
+      from { transform: translate(-50%, -50%) rotate(360deg); }
+      to { transform: translate(-50%, -50%) rotate(0deg); }
+    }
+
+    /* SVG Connecting Laser Rays */
+    .hero-laser-paths {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .laser-line {
+      stroke-width: 1.25;
+      stroke-dasharray: 4 6;
+      animation: laserDash 30s linear infinite;
+      transition: stroke 0.3s ease, stroke-width 0.3s ease, opacity 0.3s ease;
+      opacity: 0.38;
+    }
+
+    @keyframes laserDash {
+      to { stroke-dashoffset: -200; }
+    }
+
+    /* Central Holographic Core */
+    .core {
+      position: relative;
+      z-index: 3;
+      width: 180px;
+      height: 180px;
+      border-radius: 36px;
+      background: radial-gradient(circle at 30% 30%, rgba(20, 28, 60, 0.85) 0%, rgba(6, 8, 20, 0.95) 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      box-shadow: 
+        0 24px 60px -12px rgba(0, 0, 0, 0.9),
+        0 0 50px rgba(139, 92, 246, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.45);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: floatCore 5s ease-in-out infinite;
+      cursor: pointer;
+    }
+
+    @keyframes floatCore {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(0.5deg); }
+    }
+
+    .core:hover {
+      box-shadow: 
+        0 30px 70px -10px rgba(0, 0, 0, 0.95),
+        0 0 65px rgba(139, 92, 246, 0.6),
+        inset 0 1px 3px rgba(255, 255, 255, 0.65);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .core-inner-ring {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border-radius: 44px;
+      border: 1px dashed rgba(34, 211, 238, 0.35);
+      pointer-events: none;
+      animation: spinCoreRing 30s linear infinite;
+    }
+
+    @keyframes spinCoreRing {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .core img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 18px rgba(99, 102, 241, 0.75));
+      transition: transform 0.3s ease;
+    }
+
+    .core:hover img {
+      transform: scale(1.08);
+    }
+
+    .core-label {
+      text-align: center;
+      line-height: 1.25;
+    }
+
+    .core-label b {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      letter-spacing: 0.18em;
+      color: #ffffff;
+      display: block;
+    }
+
+    .core-label span {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+    }
+
+    /* Orbiting Product Satellite Nodes */
+    .satellite {
+      position: absolute;
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .sat-icon-wrap {
+      width: 76px;
+      height: 76px;
+      border-radius: 22px;
+      background: rgba(10, 15, 34, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      position: relative;
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .sat-icon-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+
+    .sat-tag {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #ffffff;
+      padding: 0.25rem 0.6rem;
+      background: rgba(5, 7, 16, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      margin-top: 0.55rem;
+      white-space: nowrap;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+      transition: all 0.3s ease;
+    }
+
+    /* Satellite Positions & Color Accents */
+    .s-checkra { top: 6%; right: 12%; }
+    .s-checkra .sat-icon-wrap {
+      border-color: rgba(139, 92, 246, 0.3);
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(139, 92, 246, 0.3);
+    }
+    .s-checkra:hover .sat-icon-wrap {
+      transform: translateY(-8px) scale(1.08);
+      border-color: var(--color-checkra);
+      box-shadow: 0 22px 45px -8px rgba(0, 0, 0, 0.9), 0 0 45px var(--glow-checkra);
+    }
+    .s-checkra:hover .sat-tag {
+      border-color: var(--color-checkra);
+      color: #c4b5fd;
+    }
+
+    .s-homora { bottom: 10%; right: 6%; }
+    .s-homora .sat-icon-wrap {
+      border-color: rgba(6, 182, 212, 0.3);
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(6, 182, 212, 0.3);
+    }
+    .s-homora:hover .sat-icon-wrap {
+      transform: translateY(-8px) scale(1.08);
+      border-color: var(--color-homora);
+      box-shadow: 0 22px 45px -8px rgba(0, 0, 0, 0.9), 0 0 45px var(--glow-homora);
+    }
+    .s-homora:hover .sat-tag {
+      border-color: var(--color-homora);
+      color: #67e8f9;
+    }
+
+    .s-bubora { bottom: 8%; left: 14%; }
+    .s-bubora .sat-icon-wrap {
+      border-color: rgba(236, 72, 153, 0.3);
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(236, 72, 153, 0.3);
+    }
+    .s-bubora:hover .sat-icon-wrap {
+      transform: translateY(-8px) scale(1.08);
+      border-color: var(--color-bubora);
+      box-shadow: 0 22px 45px -8px rgba(0, 0, 0, 0.9), 0 0 45px var(--glow-bubora);
+    }
+    .s-bubora:hover .sat-tag {
+      border-color: var(--color-bubora);
+      color: #f472b6;
+    }
+
+    .s-sayora { top: 14%; left: 6%; }
+    .s-sayora .sat-icon-wrap {
+      border-color: rgba(16, 185, 129, 0.3);
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.8), 0 0 25px rgba(16, 185, 129, 0.3);
+    }
+    .s-sayora:hover .sat-icon-wrap {
+      transform: translateY(-8px) scale(1.08);
+      border-color: var(--color-sayora);
+      box-shadow: 0 22px 45px -8px rgba(0, 0, 0, 0.9), 0 0 45px var(--glow-sayora);
+    }
+    .s-sayora:hover .sat-tag {
+      border-color: var(--color-sayora);
+      color: #6ee7b7;
+    }
+
+    /* =========================================================
+       SECTION 01: PRODUCTS WITH A PURPOSE (#products)
+       THE PRODUCT CONSTELLATION
+       ========================================================= */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.25rem;
+    }
+
+    .world-card {
+      background: rgba(8, 12, 28, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 28px;
+      padding: 2.25rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.7);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                  border-color 0.35s ease,
+                  box-shadow 0.35s ease,
+                  background 0.35s ease;
+      transform-style: preserve-3d;
+    }
+
+    /* Large faint watermark emblem inside card */
+    .card-watermark {
+      position: absolute;
+      top: -10%;
+      right: -8%;
+      width: 280px;
+      height: 280px;
+      opacity: 0.05;
+      pointer-events: none;
+      filter: blur(1px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      z-index: 0;
+    }
+
+    .world-card:hover .card-watermark {
+      opacity: 0.09;
+      transform: scale(1.06) rotate(4deg);
+    }
+
+    .world-card:hover {
+      background: rgba(12, 18, 42, 0.8);
+      transform: translateY(-8px);
+    }
+
+    .world-card.card-checkra:hover {
+      border-color: rgba(139, 92, 246, 0.6);
+      box-shadow: 0 28px 65px -15px rgba(0, 0, 0, 0.85), 0 0 45px rgba(139, 92, 246, 0.28);
+    }
+    .world-card.card-homora:hover {
+      border-color: rgba(6, 182, 212, 0.6);
+      box-shadow: 0 28px 65px -15px rgba(0, 0, 0, 0.85), 0 0 45px rgba(6, 182, 212, 0.28);
+    }
+    .world-card.card-bubora:hover {
+      border-color: rgba(236, 72, 153, 0.6);
+      box-shadow: 0 28px 65px -15px rgba(0, 0, 0, 0.85), 0 0 45px rgba(236, 72, 153, 0.28);
+    }
+    .world-card.card-sayora:hover {
+      border-color: rgba(16, 185, 129, 0.6);
+      box-shadow: 0 28px 65px -15px rgba(0, 0, 0, 0.85), 0 0 45px rgba(16, 185, 129, 0.28);
+    }
+
+    .world-art-wrap {
+      width: 100%;
+      height: 200px;
+      border-radius: 20px;
+      background: rgba(4, 6, 16, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .world-art-wrap img {
+      max-height: 120px;
+      max-width: 80%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.7));
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      z-index: 1;
+    }
+
+    .world-card:hover .world-art-wrap img {
+      transform: scale(1.05);
+    }
+
+    .world-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 0.65rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .world-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .formerly-tag {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      font-weight: 400;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+    }
+
+    .status-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      font-weight: 600;
+    }
+
+    .badge-live {
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-dev {
+      background: rgba(6, 182, 212, 0.12);
+      color: #38bdf8;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .world-tagline {
+      font-family: var(--font-body);
+      font-size: 1.02rem;
+      font-weight: 500;
+      color: var(--accent-cyan);
+      margin-bottom: 1.15rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .world-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.65;
+      margin-bottom: 1.65rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .world-capabilities {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cap-pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      padding: 0.3rem 0.75rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+    }
+
+    .world-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: auto;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-concept {
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 0.65rem 1.35rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.25s ease;
+    }
+
+    .btn-concept:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .world-link {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-left: auto;
+      transition: color 0.2s ease;
+    }
+
+    .world-link:hover {
+      color: #ffffff;
+    }
+
+    /* =========================================================
+       SECTION 02: METHODOLOGY & CRAFT (#about)
+       FUTURISTIC 3D LIFECYCLE PATHWAY & 3 PILLARS
+       ========================================================= */
+    .pipeline-wrapper {
+      background: rgba(8, 12, 28, 0.6);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 32px;
+      padding: 3rem 2.5rem;
+      margin-bottom: 3.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8);
+    }
+
+    .pipeline-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .pipeline-header h3 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin-bottom: 0.65rem;
+    }
+
+    .pipeline-header p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    .pipeline-pathway {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.5rem;
+      z-index: 2;
+    }
+
+    .pathway-circuit-line {
+      position: absolute;
+      top: 42px;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, #8b5cf6 0%, #4f7cff 25%, #22d3ee 50%, #ec4899 75%, #10b981 100%);
+      z-index: 0;
+      opacity: 0.55;
+    }
+
+    .pathway-laser-pulse {
+      position: absolute;
+      top: -2px;
+      left: 0;
+      width: 60px;
+      height: 6px;
+      border-radius: 9999px;
+      background: #ffffff;
+      box-shadow: 0 0 16px #22d3ee, 0 0 25px #8b5cf6;
+      animation: moveLaser 6s ease-in-out infinite;
+    }
+
+    @keyframes moveLaser {
+      0% { left: 0%; opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { left: 100%; opacity: 0; }
+    }
+
+    .pipe-step-node {
+      background: rgba(6, 8, 20, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 1.85rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 1;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .pipe-step-node:hover {
+      transform: translateY(-8px);
+      border-color: rgba(34, 211, 238, 0.6);
+      background: rgba(12, 18, 42, 0.95);
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 35px rgba(34, 211, 238, 0.25);
+    }
+
+    .pipe-node-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .pipe-node-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 8px var(--accent-cyan);
+    }
+
+    .pipe-step-node b {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .pipe-step-node p {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* 3 Pillars */
+    .methodology-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .meth-card {
+      background: rgba(8, 12, 28, 0.55);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 2.25rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .meth-card:hover {
+      background: rgba(12, 18, 42, 0.75);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-5px);
+    }
+
+    .meth-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.85rem;
+    }
+
+    .meth-card p {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+
+    /* =========================================================
+       SECTION 03: THE ARCHITECT (#portfolio)
+       CINEMATIC FOUNDER PORTRAIT & METADATA
+       ========================================================= */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      align-items: center;
+      gap: 4rem;
+    }
+
+    .founder-image-wrapper {
+      position: relative;
+      border-radius: 32px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(6, 8, 20, 0.85);
+      box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.9), 0 0 40px rgba(139, 92, 246, 0.25);
+    }
+
+    .founder-halo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 320px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.45) 0%, rgba(6, 182, 212, 0.25) 50%, transparent 70%);
+      filter: blur(50px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .founder-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: relative;
+      z-index: 1;
+      filter: contrast(1.05);
+      transition: transform 0.5s ease;
+    }
+
+    .founder-image-wrapper:hover img {
+      transform: scale(1.03);
+    }
+
+    .corner-bracket {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .bracket-tl { top: 12px; left: 12px; border-top: 2px solid var(--accent-cyan); border-left: 2px solid var(--accent-cyan); }
+    .bracket-tr { top: 12px; right: 12px; border-top: 2px solid var(--accent-cyan); border-right: 2px solid var(--accent-cyan); }
+    .bracket-bl { bottom: 12px; left: 12px; border-bottom: 2px solid var(--accent-cyan); border-left: 2px solid var(--accent-cyan); }
+    .bracket-br { bottom: 12px; right: 12px; border-bottom: 2px solid var(--accent-cyan); border-right: 2px solid var(--accent-cyan); }
+
+    .founder-content {
+      position: relative;
+    }
+
+    .founder-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .founder-name {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 4.5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+
+    .founder-titles {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      color: var(--accent-cyan);
+      margin-bottom: 1.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .founder-bio {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .founder-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .fpill {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      color: var(--text-main);
+      padding: 0.4rem 0.9rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+    }
+
+    .founder-quote {
+      border-left: 2px solid var(--accent-violet);
+      padding-left: 1.5rem;
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 1.02rem;
+      line-height: 1.6;
+      margin-bottom: 2.25rem;
+    }
+
+    /* =========================================================
+       SECTION 04: ECOSYSTEM PHILOSOPHY & ARCHITECTURE (#vision)
+       ========================================================= */
+    .central-thesis-wrap {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .central-thesis-banner {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.4vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      max-width: 880px;
+      margin: 0 auto 1.25rem;
+    }
+
+    .central-thesis-sub {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+    }
+
+    .philosophy-constellation {
+      background: rgba(8, 12, 28, 0.65);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 36px;
+      padding: 3.5rem 2.5rem;
+      margin-bottom: 3.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.85);
+    }
+
+    .constellation-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.75rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .constellation-node {
+      background: rgba(6, 8, 20, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 22px;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .node-theme-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      display: inline-block;
+      width: fit-content;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .node-checkra { border-color: rgba(139, 92, 246, 0.25); }
+    .node-checkra .node-theme-tag {
+      background: rgba(139, 92, 246, 0.15);
+      color: #c4b5fd;
+      border: 1px solid rgba(139, 92, 246, 0.35);
+    }
+    .node-checkra:hover {
+      border-color: var(--color-checkra);
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 35px var(--glow-checkra);
+      transform: translateY(-8px);
+    }
+
+    .node-homora { border-color: rgba(6, 182, 212, 0.25); }
+    .node-homora .node-theme-tag {
+      background: rgba(6, 182, 212, 0.15);
+      color: #67e8f9;
+      border: 1px solid rgba(6, 182, 212, 0.35);
+    }
+    .node-homora:hover {
+      border-color: var(--color-homora);
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 35px var(--glow-homora);
+      transform: translateY(-8px);
+    }
+
+    .node-bubora { border-color: rgba(236, 72, 153, 0.25); }
+    .node-bubora .node-theme-tag {
+      background: rgba(236, 72, 153, 0.15);
+      color: #f472b6;
+      border: 1px solid rgba(236, 72, 153, 0.35);
+    }
+    .node-bubora:hover {
+      border-color: var(--color-bubora);
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 35px var(--glow-bubora);
+      transform: translateY(-8px);
+    }
+
+    .node-sayora { border-color: rgba(16, 185, 129, 0.25); }
+    .node-sayora .node-theme-tag {
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+    .node-sayora:hover {
+      border-color: var(--color-sayora);
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 35px var(--glow-sayora);
+      transform: translateY(-8px);
+    }
+
+    .constellation-node h4 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.65rem;
+    }
+
+    .constellation-node p {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* 4 Ecosystem Pillars */
+    .ecosystem-pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.75rem;
+    }
+
+    .eco-pillar-card {
+      background: rgba(8, 12, 28, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 1.85rem;
+      transition: all 0.3s ease;
+    }
+
+    .eco-pillar-card:hover {
+      background: rgba(12, 18, 42, 0.7);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-4px);
+    }
+
+    .eco-pillar-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+    }
+
+    .eco-pillar-card p {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* =========================================================
+       SECTION 05: FOLIVIO (#folivio)
+       CAREER BRANDING · DIGITAL PRESENCE
+       ========================================================= */
+    .folivio-banner {
+      background: rgba(8, 12, 32, 0.65);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 32px;
+      padding: 3.5rem;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 3.5rem;
+      align-items: center;
+      margin-bottom: 3rem;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(6, 182, 212, 0.15);
+    }
+
+    .folivio-logo-wrap {
+      width: 180px;
+      height: 180px;
+      border-radius: 28px;
+      background: rgba(4, 6, 16, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8);
+    }
+
+    .folivio-logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .folivio-content h3 {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin-bottom: 0.4rem;
+    }
+
+    .folivio-tagline {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+    }
+
+    .folivio-tagline b {
+      color: var(--accent-cyan);
+    }
+
+    .folivio-desc {
+      font-size: 1.05rem;
+      line-height: 1.68;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 720px;
+    }
+
+    .folivio-services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.75rem;
+    }
+
+    .folivio-service-card {
+      background: rgba(8, 12, 28, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 1.85rem;
+      transition: all 0.3s ease;
+    }
+
+    .folivio-service-card:hover {
+      background: rgba(12, 18, 42, 0.8);
+      border-color: rgba(6, 182, 212, 0.4);
+      transform: translateY(-4px);
+    }
+
+    .folivio-service-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.65rem;
+    }
+
+    .folivio-service-card p {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* =========================================================
+       SECTION 06: CONTACT (#contact)
+       DIGITAL PORTAL & TRANSMISSION POINT
+       ========================================================= */
+    .contact-wrapper {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 3.5rem;
+      background: rgba(8, 12, 28, 0.65);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 36px;
+      padding: 3.5rem;
+      box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.9), 0 0 50px rgba(139, 92, 246, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-info-panel h3 {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin-bottom: 0.85rem;
+    }
+
+    .contact-info-panel p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.68;
+      margin-bottom: 2.25rem;
+    }
+
+    .contact-card-link {
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+      padding: 1.25rem 1.5rem;
+      background: rgba(6, 8, 20, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      text-decoration: none;
+      margin-bottom: 2rem;
+      transition: all 0.25s ease;
+    }
+
+    .contact-card-link:hover {
+      background: rgba(12, 18, 42, 0.9);
+      border-color: rgba(34, 211, 238, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .ccl-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(34, 211, 238, 0.1);
+      border: 1px solid rgba(34, 211, 238, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-cyan);
+    }
+
+    .ccl-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    .ccl-text b {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: #ffffff;
+      display: block;
+    }
+
+    .ccl-text span {
+      font-size: 0.825rem;
+      color: var(--text-secondary);
+    }
+
+    .folivio-redirect-notice {
+      padding: 1.25rem;
+      border-radius: 16px;
+      background: rgba(6, 182, 212, 0.06);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .folivio-redirect-notice strong {
+      color: var(--accent-cyan);
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+
+    .folivio-redirect-notice a {
+      color: #ffffff;
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 0.6rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.95rem 1.25rem;
+      background: rgba(6, 8, 20, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.25);
+      background: rgba(10, 15, 34, 0.9);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 1rem;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #8b5cf6 0%, #4f7cff 50%, #22d3ee 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 12px 30px -8px rgba(139, 92, 246, 0.6);
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px -8px rgba(139, 92, 246, 0.85);
+      border-color: rgba(255, 255, 255, 0.45);
+    }
+
+    .form-toast {
+      display: none;
+      margin-top: 1.25rem;
+      padding: 0.85rem 1.25rem;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      border-radius: 12px;
+      color: #34d399;
+      font-size: 0.875rem;
+      text-align: center;
+    }
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+    .site-footer {
+      padding: 5rem 0 3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      background: rgba(2, 3, 8, 0.85);
+      z-index: 2;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .footer-brand p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      max-width: 320px;
+      margin-top: 1rem;
+    }
+
+    .footer-col h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-col a {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-col a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.825rem;
+      color: var(--text-muted);
+    }
+
+    /* =========================================================
+       CONCEPT MODAL SYSTEM (FIXED GLASS OVERLAY)
+       ========================================================= */
+    #conceptModalOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(2, 4, 12, 0.88);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #conceptModalOverlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-top-bar {
+      height: 72px;
+      background: rgba(6, 9, 22, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .modal-top-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .btn-return-modal {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      padding: 0.55rem 1.15rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      transition: all 0.25s ease;
+    }
+
+    .btn-return-modal:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .modal-brand-subtle {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: #ffffff;
+    }
+
+    .mbs-nivora {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .mbs-product-name {
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .mbs-status-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      background: rgba(34, 211, 238, 0.12);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(34, 211, 238, 0.3);
+      border-radius: 9999px;
+    }
+
+    .modal-nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.3rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .modal-nav-tab {
+      font-size: 0.825rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      padding: 0.4rem 0.95rem;
+      border-radius: 9999px;
+      transition: all 0.2s ease;
+    }
+
+    .modal-nav-tab:hover {
+      color: #ffffff;
+    }
+
+    .modal-nav-tab.active {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+
+    .modal-top-right {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .modal-launch-btn {
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.55rem 1.25rem;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #8b5cf6, #4f7cff);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 6px 18px rgba(139, 92, 246, 0.4);
+    }
+
+    .modal-launch-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(139, 92, 246, 0.6);
+    }
+
+    .modal-close-x {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close-x:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+
+    .modal-scrollable-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    .modal-product-view {
+      display: none;
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    .modal-product-view.active {
+      display: block;
+      animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-hero-sec {
+      margin-bottom: 4rem;
+    }
+
+    .modal-kicker {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 0.75rem;
+    }
+
+    .modal-hero-sec h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4vw, 3.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-lead-box {
+      background: rgba(8, 12, 28, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-left: 3px solid var(--accent-violet);
+      border-radius: 20px;
+      padding: 2rem 2.25rem;
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: var(--text-main);
+      box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-section-title {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin-bottom: 2rem;
+    }
+
+    .modal-caps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 4.5rem;
+    }
+
+    .modal-cap-card {
+      background: rgba(8, 12, 28, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 1.65rem;
+      transition: all 0.25s ease;
+    }
+
+    .modal-cap-card:hover {
+      background: rgba(12, 18, 42, 0.8);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-4px);
+    }
+
+    .modal-cap-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(139, 92, 246, 0.12);
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-violet);
+      margin-bottom: 1.15rem;
+    }
+
+    .modal-cap-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-cap-card p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--text-secondary);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 4rem; text-align: center; }
+      .hero-copy { margin-left: auto; margin-right: auto; }
+      .hero-actions { justify-content: center; }
+      .hero-meta { justify-content: center; }
+      .products-grid { grid-template-columns: 1fr; }
+      .portfolio-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .constellation-grid { grid-template-columns: repeat(2, 1fr); }
+      .ecosystem-pillars-grid { grid-template-columns: repeat(2, 1fr); }
+      .folivio-banner { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+      .folivio-services-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-wrapper { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); }
+      .pipeline-pathway { grid-template-columns: 1fr; gap: 1rem; }
+      .pathway-circuit-line { display: none; }
+      .modal-caps-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 640px) {
+      .site-nav { width: calc(100% - 1.5rem); padding: 0 1rem; }
+      .nav-links { display: none; }
+      .hero-meta { flex-direction: column; gap: 1.5rem; }
+      .constellation-grid { grid-template-columns: 1fr; }
+      .ecosystem-pillars-grid { grid-template-columns: 1fr; }
+      .folivio-services-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .methodology-grid { grid-template-columns: 1fr; }
+      .modal-caps-grid { grid-template-columns: 1fr; }
+      .modal-nav-tabs { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CUSTOM DESKTOP 3D CURSOR -->
+  <div class="custom-cursor-ring" id="cursorRing"></div>
+  <div class="custom-cursor-dot" id="cursorDot"></div>
+
+  <!-- THREE.JS WEBGL CANVAS (REAL 3D UNIVERSE) -->
+  <canvas id="webglCanvas"></canvas>
+  <div class="cosmic-grid-overlay"></div>
+
+  <!-- ATMOSPHERIC AMBIENT GLOW FIELDS -->
+  <div class="ambient-glow ambient-hero"></div>
+  <div class="ambient-glow ambient-products"></div>
+  <div class="ambient-glow ambient-lifecycle"></div>
+  <div class="ambient-glow ambient-founder"></div>
+  <div class="ambient-glow ambient-philosophy"></div>
+  <div class="ambient-glow ambient-folivio"></div>
+  <div class="ambient-glow ambient-contact"></div>
+
+  <!-- NAVIGATION BAR (FLOATING CONTROL CAPSULE) -->
+  <header class="site-nav" id="mainNav">
+    <a href="#hero" class="nav-brand" aria-label="NIVORA Home">
+      <img src="assets/images/nivora-logo.png" alt="NIVORA Core Logo" class="nav-brand-logo">
+      <div class="nav-brand-text">
+        <span class="nav-brand-title">NIVORA</span>
+        <span class="nav-brand-tag">3D Universe v3.5</span>
+      </div>
+    </a>
+
+    <nav class="nav-links" aria-label="Main Navigation">
+      <a href="#hero" class="nav-item">Home</a>
+      <a href="#products" class="nav-item">Products</a>
+      <a href="#about" class="nav-item">About</a>
+      <a href="#portfolio" class="nav-item">Portfolio</a>
+      <a href="#vision" class="nav-item">Vision</a>
+      <a href="#folivio" class="nav-item">FOLIVIO</a>
+      <a href="#contact" class="nav-item">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="nav-telemetry">
+        <span class="pulse-dot"></span>
+        <span id="navTelemetryText">STATUS: ONLINE</span>
+      </div>
+      <button type="button" class="btn-nav-explore" onclick="enterUniverseZoom()">
+        <span>Explore Universe</span>
+        <span class="btn-arrow">→</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN SCROLLABLE CONTENT (3D CAMERA JOURNEY) -->
+  <main>
+
+    <!-- =========================================================
+         HERO — 3D ZOOM ENTRY
+         ========================================================= -->
+    <section class="hero" id="hero">
+      <div class="container hero-grid">
+        <div class="hero-left">
+          <div class="eyebrow"><i></i> GALAXY_SECTOR: CORE_ORBIT &middot; A NIVAS BENNABATTHULA INITIATIVE</div>
+          
+          <h1 class="hero-title">
+            <span class="hero-sub-lead">Welcome to</span>
+            <span class="grad-nivora">NIVORA.</span>
+          </h1>
+
+          <div class="hero-tagline-badge">
+            Turning <em class="editorial-accent">Ideas</em> Into Intelligent <em class="editorial-accent">Products</em>.
+          </div>
+
+          <p class="hero-copy">
+            NIVORA is the <strong>technology and innovation universe built by Nivas Bennabatthula</strong> &mdash; where ambitious ideas become intelligent products, meaningful experiences and new digital possibilities.
+          </p>
+
+          <div class="hero-actions">
+            <button type="button" class="btn primary" onclick="enterUniverseZoom()">
+              <span>Enter the Universe</span>
+              <span class="btn-arrow">&rarr;</span>
+            </button>
+            <a class="btn secondary" href="#portfolio">
+              <span>Meet the Founder</span>
+              <span class="btn-arrow">&rarr;</span>
+            </a>
+          </div>
+
+          <div class="hero-meta">
+            <div><strong>4</strong>Ecosystem Worlds</div>
+            <div><strong>1</strong>Founder &amp; Builder</div>
+            <div><strong>&infin;</strong>Digital Possibilities</div>
+          </div>
+        </div>
+
+        <!-- HERO 3D INTERACTIVE STAGE -->
+        <div class="hero-art" id="hero3DStage">
+          <!-- Pulsing Aura Behind Core -->
+          <div class="hero-core-aura"></div>
+
+          <!-- Elliptical Orbit Rings -->
+          <div class="orbit o1"></div>
+          <div class="orbit o2"></div>
+          <div class="orbit o3"></div>
+
+          <!-- SVG Laser Rays Connecting Core to Satellites -->
+          <svg class="hero-laser-paths" viewBox="0 0 560 560">
+            <line x1="280" y1="280" x2="410" y2="80" stroke="url(#laserGradCheckra)" class="laser-line" id="rayCheckra" />
+            <line x1="280" y1="280" x2="430" y2="440" stroke="url(#laserGradHomora)" class="laser-line" id="rayHomora" />
+            <line x1="280" y1="280" x2="140" y2="430" stroke="url(#laserGradBubora)" class="laser-line" id="rayBubora" />
+            <line x1="280" y1="280" x2="110" y2="130" stroke="url(#laserGradSayora)" class="laser-line" id="raySayora" />
+
+            <defs>
+              <linearGradient id="laserGradCheckra" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.9"/>
+              </linearGradient>
+              <linearGradient id="laserGradHomora" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.9"/>
+              </linearGradient>
+              <linearGradient id="laserGradBubora" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ec4899" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#ec4899" stop-opacity="0.9"/>
+              </linearGradient>
+              <linearGradient id="laserGradSayora" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#10b981" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#10b981" stop-opacity="0.9"/>
+              </linearGradient>
+            </defs>
+          </svg>
+
+          <!-- Central Holographic Core -->
+          <div class="core" onclick="enterUniverseZoom()" title="Click to Enter the NIVORA Universe">
+            <div class="core-inner-ring"></div>
+            <img src="assets/images/nivora-logo.png" alt="NIVORA Core Symbol">
+            <div class="core-label">
+              <b>NIVORA</b>
+              <span>DIGITAL CORE</span>
+            </div>
+          </div>
+
+          <!-- 4 Interactive Product Satellite Nodes -->
+          <div class="satellite s-checkra" onclick="openConceptModal('checkra')" title="Explore CHECKRA Concept">
+            <div class="sat-icon-wrap">
+              <img src="assets/images/checkra-emblem.png" alt="CHECKRA">
+            </div>
+            <span class="sat-tag">CHECKRA &middot; Live</span>
+          </div>
+
+          <div class="satellite s-homora" onclick="openConceptModal('homora')" title="Explore HOMORA Concept">
+            <div class="sat-icon-wrap">
+              <img src="assets/images/homora-logo.png" alt="HOMORA">
+            </div>
+            <span class="sat-tag">HOMORA &middot; Active</span>
+          </div>
+
+          <div class="satellite s-bubora" onclick="openConceptModal('bubora')" title="Explore BUBORA Concept">
+            <div class="sat-icon-wrap">
+              <img src="assets/images/bubora-logo.png" alt="BUBORA">
+            </div>
+            <span class="sat-tag">BUBORA &middot; Live</span>
+          </div>
+
+          <div class="satellite s-sayora" onclick="openConceptModal('sayora')" title="Explore SAYORA Concept">
+            <div class="sat-icon-wrap">
+              <img src="assets/images/sayora-emblem.png" alt="SAYORA">
+            </div>
+            <span class="sat-tag">SAYORA &middot; Concept</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+       SECTION 01: PRODUCTS WITH A PURPOSE (#products)
+       THE PRODUCT CONSTELLATION
+       ========================================================= -->
+    <section class="section" id="products">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">01 &middot; The Product Constellation</div>
+            <h2>Products with<br><span class="grad-accent">a Purpose.</span></h2>
+          </div>
+          <p>
+            Inside the NIVORA ecosystem, ideas transform into focused digital worlds. Each product addresses real human frictions with high-grade engineering, AI intelligence, and deliberate craftsmanship.
+          </p>
+        </div>
+
+        <div class="products-grid">
+          <!-- CARD 1: CHECKRA -->
+          <article class="world-card card-checkra">
+            <img src="assets/images/checkra-emblem.png" alt="" class="card-watermark">
+            <div class="world-art-wrap">
+              <img src="assets/images/checkra-logo.png" alt="CHECKRA logo" loading="lazy">
+            </div>
+
+            <div class="world-header">
+              <h3>CHECKRA <span class="formerly-tag">Formerly VeriWrite</span></h3>
+              <span class="status-badge badge-live">Live App</span>
+            </div>
+
+            <div class="world-tagline">
+              Writing Integrity &amp; <em class="editorial-accent">Plagiarism Intelligence</em>
+            </div>
+
+            <p class="world-desc">
+              Advanced verification engine designed to check, verify, and elevate written work through multi-layer plagiarism detection, source authenticity signals, and AI-assisted integrity scoring.
+            </p>
+
+            <div class="world-capabilities">
+              <span class="cap-pill">Multi-Source Cross-Check</span>
+              <span class="cap-pill">Citation Lineage</span>
+              <span class="cap-pill">Originality Telemetry</span>
+              <span class="cap-pill">Context-Aware Match</span>
+            </div>
+
+            <div class="world-actions">
+              <button type="button" class="btn-concept" onclick="openConceptModal('checkra')">
+                <span>Explore Concept</span>
+                <span class="btn-arrow">&rarr;</span>
+              </button>
+              <a class="world-link" href="https://checkra-xi.vercel.app/" target="_blank" rel="noopener noreferrer">
+                <span>Launch App</span>
+                <span>&nearr;</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- CARD 2: HOMORA -->
+          <article class="world-card card-homora">
+            <img src="assets/images/homora-logo.png" alt="" class="card-watermark">
+            <div class="world-art-wrap">
+              <img src="assets/images/homora-logo.png" alt="HOMORA logo" loading="lazy">
+            </div>
+
+            <div class="world-header">
+              <h3>HOMORA</h3>
+              <span class="status-badge badge-dev">Active Prototype</span>
+            </div>
+
+            <div class="world-tagline">
+              Smart Living &amp; <em class="editorial-accent">Shared Finance</em>
+            </div>
+
+            <p class="world-desc">
+              AI-powered financial harmony platform for shared households, roommates, and co-living spaces &mdash; effortlessly coordinating contributions, expenses, and home management.
+            </p>
+
+            <div class="world-capabilities">
+              <span class="cap-pill">FairShare Split Engine</span>
+              <span class="cap-pill">Automated Ledger</span>
+              <span class="cap-pill">Household Chores Sync</span>
+              <span class="cap-pill">Dispute-Free Accounting</span>
+            </div>
+
+            <div class="world-actions">
+              <button type="button" class="btn-concept" onclick="openConceptModal('homora')">
+                <span>Explore Concept</span>
+                <span class="btn-arrow">&rarr;</span>
+              </button>
+              <a class="world-link" href="https://homora-ai.vercel.app/" target="_blank" rel="noopener noreferrer">
+                <span>Launch App</span>
+                <span>&nearr;</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- CARD 3: BUBORA -->
+          <article class="world-card card-bubora">
+            <img src="assets/images/bubora-logo.png" alt="" class="card-watermark">
+            <div class="world-art-wrap">
+              <img src="assets/images/bubora-logo.png" alt="BUBORA logo" loading="lazy">
+            </div>
+
+            <div class="world-header">
+              <h3>BUBORA</h3>
+              <span class="status-badge badge-live">Live App</span>
+            </div>
+
+            <div class="world-tagline">
+              A Private Digital Space for <em class="editorial-accent">Couples</em>
+            </div>
+
+            <p class="world-desc">
+              An intimate digital sanctuary engineered for two &mdash; uniting private messaging, shared memories, collaborative bucket lists, and relationship milestones away from social media noise.
+            </p>
+
+            <div class="world-capabilities">
+              <span class="cap-pill">Encrypted Dual-Vault</span>
+              <span class="cap-pill">Shared TimeCapsule</span>
+              <span class="cap-pill">Mood Resonance</span>
+              <span class="cap-pill">Zero Third-Party Ads</span>
+            </div>
+
+            <div class="world-actions">
+              <button type="button" class="btn-concept" onclick="openConceptModal('bubora')">
+                <span>Explore Concept</span>
+                <span class="btn-arrow">&rarr;</span>
+              </button>
+              <a class="world-link" href="https://bubora.netlify.app/" target="_blank" rel="noopener noreferrer">
+                <span>Launch App</span>
+                <span>&nearr;</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- CARD 4: SAYORA -->
+          <article class="world-card card-sayora">
+            <img src="assets/images/sayora-emblem.png" alt="" class="card-watermark">
+            <div class="world-art-wrap">
+              <img src="assets/images/sayora-logo.png" alt="SAYORA logo" loading="lazy">
+            </div>
+
+            <div class="world-header">
+              <h3>SAYORA</h3>
+              <span class="status-badge badge-dev">Concept &middot; In Dev</span>
+            </div>
+
+            <div class="world-tagline">
+              Financial Resilience for <em class="editorial-accent">Workers &amp; Communities</em>
+            </div>
+
+            <p class="world-desc">
+              Social impact fintech initiative architected to shield informal laborers and delivery gig workers against income shocks, health emergencies, and catastrophic disruptions.
+            </p>
+
+            <div class="world-capabilities">
+              <span class="cap-pill">Micro-Safety Pools</span>
+              <span class="cap-pill">Parametric Payouts</span>
+              <span class="cap-pill">Emergency Buffer OS</span>
+              <span class="cap-pill">Community Shield</span>
+            </div>
+
+            <div class="world-actions">
+              <button type="button" class="btn-concept" onclick="openConceptModal('sayora')">
+                <span>Explore Concept</span>
+                <span class="btn-arrow">&rarr;</span>
+              </button>
+              <span class="world-link" style="color:var(--text-muted); cursor:not-allowed;">
+                <span>In Development</span>
+              </span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+       SECTION 02: METHODOLOGY & CRAFT (#about)
+       LIFECYCLE PIPELINE PATHWAY + 3 PILLARS
+       ========================================================= -->
+    <section class="section" id="about">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">02 &middot; Methodology &amp; Craft</div>
+            <h2>Building What<br><span class="grad-accent">Comes Next.</span></h2>
+          </div>
+          <p>
+            NIVORA is an independent, founder-led ecosystem where ideas move with purpose from theoretical notebooks into scalable, production-grade products that solve real human frictions.
+          </p>
+        </div>
+
+        <!-- 5-STAGE LIFECYCLE PATHWAY -->
+        <div class="pipeline-wrapper">
+          <div class="pipeline-header">
+            <h3>The NIVORA Lifecycle Pipeline</h3>
+            <p>From initial spark to lasting social footprint &mdash; every product in the universe traverses five deliberate stages of creation.</p>
+          </div>
+
+          <div class="pipeline-pathway">
+            <div class="pathway-circuit-line">
+              <div class="pathway-laser-pulse"></div>
+            </div>
+
+            <div class="pipe-step-node">
+              <div class="pipe-node-badge">STAGE 01</div>
+              <b>Idea</b>
+              <p>Identifying unaddressed frictions in finance, writing integrity, relationships, and modern labor markets.</p>
+            </div>
+
+            <div class="pipe-step-node">
+              <div class="pipe-node-badge">STAGE 02</div>
+              <b>Design</b>
+              <p>Crafting high-fidelity, cinematic digital interfaces rooted in intuitive glassmorphism and clear visual hierarchy.</p>
+            </div>
+
+            <div class="pipe-step-node">
+              <div class="pipe-node-badge">STAGE 03</div>
+              <b>Build</b>
+              <p>Architecting resilient software systems using modern web frameworks, AI models, and clean engineering paradigms.</p>
+            </div>
+
+            <div class="pipe-step-node">
+              <div class="pipe-node-badge">STAGE 04</div>
+              <b>Refine</b>
+              <p>Refining functional prototypes into cohesive, standalone digital universes with distinct brand identities.</p>
+            </div>
+
+            <div class="pipe-step-node">
+              <div class="pipe-node-badge">STAGE 05</div>
+              <b>Impact</b>
+              <p>Deploying solutions that protect integrity, empower households, strengthen relationships, and shield communities.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 METHODOLOGY PILLARS -->
+        <div class="methodology-grid">
+          <div class="meth-card">
+            <h3>Practical Technology</h3>
+            <p>
+              Technology is built to solve actual, measurable human problems &mdash; not to chase temporary tech hype or produce discardable features.
+            </p>
+          </div>
+
+          <div class="meth-card">
+            <h3>AI &amp; Intelligence</h3>
+            <p>
+              Integrating modern machine learning and contextual reasoning into everyday workflows &mdash; making verification, financial tracking, and connection effortless.
+            </p>
+          </div>
+
+          <div class="meth-card">
+            <h3>Deliberate Craftsmanship</h3>
+            <p>
+              Every layout, animation, database schema, and micro-interaction is executed with obsessive care for durability, speed, and aesthetic refinement.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+       SECTION 03: THE ARCHITECT (#portfolio)
+       ========================================================= -->
+    <section class="section" id="portfolio">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">03 &middot; The Architect</div>
+            <h2>Meet the<br><span class="grad-accent">Builder.</span></h2>
+          </div>
+          <p>
+            NIVORA is founder-led. The vision, architectural direction, design language, and execution are driven directly by Nivas Bennabatthula.
+          </p>
+        </div>
+
+        <div class="portfolio-grid">
+          <div class="founder-image-wrapper">
+            <div class="founder-halo"></div>
+            <div class="corner-bracket bracket-tl"></div>
+            <div class="corner-bracket bracket-tr"></div>
+            <div class="corner-bracket bracket-bl"></div>
+            <div class="corner-bracket bracket-br"></div>
+            <img src="assets/images/founder-nivas.png" alt="Nivas Bennabatthula &mdash; Founder &amp; Architect of NIVORA">
+          </div>
+
+          <div class="founder-content">
+            <div class="founder-eyebrow">// FOUNDER &middot; PRODUCT BUILDER</div>
+            <h3 class="founder-name">Nivas <span class="grad-nivora">Bennabatthula</span></h3>
+            <div class="founder-titles">
+              <span>Founder &amp; Architect</span> &bull; 
+              <span>Product Builder</span> &bull; 
+              <span>Finance &amp; Tech Enthusiast</span>
+            </div>
+
+            <p class="founder-bio">
+              Nivas is building NIVORA as a sanctuary where ambitious ideas transcend notes and prototypes to become tangible, intelligent software. Driven by a deep curiosity at the intersection of quantitative finance, intuitive interface design, and artificial intelligence, he crafts products from first principles &mdash; obsessive about craft, execution, and lasting purpose.
+            </p>
+
+            <div class="founder-pills">
+              <span class="fpill">Autonomous Systems</span>
+              <span class="fpill">Product Strategy</span>
+              <span class="fpill">Full-Stack Architecture</span>
+              <span class="fpill">AI Integrations</span>
+              <span class="fpill">Design Systems</span>
+              <span class="fpill">Fintech Mechanisms</span>
+            </div>
+
+            <div class="founder-quote">
+              &ldquo;True innovation is never about adding noise to an already loud world. It is about distilling complex human challenges into products so elegant and natural they feel inevitable.&rdquo;
+            </div>
+
+            <a class="btn primary" href="https://nivas2703.vercel.app/" target="_blank" rel="noopener noreferrer">
+              <span>Visit Official Founder Portfolio</span>
+              <span class="btn-arrow">&nearr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+       SECTION 04: ECOSYSTEM PHILOSOPHY & ARCHITECTURE (#vision)
+       ========================================================= -->
+    <section class="section" id="vision">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">04 &middot; Ecosystem Philosophy &amp; Architecture</div>
+            <h2>One Universe.<br><span class="grad-accent">Different Possibilities.</span></h2>
+          </div>
+          <p>
+            A multi-dimensional ecosystem uniting distinct product worlds under a singular technological thesis: purposeful intelligence and immaculate execution.
+          </p>
+        </div>
+
+        <div class="central-thesis-wrap">
+          <div class="central-thesis-banner">
+            &ldquo;Ideas become products when <span class="grad-nivora">technology meets purpose.</span>&rdquo;
+          </div>
+          <div class="central-thesis-sub">// THE CORE OPERATING THESIS OF NIVORA</div>
+        </div>
+
+        <div class="philosophy-constellation">
+          <div class="constellation-grid">
+            <!-- CHECKRA NODE -->
+            <div class="constellation-node node-checkra">
+              <span class="node-theme-tag">INTEGRITY</span>
+              <h4>CHECKRA</h4>
+              <p>Writing Integrity &amp; AI Plagiarism Intelligence &mdash; safeguarding truth and authenticity across scholarly and creative content.</p>
+            </div>
+
+            <!-- HOMORA NODE -->
+            <div class="constellation-node node-homora">
+              <span class="node-theme-tag">HARMONY</span>
+              <h4>HOMORA</h4>
+              <p>Shared Living &amp; Financial OS &mdash; automating collaborative household contributions and removing domestic friction.</p>
+            </div>
+
+            <!-- BUBORA NODE -->
+            <div class="constellation-node node-bubora">
+              <span class="node-theme-tag">CONNECTION</span>
+              <h4>BUBORA</h4>
+              <p>Couples Private Digital Sanctuary &mdash; preserving intimacy, shared memories, and emotional resonance in an ad-free space.</p>
+            </div>
+
+            <!-- SAYORA NODE -->
+            <div class="constellation-node node-sayora">
+              <span class="node-theme-tag">RESILIENCE</span>
+              <h4>SAYORA</h4>
+              <p>Worker Resilience &amp; Social Protection &mdash; architecting community micro-safety buffers for vulnerable gig workforces.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Pillars -->
+        <div class="ecosystem-pillars-grid">
+          <div class="eco-pillar-card">
+            <h4>Autonomous Utility</h4>
+            <p>Every product operates with deep functional autonomy, reducing human friction through intelligent automation.</p>
+          </div>
+          <div class="eco-pillar-card">
+            <h4>Human-First Privacy</h4>
+            <p>Zero intrusive tracking, zero data monetization. Products are engineered as private digital sanctuaries.</p>
+          </div>
+          <div class="eco-pillar-card">
+            <h4>Cross-Product Synergy</h4>
+            <p>Unified design philosophy, shared design systems, and consistent architectural principles across all creations.</p>
+          </div>
+          <div class="eco-pillar-card">
+            <h4>Founder-Driven Velocity</h4>
+            <p>Direct architectural oversight by Nivas ensures uncompromised quality and rapid innovation cadence.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+       SECTION 05: FOLIVIO (#folivio)
+       CAREER BRANDING · DIGITAL PRESENCE
+       ========================================================= -->
+    <section class="section" id="folivio">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">05 &middot; Beyond NIVORA</div>
+            <h2>Build your<br><span class="grad-accent">Career Presence.</span></h2>
+          </div>
+          <p>
+            FOLIVIO is an independent professional career-branding service founded by Nivas &mdash; helping students, freshers, and professionals turn their education, skills, projects, certifications, and experience into polished career profiles.
+          </p>
+        </div>
+
+        <div class="folivio-banner">
+          <div class="folivio-logo-wrap">
+            <img src="assets/images/folivio-logo.webp" alt="FOLIVIO Official Brand Logo" loading="lazy">
+          </div>
+
+          <div class="folivio-content">
+            <h3>FOLIVIO</h3>
+            <div class="folivio-tagline">
+              Build. <b>Showcase.</b> Grow.
+            </div>
+            <p class="folivio-desc">
+              Professional career branding for ambitious individuals who want their work, credentials, and digital footprint to look as formidable online as they are on paper.
+            </p>
+            <a class="btn primary" href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
+              <span>Connect on Instagram</span>
+              <span class="btn-arrow">&nearr;</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="folivio-services-grid">
+          <div class="folivio-service-card">
+            <h4>Professional Resumes</h4>
+            <p>Clean, ATS-friendly resume architectures that communicate impact, precision, and verified competence to hiring leads.</p>
+          </div>
+          <div class="folivio-service-card">
+            <h4>Personal Portfolios</h4>
+            <p>High-conversion project showcases that turn coursework, engineering builds, and internships into compelling proof-of-work.</p>
+          </div>
+          <div class="folivio-service-card">
+            <h4>LinkedIn Makeovers</h4>
+            <p>Optimized headlines, strategic summaries, and structured experience blocks that attract recruiters and founders.</p>
+          </div>
+          <div class="folivio-service-card">
+            <h4>Portfolio Websites</h4>
+            <p>Bespoke, cinematic personal web presences that stand out in competitive software and technology applicant pools.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+       SECTION 06: CONTACT (#contact)
+       DIGITAL PORTAL & TRANSMISSION POINT
+       ========================================================= -->
+    <section class="section" id="contact">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">06 &middot; Collaboration &amp; Inquiries</div>
+            <h2>Have an Idea?<br><span class="grad-accent">Let's Build It.</span></h2>
+          </div>
+          <p>
+            NIVORA is always exploring new ideas, products, and possibilities. Whether you are interested in a product collaboration, technology discussion, or ecosystem partnership, let us connect.
+          </p>
+        </div>
+
+        <div class="contact-wrapper">
+          <div class="contact-info-panel">
+            <h3>Enter the Universe.</h3>
+            <p>
+              Connect directly with Nivas Bennabatthula regarding NIVORA initiatives, product development, or new technology ventures.
+            </p>
+
+            <div class="contact-methods">
+              <a class="contact-card-link" href="https://nivas2703.vercel.app/" target="_blank" rel="noopener noreferrer">
+                <div class="ccl-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                  </svg>
+                </div>
+                <div class="ccl-text">
+                  <b>Official Founder Website</b>
+                  <span>Explore Nivas's projects &amp; profile</span>
+                </div>
+              </a>
+            </div>
+
+            <div class="folivio-redirect-notice">
+              <strong>Looking for Career Branding?</strong>
+              For resumes, portfolios, and LinkedIn profile makeovers, please reach out directly through the official <a href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">FOLIVIO Instagram</a>.
+            </div>
+          </div>
+
+          <div class="contact-form-panel">
+            <form id="nivoraContactForm" onsubmit="handleContactSubmit(event)">
+              <div class="form-group">
+                <label for="contactName">Your Name</label>
+                <input type="text" id="contactName" class="form-control" placeholder="e.g. Alex Morgan" required>
+              </div>
+
+              <div class="form-group">
+                <label for="contactEmail">Email Address</label>
+                <input type="email" id="contactEmail" class="form-control" placeholder="alex@example.com" required>
+              </div>
+
+              <div class="form-group">
+                <label for="contactSubject">Area of Interest</label>
+                <select id="contactSubject" class="form-control">
+                  <option value="Product Collaboration">Product Collaboration</option>
+                  <option value="CHECKRA Discussion">CHECKRA Writing Integrity</option>
+                  <option value="HOMORA Shared Finance">HOMORA Shared Living OS</option>
+                  <option value="BUBORA Platform">BUBORA Private Space</option>
+                  <option value="SAYORA Social Impact">SAYORA Financial Shield</option>
+                  <option value="Technology & Architecture">Technology &amp; Architecture</option>
+                  <option value="Other Inquiries">General / Other Inquiry</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="contactMessage">Message / Idea Description</label>
+                <textarea id="contactMessage" class="form-control" placeholder="Tell us about your project, idea, or how we might collaborate..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit" id="contactSubmitBtn">
+                <span>Start a Conversation &rarr;</span>
+              </button>
+
+              <div class="form-toast" id="contactToast"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-brand">
+            <img src="assets/images/nivora-logo.png" alt="NIVORA Logo" class="nav-brand-logo">
+            <div class="nav-brand-text">
+              <span class="nav-brand-title">NIVORA</span>
+              <span class="nav-brand-tag">3D Universe v3.5</span>
+            </div>
+          </div>
+          <p>
+            Turning ideas into intelligent products. An independent technology universe architected and engineered by Nivas Bennabatthula.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Ecosystem</h4>
+          <ul>
+            <li><a href="https://checkra-xi.vercel.app/" target="_blank" rel="noopener noreferrer">CHECKRA</a></li>
+            <li><a href="https://homora-ai.vercel.app/" target="_blank" rel="noopener noreferrer">HOMORA</a></li>
+            <li><a href="https://bubora.netlify.app/" target="_blank" rel="noopener noreferrer">BUBORA</a></li>
+            <li><a href="#products">SAYORA</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#hero">Universe Core</a></li>
+            <li><a href="#products">Product Constellation</a></li>
+            <li><a href="#about">Methodology &amp; Craft</a></li>
+            <li><a href="#portfolio">The Architect</a></li>
+            <li><a href="#vision">Ecosystem Architecture</a></li>
+            <li><a href="#folivio">FOLIVIO</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Initiatives</h4>
+          <ul>
+            <li><a href="https://nivas2703.vercel.app/" target="_blank" rel="noopener noreferrer">Nivas Bennabatthula</a></li>
+            <li><a href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">FOLIVIO Career Branding</a></li>
+            <li><a href="#contact">Collaboration &amp; Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 NIVORA &mdash; Built with deliberate craft by Nivas Bennabatthula. All rights reserved.</div>
+        <div>ONE BUILDER &bull; MULTIPLE IDEAS &bull; DIFFERENT WORLDS &bull; ONE VISION</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       PREMIUM FIXED PRODUCT CONCEPT MODAL SYSTEM
+       ========================================================= -->
+  <div id="conceptModalOverlay" role="dialog" aria-modal="true" aria-hidden="true" data-lenis-prevent>
+    <header class="modal-top-bar">
+      <div class="modal-top-left">
+        <button type="button" class="btn-return-modal" onclick="closeConceptModal()" aria-label="Return to NIVORA Universe (ESC)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>Return to Universe</span>
+        </button>
+
+        <div class="modal-brand-subtle">
+          <span class="mbs-nivora">NIVORA &middot;</span>
+          <span class="mbs-product-name" id="modalTopProductName">CHECKRA</span>
+          <span class="mbs-status-badge" id="modalTopStatusBadge">Live App</span>
+        </div>
+      </div>
+
+      <nav class="modal-nav-tabs" aria-label="Modal In-World Navigation">
+        <button type="button" class="modal-nav-tab active" onclick="scrollModalSec('overview')">Overview</button>
+        <button type="button" class="modal-nav-tab" onclick="scrollModalSec('capabilities')">Capabilities</button>
+        <button type="button" class="modal-nav-tab" onclick="scrollModalSec('workflow')">Workflow</button>
+        <button type="button" class="modal-nav-tab" onclick="scrollModalSec('architecture')">Architecture</button>
+        <button type="button" class="modal-nav-tab" onclick="scrollModalSec('vision')">Vision</button>
+      </nav>
+
+      <div class="modal-top-right">
+        <a href="https://checkra-xi.vercel.app/" target="_blank" rel="noopener noreferrer" class="modal-launch-btn" id="modalLaunchBtn">
+          <span>Launch App</span>
+          <span class="btn-arrow">&nearr;</span>
+        </a>
+        <button type="button" class="modal-close-x" onclick="closeConceptModal()" aria-label="Close Modal (ESC)">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="modal-scrollable-body" id="modalScrollBody" data-lenis-prevent>
+      <!-- 1. CHECKRA MODAL VIEW -->
+      <div class="modal-product-view active" id="modal-view-checkra">
+        <div class="modal-hero-sec" id="msec-checkra-overview">
+          <div class="modal-kicker">// CONCEPT OVERVIEW &middot; WRITING INTEGRITY SPACE</div>
+          <h2>Empowering Writing Truth &amp; Source Accuracy</h2>
+          <div class="modal-lead-box">
+            CHECKRA is an AI-powered writing integrity and source verification platform designed to help students, researchers, educators, professionals, and content creators check, verify, and improve their writing in one connected workspace.
+          </div>
+        </div>
+
+        <div id="msec-checkra-capabilities">
+          <h3 class="modal-section-title">Engineered for Writing Truth &amp; Elevation</h3>
+          <div class="modal-caps-grid">
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+              <h4>Similarity Check</h4>
+              <p>Multi-level comparison analyzing exact matches, near phrasing, and semantic overlap across open web sources.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+              <h4>Source Verification</h4>
+              <p>Indexes live web resources to provide verifiable context, metadata, and direct citations for detected matches.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+              <h4>Document Analysis</h4>
+              <p>Unified native ingestion of PDF, DOCX, TXT, HTML, and Markdown files with preserved layout parsing.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+              <h4>AI Evidence Review</h4>
+              <p>Assists reviewers in evaluating matches, distinguishing valid citations and idioms from true duplication.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="msec-checkra-workflow">
+          <h3 class="modal-section-title">Workflow Architecture</h3>
+          <div class="modal-caps-grid">
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon">01</div>
+              <h4>Native Ingestion</h4>
+              <p>Upload documents or paste rich text into the secure client sandbox with instant word and token parsing.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon">02</div>
+              <h4>Multi-Vector Scan</h4>
+              <p>The core engine triggers parallel n-gram shingles, web crawling indexes, and embedding distance checks.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon">03</div>
+              <h4>Integrity Telemetry</h4>
+              <p>Visual split-pane telemetry displays side-by-side matching snippets, source domain validity, and trust score.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon">04</div>
+              <h4>Export &amp; Improve</h4>
+              <p>Generate shareable audit reports with highlighted improvements, citation suggestions, and verification badges.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. HOMORA MODAL VIEW -->
+      <div class="modal-product-view" id="modal-view-homora">
+        <div class="modal-hero-sec" id="msec-homora-overview">
+          <div class="modal-kicker">// CONCEPT OVERVIEW &middot; SHARED LIVING OS</div>
+          <h2>Smart Living &amp; Financial Harmony for Households</h2>
+          <div class="modal-lead-box">
+            HOMORA is an AI-powered financial harmony platform for shared households, roommates, and co-living spaces &mdash; effortlessly coordinating contributions, expenses, and domestic agreements without confrontation.
+          </div>
+        </div>
+
+        <div id="msec-homora-capabilities">
+          <h3 class="modal-section-title">Core Operating Capabilities</h3>
+          <div class="modal-caps-grid">
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+              <h4>FairShare Split Engine</h4>
+              <p>Custom split models (income-weighted, room-size based, or custom ratio) calculate equitable monthly balances.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg></div>
+              <h4>Automated Ledger</h4>
+              <p>Real-time shared expenditure tracker with multi-currency conversion, receipt OCR, and instant debt simplification.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></div>
+              <h4>Household Chore Sync</h4>
+              <p>Rotational cleaning and supply schedules balanced with financial contributions for transparent equity.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+              <h4>Dispute-Free Mediation</h4>
+              <p>Automated gentle nudges and neutral notifications eliminate interpersonal friction over money and bills.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. BUBORA MODAL VIEW -->
+      <div class="modal-product-view" id="modal-view-bubora">
+        <div class="modal-hero-sec" id="msec-bubora-overview">
+          <div class="modal-kicker">// CONCEPT OVERVIEW &middot; COUPLES PRIVATE SPACE</div>
+          <h2>An Intimate Digital Sanctuary for Two</h2>
+          <div class="modal-lead-box">
+            BUBORA is an intimate digital sanctuary engineered exclusively for two &mdash; uniting private messaging, shared memory vaults, collaborative bucket lists, and relationship milestones away from public social feeds and noise.
+          </div>
+        </div>
+
+        <div id="msec-bubora-capabilities">
+          <h3 class="modal-section-title">Sanctuary Features</h3>
+          <div class="modal-caps-grid">
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+              <h4>Encrypted Dual-Vault</h4>
+              <p>Zero-knowledge encrypted repository for private photographs, voice notes, letters, and relationship artifacts.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+              <h4>Shared TimeCapsule</h4>
+              <p>Chronological relationship roadmap documenting milestones, anniversary countdowns, and future travel dreams.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div>
+              <h4>Mood Resonance</h4>
+              <p>Subtle emotional check-ins that let partners express their feelings, support needs, and appreciation quietly.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+              <h4>Zero Advertisements</h4>
+              <p>Strictly ad-free, private environment without social algorithms, surveillance metrics, or external audience pressure.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. SAYORA MODAL VIEW -->
+      <div class="modal-product-view" id="modal-view-sayora">
+        <div class="modal-hero-sec" id="msec-sayora-overview">
+          <div class="modal-kicker">// CONCEPT OVERVIEW &middot; SOCIAL IMPACT &amp; FINANCIAL SHIELD</div>
+          <h2>Financial Resilience for Workers &amp; Communities</h2>
+          <div class="modal-lead-box">
+            SAYORA is a social impact fintech initiative architected to shield informal laborers, gig delivery workers, and daily wage earners against sudden income shocks, health emergencies, and catastrophic climate disruptions.
+          </div>
+        </div>
+
+        <div id="msec-sayora-capabilities">
+          <h3 class="modal-section-title">Resilience Mechanisms</h3>
+          <div class="modal-caps-grid">
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+              <h4>Micro-Safety Pools</h4>
+              <p>Decentralized peer safety buffers that pool minute daily contributions into high-resilience community lifelines.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
+              <h4>Parametric Payouts</h4>
+              <p>Automated claim triggers linked to adverse weather events, extreme heat index, or verified mobility platform outages.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg></div>
+              <h4>Emergency Buffer OS</h4>
+              <p>Zero-predatory-interest micro-drawdown facilities designed to stave off local loan shark cycles during emergencies.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+              <h4>Community Shield Network</h4>
+              <p>Grassroots mutual aid coordination linking worker federations, community centers, and non-profit micro-funds.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       THREE.JS + GSAP + LENIS 3D UNIVERSE ENGINE
+       ========================================================= -->
+  <script>
+    /* -------------------------------------------------------------
+       1. LENIS SMOOTH SCROLL INITIALIZATION
+       ------------------------------------------------------------- */
+    let lenis;
+    try {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1.0,
+        touchMultiplier: 2.0,
+      });
+
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    } catch(err) {
+      console.warn('Lenis smooth scroll fallback:', err);
+    }
+
+    /* -------------------------------------------------------------
+       2. THREE.JS 3D UNIVERSE & CAMERA CONTROLLER
+       ------------------------------------------------------------- */
+    let scene, camera, renderer;
+    let starParticles, particleGeo;
+    let coreGroup, gyroRing1, gyroRing2;
+    let productNodes = {};
+    let mouseX = 0, mouseY = 0;
+    let targetMouseX = 0, targetMouseY = 0;
+    let isZooming = false;
+    let scrollProgress = 0;
+
+    function initThreeUniverse() {
+      const canvas = document.getElementById('webglCanvas');
+      if (!canvas || !window.THREE) return;
+
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      // Scene & Camera
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 4000);
+      camera.position.set(0, 0, 600);
+
+      // WebGL Renderer with antialiasing and alpha
+      renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance'
+      });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(width, height);
+
+      // 1. STARFIELD & COSMIC PARTICLES (BufferGeometry)
+      const particleCount = window.innerWidth < 768 ? 1200 : 2600;
+      particleGeo = new THREE.BufferGeometry();
+      const positions = new Float32Array(particleCount * 3);
+      const colors = new Float32Array(particleCount * 3);
+      const sizes = new Float32Array(particleCount);
+
+      const palette = [
+        new THREE.Color('#ffffff'),
+        new THREE.Color('#c7d2fe'),
+        new THREE.Color('#8b5cf6'),
+        new THREE.Color('#22d3ee'),
+        new THREE.Color('#4f7cff'),
+        new THREE.Color('#ec4899'),
+        new THREE.Color('#10b981')
+      ];
+
+      for (let i = 0; i < particleCount; i++) {
+        // Deep universe field distribution
+        positions[i * 3] = (Math.random() - 0.5) * 2800;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 2200;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 3600 - 400;
+
+        const col = palette[Math.floor(Math.random() * palette.length)];
+        colors[i * 3] = col.r;
+        colors[i * 3 + 1] = col.g;
+        colors[i * 3 + 2] = col.b;
+
+        sizes[i] = Math.random() * 2.8 + 0.8;
+      }
+
+      particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      // Circular particle texture generator
+      const canvasTexture = document.createElement('canvas');
+      canvasTexture.width = 32;
+      canvasTexture.height = 32;
+      const ctx = canvasTexture.getContext('2d');
+      const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+      grad.addColorStop(0, 'rgba(255,255,255,1)');
+      grad.addColorStop(0.3, 'rgba(255,255,255,0.7)');
+      grad.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(16, 16, 16, 0, Math.PI * 2);
+      ctx.fill();
+
+      const particleTex = new THREE.CanvasTexture(canvasTexture);
+
+      const particleMat = new THREE.PointsMaterial({
+        size: 3.2,
+        vertexColors: true,
+        map: particleTex,
+        transparent: true,
+        opacity: 0.8,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+      });
+
+      starParticles = new THREE.Points(particleGeo, particleMat);
+      scene.add(starParticles);
+
+      // 2. 3D HOLOGRAPHIC NIVORA CORE (at z = 0)
+      coreGroup = new THREE.Group();
+      coreGroup.position.set(0, 0, 0);
+
+      // Outer geometric gyroscopic cages
+      const gyroGeo1 = new THREE.IcosahedronGeometry(75, 1);
+      const gyroMat1 = new THREE.MeshBasicMaterial({
+        color: 0x8b5cf6,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.35
+      });
+      gyroRing1 = new THREE.Mesh(gyroGeo1, gyroMat1);
+      coreGroup.add(gyroRing1);
+
+      const gyroGeo2 = new THREE.TorusGeometry(95, 0.8, 16, 64);
+      const gyroMat2 = new THREE.MeshBasicMaterial({
+        color: 0x22d3ee,
+        transparent: true,
+        opacity: 0.45
+      });
+      gyroRing2 = new THREE.Mesh(gyroGeo2, gyroMat2);
+      gyroRing2.rotation.x = Math.PI / 3;
+      coreGroup.add(gyroRing2);
+
+      // Inner glowing core sphere
+      const sphereGeo = new THREE.SphereGeometry(55, 32, 32);
+      const sphereMat = new THREE.MeshStandardMaterial({
+        color: 0x070b24,
+        roughness: 0.15,
+        metalness: 0.9,
+        emissive: 0x4f7cff,
+        emissiveIntensity: 0.3,
+        transparent: true,
+        opacity: 0.85
+      });
+      const coreSphere = new THREE.Mesh(sphereGeo, sphereMat);
+      coreGroup.add(coreSphere);
+
+      // Lighting
+      const coreLight1 = new THREE.PointLight(0x8b5cf6, 3, 600);
+      coreLight1.position.set(60, 60, 60);
+      coreGroup.add(coreLight1);
+
+      const coreLight2 = new THREE.PointLight(0x22d3ee, 3, 600);
+      coreLight2.position.set(-60, -60, 60);
+      coreGroup.add(coreLight2);
+
+      scene.add(coreGroup);
+
+      // 3. 4 ORBITING 3D PRODUCT NODES
+      const nodeConfigs = [
+        { id: 'checkra', pos: [220, 110, 20], color: 0x8b5cf6 },
+        { id: 'homora', pos: [240, -120, -30], color: 0x06b6d4 },
+        { id: 'bubora', pos: [-210, -130, 30], color: 0xec4899 },
+        { id: 'sayora', pos: [-230, 120, -20], color: 0x10b981 }
+      ];
+
+      nodeConfigs.forEach(cfg => {
+        const nodeGrp = new THREE.Group();
+        nodeGrp.position.set(cfg.pos[0], cfg.pos[1], cfg.pos[2]);
+
+        const nodeSphere = new THREE.Mesh(
+          new THREE.SphereGeometry(14, 16, 16),
+          new THREE.MeshBasicMaterial({ color: cfg.color, wireframe: true, transparent: true, opacity: 0.7 })
+        );
+        nodeGrp.add(nodeSphere);
+
+        const nodeGlow = new THREE.PointLight(cfg.color, 1.5, 200);
+        nodeGrp.add(nodeGlow);
+
+        // Laser beam connecting core to node
+        const lineGeo = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(0, 0, 0),
+          new THREE.Vector3(cfg.pos[0], cfg.pos[1], cfg.pos[2])
+        ]);
+        const lineMat = new THREE.LineDashedMaterial({
+          color: cfg.color,
+          dashSize: 6,
+          gapSize: 4,
+          transparent: true,
+          opacity: 0.4
+        });
+        const laser = new THREE.Line(lineGeo, lineMat);
+        laser.computeLineDistances();
+        scene.add(laser);
+
+        coreGroup.add(nodeGrp);
+        productNodes[cfg.id] = { group: nodeGrp, light: nodeGlow, basePos: cfg.pos };
+      });
+
+      // Window resize
+      window.addEventListener('resize', onWindowResize);
+    }
+
+    function onWindowResize() {
+      if (!camera || !renderer) return;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+
+    // Mouse movement listener
+    window.addEventListener('mousemove', (e) => {
+      targetMouseX = (e.clientX - window.innerWidth / 2) / (window.innerWidth / 2);
+      targetMouseY = (e.clientY - window.innerHeight / 2) / (window.innerHeight / 2);
+    });
+
+    // Scroll listener for Camera Z Travel
+    window.addEventListener('scroll', () => {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      scrollProgress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+      updateTelemetryOnScroll(window.scrollY);
+    }, { passive: true });
+
+    /* -------------------------------------------------------------
+       3. THE BIG ZOOM — CINEMATIC GSAP + THREE.JS WARP
+       ------------------------------------------------------------- */
+    function enterUniverseZoom() {
+      if (isZooming || !window.gsap || !camera) return;
+      isZooming = true;
+
+      // Animate camera zooming directly into and through the core
+      gsap.timeline({
+        onComplete: () => {
+          isZooming = false;
+        }
+      })
+      .to(camera.position, {
+        z: -380,
+        x: targetMouseX * 40,
+        y: targetMouseY * 30,
+        duration: 1.6,
+        ease: 'power3.inOut'
+      }, 0)
+      .to(coreGroup.scale, {
+        x: 4.5,
+        y: 4.5,
+        z: 4.5,
+        duration: 1.2,
+        ease: 'power2.in'
+      }, 0)
+      .to(coreGroup.rotation, {
+        y: coreGroup.rotation.y + Math.PI,
+        duration: 1.6,
+        ease: 'power2.inOut'
+      }, 0);
+
+      // Smooth scroll to the products section
+      if (lenis) {
+        lenis.scrollTo('#products', { duration: 1.8, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+      } else {
+        const prod = document.getElementById('products');
+        if (prod) prod.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    /* -------------------------------------------------------------
+       4. ANIMATION RENDER LOOP (60 FPS TARGET)
+       ------------------------------------------------------------- */
+    function animateUniverse(time) {
+      requestAnimationFrame(animateUniverse);
+
+      // Smooth mouse lerp
+      mouseX += (targetMouseX - mouseX) * 0.05;
+      mouseY += (targetMouseY - mouseY) * 0.05;
+
+      // Three.js Core Rotation & Float
+      if (coreGroup) {
+        coreGroup.rotation.y += 0.003;
+        coreGroup.rotation.x = Math.sin(time * 0.0008) * 0.12;
+
+        if (gyroRing1) {
+          gyroRing1.rotation.x += 0.005;
+          gyroRing1.rotation.y += 0.007;
+        }
+        if (gyroRing2) {
+          gyroRing2.rotation.z += 0.006;
+        }
+      }
+
+      // Camera Position calculation (Scroll = 3D Space Travel)
+      if (camera && !isZooming) {
+        // As scrollProgress moves 0 -> 1, camera travels through the deep universe: z = 600 -> -2400
+        const targetZ = 600 - scrollProgress * 3000;
+        camera.position.z += (targetZ - camera.position.z) * 0.08;
+
+        // Mouse Parallax
+        const targetCamX = mouseX * 65;
+        const targetCamY = -mouseY * 45;
+        camera.position.x += (targetCamX - camera.position.x) * 0.06;
+        camera.position.y += (targetCamY - camera.position.y) * 0.06;
+        camera.lookAt(0, 0, camera.position.z - 400);
+      }
+
+      // Render WebGL frame
+      if (renderer && scene && camera) {
+        renderer.render(scene, camera);
+      }
+    }
+
+    // Start Three.js when loaded
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        initThreeUniverse();
+        requestAnimationFrame(animateUniverse);
+      });
+    } else {
+      initThreeUniverse();
+      requestAnimationFrame(animateUniverse);
+    }
+
+    /* -------------------------------------------------------------
+       5. CUSTOM DESKTOP 3D CURSOR ENGINE
+       ------------------------------------------------------------- */
+    (function initCustomCursor() {
+      const ring = document.getElementById('cursorRing');
+      const dot = document.getElementById('cursorDot');
+      if (!ring || !dot) return;
+
+      let mouseX = -100;
+      let mouseY = -100;
+      let ringX = -100;
+      let ringY = -100;
+
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        dot.style.left = mouseX + 'px';
+        dot.style.top = mouseY + 'px';
+      });
+
+      function loopCursor() {
+        ringX += (mouseX - ringX) * 0.16;
+        ringY += (mouseY - ringY) * 0.16;
+        ring.style.left = ringX + 'px';
+        ring.style.top = ringY + 'px';
+        requestAnimationFrame(loopCursor);
+      }
+      loopCursor();
+
+      const hoverTargets = document.querySelectorAll('a, button, .satellite, .world-card, .pipe-step-node, .constellation-node, .core');
+      hoverTargets.forEach(el => {
+        el.addEventListener('mouseenter', () => ring.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => ring.classList.remove('cursor-hover'));
+      });
+    })();
+
+    /* -------------------------------------------------------------
+       6. HERO 3D PARALLAX & CARD TILT ENGINE
+       ------------------------------------------------------------- */
+    (function init3DParallax() {
+      const heroStage = document.getElementById('hero3DStage');
+      if (heroStage) {
+        window.addEventListener('mousemove', (e) => {
+          const rect = heroStage.getBoundingClientRect();
+          const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+          const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+          heroStage.style.transform = `perspective(1200px) rotateX(${-y * 7}deg) rotateY(${x * 7}deg)`;
+        });
+        heroStage.addEventListener('mouseleave', () => {
+          heroStage.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg)';
+        });
+      }
+
+      // Card 3D tilt
+      document.querySelectorAll('.world-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+          const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+          card.style.transform = `perspective(1000px) translateY(-10px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) translateY(0px) rotateX(0deg) rotateY(0deg)';
+        });
+      });
+    })();
+
+    /* -------------------------------------------------------------
+       7. TELEMETRY & HUD UPDATE
+       ------------------------------------------------------------- */
+    function updateTelemetryOnScroll(scrollY) {
+      const text = document.getElementById('navTelemetryText');
+      const nav = document.getElementById('mainNav');
+      if (nav) {
+        if (scrollY > 50) nav.classList.add('scrolled');
+        else nav.classList.remove('scrolled');
+      }
+
+      if (!text) return;
+
+      const proSec = document.getElementById('products');
+      const abtSec = document.getElementById('about');
+      const porSec = document.getElementById('portfolio');
+      const visSec = document.getElementById('vision');
+      const folSec = document.getElementById('folivio');
+      const conSec = document.getElementById('contact');
+
+      if (conSec && scrollY >= conSec.offsetTop - 300) {
+        text.innerText = 'SECTOR: TRANSMIT';
+      } else if (folSec && scrollY >= folSec.offsetTop - 300) {
+        text.innerText = 'SECTOR: FOLIVIO';
+      } else if (visSec && scrollY >= visSec.offsetTop - 300) {
+        text.innerText = 'SECTOR: ECOSYSTEM';
+      } else if (porSec && scrollY >= porSec.offsetTop - 300) {
+        text.innerText = 'SECTOR: ARCHITECT';
+      } else if (abtSec && scrollY >= abtSec.offsetTop - 300) {
+        text.innerText = 'SECTOR: CRAFT';
+      } else if (proSec && scrollY >= proSec.offsetTop - 300) {
+        text.innerText = 'SECTOR: CONSTELLATION';
+      } else {
+        text.innerText = 'STATUS: ONLINE';
+      }
+    }
+
+    /* -------------------------------------------------------------
+       8. PRODUCT CONCEPT MODAL CONTROLLER
+       ------------------------------------------------------------- */
+    const productMeta = {
+      'checkra': {
+        name: 'CHECKRA',
+        badge: 'Live App',
+        url: 'https://checkra-xi.vercel.app/'
+      },
+      'homora': {
+        name: 'HOMORA',
+        badge: 'Active Prototype',
+        url: 'https://homora-ai.vercel.app/'
+      },
+      'bubora': {
+        name: 'BUBORA',
+        badge: 'Live App',
+        url: 'https://bubora.netlify.app/'
+      },
+      'sayora': {
+        name: 'SAYORA',
+        badge: 'Concept · In Dev',
+        url: ''
+      }
+    };
+
+    function openConceptModal(productId) {
+      const overlay = document.getElementById('conceptModalOverlay');
+      if (!overlay) return;
+
+      if (lenis) lenis.stop();
+
+      const info = productMeta[productId] || { name: productId.toUpperCase(), badge: 'Product', url: '' };
+      document.getElementById('modalTopProductName').innerText = info.name;
+      document.getElementById('modalTopStatusBadge').innerText = info.badge;
+
+      const launchBtn = document.getElementById('modalLaunchBtn');
+      if (info.url) {
+        launchBtn.style.display = 'inline-flex';
+        launchBtn.href = info.url;
+      } else {
+        launchBtn.style.display = 'none';
+      }
+
+      document.querySelectorAll('.modal-product-view').forEach(view => {
+        view.classList.remove('active');
+      });
+      const targetView = document.getElementById('modal-view-' + productId);
+      if (targetView) {
+        targetView.classList.add('active');
+      }
+
+      const scrollBody = document.getElementById('modalScrollBody');
+      if (scrollBody) scrollBody.scrollTop = 0;
+
+      document.body.classList.add('world-open');
+      overlay.classList.add('active');
+      overlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeConceptModal() {
+      const overlay = document.getElementById('conceptModalOverlay');
+      if (!overlay) return;
+
+      overlay.classList.remove('active');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('world-open');
+
+      if (lenis) lenis.start();
+    }
+
+    function scrollModalSec(secId) {
+      const activeView = document.querySelector('.modal-product-view.active');
+      if (!activeView) return;
+
+      const prodId = activeView.id.replace('modal-view-', '');
+      const targetEl = document.getElementById('msec-' + prodId + '-' + secId);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      document.querySelectorAll('.modal-nav-tab').forEach(t => t.classList.remove('active'));
+      const clickedTab = event?.target;
+      if (clickedTab) clickedTab.classList.add('active');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeConceptModal();
+      }
+    });
+
+    document.getElementById('conceptModalOverlay')?.addEventListener('click', (e) => {
+      if (e.target.id === 'conceptModalOverlay') {
+        closeConceptModal();
+      }
+    });
+
+    /* -------------------------------------------------------------
+       9. CONTACT FORM TRANSMISSION HANDLER
+       ------------------------------------------------------------- */
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('contactSubmitBtn');
+      const toast = document.getElementById('contactToast');
+      const origText = btn.innerHTML;
+
+      btn.innerHTML = '<span>Transmitting...</span>';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = '<span>Transmitted Successfully ✓</span>';
+        if (toast) {
+          toast.style.display = 'inline-block';
+          toast.innerText = 'Thank you. Your message has been dispatched directly to Nivas.';
+        }
+        e.target.reset();
+
+        setTimeout(() => {
+          btn.innerHTML = origText;
+          btn.disabled = false;
+          setTimeout(() => {
+            if (toast) toast.style.display = 'none';
+          }, 5000);
+        }, 3000);
+      }, 750);
+    }
+  </script>
+</body>
+</html>
+"""
+
+def build():
+    html = generate_3d_zoom_html()
+    desktop_path = "/Users/bennabathulanivas/Desktop/my projects/NIVORA/index.html"
+    downloads_path = "/Users/bennabathulanivas/Downloads/NIVORA/index.html"
+
+    with open(desktop_path, 'w', encoding='utf-8') as f:
+        f.write(html)
+    print(f"Generated {len(html)} bytes to {desktop_path}")
+
+    with open(downloads_path, 'w', encoding='utf-8') as f:
+        f.write(html)
+    print(f"Generated {len(html)} bytes to {downloads_path}")
+
+if __name__ == '__main__':
+    build()
