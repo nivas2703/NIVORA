@@ -1,0 +1,3731 @@
+# builder/assemble_ultimate_3d_site.py
+# NIVORA — ULTIMATE FUTURISTIC 3D REDESIGN MASTER BUILDER
+import os
+import sys
+
+builder_dir = os.path.dirname(os.path.abspath(__file__))
+if builder_dir not in sys.path:
+    sys.path.append(builder_dir)
+
+def generate_ultimate_html():
+    return """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIVORA — Turning Ideas Into Intelligent Products</title>
+  <meta name="description" content="NIVORA is the technology and innovation universe built by Nivas Bennabatthula — home to Checkra, Homora, Bubora, and Sayora.">
+  <link rel="icon" type="image/png" href="assets/images/nivora-logo.png">
+
+  <!-- GOOGLE FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       NIVORA ULTIMATE 3D DESIGN SYSTEM (APPLE + LINEAR + VERCEL)
+       ========================================================= */
+    :root {
+      --bg-space: #010206;
+      --bg-space-deep: #000103;
+      --text-main: #f8faff;
+      --text-secondary: #b8c0d9;
+      --text-muted: #747d99;
+      --text-dim: #454d63;
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.22);
+      --glass-surface: rgba(9, 13, 28, 0.65);
+      --glass-surface-dense: rgba(5, 7, 16, 0.94);
+      --accent-nivora: #6366f1;
+      --accent-glow: rgba(99, 102, 241, 0.35);
+
+      /* Product Identity Colors */
+      --color-checkra: #818cf8;
+      --glow-checkra: rgba(129, 140, 248, 0.35);
+      --color-homora: #06b6d4;
+      --glow-homora: rgba(6, 182, 212, 0.35);
+      --color-bubora: #ec4899;
+      --glow-bubora: rgba(236, 72, 153, 0.35);
+      --color-sayora: #10b981;
+      --glow-sayora: rgba(16, 185, 129, 0.35);
+
+      /* Typographic System */
+      --font-display: 'Space Grotesk', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-editorial: 'Instrument Serif', Georgia, serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-space);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: var(--bg-space);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      font-family: var(--font-body);
+    }
+
+    body.world-open {
+      overflow: hidden !important;
+      height: 100vh !important;
+    }
+
+    /* Editorial Serif Accent */
+    .editorial-accent {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: #ffffff;
+      display: inline-block;
+      padding: 0 2px;
+    }
+
+    /* Gradient Typography */
+    .grad-nivora {
+      background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 40%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .grad-accent {
+      background: linear-gradient(135deg, #ffffff 20%, #a5b4fc 60%, #67e8f9 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Background 3D Galaxy Canvas */
+    #universeCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      transition: filter 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s ease;
+    }
+
+    body.world-open #universeCanvas {
+      filter: blur(18px) brightness(0.18);
+      transform: scale(1.06);
+    }
+
+    .cosmic-nebula-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        radial-gradient(circle at 50% 12%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 85% 65%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 15% 75%, rgba(236, 72, 153, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.06) 0%, transparent 60%);
+      mix-blend-mode: screen;
+      opacity: 0.85;
+      transition: opacity 0.8s ease;
+    }
+
+    body.world-open .cosmic-nebula-glow {
+      opacity: 0.15;
+    }
+
+    /* Section Divider */
+    .section-divider {
+      height: 1px;
+      width: 100%;
+      background: linear-gradient(90deg, transparent 0%, var(--border-subtle) 50%, transparent 100%);
+      margin-bottom: 90px;
+    }
+
+    .section-head {
+      margin-bottom: 56px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      align-items: flex-end;
+    }
+
+    @media (max-width: 860px) {
+      .section-head {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+
+    .kicker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: #67e8f9;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4.2vw, 54px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+    }
+
+    .section-head p {
+      font-size: clamp(14.5px, 1.5vw, 17px);
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* =========================================================
+       NAVIGATION BAR
+       ========================================================= */
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      background: rgba(1, 2, 6, 0.65);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: all 0.3s ease;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .nav-brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.4));
+      transition: transform 0.3s ease;
+    }
+
+    .nav-brand:hover .nav-brand-logo {
+      transform: scale(1.08);
+    }
+
+    .nav-brand-title {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .nav-brand-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.025);
+      padding: 4px 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .nav-item {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-telemetry {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px solid rgba(16, 185, 129, 0.22);
+      border-radius: 999px;
+      color: #34d399;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+    }
+
+    .pulse-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #34d399;
+      box-shadow: 0 0 8px #34d399;
+      animation: hudPulse 2.4s infinite ease-in-out;
+    }
+
+    @keyframes hudPulse {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.35); opacity: 1; box-shadow: 0 0 12px #34d399; }
+    }
+
+    .btn-nav-explore {
+      font-family: var(--font-body);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      color: #ffffff;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .btn-nav-explore:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 24px rgba(99, 102, 241, 0.6);
+      color: #ffffff;
+    }
+
+    @media (max-width: 960px) {
+      .site-nav { padding: 12px 20px; }
+      .nav-links { display: none; }
+    }
+
+    /* =========================================================
+       HERO — THE INTERACTIVE 3D UNIVERSE
+       ========================================================= */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 130px 0 80px;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    @media (max-width: 960px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-actions, .hero-meta {
+        justify-content: center;
+      }
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.22em;
+      color: #93c5fd;
+      background: rgba(99, 102, 241, 0.08);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      padding: 5px 14px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .eyebrow i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #818cf8;
+      display: inline-block;
+      box-shadow: 0 0 8px #818cf8;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 7vw, 84px);
+      font-weight: 700;
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      color: #ffffff;
+      margin-bottom: 18px;
+    }
+
+    .hero-tagline-badge {
+      font-family: var(--font-display);
+      font-size: clamp(19px, 2.6vw, 28px);
+      font-weight: 500;
+      color: #e2e8f8;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+      line-height: 1.3;
+    }
+
+    .hero-copy {
+      font-family: var(--font-body);
+      font-size: clamp(15px, 1.6vw, 17.5px);
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-width: 580px;
+      margin-bottom: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      padding: 13px 26px;
+      border-radius: 999px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn.primary {
+      background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%);
+      color: #ffffff;
+      box-shadow: 0 0 24px rgba(99, 102, 241, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    }
+
+    .btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 32px rgba(99, 102, 241, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+      color: #ffffff;
+    }
+
+    .btn.secondary {
+      background: rgba(255, 255, 255, 0.04);
+      color: #e2e8f0;
+      border: 1px solid var(--border-subtle);
+      backdrop-filter: blur(12px);
+    }
+
+    .btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--border-hover);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .btn-arrow {
+      font-size: 14px;
+      transition: transform 0.2s ease;
+    }
+
+    .btn:hover .btn-arrow {
+      transform: translateX(3px);
+    }
+
+    /* Hero Meta Metrics */
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .hero-meta > div {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-meta strong {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 4px;
+    }
+
+    /* Hero 3D Orbital Universe Stage */
+    .hero-art {
+      position: relative;
+      width: 100%;
+      height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+    }
+
+    .orbit {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      pointer-events: none;
+      animation: rotateRing 32s linear infinite;
+    }
+
+    .orbit.o1 {
+      width: 260px;
+      height: 260px;
+      border-color: rgba(99, 102, 241, 0.25);
+      animation-duration: 22s;
+    }
+
+    .orbit.o2 {
+      width: 360px;
+      height: 360px;
+      border-color: rgba(6, 182, 212, 0.18);
+      animation-duration: 34s;
+      animation-direction: reverse;
+    }
+
+    .orbit.o3 {
+      width: 460px;
+      height: 460px;
+      border: 1px dashed rgba(236, 72, 153, 0.14);
+      animation-duration: 48s;
+    }
+
+    @keyframes rotateRing {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .core {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      border-radius: 32px;
+      background: radial-gradient(circle at 35% 35%, rgba(99, 102, 241, 0.25), rgba(4, 6, 16, 0.94));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 60px rgba(99, 102, 241, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(20px);
+      z-index: 5;
+      animation: coreFloat 6s ease-in-out infinite alternate;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .core:hover {
+      transform: scale(1.08) translateY(-6px);
+    }
+
+    .core img {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.35));
+    }
+
+    .core-label {
+      position: absolute;
+      bottom: -32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .core-label b {
+      font-family: var(--font-display);
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      color: #ffffff;
+    }
+
+    .core-label span {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    @keyframes coreFloat {
+      0% { transform: translateY(0px) rotate(0deg); }
+      100% { transform: translateY(-10px) rotate(1.5deg); }
+    }
+
+    /* Orbiting Product Satellites */
+    .satellite {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: rgba(10, 14, 30, 0.85);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(16px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 4;
+    }
+
+    .satellite img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+    }
+
+    .satellite:hover {
+      transform: scale(1.22) translateZ(20px);
+      border-color: rgba(255, 255, 255, 0.35);
+      box-shadow: 0 0 35px var(--accent-glow);
+    }
+
+    .s-checkra { top: 40px; right: 80px; border-color: rgba(99, 102, 241, 0.4); }
+    .s-homora { bottom: 60px; right: 50px; border-color: rgba(6, 182, 212, 0.4); }
+    .s-bubora { bottom: 40px; left: 80px; border-color: rgba(236, 72, 153, 0.4); }
+    .s-sayora { top: 70px; left: 60px; border-color: rgba(16, 185, 129, 0.4); }
+
+    /* =========================================================
+       SECTION 01: PRODUCTS WITH A PURPOSE
+       ========================================================= */
+    .section {
+      position: relative;
+      padding: 100px 0;
+      z-index: 2;
+    }
+
+    .worlds-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    @media (max-width: 960px) {
+      .worlds-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Product Cards with 3D Tilt */
+    .world-card {
+      background: var(--glass-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 28px;
+      padding: clamp(24px, 3.2vw, 36px);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .world-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--border-hover);
+    }
+
+    .world-card.w-checkra:hover {
+      box-shadow: 0 20px 60px rgba(99, 102, 241, 0.22), 0 0 1px rgba(99, 102, 241, 0.6);
+      border-top-color: #818cf8;
+    }
+
+    .world-card.w-homora:hover {
+      box-shadow: 0 20px 60px rgba(6, 182, 212, 0.22), 0 0 1px rgba(6, 182, 212, 0.6);
+      border-top-color: #22d3ee;
+    }
+
+    .world-card.w-bubora:hover {
+      box-shadow: 0 20px 60px rgba(236, 72, 153, 0.22), 0 0 1px rgba(236, 72, 153, 0.6);
+      border-top-color: #f472b6;
+    }
+
+    .world-card.w-sayora:hover {
+      box-shadow: 0 20px 60px rgba(16, 185, 129, 0.22), 0 0 1px rgba(16, 185, 129, 0.6);
+      border-top-color: #34d399;
+    }
+
+    .world-media {
+      height: 160px;
+      border-radius: 20px;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0.5) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .world-media img {
+      max-height: 105px;
+      max-width: 80%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.15));
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .world-card:hover .world-media img {
+      transform: scale(1.08);
+    }
+
+    .world-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .world-name-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .world-name-group h3 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+
+    .legacy-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .status-badge {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .status-badge.live {
+      background: rgba(16, 185, 129, 0.08);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .status-badge.dev {
+      background: rgba(99, 102, 241, 0.08);
+      color: #a5b4fc;
+      border: 1px solid rgba(99, 102, 241, 0.25);
+    }
+
+    .world-positioning {
+      font-family: var(--font-body);
+      font-size: 14.5px;
+      font-weight: 500;
+      color: #93c5fd;
+      margin-bottom: 12px;
+    }
+
+    .w-homora .world-positioning { color: #67e8f9; }
+    .w-bubora .world-positioning { color: #f472b6; }
+    .w-sayora .world-positioning { color: #6ee7b7; }
+
+    .world-body p {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .capabilities-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 28px;
+    }
+
+    .cap-pill {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 4px 11px;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+      transition: all 0.2s ease;
+    }
+
+    .world-card:hover .cap-pill {
+      background: rgba(255, 255, 255, 0.05);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .world-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .world-link {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .world-link:hover {
+      color: #ffffff;
+      border-color: var(--border-hover);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    /* =========================================================
+       SECTION 02: METHODOLOGY & CRAFT (#about)
+       LIFECYCLE PIPELINE + 3 PILLARS
+       ========================================================= */
+    .pipeline-wrapper {
+      background: var(--glass-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 30px;
+      padding: clamp(32px, 5vw, 60px);
+      backdrop-filter: blur(28px);
+      margin-bottom: 40px;
+    }
+
+    .pipeline-header {
+      margin-bottom: 42px;
+    }
+
+    .pipeline-header h3 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3.2vw, 36px);
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .pipeline-header p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      max-width: 680px;
+      line-height: 1.6;
+    }
+
+    .pipeline-steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      position: relative;
+    }
+
+    @media (max-width: 1024px) {
+      .pipeline-steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 580px) {
+      .pipeline-steps {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pipe-step {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 22px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .pipe-step:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border-hover);
+      transform: translateY(-4px);
+    }
+
+    .pipe-number {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 0.18em;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      padding: 3px 8px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-bottom: 14px;
+    }
+
+    .pipe-step b {
+      font-family: var(--font-display);
+      font-size: 17px;
+      color: #ffffff;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .pipe-step p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* 3 Supporting Pillars Grid */
+    .methodology-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 860px) {
+      .methodology-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .meth-card {
+      background: var(--glass-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 30px;
+      backdrop-filter: blur(24px);
+      transition: all 0.3s ease;
+    }
+
+    .meth-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-hover);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .meth-card h3 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .meth-card p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* =========================================================
+       SECTION 03: THE ARCHITECT (#portfolio)
+       ========================================================= */
+    .founder-card {
+      background: var(--glass-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 32px;
+      padding: clamp(32px, 5vw, 64px);
+      backdrop-filter: blur(28px);
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    @media (max-width: 880px) {
+      .founder-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .founder-photo {
+        margin: 0 auto;
+      }
+      .founder-pills {
+        justify-content: center;
+      }
+    }
+
+    .founder-photo {
+      position: relative;
+      border-radius: 26px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 0 40px rgba(99, 102, 241, 0.2);
+    }
+
+    .founder-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .founder-kicker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: #93c5fd;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .founder-content h3 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .founder-role {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #38bdf8;
+      margin-bottom: 20px;
+    }
+
+    .founder-content p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .founder-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .founder-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      padding: 5px 14px;
+      border-radius: 999px;
+    }
+
+    .founder-quote {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: 18px;
+      color: #d1d5db;
+      line-height: 1.6;
+      padding-left: 20px;
+      border-left: 2px solid #6366f1;
+      margin-bottom: 28px;
+    }
+
+    /* =========================================================
+       SECTION 04: THE NIVORA UNIVERSE / ECOSYSTEM ARCHITECTURE (#vision)
+       ========================================================= */
+    .vision-panel {
+      background: var(--glass-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 32px;
+      padding: clamp(32px, 5vw, 64px);
+      backdrop-filter: blur(28px);
+      margin-bottom: 40px;
+    }
+
+    .vision-quote {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 56px;
+    }
+
+    .quote-phrase {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3.8vw, 42px);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .quote-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: #93c5fd;
+      text-transform: uppercase;
+    }
+
+    /* Ecosystem Hub & Spoke Diagram */
+    .ecosystem-diagram {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+      margin-bottom: 60px;
+    }
+
+    .hub-nivora {
+      background: radial-gradient(circle at 35% 35%, rgba(99, 102, 241, 0.25), rgba(7, 10, 22, 0.95));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 50px rgba(99, 102, 241, 0.35);
+      border-radius: 28px;
+      padding: 24px 44px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hub-nivora img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.4));
+    }
+
+    .hub-nivora b {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.06em;
+    }
+
+    .hub-nivora span {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: #93c5fd;
+      text-transform: uppercase;
+    }
+
+    .diagram-branches {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      width: 100%;
+    }
+
+    @media (max-width: 900px) {
+      .diagram-branches {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .diagram-branches {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .diagram-node {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .diagram-node:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-hover);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .diagram-node.dn-checkra:hover { border-color: rgba(99, 102, 241, 0.5); }
+    .diagram-node.dn-homora:hover { border-color: rgba(6, 182, 212, 0.5); }
+    .diagram-node.dn-bubora:hover { border-color: rgba(236, 72, 153, 0.5); }
+    .diagram-node.dn-sayora:hover { border-color: rgba(16, 185, 129, 0.5); }
+
+    .node-theme-badge {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 0.16em;
+      padding: 3px 9px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .diagram-node h4 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .diagram-node p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* 4 Ecosystem Pillars */
+    .ecosystem-pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .ecosystem-pillars-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .ecosystem-pillars-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .eco-pillar-card {
+      background: var(--glass-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 24px;
+      transition: all 0.25s ease;
+    }
+
+    .eco-pillar-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-hover);
+    }
+
+    .eco-pillar-card h4 {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .eco-pillar-card p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    /* =========================================================
+       SECTION 05: FOLIVIO (#folivio)
+       ========================================================= */
+    .folivio-premium {
+      background: radial-gradient(circle at 12% 20%, rgba(99, 102, 241, 0.08) 0%, rgba(5, 7, 16, 0.9) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 32px;
+      padding: clamp(32px, 5vw, 60px);
+      backdrop-filter: blur(28px);
+    }
+
+    .folivio-identity {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 36px;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+
+    @media (max-width: 820px) {
+      .folivio-identity {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .folivio-logo-wrap {
+        margin: 0 auto;
+      }
+      .folivio-cta-group {
+        justify-content: center;
+      }
+    }
+
+    .folivio-logo-wrap {
+      width: 140px;
+      height: 140px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .folivio-logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .folivio-overline {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: #f472b6;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .folivio-brand-copy h3 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4.2vw, 48px);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .folivio-tagline {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: #cbd5e1;
+      margin-bottom: 14px;
+    }
+
+    .folivio-tagline span { color: #f472b6; }
+    .folivio-tagline b { color: #67e8f9; }
+
+    .folivio-brand-copy p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      max-width: 680px;
+      margin-bottom: 24px;
+    }
+
+    .folivio-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .folivio-handle {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* FOLIVIO 4 Services Grid */
+    .folivio-services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 36px;
+    }
+
+    @media (max-width: 960px) {
+      .folivio-services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 540px) {
+      .folivio-services-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .f-service-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 24px;
+      transition: all 0.25s ease;
+    }
+
+    .f-service-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+    }
+
+    .f-service-icon {
+      font-size: 24px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .f-service-card h4 {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .f-service-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .folivio-footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .folivio-footer-bar strong {
+      font-family: var(--font-display);
+      font-size: 15px;
+      color: #ffffff;
+    }
+
+    .folivio-footer-bar span {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* =========================================================
+       SECTION 06: CONTACT (#contact)
+       ========================================================= */
+    .contact-wrapper {
+      background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.1) 0%, rgba(5, 7, 16, 0.95) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 32px;
+      padding: clamp(32px, 5vw, 64px);
+      backdrop-filter: blur(28px);
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 48px;
+    }
+
+    @media (max-width: 860px) {
+      .contact-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .contact-info-panel h3 {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3.2vw, 36px);
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .contact-info-panel p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    .contact-card-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 18px;
+      text-decoration: none;
+      color: #ffffff;
+      transition: all 0.25s ease;
+      margin-bottom: 24px;
+    }
+
+    .contact-card-link:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .ccl-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #a5b4fc;
+      flex-shrink: 0;
+    }
+
+    .ccl-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    .ccl-text b {
+      font-family: var(--font-display);
+      font-size: 15px;
+      display: block;
+      color: #ffffff;
+    }
+
+    .ccl-text span {
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .folivio-redirect-notice {
+      background: rgba(236, 72, 153, 0.06);
+      border: 1px solid rgba(236, 72, 153, 0.2);
+      border-radius: 16px;
+      padding: 18px;
+      font-size: 13px;
+      color: #fbcfe8;
+      line-height: 1.6;
+    }
+
+    .folivio-redirect-notice strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 14px;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .folivio-redirect-notice a {
+      color: #f472b6;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    /* Form */
+    .contact-form-panel form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 14px 18px;
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 14px;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    .form-control:focus {
+      border-color: #6366f1;
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.25);
+    }
+
+    .form-submit-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .form-status-msg {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #34d399;
+      display: none;
+    }
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+    .site-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 70px 0 40px;
+      position: relative;
+      z-index: 2;
+      background: #010206;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+
+    @media (max-width: 860px) {
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .footer-brand h4 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .footer-brand span {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: #93c5fd;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 14px;
+    }
+
+    .footer-brand p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    .footer-col h5 {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: #ffffff;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 12.5px;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* =========================================================
+       CONCEPT MODAL SYSTEM
+       ========================================================= */
+    #conceptModalOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      background: var(--glass-surface-dense);
+      backdrop-filter: blur(36px);
+      -webkit-backdrop-filter: blur(36px);
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.95);
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    #conceptModalOverlay.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    .modal-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 36px;
+      background: rgba(1, 2, 6, 0.7);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(20px);
+    }
+
+    .modal-top-left {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .btn-return-modal {
+      font-family: var(--font-body);
+      font-size: 12.5px;
+      font-weight: 500;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 7px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-return-modal:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateX(-2px);
+    }
+
+    .modal-brand-subtle {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding-left: 16px;
+      border-left: 1px solid var(--border-subtle);
+    }
+
+    .mbs-nivora {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .mbs-product-name {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .mbs-status-badge {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #cbd5e1;
+    }
+
+    .modal-nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.025);
+      padding: 3px 5px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .modal-nav-tab {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      padding: 5px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .modal-nav-tab:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .modal-nav-tab.active {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-launch-btn {
+      font-family: var(--font-body);
+      font-size: 12.5px;
+      font-weight: 500;
+      background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 7px 16px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .modal-launch-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 22px rgba(99, 102, 241, 0.55);
+      color: #ffffff;
+    }
+
+    .modal-close-x {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close-x:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .modal-scrollable-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 36px clamp(20px, 5vw, 72px) 90px;
+      scroll-behavior: smooth;
+    }
+
+    .modal-product-view {
+      display: none;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .modal-product-view.active {
+      display: block;
+      animation: fadeInWorld 0.35s ease forwards;
+    }
+
+    .world-sec {
+      margin-bottom: 50px;
+      padding-top: 20px;
+    }
+
+    .world-sec-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: #93c5fd;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 10px;
+    }
+
+    .world-sec-heading {
+      font-family: var(--font-display);
+      font-size: clamp(23px, 3vw, 34px);
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .world-intro-lead {
+      font-family: var(--font-body);
+      font-size: clamp(15.5px, 1.8vw, 19px);
+      line-height: 1.65;
+      color: #cbd5e1;
+      max-width: 960px;
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 24px 28px;
+      border-left: 3px solid #6366f1;
+    }
+
+    .world-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 1060px) {
+      .world-grid-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 580px) {
+      .world-grid-4 { grid-template-columns: 1fr; }
+    }
+
+    .world-cap-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 22px;
+      transition: all 0.25s ease;
+    }
+
+    .world-cap-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+    }
+
+    .world-cap-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(99, 102, 241, 0.1);
+      color: #a5b4fc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    .world-cap-card h5 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 7px;
+    }
+
+    .world-cap-card p {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .world-workflow-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    @media (max-width: 880px) {
+      .world-workflow-steps { grid-template-columns: 1fr; }
+    }
+
+    .workflow-step-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 20px;
+    }
+
+    .step-index-badge {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      letter-spacing: 0.15em;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      padding: 2px 7px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .workflow-step-box h6 {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 5px;
+    }
+
+    .workflow-step-box p {
+      font-family: var(--font-body);
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .world-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 780px) {
+      .world-grid-2 { grid-template-columns: 1fr; }
+    }
+
+    .arch-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .arch-card h5 {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 7px;
+    }
+
+    .arch-card p {
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BACKGROUND 3D GALAXY CANVAS -->
+  <canvas id="universeCanvas"></canvas>
+  <div class="cosmic-nebula-glow"></div>
+
+  <!-- NAVIGATION BAR -->
+  <header class="site-nav">
+    <a href="#hero" class="nav-brand" aria-label="NIVORA Home">
+      <img src="assets/images/nivora-logo.png" alt="NIVORA Core Logo" class="nav-brand-logo">
+      <div class="nav-brand-text">
+        <span class="nav-brand-title">NIVORA</span>
+        <span class="nav-brand-tag">Universe v2.5</span>
+      </div>
+    </a>
+
+    <nav class="nav-links" aria-label="Main Navigation">
+      <a href="#hero" class="nav-item">Home</a>
+      <a href="#products" class="nav-item">Products</a>
+      <a href="#about" class="nav-item">About</a>
+      <a href="#portfolio" class="nav-item">Portfolio</a>
+      <a href="#vision" class="nav-item">Vision</a>
+      <a href="#folivio" class="nav-item">FOLIVIO</a>
+      <a href="#contact" class="nav-item">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+      <div class="nav-telemetry">
+        <span class="pulse-dot"></span>
+        <span id="navTelemetryText">STATUS: ONLINE</span>
+      </div>
+      <a href="#products" class="btn-nav-explore">
+        <span>Explore Products</span>
+        <span class="btn-arrow">→</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN SCROLLABLE CONTENT -->
+  <main>
+
+    <!-- =========================================================
+         HERO — THE INTERACTIVE 3D UNIVERSE
+         ========================================================= -->
+    <section class="hero" id="hero">
+      <div class="container hero-grid">
+        <div class="hero-left">
+          <div class="eyebrow"><i></i> A Nivas Bennabatthula Initiative</div>
+          <h1>Welcome to<br><span class="grad-nivora">NIVORA.</span></h1>
+
+          <div class="hero-tagline-badge">
+            Turning <span class="editorial-accent">Ideas</span> Into Intelligent <span class="editorial-accent">Products</span>.
+          </div>
+
+          <p class="hero-copy">
+            NIVORA is the <strong>technology and innovation universe built by Nivas Bennabatthula</strong> &mdash; where ambitious ideas become intelligent products, meaningful experiences and new digital possibilities.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="#products">
+              Explore Products <span class="btn-arrow">→</span>
+            </a>
+            <a class="btn secondary" href="#portfolio">
+              Meet the Founder <span class="btn-arrow">→</span>
+            </a>
+          </div>
+
+          <div class="hero-meta">
+            <div><strong>4</strong>Ecosystem Worlds</div>
+            <div><strong>1</strong>Founder &amp; Builder</div>
+            <div><strong>&infin;</strong>Digital Possibilities</div>
+          </div>
+        </div>
+
+        <div class="hero-art" id="hero3DStage">
+          <div class="orbit o1"></div>
+          <div class="orbit o2"></div>
+          <div class="orbit o3"></div>
+
+          <div class="core" title="NIVORA Central Universe Core">
+            <img src="assets/images/nivora-logo.png" alt="NIVORA Core Symbol">
+            <div class="core-label">
+              <b>NIVORA</b>
+              <span>One vision &middot; many worlds</span>
+            </div>
+          </div>
+
+          <!-- 4 Interactive Product Satellite Nodes -->
+          <div class="satellite s-checkra" onclick="openConceptModal('checkra')" title="Explore CHECKRA Concept">
+            <img src="assets/images/checkra-emblem.png" alt="CHECKRA">
+          </div>
+          <div class="satellite s-homora" onclick="openConceptModal('homora')" title="Explore HOMORA Concept">
+            <img src="assets/images/homora-logo.png" alt="HOMORA">
+          </div>
+          <div class="satellite s-bubora" onclick="openConceptModal('bubora')" title="Explore BUBORA Concept">
+            <img src="assets/images/bubora-logo.png" alt="BUBORA">
+          </div>
+          <div class="satellite s-sayora" onclick="openConceptModal('sayora')" title="Explore SAYORA Concept">
+            <img src="assets/images/sayora-emblem.png" alt="SAYORA">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+       SECTION 01: PRODUCTS WITH A PURPOSE (#products)
+       ========================================================= -->
+    <section class="section" id="products">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">01 &middot; The Product Universe</div>
+            <h2>Products with<br><span class="grad-accent">a Purpose.</span></h2>
+          </div>
+          <p>
+            Inside the NIVORA ecosystem, ideas transform into focused digital worlds. Each product addresses real human frictions with high-grade engineering, AI intelligence, and deliberate craftsmanship.
+          </p>
+        </div>
+
+        <div class="worlds-grid">
+          <!-- CHECKRA CARD -->
+          <article class="world-card w-checkra" id="card-checkra">
+            <div class="world-media">
+              <img src="assets/images/checkra-logo.png" alt="CHECKRA logo" loading="lazy">
+            </div>
+            <div class="world-body">
+              <div class="world-top">
+                <div class="world-name-group">
+                  <h3>CHECKRA</h3>
+                  <span class="legacy-tag">Formerly VeriWrite</span>
+                </div>
+                <span class="status-badge live">Live App</span>
+              </div>
+              <div class="world-positioning">Writing Integrity &amp; Plagiarism Intelligence</div>
+              <p>
+                Advanced verification engine designed to check, verify, and elevate written work through multi-layer plagiarism detection, source authenticity signals, and real-time grammar intelligence.
+              </p>
+
+              <div class="capabilities-list">
+                <span class="cap-pill">Plagiarism Detection</span>
+                <span class="cap-pill">Exact &amp; Near Matching</span>
+                <span class="cap-pill">Semantic Similarity</span>
+                <span class="cap-pill">Source Verification</span>
+                <span class="cap-pill">AI-Writing Signals</span>
+                <span class="cap-pill">Grammar Analysis</span>
+                <span class="cap-pill">Integrity Reports</span>
+              </div>
+
+              <div class="world-footer">
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                  <button type="button" class="btn primary" onclick="openConceptModal('checkra')">
+                    Explore Concept <span class="btn-arrow">→</span>
+                  </button>
+                  <a class="world-link" href="https://checkra-xi.vercel.app/" target="_blank" rel="noopener noreferrer">
+                    Visit CHECKRA <span class="btn-arrow">↗</span>
+                  </a>
+                </div>
+                <span style="font-size:11px;color:#8f92a9;font-family:var(--font-mono);">Writing Intelligence Space</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- HOMORA CARD -->
+          <article class="world-card w-homora" id="card-homora">
+            <div class="world-media">
+              <img src="assets/images/homora-logo.png" alt="HOMORA logo" loading="lazy">
+            </div>
+            <div class="world-body">
+              <div class="world-top">
+                <div class="world-name-group">
+                  <h3>HOMORA</h3>
+                </div>
+                <span class="status-badge live">Active Prototype</span>
+              </div>
+              <div class="world-positioning">Smart Living &amp; Shared Finance</div>
+              <p>
+                AI-powered financial harmony platform for shared households, roommates, and co-living spaces &mdash; effortlessly coordinating contributions, expenses, budgeting, and recurring bills with complete transparency.
+              </p>
+
+              <div class="capabilities-list">
+                <span class="cap-pill">Shared Household Finances</span>
+                <span class="cap-pill">Expense Tracking</span>
+                <span class="cap-pill">Fair Contributions</span>
+                <span class="cap-pill">Household Budgeting</span>
+                <span class="cap-pill">Bill Splitting</span>
+                <span class="cap-pill">Member Analytics</span>
+                <span class="cap-pill">Financial Reports</span>
+              </div>
+
+              <div class="world-footer">
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                  <button type="button" class="btn primary" onclick="openConceptModal('homora')">
+                    Explore Concept <span class="btn-arrow">→</span>
+                  </button>
+                  <a class="world-link" href="https://homora-ai.vercel.app/" target="_blank" rel="noopener noreferrer">
+                    Visit HOMORA <span class="btn-arrow">↗</span>
+                  </a>
+                </div>
+                <span style="font-size:11px;color:#8f92a9;font-family:var(--font-mono);">Household Financial OS</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- BUBORA CARD -->
+          <article class="world-card w-bubora" id="card-bubora">
+            <div class="world-media">
+              <img src="assets/images/bubora-logo.png" alt="BUBORA logo" loading="lazy">
+            </div>
+            <div class="world-body">
+              <div class="world-top">
+                <div class="world-name-group">
+                  <h3>BUBORA</h3>
+                </div>
+                <span class="status-badge live">Live App</span>
+              </div>
+              <div class="world-positioning">A Digital Space for Couples</div>
+              <p>
+                A private, intentional digital space designed exclusively for two &mdash; bringing memories, plans, communication, and shared moments together away from the noise of public social feeds.
+              </p>
+
+              <div class="capabilities-list">
+                <span class="cap-pill">Private Couple Space</span>
+                <span class="cap-pill">Shared Memories</span>
+                <span class="cap-pill">Date Planning</span>
+                <span class="cap-pill">Couple Timeline</span>
+                <span class="cap-pill">Interactive Activities</span>
+                <span class="cap-pill">Mutual Goals</span>
+                <span class="cap-pill">Private Messaging</span>
+              </div>
+
+              <div class="world-footer">
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                  <button type="button" class="btn primary" onclick="openConceptModal('bubora')">
+                    Explore Concept <span class="btn-arrow">→</span>
+                  </button>
+                  <a class="world-link" href="https://bubora.netlify.app/" target="_blank" rel="noopener noreferrer">
+                    Visit BUBORA <span class="btn-arrow">↗</span>
+                  </a>
+                </div>
+                <span style="font-size:11px;color:#8f92a9;font-family:var(--font-mono);">Private Home for Two</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- SAYORA CARD -->
+          <article class="world-card w-sayora" id="card-sayora">
+            <div class="world-media">
+              <img src="assets/images/sayora-logo.png" alt="SAYORA logo" loading="lazy">
+            </div>
+            <div class="world-body">
+              <div class="world-top">
+                <div class="world-name-group">
+                  <h3>SAYORA</h3>
+                </div>
+                <span class="status-badge dev">Concept &middot; In Dev</span>
+              </div>
+              <div class="world-positioning">Financial Resilience for Workers &amp; Communities</div>
+              <p>
+                A technology-driven social resilience platform aimed at empowering vulnerable workers and low-income communities with financial protection, community support funds, and emergency safety nets.
+              </p>
+
+              <div class="capabilities-list">
+                <span class="cap-pill">Emergency Micro-Funds</span>
+                <span class="cap-pill">Worker Protection</span>
+                <span class="cap-pill">Community Pooling</span>
+                <span class="cap-pill">Social Safety Nets</span>
+                <span class="cap-pill">Direct Disbursements</span>
+                <span class="cap-pill">Resilience Scoring</span>
+              </div>
+
+              <div class="world-footer">
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                  <button type="button" class="btn primary" onclick="openConceptModal('sayora')">
+                    Explore Concept <span class="btn-arrow">→</span>
+                  </button>
+                </div>
+                <span style="font-size:11px;color:#8f92a9;font-family:var(--font-mono);">Social Impact Fund</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+       SECTION 02: METHODOLOGY & CRAFT (#about)
+       LIFECYCLE PIPELINE + 3 PILLARS
+       ========================================================= -->
+    <section class="section" id="about">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">02 &middot; Methodology &amp; Craft</div>
+            <h2>Building What<br><span class="grad-accent">Comes Next.</span></h2>
+          </div>
+          <p>
+            NIVORA is an independent, founder-led ecosystem where ideas move with purpose from theoretical notebooks into scalable, production-grade products that solve real human frictions.
+          </p>
+        </div>
+
+        <!-- 5-STAGE LIFECYCLE PIPELINE -->
+        <div class="pipeline-wrapper">
+          <div class="pipeline-header">
+            <h3>The NIVORA Lifecycle Pipeline</h3>
+            <p>From initial spark to lasting social footprint &mdash; every product in the universe traverses five deliberate stages of creation.</p>
+          </div>
+
+          <div class="pipeline-steps">
+            <div class="pipe-step">
+              <div class="pipe-number">STAGE 01</div>
+              <b>Idea</b>
+              <p>Identifying unaddressed frictions in finance, writing integrity, relationships, and modern labor markets.</p>
+            </div>
+
+            <div class="pipe-step">
+              <div class="pipe-number">STAGE 02</div>
+              <b>Design</b>
+              <p>Crafting high-fidelity, cinematic digital interfaces rooted in intuitive glassmorphism and clear visual hierarchy.</p>
+            </div>
+
+            <div class="pipe-step">
+              <div class="pipe-number">STAGE 03</div>
+              <b>Build</b>
+              <p>Architecting resilient software systems using modern web frameworks, AI models, and clean engineering paradigms.</p>
+            </div>
+
+            <div class="pipe-step">
+              <div class="pipe-number">STAGE 04</div>
+              <b>Refine</b>
+              <p>Refining functional prototypes into cohesive, standalone digital universes with distinct brand identities.</p>
+            </div>
+
+            <div class="pipe-step">
+              <div class="pipe-number">STAGE 05</div>
+              <b>Impact</b>
+              <p>Deploying solutions that protect integrity, empower households, strengthen relationships, and shield communities.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 METHODOLOGY PILLARS -->
+        <div class="methodology-grid">
+          <div class="meth-card">
+            <h3>Practical Technology</h3>
+            <p>
+              Technology is built to solve actual, measurable human problems &mdash; not to chase temporary tech hype or produce discardable features.
+            </p>
+          </div>
+
+          <div class="meth-card">
+            <h3>AI &amp; Intelligence</h3>
+            <p>
+              Integrating modern machine learning and contextual reasoning into everyday workflows &mdash; making verification, financial tracking, and connection effortless.
+            </p>
+          </div>
+
+          <div class="meth-card">
+            <h3>Deliberate Craftsmanship</h3>
+            <p>
+              Every pixel, interaction, transition, and line of code is held to a meticulous standard. Excellence is in the details you only notice when they're perfect.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+       SECTION 03: THE ARCHITECT (#portfolio)
+       FOUNDER: NIVAS BENNABATTHULA
+       ========================================================= -->
+    <section class="section" id="portfolio">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">03 &middot; The Architect</div>
+            <h2>Meet the<br><span class="grad-accent">Builder.</span></h2>
+          </div>
+          <p>
+            NIVORA is founder-led. The vision, architectural direction, design language, and execution are driven directly by Nivas Bennabatthula.
+          </p>
+        </div>
+
+        <div class="founder-card">
+          <div class="founder-photo">
+            <img src="assets/images/founder-nivas.png" alt="Nivas Bennabatthula" loading="lazy">
+          </div>
+
+          <div class="founder-content">
+            <div class="founder-kicker">Founder &middot; Product Builder</div>
+            <h3>Nivas<br><span class="grad-nivora">Bennabatthula</span></h3>
+            <div class="founder-role">Founder &middot; Product Builder &middot; Finance &amp; Technology Enthusiast</div>
+
+            <p>
+              Nivas is building NIVORA as a sanctuary where ambitious ideas transcend notes and prototypes to become tangible, intelligent software. Driven by a deep curiosity at the intersection of quantitative finance, intuitive interface design, and artificial intelligence, he crafts products from first principles &mdash; obsessive about craft, execution, and lasting purpose.
+            </p>
+
+            <div class="founder-pills">
+              <span class="founder-pill">Finance</span>
+              <span class="founder-pill">Technology</span>
+              <span class="founder-pill">Full-Stack Design</span>
+              <span class="founder-pill">AI Engineering</span>
+              <span class="founder-pill">Product Architecture</span>
+              <span class="founder-pill">Systems Strategy</span>
+            </div>
+
+            <div class="founder-quote">
+              &ldquo;Great products aren't built by chasing hype. They emerge when you deeply care about solving a real human problem, execute with unrelenting precision, and refuse to compromise on design.&rdquo;
+            </div>
+
+            <a class="btn primary" href="https://nivas2703.vercel.app/" target="_blank" rel="noopener noreferrer">
+              Explore Founder Portfolio <span class="btn-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+       SECTION 04: THE NIVORA UNIVERSE / ECOSYSTEM ARCHITECTURE (#vision)
+       ========================================================= -->
+    <section class="section" id="vision">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">04 &middot; Ecosystem Architecture</div>
+            <h2>The NIVORA<br><span class="grad-accent">Universe.</span></h2>
+          </div>
+          <p>
+            A multi-dimensional ecosystem uniting distinct product worlds under a singular technological thesis: purposeful intelligence and immaculate execution.
+          </p>
+        </div>
+
+        <div class="vision-panel">
+          <div class="vision-quote">
+            <div class="quote-phrase">
+              &ldquo;One builder. Multiple ideas.<br><span class="grad-nivora">Different worlds. One vision.</span>&rdquo;
+            </div>
+            <div class="quote-sub">NIVORA Ecosystem Map</div>
+          </div>
+
+          <div class="ecosystem-diagram">
+            <!-- Central NIVORA Hub -->
+            <div class="hub-nivora">
+              <img src="assets/images/nivora-logo.png" alt="NIVORA">
+              <b>NIVORA</b>
+              <span>Central Technology Universe</span>
+            </div>
+
+            <!-- 4 Connected Spokes -->
+            <div class="diagram-branches">
+              <div class="diagram-node dn-checkra">
+                <span class="node-theme-badge" style="background:rgba(99,102,241,0.1);color:#a5b4fc;border:1px solid rgba(99,102,241,0.25);">INTEGRITY</span>
+                <h4>CHECKRA</h4>
+                <p>Writing Integrity &amp; AI Intelligence</p>
+              </div>
+
+              <div class="diagram-node dn-homora">
+                <span class="node-theme-badge" style="background:rgba(6,182,212,0.1);color:#67e8f9;border:1px solid rgba(6,182,212,0.25);">HARMONY</span>
+                <h4>HOMORA</h4>
+                <p>Shared Living &amp; Financial OS</p>
+              </div>
+
+              <div class="diagram-node dn-bubora">
+                <span class="node-theme-badge" style="background:rgba(236,72,153,0.1);color:#f472b6;border:1px solid rgba(236,72,153,0.25);">CONNECTION</span>
+                <h4>BUBORA</h4>
+                <p>Couples Private Digital Sanctuary</p>
+              </div>
+
+              <div class="diagram-node dn-sayora">
+                <span class="node-theme-badge" style="background:rgba(16,185,129,0.1);color:#6ee7b7;border:1px solid rgba(16,185,129,0.25);">RESILIENCE</span>
+                <h4>SAYORA</h4>
+                <p>Worker Resilience &amp; Social Protection</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 Pillars -->
+          <div class="ecosystem-pillars-grid">
+            <div class="eco-pillar-card">
+              <h4>Autonomous Utility</h4>
+              <p>Every product operates with deep functional autonomy, reducing human friction through intelligent automation.</p>
+            </div>
+            <div class="eco-pillar-card">
+              <h4>Human-First Privacy</h4>
+              <p>Zero intrusive tracking, zero data monetization. Products are engineered as private digital sanctuaries.</p>
+            </div>
+            <div class="eco-pillar-card">
+              <h4>Cross-Product Synergy</h4>
+              <p>Unified design philosophy, shared design systems, and consistent architectural principles across all creations.</p>
+            </div>
+            <div class="eco-pillar-card">
+              <h4>Founder-Driven Velocity</h4>
+              <p>Direct architectural oversight by Nivas ensures uncompromised quality and rapid innovation cadence.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+       SECTION 05: FOLIVIO (#folivio)
+       CAREER BRANDING · DIGITAL PRESENCE
+       ========================================================= -->
+    <section class="section" id="folivio">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">05 &middot; Beyond NIVORA</div>
+            <h2>Build your<br><span class="grad-accent">Career Presence.</span></h2>
+          </div>
+          <p>
+            FOLIVIO is an independent professional career-branding service founded by Nivas &mdash; helping students, freshers, and professionals turn their education, skills, projects, certifications, and experience into polished career profiles.
+          </p>
+        </div>
+
+        <div class="folivio-premium">
+          <div class="folivio-identity">
+            <div class="folivio-logo-wrap">
+              <img src="assets/images/folivio-logo.webp" alt="FOLIVIO &mdash; Build. Showcase. Grow." loading="lazy">
+            </div>
+
+            <div class="folivio-brand-copy">
+              <div class="folivio-overline">CAREER BRANDING &middot; DIGITAL PRESENCE &middot; A PROFESSIONAL SERVICE BY NIVAS</div>
+              <h3>FOLIVIO</h3>
+              <div class="folivio-tagline">Build. <span>Showcase.</span> <b>Grow.</b></div>
+
+              <p>
+                Professional career branding for ambitious individuals who want their work, credentials, and digital footprint to look as formidable online as they are on paper.
+              </p>
+
+              <div class="folivio-cta-group">
+                <a class="btn primary" href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
+                  Connect on Instagram <span class="btn-arrow">↗</span>
+                </a>
+                <span class="folivio-handle">@folivio.ai &middot; Official Contact</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 SERVICES GRID -->
+          <div class="folivio-services-grid">
+            <div class="f-service-card">
+              <span class="f-service-icon">📄</span>
+              <h4>Professional Resumes</h4>
+              <p>ATS-optimized, tailored career documents designed to pass algorithmic screening and capture recruiter attention.</p>
+            </div>
+
+            <div class="f-service-card">
+              <span class="f-service-icon">💼</span>
+              <h4>Personal Portfolios</h4>
+              <p>High-impact visual narratives that showcase your best projects, technical depth, and real-world accomplishments.</p>
+            </div>
+
+            <div class="f-service-card">
+              <span class="f-service-icon">🔗</span>
+              <h4>LinkedIn Makeovers</h4>
+              <p>Algorithm-aligned headline, about section, experience framing, and banner design that attract incoming opportunities.</p>
+            </div>
+
+            <div class="f-service-card">
+              <span class="f-service-icon">🌐</span>
+              <h4>Portfolio Websites</h4>
+              <p>Bespoke modern digital domains with custom domains to showcase your unique identity and technical skills.</p>
+            </div>
+          </div>
+
+          <div class="folivio-footer-bar">
+            <div>
+              <strong>Designed for Students. Freshers. Professionals.</strong><br>
+              <span>Take the next definitive step in your career journey.</span>
+            </div>
+            <a class="btn secondary" href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">
+              Start with FOLIVIO <span class="btn-arrow">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+       SECTION 06: CONTACT (#contact)
+       ========================================================= -->
+    <section class="section" id="contact">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="kicker">06 &middot; Collaboration &amp; Inquiries</div>
+            <h2>Have an Idea?<br><span class="grad-accent">Let's Build It.</span></h2>
+          </div>
+          <p>
+            NIVORA is always exploring new ideas, products, and possibilities. Whether you are interested in a product collaboration, technology discussion, or ecosystem partnership, let us connect.
+          </p>
+        </div>
+
+        <div class="contact-wrapper">
+          <div class="contact-info-panel">
+            <h3>Enter the Universe.</h3>
+            <p>
+              Connect directly with Nivas Bennabatthula regarding NIVORA initiatives, product development, or new technology ventures.
+            </p>
+
+            <div class="contact-methods">
+              <a class="contact-card-link" href="https://nivas2703.vercel.app/" target="_blank" rel="noopener noreferrer">
+                <div class="ccl-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                  </svg>
+                </div>
+                <div class="ccl-text">
+                  <b>Official Founder Website</b>
+                  <span>Explore Nivas's projects &amp; profile</span>
+                </div>
+              </a>
+            </div>
+
+            <div class="folivio-redirect-notice">
+              <strong>Looking for Career Branding?</strong>
+              For resumes, portfolios, and LinkedIn profile makeovers, please reach out directly through the official <a href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">FOLIVIO Instagram</a>.
+            </div>
+          </div>
+
+          <div class="contact-form-panel">
+            <form id="nivoraContactForm" onsubmit="handleContactSubmit(event)">
+              <div class="form-group">
+                <label for="contactName">Your Name</label>
+                <input type="text" id="contactName" class="form-control" placeholder="e.g. Alex Morgan" required>
+              </div>
+
+              <div class="form-group">
+                <label for="contactEmail">Email Address</label>
+                <input type="email" id="contactEmail" class="form-control" placeholder="alex@example.com" required>
+              </div>
+
+              <div class="form-group">
+                <label for="contactTopic">Area of Interest</label>
+                <select id="contactTopic" class="form-control" required>
+                  <option value="" disabled selected>Select an area...</option>
+                  <option value="Product Collaboration">Product Collaboration (CHECKRA, HOMORA, BUBORA, SAYORA)</option>
+                  <option value="New Venture Idea">New Venture / Innovation Idea</option>
+                  <option value="Technology Discussion">Technology &amp; AI Discussion</option>
+                  <option value="General Inquiry">General Inquiry</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="contactMessage">Your Message</label>
+                <textarea id="contactMessage" class="form-control" rows="4" placeholder="Tell us about your idea, perspective, or inquiry..." required></textarea>
+              </div>
+
+              <div class="form-submit-row">
+                <button type="submit" class="btn primary" id="contactSubmitBtn">
+                  Transmit Message <span class="btn-arrow">&rarr;</span>
+                </button>
+                <span class="form-status-msg" id="formStatusMsg">Message transmitted successfully!</span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================
+       FOOTER
+       ========================================================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>NIVORA</h4>
+          <span>Technology &amp; Innovation</span>
+          <p>
+            An independent innovation universe built by Nivas Bennabatthula. Turning ideas into intelligent products.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <ul class="footer-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#vision">Vision</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Products</h5>
+          <ul class="footer-links">
+            <li><a href="https://checkra-xi.vercel.app/" target="_blank" rel="noopener noreferrer">CHECKRA</a></li>
+            <li><a href="https://homora-ai.vercel.app/" target="_blank" rel="noopener noreferrer">HOMORA</a></li>
+            <li><a href="https://bubora.netlify.app/" target="_blank" rel="noopener noreferrer">BUBORA</a></li>
+            <li><a href="#products" onclick="openConceptModal('sayora')">SAYORA</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Services</h5>
+          <ul class="footer-links">
+            <li><a href="https://folivio.in" target="_blank" rel="noopener noreferrer">FOLIVIO &mdash; Career Branding</a></li>
+            <li><a href="https://nivas2703.vercel.app/" target="_blank" rel="noopener noreferrer">Nivas Bennabatthula</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>Built by Nivas Bennabatthula &middot; &copy; 2026 NIVORA. All rights reserved.</div>
+        <div>COORDINATES: 17.3850&deg; N, 78.4867&deg; E &middot; UNIVERSE LIVE</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       PREMIUM FIXED PRODUCT CONCEPT MODAL SYSTEM
+       ========================================================= -->
+  <div id="conceptModalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <header class="modal-top-bar">
+      <div class="modal-top-left">
+        <button type="button" class="btn-return-modal" onclick="closeConceptModal()" aria-label="Return to NIVORA Universe (ESC)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>Return to Universe</span>
+        </button>
+
+        <div class="modal-brand-subtle">
+          <span class="mbs-nivora">NIVORA &middot;</span>
+          <span class="mbs-product-name" id="modalTopProductName">CHECKRA</span>
+          <span class="mbs-status-badge" id="modalTopStatusBadge">Live App</span>
+        </div>
+      </div>
+
+      <nav class="modal-nav-tabs" aria-label="Modal In-World Navigation">
+        <button type="button" class="modal-nav-tab active" onclick="scrollModalSec('overview')">Overview</button>
+        <button type="button" class="modal-nav-tab" onclick="scrollModalSec('capabilities')">Capabilities</button>
+        <button type="button" class="modal-nav-tab" onclick="scrollModalSec('workflow')">Workflow</button>
+        <button type="button" class="modal-nav-tab" onclick="scrollModalSec('architecture')">Architecture</button>
+        <button type="button" class="modal-nav-tab" onclick="scrollModalSec('vision')">Vision</button>
+      </nav>
+
+      <div class="modal-top-right">
+        <a href="https://checkra-xi.vercel.app/" target="_blank" rel="noopener noreferrer" class="modal-launch-btn" id="modalLaunchBtn">
+          <span>Launch App</span>
+          <span class="btn-arrow">&nearr;</span>
+        </a>
+        <button type="button" class="modal-close-x" onclick="closeConceptModal()" aria-label="Close Modal (ESC)">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="modal-scrollable-body" id="modalScrollBody">
+
+      <!-- ==================== 1. CHECKRA ==================== -->
+      <div class="modal-product-view active" id="modal-view-checkra">
+        <div class="world-sec" id="msec-overview-checkra">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span>Concept Overview &middot; Writing Integrity Space</span>
+          </div>
+          <h2 class="world-sec-heading">Empowering Writing Truth &amp; Source Accuracy</h2>
+          <p class="world-intro-lead">
+            CHECKRA is an AI-powered writing integrity and source verification platform designed to help students, researchers, educators, professionals, and content creators check, verify, and improve their writing in one connected workspace.
+          </p>
+        </div>
+
+        <div class="world-sec" id="msec-capabilities-checkra">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+            <span>Key Capabilities</span>
+          </div>
+          <h3 class="world-sec-heading">Engineered for Writing Truth &amp; Elevation</h3>
+
+          <div class="world-grid-4">
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+              <h5>Similarity Check</h5>
+              <p>Multi-level comparison analyzing exact matches, near phrasing, and semantic overlap across open web sources.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+              <h5>Source Verification</h5>
+              <p>Indexes live web resources to provide verifiable context, metadata, and direct citations for detected matches.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
+              <h5>Document Analysis</h5>
+              <p>Unified native ingestion of PDF, DOCX, TXT, HTML, and Markdown files with preserved layout parsing.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"></path><path d="M12 12 2.1 10.5"></path></svg></div>
+              <h5>AI Evidence Review</h5>
+              <p>Assists reviewers in evaluating matches, distinguishing valid citations and idioms from true duplication.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></div>
+              <h5>Grammar &amp; Tone Intel</h5>
+              <p>Contextual syntactic clarity diagnostics, passive voice alerts, and academic tone calibration.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></div>
+              <h5>Citation Assistance</h5>
+              <p>Generates APA, MLA, Chicago, and IEEE citation structures directly from matched online references.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+              <h5>Evidence Reports</h5>
+              <p>Exportable PDF audit trails containing annotated similarity heatmaps and verifiable timestamps.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+              <h5>Zero Data Ingestion</h5>
+              <p>User manuscripts are never used to train public LLM models or stored in unencrypted public indices.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="world-sec" id="msec-workflow-checkra">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            <span>How It Works &middot; 4-Step Pipeline</span>
+          </div>
+          <h3 class="world-sec-heading">Seamless Document Verification Journey</h3>
+
+          <div class="world-workflow-steps">
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 01</span>
+              <h6>Document Ingestion</h6>
+              <p>Upload files or paste text into the protected client sandbox with instant parsing.</p>
+            </div>
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 02</span>
+              <h6>Deep Semantic Scan</h6>
+              <p>Multi-threaded crawler compares sentence embeddings across billions of indexed sources.</p>
+            </div>
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 03</span>
+              <h6>Evidence Review</h6>
+              <p>Side-by-side comparison interface distinguishes quoted content from true similarity.</p>
+            </div>
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 04</span>
+              <h6>Refinement &amp; Report</h6>
+              <p>Apply context rewrites and export an official verification report with timestamp verification.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="world-sec" id="msec-architecture-checkra">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+            <span>System Architecture</span>
+          </div>
+          <h3 class="world-sec-heading">Engineered for High-Throughput Accuracy</h3>
+
+          <div class="world-grid-2">
+            <div class="arch-card">
+              <h5>Hybrid Retrieval Engine</h5>
+              <p>Combines exact n-gram matching with dense semantic vector embeddings to detect paraphrased and restructured sentences across languages.</p>
+            </div>
+            <div class="arch-card">
+              <h5>Privacy-First Isolation</h5>
+              <p>Client files are processed in ephemeral memory enclaves and permanently expunged upon session termination.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="world-sec" id="msec-vision-checkra">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+            <span>Future Vision</span>
+          </div>
+          <h3 class="world-sec-heading">The Standard for Autonomous Content Trust</h3>
+          <p style="color:var(--text-muted);line-height:1.7;max-width:860px;font-size:14px;">
+            CHECKRA is evolving into an omnipresent writing integrity layer &mdash; protecting academic institutions, independent journalists, and research laboratories against synthetic misinformation, unauthorized attribution loss, and automated plagiarism.
+          </p>
+        </div>
+      </div>
+
+      <!-- ==================== 2. HOMORA ==================== -->
+      <div class="modal-product-view" id="modal-view-homora">
+        <div class="world-sec" id="msec-overview-homora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span>Concept Overview &middot; Household Financial OS</span>
+          </div>
+          <h2 class="world-sec-heading">Financial Harmony for Modern Shared Living</h2>
+          <p class="world-intro-lead">
+            HOMORA is an AI-powered financial operating system designed for roommates, couples, families, and shared households. It replaces awkward split calculations, forgotten utility bills, and manual spreadsheets with an intuitive, unified ledger that coordinates expenses fairly.
+          </p>
+        </div>
+
+        <div class="world-sec" id="msec-capabilities-homora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+            <span>Key Capabilities</span>
+          </div>
+          <h3 class="world-sec-heading">Orchestrated Household Intelligence</h3>
+
+          <div class="world-grid-4">
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+              <h5>Smart Expense Splits</h5>
+              <p>Dynamic ratio calculation based on room size, utility usage, or custom income-weighted formulas.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
+              <h5>Automated Bill Sync</h5>
+              <p>Scans electricity, internet, and rent receipts to allocate dues and notify residents automatically.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
+              <h5>Shared Groceries</h5>
+              <p>Collaborative shopping baskets that automatically allocate individual versus shared household staples.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+              <h5>Member Balances</h5>
+              <p>Clear, real-time debt resolution matrices minimizing transfers through simplified triangular settlement.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div>
+              <h5>HOMORA Intel</h5>
+              <p>Machine learning insights predicting month-end utility surges and recommending budget optimizations.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+              <h5>Chore &amp; Task Harmony</h5>
+              <p>Ties financial fairness to shared physical duties like deep cleaning, maintenance, and supplies.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg></div>
+              <h5>Payment History Audit</h5>
+              <p>Immutable digital receipts and payment proof protecting both tenants and landlords.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+              <h5>Granular Privacy</h5>
+              <p>Allows members to keep individual personal transactions confidential while maintaining shared ledger truth.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="world-sec" id="msec-workflow-homora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            <span>How It Works &middot; 4-Step Pipeline</span>
+          </div>
+          <h3 class="world-sec-heading">Effortless Home Operating Flow</h3>
+
+          <div class="world-workflow-steps">
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 01</span>
+              <h6>Create Home Space</h6>
+              <p>Set up your apartment or house and invite roommates with custom split agreements.</p>
+            </div>
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 02</span>
+              <h6>Log Bills &amp; Purchases</h6>
+              <p>Snap a photo of any receipt; HOMORA parses items, tax, and totals in seconds.</p>
+            </div>
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 03</span>
+              <h6>Intelligent Netting</h6>
+              <p>The system calculates optimized balances so residents settle debts with minimal transactions.</p>
+            </div>
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 04</span>
+              <h6>Zero-Stress Harmony</h6>
+              <p>Enjoy living together with full financial transparency and automated reminders.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="world-sec" id="msec-architecture-homora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+            <span>System Architecture</span>
+          </div>
+          <h3 class="world-sec-heading">Engineered for Frictionless Shared Finance</h3>
+
+          <div class="world-grid-2">
+            <div class="arch-card">
+              <h5>Real-Time WebSocket Ledger</h5>
+              <p>State-synchronized graph ledger propagating transaction updates to all household members instantly across iOS, Android, and Web.</p>
+            </div>
+            <div class="arch-card">
+              <h5>OCR &amp; Categorization Pipeline</h5>
+              <p>Computer vision engine extracting line-item details from multi-vendor receipts with 99.4% accuracy.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="world-sec" id="msec-vision-homora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+            <span>Future Vision</span>
+          </div>
+          <h3 class="world-sec-heading">The Standard for Modern Co-Living Operations</h3>
+          <p style="color:var(--text-muted);line-height:1.7;max-width:860px;font-size:14px;">
+            HOMORA is evolving into a full smart home OS connecting utility smart meters, automated banking rails, and collective residential sustainability incentives.
+          </p>
+        </div>
+      </div>
+
+      <!-- ==================== 3. BUBORA ==================== -->
+      <div class="modal-product-view" id="modal-view-bubora">
+        <div class="world-sec" id="msec-overview-bubora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span>Concept Overview &middot; Digital Home for Two</span>
+          </div>
+          <h2 class="world-sec-heading">A Private, Dedicated Space for Couples</h2>
+          <p class="world-intro-lead">
+            BUBORA is an intimate, private digital sanctuary created exclusively for two partners. Free from social media feeds, advertisements, and public surveillance, BUBORA combines private encrypted communication, shared memories, collaborative travel planning, and relationship milestones.
+          </p>
+        </div>
+
+        <div class="world-sec" id="msec-capabilities-bubora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+            <span>Key Capabilities</span>
+          </div>
+          <h3 class="world-sec-heading">Designed Exclusively for Two Hearts</h3>
+
+          <div class="world-grid-4">
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+              <h5>Encrypted Duo Chat</h5>
+              <p>End-to-end encrypted messaging with voice notes, photo drops, and playful micro-reactions.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div>
+              <h5>Timeline of Memories</h5>
+              <p>Chronological gallery of your shared journey, anniversaries, trips, and cherished photographs.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div>
+              <h5>Shared Calendar</h5>
+              <p>Synchronized scheduling for date nights, anniversaries, flights, and doctor appointments.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg></div>
+              <h5>Trips &amp; Adventures</h5>
+              <p>Collaborative vacation planning with interactive pin maps, packing lists, and itinerary cards.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
+              <h5>Shared Goals</h5>
+              <p>Track joint dreams like saving for a home, adopting a pet, or learning a new language together.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+              <h5>Couple Finances</h5>
+              <p>Transparent joint budget for dinners, gifts, and weekend escapes without awkward debt tallying.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+              <h5>Couple Games &amp; Quizzes</h5>
+              <p>Fun daily connection prompts and relationship quizzes to discover new facets of each other.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+              <h5>The Private Vault</h5>
+              <p>Biometrically locked storage for intimate photos, passports, medical notes, and love letters.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="world-sec" id="msec-workflow-bubora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            <span>How It Works &middot; 4-Step Pipeline</span>
+          </div>
+          <h3 class="world-sec-heading">Connecting Your Sanctuary</h3>
+
+          <div class="world-workflow-steps">
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 01</span>
+              <h6>Invite Your Partner</h6>
+              <p>Generate a unique encrypted pair code that links only your two devices forever.</p>
+            </div>
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 02</span>
+              <h6>Build Your Space</h6>
+              <p>Personalize your home screen with custom nicknames, relationship dates, and themes.</p>
+            </div>
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 03</span>
+              <h6>Share Everyday Life</h6>
+              <p>Post status widgets, send heartbeats, coordinate plans, and save photos in your timeline.</p>
+            </div>
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 04</span>
+              <h6>Cherish Milestones</h6>
+              <p>Watch your memories compound over months and years into an irreplaceable couple keepsake.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="world-sec" id="msec-architecture-bubora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+            <span>System Architecture</span>
+          </div>
+          <h3 class="world-sec-heading">Engineered for Unbreakable Trust &amp; Privacy</h3>
+
+          <div class="world-grid-2">
+            <div class="arch-card">
+              <h5>Peer-to-Peer Encryption</h5>
+              <p>Messages and photos are encrypted with keys that exist solely on your partner's phone and yours. Zero server access.</p>
+            </div>
+            <div class="arch-card">
+              <h5>Ad-Free Sanctuary</h5>
+              <p>Zero tracking SDKs, zero data mining, and zero external ad networks. A pristine private home.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="world-sec" id="msec-vision-bubora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+            <span>Future Vision</span>
+          </div>
+          <h3 class="world-sec-heading">The Lifelong Memory Vault for Modern Relationships</h3>
+          <p style="color:var(--text-muted);line-height:1.7;max-width:860px;font-size:14px;">
+            BUBORA envisions a digital sanctuary that couples cherish across decades &mdash; holding letters, vows, voice recordings, and precious moments safely preserved forever.
+          </p>
+        </div>
+      </div>
+
+      <!-- ==================== 4. SAYORA ==================== -->
+      <div class="modal-product-view" id="modal-view-sayora">
+        <div class="world-sec" id="msec-overview-sayora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span>Concept Overview &middot; Financial Resilience Space</span>
+          </div>
+          <h2 class="world-sec-heading">Financial Dignity &amp; Resilience for Workers &amp; Communities</h2>
+          <p class="world-intro-lead">
+            SAYORA is a financial resilience platform designed for informal workers, gig economy contributors, and vulnerable urban communities. Combining automated micro-savings, community emergency funds, and dignified crisis protection, SAYORA builds safety nets where traditional banking fails.
+          </p>
+        </div>
+
+        <div class="world-sec" id="msec-capabilities-sayora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+            <span>Key Capabilities</span>
+          </div>
+          <h3 class="world-sec-heading">Engineered for Community Security</h3>
+
+          <div class="world-grid-4">
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+              <h5>Micro-Savings Protocol</h5>
+              <p>Rounds up small daily wages and automatically locks tiny reserves into interest-bearing, high-safety vaults.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+              <h5>Community Shield Pool</h5>
+              <p>Peer-guaranteed safety pools offering zero-predatory-interest emergency liquidity during health crises.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+              <h5>SAYORA Digital Identity</h5>
+              <p>Portable, privacy-preserving reputation credential allowing informal workers to prove reliability without credit scores.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg></div>
+              <h5>Crisis Assistance Alert</h5>
+              <p>Instant SOS trigger routing emergency funds within minutes upon verified accidents or illness.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
+              <h5>CSR Matching Rails</h5>
+              <p>Channels corporate social responsibility funding directly into worker emergency pools with transparent impact audits.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg></div>
+              <h5>Audio-First Literacy</h5>
+              <p>Vernacular voice lessons breaking down compound growth, emergency planning, and scam avoidance.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
+              <h5>Weather &amp; Monsoons Cover</h5>
+              <p>Parametric relief payouts triggered automatically during extreme climate events or floods that halt daily wages.</p>
+            </div>
+            <div class="world-cap-card">
+              <div class="world-cap-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></div>
+              <h5>Zero-Fee Architecture</h5>
+              <p>Community pools operate with 0% predatory interest and transparent peer governance.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="world-sec" id="msec-workflow-sayora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            <span>How It Works &middot; 4-Step Pipeline</span>
+          </div>
+          <h3 class="world-sec-heading">Resilience in Action</h3>
+
+          <div class="world-workflow-steps">
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 01</span>
+              <h6>Register SAYORA ID</h6>
+              <p>Create a verified, low-bandwidth account using simple phone-number verification.</p>
+            </div>
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 02</span>
+              <h6>Daily Roundups</h6>
+              <p>Small change from UPI and digital earnings is swept into a locked emergency buffer.</p>
+            </div>
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 03</span>
+              <h6>Community Backing</h6>
+              <p>Join a local guild of trusted workers who vouch for and protect one another.</p>
+            </div>
+            <div class="workflow-step-box">
+              <span class="step-index-badge">STEP 04</span>
+              <h6>Instant Emergency Relief</h6>
+              <p>Request immediate disbursal in crises with zero collateral and dignity intact.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="world-sec" id="msec-architecture-sayora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+            <span>System Architecture</span>
+          </div>
+          <h3 class="world-sec-heading">Engineered for Last-Mile Financial Inclusion</h3>
+
+          <div class="world-grid-2">
+            <div class="arch-card">
+              <h5>Ultra-Lightweight PWA</h5>
+              <p>Engineered to operate seamlessly on sub-$50 Android phones with 2G/3G connectivity and offline-first caching.</p>
+            </div>
+            <div class="arch-card">
+              <h5>Parametric Smart Contracts</h5>
+              <p>Transparent public ledger ensuring community funds cannot be misappropriated or seized by predatory lenders.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="world-sec" id="msec-vision-sayora">
+          <div class="world-sec-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+            <span>Future Vision</span>
+          </div>
+          <h3 class="world-sec-heading">Universal Safety Net for Every Hardworking Citizen</h3>
+          <p style="color:var(--text-muted);line-height:1.7;max-width:860px;font-size:14px;">
+            SAYORA aims to scale into a self-sustaining societal safety infrastructure &mdash; demonstrating that when technology empowers community solidarity, millions of informal families break the cycle of predatory debt forever.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================================
+       3D UNIVERSE ENGINE & INTERACTION SCRIPTS
+       ========================================================= -->
+  <script>
+    /* -------------------------------------------------------------
+       1. 3D GALAXY / STARFIELD SIMULATION
+       ------------------------------------------------------------- */
+    (function initUniverseStarfield() {
+      const canvas = document.getElementById('universeCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      const isMobile = width < 768;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const numStars = prefersReducedMotion ? 120 : (isMobile ? 220 : 500);
+      const stars = [];
+
+      let scrollSpeed = 0;
+      let lastScrollY = window.scrollY;
+
+      let mouseX = 0;
+      let mouseY = 0;
+      let targetMouseX = 0;
+      let targetMouseY = 0;
+
+      const starColors = [
+        '#ffffff', '#ffffff', '#ffffff',
+        '#a5b4fc', '#818cf8', '#67e8f9',
+        '#f472b6', '#6ee7b7'
+      ];
+
+      function initStars() {
+        stars.length = 0;
+        for (let i = 0; i < numStars; i++) {
+          stars.push({
+            x: (Math.random() - 0.5) * 2200,
+            y: (Math.random() - 0.5) * 1600,
+            z: Math.random() * 2000 + 1,
+            size: Math.random() * 1.6 + 0.5,
+            color: starColors[Math.floor(Math.random() * starColors.length)],
+            alpha: Math.random() * 0.65 + 0.35
+          });
+        }
+      }
+
+      initStars();
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        initStars();
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        targetMouseX = (e.clientX - width / 2) * 0.12;
+        targetMouseY = (e.clientY - height / 2) * 0.12;
+      });
+
+      window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+        const delta = currentScrollY - lastScrollY;
+        lastScrollY = currentScrollY;
+
+        scrollSpeed = Math.min(Math.abs(delta) * 0.75, 40);
+        updateTelemetryOnScroll(currentScrollY);
+      }, { passive: true });
+
+      function render() {
+        ctx.fillStyle = '#010206';
+        ctx.fillRect(0, 0, width, height);
+
+        mouseX += (targetMouseX - mouseX) * 0.05;
+        mouseY += (targetMouseY - mouseY) * 0.05;
+
+        scrollSpeed *= 0.92;
+        if (scrollSpeed < 0.05) scrollSpeed = 0;
+
+        const fov = 340;
+        const cx = width / 2 + mouseX;
+        const cy = height / 2 + mouseY;
+
+        const baseSpeed = prefersReducedMotion ? 0.2 : 0.7;
+        const currentSpeed = baseSpeed + scrollSpeed;
+
+        for (let i = 0; i < stars.length; i++) {
+          const s = stars[i];
+
+          s.z -= currentSpeed;
+          if (s.z <= 2) {
+            s.z = 2000;
+            s.x = (Math.random() - 0.5) * 2200;
+            s.y = (Math.random() - 0.5) * 1600;
+          }
+
+          const k = fov / s.z;
+          const px = s.x * k + cx;
+          const py = s.y * k + cy;
+
+          if (px < -50 || px > width + 50 || py < -50 || py > height + 50) {
+            continue;
+          }
+
+          const rad = Math.max(0.4, (1 - s.z / 2000) * s.size * 1.8);
+
+          if (scrollSpeed > 2 && !prefersReducedMotion) {
+            const prevZ = s.z + currentSpeed * 2.2;
+            const prevK = fov / prevZ;
+            const prevPx = s.x * prevK + cx;
+            const prevPy = s.y * prevK + cy;
+
+            ctx.beginPath();
+            ctx.moveTo(prevPx, prevPy);
+            ctx.lineTo(px, py);
+            ctx.strokeStyle = s.color;
+            ctx.lineWidth = rad * 0.75;
+            ctx.globalAlpha = Math.min(1, s.alpha * (1 - s.z / 2000) * 1.3);
+            ctx.stroke();
+          } else {
+            ctx.beginPath();
+            ctx.arc(px, py, rad, 0, Math.PI * 2);
+            ctx.fillStyle = s.color;
+            ctx.globalAlpha = Math.min(1, s.alpha * (1 - s.z / 2000));
+            ctx.fill();
+          }
+        }
+
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(render);
+      }
+
+      render();
+    })();
+
+    /* -------------------------------------------------------------
+       2. HERO 3D PARALLAX & CARD TILT ENGINE
+       ------------------------------------------------------------- */
+    (function init3DParallax() {
+      const heroStage = document.getElementById('hero3DStage');
+      if (heroStage) {
+        window.addEventListener('mousemove', (e) => {
+          const rect = heroStage.getBoundingClientRect();
+          const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+          const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+          heroStage.style.transform = `perspective(1000px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg)`;
+        });
+        heroStage.addEventListener('mouseleave', () => {
+          heroStage.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        });
+      }
+
+      // Card 3D tilt
+      document.querySelectorAll('.world-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+          const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+          card.style.transform = `perspective(1000px) translateY(-8px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg)`;
+        });
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'perspective(1000px) translateY(0px) rotateX(0deg) rotateY(0deg)';
+        });
+      });
+    })();
+
+    /* -------------------------------------------------------------
+       3. TELEMETRY & HUD UPDATE
+       ------------------------------------------------------------- */
+    function updateTelemetryOnScroll(scrollY) {
+      const text = document.getElementById('navTelemetryText');
+      if (!text) return;
+
+      const proSec = document.getElementById('products');
+      const abtSec = document.getElementById('about');
+      const porSec = document.getElementById('portfolio');
+      const visSec = document.getElementById('vision');
+      const folSec = document.getElementById('folivio');
+      const conSec = document.getElementById('contact');
+
+      if (conSec && scrollY >= conSec.offsetTop - 300) {
+        text.innerText = 'SECTOR: TRANSMIT';
+      } else if (folSec && scrollY >= folSec.offsetTop - 300) {
+        text.innerText = 'SECTOR: FOLIVIO';
+      } else if (visSec && scrollY >= visSec.offsetTop - 300) {
+        text.innerText = 'SECTOR: ECOSYSTEM';
+      } else if (porSec && scrollY >= porSec.offsetTop - 300) {
+        text.innerText = 'SECTOR: ARCHITECT';
+      } else if (abtSec && scrollY >= abtSec.offsetTop - 300) {
+        text.innerText = 'SECTOR: CRAFT';
+      } else if (proSec && scrollY >= proSec.offsetTop - 300) {
+        text.innerText = 'SECTOR: PRODUCTS';
+      } else {
+        text.innerText = 'STATUS: ONLINE';
+      }
+    }
+
+    /* -------------------------------------------------------------
+       4. PRODUCT CONCEPT MODAL SYSTEM
+       ------------------------------------------------------------- */
+    const productMeta = {
+      'checkra': {
+        name: 'CHECKRA',
+        badge: 'Live App',
+        url: 'https://checkra-xi.vercel.app/'
+      },
+      'homora': {
+        name: 'HOMORA',
+        badge: 'Active Prototype',
+        url: 'https://homora-ai.vercel.app/'
+      },
+      'bubora': {
+        name: 'BUBORA',
+        badge: 'Live App',
+        url: 'https://bubora.netlify.app/'
+      },
+      'sayora': {
+        name: 'SAYORA',
+        badge: 'Concept · In Dev',
+        url: ''
+      }
+    };
+
+    function openConceptModal(productId) {
+      const overlay = document.getElementById('conceptModalOverlay');
+      if (!overlay) return;
+
+      const info = productMeta[productId] || { name: productId.toUpperCase(), badge: 'Product', url: '' };
+      document.getElementById('modalTopProductName').innerText = info.name;
+      document.getElementById('modalTopStatusBadge').innerText = info.badge;
+
+      const launchBtn = document.getElementById('modalLaunchBtn');
+      if (info.url) {
+        launchBtn.style.display = 'inline-flex';
+        launchBtn.href = info.url;
+      } else {
+        launchBtn.style.display = 'none';
+      }
+
+      document.querySelectorAll('.modal-product-view').forEach(view => {
+        view.classList.remove('active');
+      });
+      const targetView = document.getElementById('modal-view-' + productId);
+      if (targetView) {
+        targetView.classList.add('active');
+      }
+
+      const scrollBody = document.getElementById('modalScrollBody');
+      if (scrollBody) scrollBody.scrollTop = 0;
+
+      document.body.classList.add('world-open');
+      overlay.classList.add('active');
+      overlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeConceptModal() {
+      const overlay = document.getElementById('conceptModalOverlay');
+      if (!overlay) return;
+
+      overlay.classList.remove('active');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('world-open');
+    }
+
+    function scrollModalSec(secKey) {
+      const activeView = document.querySelector('.modal-product-view.active');
+      if (!activeView) return;
+
+      const prodId = activeView.id.replace('modal-view-', '');
+      const targetSec = document.getElementById('msec-' + secKey + '-' + prodId);
+      if (targetSec) {
+        targetSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      document.querySelectorAll('.modal-nav-tab').forEach(tab => tab.classList.remove('active'));
+      const clickedTab = event && event.target;
+      if (clickedTab) clickedTab.classList.add('active');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeConceptModal();
+      }
+    });
+
+    document.getElementById('conceptModalOverlay')?.addEventListener('click', (e) => {
+      if (e.target.id === 'conceptModalOverlay') {
+        closeConceptModal();
+      }
+    });
+
+    /* -------------------------------------------------------------
+       5. CONTACT FORM HANDLER
+       ------------------------------------------------------------- */
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('contactSubmitBtn');
+      const toast = document.getElementById('formStatusMsg');
+      if (!btn) return;
+
+      const origText = btn.innerHTML;
+      btn.innerHTML = '<span>Transmitting...</span>';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = '<span>Transmitted Successfully ✓</span>';
+        if (toast) {
+          toast.style.display = 'inline-block';
+          toast.innerText = 'Thank you. Your message has been dispatched directly to Nivas.';
+        }
+        e.target.reset();
+
+        setTimeout(() => {
+          btn.innerHTML = origText;
+          btn.disabled = false;
+          setTimeout(() => {
+            if (toast) toast.style.display = 'none';
+          }, 5000);
+        }, 3000);
+      }, 750);
+    }
+  </script>
+</body>
+</html>
+"""
+
+def build():
+    html = generate_ultimate_html()
+    desktop_path = "/Users/bennabathulanivas/Desktop/my projects/NIVORA/index.html"
+    downloads_path = "/Users/bennabathulanivas/Downloads/NIVORA/index.html"
+
+    with open(desktop_path, 'w', encoding='utf-8') as f:
+        f.write(html)
+    print(f"Generated {len(html)} bytes to {desktop_path}")
+
+    with open(downloads_path, 'w', encoding='utf-8') as f:
+        f.write(html)
+    print(f"Generated {len(html)} bytes to {downloads_path}")
+
+if __name__ == '__main__':
+    build()
