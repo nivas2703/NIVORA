@@ -3397,6 +3397,95 @@ def generate_3d_zoom_html():
     let targetMouseX = 0, targetMouseY = 0;
     let isZooming = false;
     let scrollProgress = 0;
+    let canvas2DFallbackActive = false;
+    let fallbackStars = [];
+    let fallbackSpeed = 0.8;
+
+    function initCanvas3DUniverse() {
+      canvas2DFallbackActive = true;
+      const canvas = document.getElementById('webglCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      const numStars = window.innerWidth < 768 ? 200 : 500;
+      fallbackStars = [];
+      const colors = ['#ffffff', '#c7d2fe', '#8b5cf6', '#22d3ee', '#ec4899', '#10b981'];
+
+      for (let i = 0; i < numStars; i++) {
+        fallbackStars.push({
+          x: (Math.random() - 0.5) * 2400,
+          y: (Math.random() - 0.5) * 1800,
+          z: Math.random() * 2000 + 1,
+          size: Math.random() * 2 + 0.6,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: Math.random() * 0.6 + 0.4
+        });
+      }
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      function renderCanvas3D() {
+        if (!canvas2DFallbackActive) return;
+        requestAnimationFrame(renderCanvas3D);
+
+        ctx.fillStyle = '#020308';
+        ctx.fillRect(0, 0, width, height);
+
+        mouseX += (targetMouseX - mouseX) * 0.05;
+        mouseY += (targetMouseY - mouseY) * 0.05;
+
+        const fov = 350;
+        const cx = width / 2 + mouseX * 45;
+        const cy = height / 2 + mouseY * 35;
+
+        for (let i = 0; i < fallbackStars.length; i++) {
+          const s = fallbackStars[i];
+          s.z -= fallbackSpeed;
+          if (s.z <= 2) {
+            s.z = 2000;
+            s.x = (Math.random() - 0.5) * 2400;
+            s.y = (Math.random() - 0.5) * 1800;
+          }
+
+          const k = fov / s.z;
+          const px = s.x * k + cx;
+          const py = s.y * k + cy;
+
+          if (px < -60 || px > width + 60 || py < -60 || py > height + 60) continue;
+
+          const rad = Math.max(0.4, (1 - s.z / 2000) * s.size * 1.8);
+
+          if (fallbackSpeed > 2) {
+            const prevZ = s.z + fallbackSpeed * 2.5;
+            const prevK = fov / prevZ;
+            const prevPx = s.x * prevK + cx;
+            const prevPy = s.y * prevK + cy;
+
+            ctx.beginPath();
+            ctx.moveTo(prevPx, prevPy);
+            ctx.lineTo(px, py);
+            ctx.strokeStyle = s.color;
+            ctx.lineWidth = rad * 0.85;
+            ctx.globalAlpha = Math.min(1, s.alpha * (1 - s.z / 2000) * 1.4);
+            ctx.stroke();
+          } else {
+            ctx.beginPath();
+            ctx.arc(px, py, rad, 0, Math.PI * 2);
+            ctx.fillStyle = s.color;
+            ctx.globalAlpha = Math.min(1, s.alpha * (1 - s.z / 2000));
+            ctx.fill();
+          }
+        }
+      }
+      renderCanvas3D();
+    }
 
     function initThreeUniverse() {
       const canvas = document.getElementById('webglCanvas');
@@ -3410,15 +3499,27 @@ def generate_3d_zoom_html():
       camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 4000);
       camera.position.set(0, 0, 600);
 
-      // WebGL Renderer with antialiasing and alpha
-      renderer = new THREE.WebGLRenderer({
-        canvas: canvas,
-        antialias: true,
-        alpha: true,
-        powerPreference: 'high-performance'
-      });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      renderer.setSize(width, height);
+      // Robust WebGL Renderer initialization with safe fallbacks
+      try {
+        renderer = new THREE.WebGLRenderer({
+          canvas: canvas,
+          antialias: true,
+          alpha: true,
+          powerPreference: 'default'
+        });
+      } catch (e1) {
+        try {
+          renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+        } catch (e2) {
+          console.warn('WebGL renderer unavailable, falling back to 3D Canvas engine:', e2);
+          initCanvas3DUniverse();
+          return;
+        }
+      }
+      if (renderer) {
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(width, height);
+      }
 
       // 1. STARFIELD & COSMIC PARTICLES (BufferGeometry)
       const particleCount = window.innerWidth < 768 ? 1200 : 2600;
@@ -3604,36 +3705,66 @@ def generate_3d_zoom_html():
        3. THE BIG ZOOM — CINEMATIC GSAP + THREE.JS WARP
        ------------------------------------------------------------- */
     function enterUniverseZoom() {
-      if (isZooming || !window.gsap || !camera) return;
+      if (isZooming) return;
       isZooming = true;
 
-      // Animate camera zooming directly into and through the core
-      gsap.timeline({
-        onComplete: () => {
-          isZooming = false;
-        }
-      })
-      .to(camera.position, {
-        z: -380,
-        x: targetMouseX * 40,
-        y: targetMouseY * 30,
-        duration: 1.6,
-        ease: 'power3.inOut'
-      }, 0)
-      .to(coreGroup.scale, {
-        x: 4.5,
-        y: 4.5,
-        z: 4.5,
-        duration: 1.2,
-        ease: 'power2.in'
-      }, 0)
-      .to(coreGroup.rotation, {
-        y: coreGroup.rotation.y + Math.PI,
-        duration: 1.6,
-        ease: 'power2.inOut'
-      }, 0);
+      const heroStage = document.getElementById('hero3DStage');
 
-      // Smooth scroll to the products section
+      if (window.gsap) {
+        const tl = gsap.timeline({
+          onComplete: () => {
+            isZooming = false;
+            if (heroStage) gsap.set(heroStage, { clearProps: 'transform,opacity' });
+          }
+        });
+
+        if (camera && coreGroup) {
+          tl.to(camera.position, {
+            z: -380,
+            x: targetMouseX * 40,
+            y: targetMouseY * 30,
+            duration: 1.6,
+            ease: 'power3.inOut'
+          }, 0)
+          .to(coreGroup.scale, {
+            x: 4.5,
+            y: 4.5,
+            z: 4.5,
+            duration: 1.2,
+            ease: 'power2.in'
+          }, 0)
+          .to(coreGroup.rotation, {
+            y: coreGroup.rotation.y + Math.PI,
+            duration: 1.6,
+            ease: 'power2.inOut'
+          }, 0);
+        }
+
+        if (canvas2DFallbackActive) {
+          tl.to({ speed: 0.8 }, {
+            speed: 24,
+            duration: 0.8,
+            ease: 'power2.in',
+            onUpdate: function() { fallbackSpeed = this.targets()[0].speed; }
+          }, 0)
+          .to({ speed: 24 }, {
+            speed: 0.8,
+            duration: 0.8,
+            ease: 'power2.out',
+            onUpdate: function() { fallbackSpeed = this.targets()[0].speed; }
+          }, 0.8);
+        }
+
+        if (heroStage) {
+          tl.to(heroStage, {
+            scale: 2.8,
+            opacity: 0,
+            duration: 1.2,
+            ease: 'power2.in'
+          }, 0);
+        }
+      }
+
       if (lenis) {
         lenis.scrollTo('#products', { duration: 1.8, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
       } else {
