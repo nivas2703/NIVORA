@@ -101,6 +101,7 @@
     }
 
     /* High-res Ambient Cosmic Background Layer behind WebGL */
+    /* PURE DEEP SPACE AMBIENCE — 100% PROCEDURAL (ZERO STATIC IMAGES) */
     .cosmic-ambient-backdrop {
       position: fixed;
       top: 0;
@@ -109,9 +110,7 @@
       height: 100vh;
       z-index: 0;
       pointer-events: none;
-      background: url('assets/images/cinematic-universe-hero.jpg') center center / cover no-repeat,
-                  radial-gradient(circle at 75% 45%, rgba(20, 24, 60, 0.5) 0%, rgba(10, 12, 30, 0.4) 40%, rgba(1, 2, 6, 0.95) 85%),
-                  var(--bg-space-base);
+      background: radial-gradient(circle at 70% 48%, rgba(15, 12, 40, 0.5) 0%, rgba(5, 7, 20, 0.8) 45%, #02040a 100%);
       overflow: hidden;
     }
 
@@ -700,7 +699,9 @@
       position: relative;
       padding: 7rem 4%;
       z-index: 10;
-      background: transparent;
+      background: linear-gradient(180deg, rgba(2, 4, 10, 0.75) 0%, rgba(2, 4, 10, 0.90) 100%);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     .section-divider {
@@ -2731,24 +2732,27 @@
     document.getElementById('currentYear').innerText = new Date().getFullYear();
 
     /* -------------------------------------------------------------
-       2. THREE.JS 3D UNIVERSE ENGINE (CLEAN, MINIMAL, PREMIUM)
+       2. THREE.JS PROCEDURAL MILKY WAY 3D UNIVERSE ENGINE
+          (MATHEMATICAL SPIRAL ARMS, 3D DEPTH, PARTICLES & SHADERS)
        ------------------------------------------------------------- */
     const canvas = document.getElementById('webglUniverseCanvas');
     let renderer, scene, camera;
+    let milkyWayGroup, galacticBulge, spiralArmStars, armDustStars;
+    let distantStarField, brightBeaconsGroup, distantGalaxiesGroup;
     let globeGroup, globeMesh, logoSprite, atmosphereMesh;
     let orbitalRings = [], ringParticles = [];
-    let galaxyDisk, galaxyEnergyBeam;
-    let starLayer1, starLayer2, starLayer3;
+    let accretionDisk, energyBeam;
+    let nebulaPuffs = [];
     let isWebGLEnabled = false;
     let isZoomingTransition = false;
     let warpSpeedFactor = 1.0;
     let mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
     let clock = new THREE.Clock();
 
-    // Base Camera Coordinates (Globe on Right, UI on Left)
-    const baseCamX = -30;
-    const baseCamY = 2;
-    const baseCamZ = 260;
+    // Base Camera Coordinates (Perspective view: Globe on Right, UI on Left)
+    const baseCamX = -26;
+    const baseCamY = 3;
+    const baseCamZ = 270;
     const globeCenterX = 66;
     const globeCenterY = 5;
     const globeCenterZ = 0;
@@ -2763,151 +2767,379 @@
         });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x000000, 0); // 100% transparent clear
+        renderer.setClearColor(0x02040a, 0); // Transparent over deep space gradient
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.15;
+        renderer.toneMappingExposure = 1.25;
 
         scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 4000);
         camera.position.set(baseCamX, baseCamY, baseCamZ);
         camera.lookAt(globeCenterX * 0.45, globeCenterY, 0);
 
-        buildStarfieldsClean();
-        buildNivoraGlobeClean();
-        buildOrbitalRingsClean();
-        buildGalaxyAccretionDiskClean();
+        // Build Master 3D Procedural Universe Components
+        buildDistantStarfield();
+        buildProceduralMilkyWay();
+        buildGalacticBulge();
+        buildSubtleCosmicNebula();
+        buildBrightStellarBeacons();
+        buildDistantSpiralGalaxies();
+        buildNivoraGlobeCore();
+        buildOrbitalRings3D();
+        buildGalacticAccretionPlatform();
 
         isWebGLEnabled = true;
-        animateUniverseClean();
+        animateMilkyWayUniverse();
       } catch (e) {
-        console.warn("WebGL notice, fallback active:", e);
+        console.warn("WebGL notice, running high-performance 2D canvas fallback:", e);
         initCanvas3DFallbackClean();
       }
     }
 
     /* -------------------------------------------------------------
-       3. STARFIELDS (CLEAN, SPARSE, 90% SOFT WHITE, ZERO CLUTTER)
+       3. PROCEDURAL MILKY WAY SPIRAL ARMS (42,000 PARTICLES)
        ------------------------------------------------------------- */
-    function buildStarfieldsClean() {
-      const starTex = createGlowPointTexture();
+    function buildProceduralMilkyWay() {
+      milkyWayGroup = new THREE.Group();
+      // Perfectly aligned with the NIVORA Core at (66, 5, 0)
+      milkyWayGroup.position.set(globeCenterX, globeCenterY, globeCenterZ);
+      milkyWayGroup.rotation.set(0.82, 0.22, -0.15); // Majestic cinematic 3D tilt
 
-      // Layer 1: Background Stars (650 tiny, faint stars)
-      const count1 = 650;
-      const pos1 = new Float32Array(count1 * 3);
-      const col1 = new Float32Array(count1 * 3);
-      for (let i = 0; i < count1; i++) {
-        pos1[i * 3] = (Math.random() - 0.5) * 1400;
-        pos1[i * 3 + 1] = (Math.random() - 0.5) * 900;
-        pos1[i * 3 + 2] = -350 - Math.random() * 400;
+      const starCount = 42000;
+      const positions = new Float32Array(starCount * 3);
+      const colors = new Float32Array(starCount * 3);
 
-        // 90% soft white, 10% soft cosmic blue
-        const shade = 0.5 + Math.random() * 0.35;
-        col1[i * 3] = shade * 0.95;
-        col1[i * 3 + 1] = shade * 0.98;
-        col1[i * 3 + 2] = shade;
-      }
-      const geo1 = new THREE.BufferGeometry();
-      geo1.setAttribute('position', new THREE.BufferAttribute(pos1, 3));
-      geo1.setAttribute('color', new THREE.BufferAttribute(col1, 3));
-      starLayer1 = new THREE.Points(geo1, new THREE.PointsMaterial({
-        size: 1.5,
-        vertexColors: true,
-        map: starTex,
-        transparent: true,
-        opacity: 0.6,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      }));
-      scene.add(starLayer1);
+      // Grand Design Spiral: 2 Major Arms (Scutum & Perseus style) + 2 Intermediate Spurs
+      const armAngles = [0.45, 0.45 + Math.PI, 1.85, 1.85 + Math.PI];
+      const armWeights = [0.38, 0.38, 0.12, 0.12];
+      const rMin = 22; // Clearance around central NIVORA core
+      const rMax = 380;
 
-      // Layer 2: Midground Stars (220 small stars, subtle twinkle)
-      const count2 = 220;
-      const pos2 = new Float32Array(count2 * 3);
-      const col2 = new Float32Array(count2 * 3);
-      for (let i = 0; i < count2; i++) {
-        let x = (Math.random() - 0.5) * 900;
-        let y = (Math.random() - 0.5) * 650;
-        // Avoid clustering right in front of text (x: -120 to 10, y: -40 to 60)
-        if (x > -120 && x < 10 && y > -40 && y < 60) x -= 140;
+      // Pre-compute rotation matrix for typography quiet-zone test
+      const cosX = Math.cos(0.82), sinX = Math.sin(0.82);
+      const cosY = Math.cos(0.22), sinY = Math.sin(0.22);
+      const cosZ = Math.cos(-0.15), sinZ = Math.sin(-0.15);
 
-        pos2[i * 3] = x;
-        pos2[i * 3 + 1] = y;
-        pos2[i * 3 + 2] = -100 + Math.random() * 150;
+      for (let i = 0; i < starCount; i++) {
+        // Pick arm based on weight
+        const randArm = Math.random();
+        let armIdx = 0;
+        if (randArm < armWeights[0]) armIdx = 0;
+        else if (randArm < armWeights[0] + armWeights[1]) armIdx = 1;
+        else if (randArm < 0.88) armIdx = 2;
+        else armIdx = 3;
 
-        const rand = Math.random();
-        if (rand < 0.1) {
-          col2[i * 3] = 0.65; col2[i * 3 + 1] = 0.35; col2[i * 3 + 2] = 0.95; // Violet
-        } else if (rand < 0.2) {
-          col2[i * 3] = 0.05; col2[i * 3 + 1] = 0.85; col2[i * 3 + 2] = 0.95; // Cyan
-        } else {
-          col2[i * 3] = 0.92; col2[i * 3 + 1] = 0.95; col2[i * 3 + 2] = 1.0; // Crisp white
+        const baseAngle = armAngles[armIdx];
+
+        // Power-law radial distribution (denser towards inner core)
+        const pRand = Math.random();
+        const r = rMin + (rMax - rMin) * Math.pow(pRand, 1.65);
+
+        // Mathematical logarithmic spiral: theta = theta_0 + b * ln(r / rMin)
+        const spiralAngle = baseAngle + 2.25 * Math.log(r / rMin) + 0.22 * (r / rMax);
+
+        // Radial and tangential Gaussian dispersion (arms widen gracefully outwards)
+        const armWidth = 4.0 + 24.0 * (r / rMax);
+        const rDisp = (Math.random() + Math.random() - 1.0) * armWidth;
+        const tDisp = (Math.random() + Math.random() - 1.0) * (armWidth / (r + 25));
+
+        // Vertical Gaussian dispersion (thick bulge, thin outer rim)
+        const vertThickness = 12.0 * Math.exp(-r / 100) + 3.0 * (1.0 - r / rMax);
+        const yDisp = (Math.random() + Math.random() - 1.0) * vertThickness;
+
+        const actualR = r + rDisp;
+        const actualTheta = spiralAngle + tDisp;
+
+        const lx = actualR * Math.cos(actualTheta);
+        const lz = actualR * Math.sin(actualTheta);
+        const ly = yDisp;
+
+        // Transform local coordinates to estimated world space
+        // World coordinates: globeCenterX + rotated local vector
+        const wx = globeCenterX + lx * cosY - lz * sinY;
+        const wy = globeCenterY + ly * cosX - (lx * sinY + lz * cosY) * sinX;
+
+        // RULE #27: STRICT QUIET ZONE FOR LEFT TYPOGRAPHY
+        // If star projects onto the left screen area (wx < 10 && wy between -35 and 45),
+        // dampen it or push it into deep background so typography has crystal-clear contrast
+        let starWeight = 1.0;
+        if (wx < 12 && wy > -35 && wy < 45) {
+          starWeight = 0.12; // 88% reduction in density/brightness
         }
+
+        positions[i * 3] = lx;
+        positions[i * 3 + 1] = ly;
+        positions[i * 3 + 2] = lz;
+
+        // Astronomically Realistic Star Color Grading
+        const frac = r / rMax;
+        let cr, cg, cb;
+        if (frac < 0.18) {
+          // Inner bulge: Luminous warm white / soft champagne & electric cyan
+          cr = 0.96; cg = 0.98; cb = 1.0;
+        } else if (frac < 0.52) {
+          // Mid spiral arms: Electric cyan & deep azure indigo
+          cr = 0.30; cg = 0.72; cb = 1.0;
+        } else if (frac < 0.8) {
+          // Outer spiral arms: Royal violet & indigo
+          cr = 0.65; cg = 0.42; cb = 0.95;
+        } else {
+          // Outer rim: Faint icy white & magenta dust accents
+          cr = 0.82; cg = 0.38; cb = 0.78;
+        }
+
+        colors[i * 3] = cr * starWeight;
+        colors[i * 3 + 1] = cg * starWeight;
+        colors[i * 3 + 2] = cb * starWeight;
       }
-      const geo2 = new THREE.BufferGeometry();
-      geo2.setAttribute('position', new THREE.BufferAttribute(pos2, 3));
-      geo2.setAttribute('color', new THREE.BufferAttribute(col2, 3));
-      starLayer2 = new THREE.Points(geo2, new THREE.PointsMaterial({
-        size: 2.2,
+
+      const armGeo = new THREE.BufferGeometry();
+      armGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      armGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const armMat = new THREE.PointsMaterial({
+        size: 1.5,
+        sizeAttenuation: true,
         vertexColors: true,
-        map: starTex,
+        map: createSoftPointTexture(),
         transparent: true,
-        opacity: 0.75,
+        opacity: 0.85,
         blending: THREE.AdditiveBlending,
         depthWrite: false
-      }));
-      scene.add(starLayer2);
+      });
 
-      // Layer 3: Foreground Floating Cosmic Motifs (ONLY 24 gentle motes)
-      const count3 = 24;
-      const pos3 = new Float32Array(count3 * 3);
-      const col3 = new Float32Array(count3 * 3);
-      for (let i = 0; i < count3; i++) {
-        pos3[i * 3] = (Math.random() - 0.5) * 550;
-        pos3[i * 3 + 1] = (Math.random() - 0.5) * 380;
-        pos3[i * 3 + 2] = 80 + Math.random() * 140;
-
-        col3[i * 3] = 0.9; col3[i * 3 + 1] = 0.95; col3[i * 3 + 2] = 1.0;
-      }
-      const geo3 = new THREE.BufferGeometry();
-      geo3.setAttribute('position', new THREE.BufferAttribute(pos3, 3));
-      geo3.setAttribute('color', new THREE.BufferAttribute(col3, 3));
-      starLayer3 = new THREE.Points(geo3, new THREE.PointsMaterial({
-        size: 3.5,
-        vertexColors: true,
-        map: starTex,
-        transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      }));
-      scene.add(starLayer3);
+      spiralArmStars = new THREE.Points(armGeo, armMat);
+      milkyWayGroup.add(spiralArmStars);
+      scene.add(milkyWayGroup);
     }
 
     /* -------------------------------------------------------------
-       4. CENTRAL 3D NIVORA GLOBE (CLEAN SILHOUETTE, 35% VP HEIGHT)
+       4. GALACTIC BULGE (7,500 CORE STELLAR PARTICLES)
        ------------------------------------------------------------- */
-    function buildNivoraGlobeClean() {
+    function buildGalacticBulge() {
+      const bulgeCount = 7500;
+      const positions = new Float32Array(bulgeCount * 3);
+      const colors = new Float32Array(bulgeCount * 3);
+
+      for (let i = 0; i < bulgeCount; i++) {
+        // Clearance around immediate center (r: 16 to 48) so logo is prominent
+        const r = 16 + Math.pow(Math.random(), 2.0) * 32;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = (Math.random() - 0.5) * Math.PI;
+
+        positions[i * 3] = r * Math.cos(phi) * Math.cos(theta);
+        positions[i * 3 + 1] = r * Math.sin(phi) * 0.38; // Oblate spheroid
+        positions[i * 3 + 2] = r * Math.cos(phi) * Math.sin(theta);
+
+        const p = (r - 16) / 32;
+        colors[i * 3] = 0.95 - p * 0.15;
+        colors[i * 3 + 1] = 0.98 - p * 0.12;
+        colors[i * 3 + 2] = 1.0;
+      }
+
+      const bulgeGeo = new THREE.BufferGeometry();
+      bulgeGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      bulgeGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const bulgeMat = new THREE.PointsMaterial({
+        size: 1.7,
+        sizeAttenuation: true,
+        vertexColors: true,
+        map: createSoftPointTexture(),
+        transparent: true,
+        opacity: 0.88,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      galacticBulge = new THREE.Points(bulgeGeo, bulgeMat);
+      milkyWayGroup.add(galacticBulge);
+    }
+
+    /* -------------------------------------------------------------
+       5. SUBTLE COSMIC NEBULA (RESTRAINED, ZERO SOLID BURN)
+       ------------------------------------------------------------- */
+    function buildSubtleCosmicNebula() {
+      const texNavy = createProceduralNebulaTexture('#0a0e27', '#030514');
+      const texViolet = createProceduralNebulaTexture('#1e123d', '#070414');
+      const texCyan = createProceduralNebulaTexture('#083344', '#020b14');
+
+      // 32 soft, expansive, low-opacity volumetric clouds (ZERO solid burn)
+      for (let i = 0; i < 32; i++) {
+        const tex = (i % 3 === 0) ? texCyan : (i % 3 === 1 ? texViolet : texNavy);
+        const mat = new THREE.SpriteMaterial({
+          map: tex,
+          transparent: true,
+          opacity: 0.035 + Math.random() * 0.035, // Restrained, dark & atmospheric
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        });
+        const sprite = new THREE.Sprite(mat);
+
+        const r = 30 + Math.pow(Math.random(), 1.3) * 180;
+        const a = Math.random() * Math.PI * 2;
+        sprite.position.set(
+          globeCenterX + Math.cos(a) * r,
+          globeCenterY + (Math.random() - 0.5) * 45,
+          globeCenterZ + Math.sin(a) * r - 20
+        );
+        const s = 150 + Math.random() * 220;
+        sprite.scale.set(s, s, 1);
+        scene.add(sprite);
+        nebulaPuffs.push({ sprite, baseScale: s, seed: Math.random() * 10 });
+      }
+    }
+
+    /* -------------------------------------------------------------
+       6. DISTANT BACKGROUND STARFIELD (14,000 STARS)
+       ------------------------------------------------------------- */
+    function buildDistantStarfield() {
+      const count = 14000;
+      const pos = new Float32Array(count * 3);
+      const col = new Float32Array(count * 3);
+
+      for (let i = 0; i < count; i++) {
+        pos[i * 3] = (Math.random() - 0.5) * 1600;
+        pos[i * 3 + 1] = (Math.random() - 0.5) * 1000;
+        pos[i * 3 + 2] = -400 - Math.random() * 1100;
+
+        const isCyan = Math.random() < 0.08;
+        if (isCyan) {
+          col[i * 3] = 0.5; col[i * 3 + 1] = 0.85; col[i * 3 + 2] = 1.0;
+        } else {
+          const shade = 0.45 + Math.random() * 0.5;
+          col[i * 3] = shade; col[i * 3 + 1] = shade; col[i * 3 + 2] = shade * 1.05;
+        }
+      }
+
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+
+      const mat = new THREE.PointsMaterial({
+        size: 1.1,
+        sizeAttenuation: true,
+        vertexColors: true,
+        map: createSoftPointTexture(),
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      distantStarField = new THREE.Points(geo, mat);
+      scene.add(distantStarField);
+    }
+
+    /* -------------------------------------------------------------
+       7. BRIGHT STELLAR BEACONS (160 STARS WITH DIFFRACTION SPIKES)
+       ------------------------------------------------------------- */
+    function buildBrightStellarBeacons() {
+      brightBeaconsGroup = new THREE.Group();
+      const count = 160;
+      const starTex = createDiffractionStarTexture();
+
+      for (let i = 0; i < count; i++) {
+        const mat = new THREE.SpriteMaterial({
+          map: starTex,
+          transparent: true,
+          opacity: 0.5 + Math.random() * 0.35,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        });
+        const sprite = new THREE.Sprite(mat);
+
+        let x = (Math.random() - 0.5) * 850;
+        let y = (Math.random() - 0.5) * 550;
+        let z = (Math.random() - 0.5) * 450 - 50;
+
+        // Push away from left hero typography
+        if (x < -10 && y > -40 && y < 50) {
+          x -= 90;
+        }
+
+        sprite.position.set(x, y, z);
+        const s = 3.5 + Math.random() * 6.0;
+        sprite.scale.set(s, s, 1);
+        brightBeaconsGroup.add(sprite);
+      }
+      scene.add(brightBeaconsGroup);
+    }
+
+    /* -------------------------------------------------------------
+       8. DISTANT SPIRAL GALAXIES (3 MINI PROCEDURAL GALAXIES)
+       ------------------------------------------------------------- */
+    function buildDistantSpiralGalaxies() {
+      distantGalaxiesGroup = new THREE.Group();
+
+      const galaxyConfigs = [
+        { x: -320, y: 160, z: -850, rotX: 0.6, rotY: 0.4, scale: 0.22, points: 420 },
+        { x: 260, y: -140, z: -1000, rotX: -0.8, rotY: 0.2, scale: 0.18, points: 320 },
+        { x: -90, y: -220, z: -900, rotX: 0.4, rotY: -0.5, scale: 0.15, points: 260 }
+      ];
+
+      galaxyConfigs.forEach((cfg) => {
+        const gGroup = new THREE.Group();
+        gGroup.position.set(cfg.x, cfg.y, cfg.z);
+        gGroup.rotation.set(cfg.rotX, cfg.rotY, 0);
+
+        const pos = new Float32Array(cfg.points * 3);
+        const col = new Float32Array(cfg.points * 3);
+
+        for (let i = 0; i < cfg.points; i++) {
+          const arm = i % 2;
+          const r = 5 + 75 * Math.pow(Math.random(), 1.6);
+          const theta = arm * Math.PI + 2.5 * Math.log(r / 5) + (Math.random() - 0.5) * 0.35;
+
+          pos[i * 3] = (Math.cos(theta) * r + (Math.random() - 0.5) * 4) * cfg.scale;
+          pos[i * 3 + 1] = ((Math.random() - 0.5) * 4) * cfg.scale;
+          pos[i * 3 + 2] = (Math.sin(theta) * r + (Math.random() - 0.5) * 4) * cfg.scale;
+
+          col[i * 3] = 0.65;
+          col[i * 3 + 1] = 0.55;
+          col[i * 3 + 2] = 0.95;
+        }
+
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+        geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+        const pts = new THREE.Points(geo, new THREE.PointsMaterial({
+          size: 1.6,
+          vertexColors: true,
+          map: createSoftPointTexture(),
+          transparent: true,
+          opacity: 0.5,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        }));
+        gGroup.add(pts);
+        distantGalaxiesGroup.add(gGroup);
+      });
+
+      scene.add(distantGalaxiesGroup);
+    }
+
+    /* -------------------------------------------------------------
+       9. NIVORA DIGITAL CORE (3D GLOBE WITH CRISP SUSPENDED LOGO)
+       ------------------------------------------------------------- */
+    function buildNivoraGlobeCore() {
       globeGroup = new THREE.Group();
       globeGroup.position.set(globeCenterX, globeCenterY, globeCenterZ);
 
-      // 35% viewport height scale (radius = 24.5)
       const globeRadius = 24.5;
-
-      // Digital Continents & Tech Grid Texture
       const cyberTex = createDigitalWorldTextureClean();
 
       const sphereGeo = new THREE.SphereGeometry(globeRadius, 48, 48);
       const sphereMat = new THREE.MeshBasicMaterial({
         map: cyberTex,
         transparent: true,
-        opacity: 0.75,
+        opacity: 0.78,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       });
       globeMesh = new THREE.Mesh(sphereGeo, sphereMat);
       globeGroup.add(globeMesh);
 
-      // Soft Cyan/Violet Atmospheric Shell
+      // Atmospheric Rim Shell
       const atmosGeo = new THREE.SphereGeometry(globeRadius * 1.06, 36, 36);
       const atmosCanvas = document.createElement('canvas');
       atmosCanvas.width = 256; atmosCanvas.height = 256;
@@ -2931,7 +3163,7 @@
       }));
       globeGroup.add(atmosphereMesh);
 
-      // Official NIVORA Logo (Crisp, Suspended in Exact Center)
+      // Official NIVORA Logo (Crisp, Suspended in Exact Center, High Render Order)
       const logoLoader = new THREE.TextureLoader();
       logoLoader.load('assets/images/nivora-logo.png', (tex) => {
         tex.minFilter = THREE.LinearFilter;
@@ -2940,22 +3172,26 @@
           map: tex,
           transparent: true,
           opacity: 1.0,
-          blending: THREE.NormalBlending
+          blending: THREE.NormalBlending,
+          depthTest: false
         });
         logoSprite = new THREE.Sprite(logoMat);
-        logoSprite.scale.set(16, 16, 1);
+        logoSprite.scale.set(17, 17, 1);
+        logoSprite.renderOrder = 20;
         globeGroup.add(logoSprite);
 
-        // Subtle soft backing glow
+        // Core Backing Aura
         const auraMat = new THREE.SpriteMaterial({
-          map: createGlowPointTexture(),
+          map: createSoftPointTexture(),
           color: 0x06b6d4,
           transparent: true,
           opacity: 0.45,
-          blending: THREE.AdditiveBlending
+          blending: THREE.AdditiveBlending,
+          depthTest: false
         });
         const auraSprite = new THREE.Sprite(auraMat);
-        auraSprite.scale.set(20, 20, 1);
+        auraSprite.scale.set(22, 22, 1);
+        auraSprite.renderOrder = 18;
         globeGroup.add(auraSprite);
       });
 
@@ -2963,10 +3199,9 @@
     }
 
     /* -------------------------------------------------------------
-       5. 3 ELEGANT ORBITAL RINGS & 1-2 PARTICLES PER ORBIT
+       10. 3 ELEGANT 3D ORBITAL RINGS & PARTICLES
        ------------------------------------------------------------- */
-    function buildOrbitalRingsClean() {
-      // Exactly 3 rings with different angles (horizontal, diagonal, vertical-diagonal)
+    function buildOrbitalRings3D() {
       const ringSpecs = [
         { radiusX: 38, radiusY: 34, rotX: 1.25, rotY: 0.15, rotZ: 0.25, color: 0x06b6d4, speed: 0.002 },
         { radiusX: 44, radiusY: 38, rotX: 0.55, rotY: 1.15, rotZ: -0.50, color: 0xa855f7, speed: -0.0018 },
@@ -2987,7 +3222,7 @@
         ringLine.rotation.set(spec.rotX, spec.rotY, spec.rotZ);
         globeGroup.add(ringLine);
 
-        // Exactly 1 to 2 particles per ring (small, elegant, slow)
+        // 1 to 2 travelling photon beads per orbit
         const particleCount = rIdx === 1 ? 2 : 1;
         for (let p = 0; p < particleCount; p++) {
           const bead = new THREE.Mesh(
@@ -2995,7 +3230,7 @@
             new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9 })
           );
           const halo = new THREE.Sprite(new THREE.SpriteMaterial({
-            map: createGlowPointTexture(),
+            map: createSoftPointTexture(),
             color: spec.color,
             transparent: true,
             opacity: 0.65,
@@ -3019,16 +3254,15 @@
     }
 
     /* -------------------------------------------------------------
-       6. THIN, SOFT, ELEGANT GALAXY ACCRETION DISK
+       11. GALACTIC ENERGY ACCRETION PLATFORM & BEAM
        ------------------------------------------------------------- */
-    function buildGalaxyAccretionDiskClean() {
-      // 1,100 soft particles (thinner, wider, soft cosmic platform)
-      const dPoints = 1100;
+    function buildGalacticAccretionPlatform() {
+      const dPoints = 1200;
       const dPos = new Float32Array(dPoints * 3);
       const dCol = new Float32Array(dPoints * 3);
 
       for (let i = 0; i < dPoints; i++) {
-        const radius = 8 + Math.pow(Math.random(), 1.3) * 54;
+        const radius = 8 + Math.pow(Math.random(), 1.3) * 56;
         const angle = Math.random() * Math.PI * 2;
         const spiralOffset = radius * 0.06;
         const theta = angle + spiralOffset;
@@ -3037,10 +3271,9 @@
         dPos[i * 3 + 1] = (Math.random() - 0.5) * 1.8;
         dPos[i * 3 + 2] = Math.sin(theta) * radius;
 
-        // Dark center -> violet outer glow -> cyan highlights -> subtle magenta
-        const p = radius / 62;
+        const p = radius / 64;
         if (p < 0.25) {
-          dCol[i * 3] = 0.9; dCol[i * 3 + 1] = 0.95; dCol[i * 3 + 2] = 1.0;
+          dCol[i * 3] = 0.95; dCol[i * 3 + 1] = 0.98; dCol[i * 3 + 2] = 1.0;
         } else if (p < 0.6) {
           dCol[i * 3] = 0.55; dCol[i * 3 + 1] = 0.2; dCol[i * 3 + 2] = 0.85; // Violet
         } else if (p < 0.8) {
@@ -3053,22 +3286,22 @@
       const dGeo = new THREE.BufferGeometry();
       dGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3));
       dGeo.setAttribute('color', new THREE.BufferAttribute(dCol, 3));
-      galaxyDisk = new THREE.Points(dGeo, new THREE.PointsMaterial({
+      accretionDisk = new THREE.Points(dGeo, new THREE.PointsMaterial({
         size: 2.0,
         vertexColors: true,
-        map: createGlowPointTexture(),
+        map: createSoftPointTexture(),
         transparent: true,
         opacity: 0.65,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       }));
-      galaxyDisk.position.set(globeCenterX, globeCenterY - 35, globeCenterZ);
-      galaxyDisk.rotation.set(Math.PI / 2.3, 0, 0.1);
-      scene.add(galaxyDisk);
+      accretionDisk.position.set(globeCenterX, globeCenterY - 35, globeCenterZ);
+      accretionDisk.rotation.set(Math.PI / 2.3, 0, 0.1);
+      scene.add(accretionDisk);
 
-      // Subtle Vertical Energy Beam
+      // Subtle Vertical Energy Column
       const beamGeo = new THREE.CylinderGeometry(1.2, 3.2, 18, 24, 1, true);
-      galaxyEnergyBeam = new THREE.Mesh(beamGeo, new THREE.MeshBasicMaterial({
+      energyBeam = new THREE.Mesh(beamGeo, new THREE.MeshBasicMaterial({
         color: 0x06b6d4,
         transparent: true,
         opacity: 0.35,
@@ -3076,24 +3309,60 @@
         side: THREE.DoubleSide,
         depthWrite: false
       }));
-      galaxyEnergyBeam.position.set(globeCenterX, globeCenterY - 22, globeCenterZ);
-      scene.add(galaxyEnergyBeam);
+      energyBeam.position.set(globeCenterX, globeCenterY - 22, globeCenterZ);
+      scene.add(energyBeam);
     }
 
     /* -------------------------------------------------------------
-       7. CLEAN TEXTURES
+       12. PROCEDURAL TEXTURE GENERATORS
        ------------------------------------------------------------- */
-    function createGlowPointTexture() {
+    function createSoftPointTexture() {
       const c = document.createElement('canvas');
       c.width = 64; c.height = 64;
       const ctx = c.getContext('2d');
       const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
       grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-      grad.addColorStop(0.3, 'rgba(255, 255, 255, 0.7)');
-      grad.addColorStop(0.7, 'rgba(6, 182, 212, 0.25)');
+      grad.addColorStop(0.25, 'rgba(255, 255, 255, 0.75)');
+      grad.addColorStop(0.65, 'rgba(6, 182, 212, 0.25)');
       grad.addColorStop(1, 'rgba(6, 182, 212, 0)');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(c);
+    }
+
+    function createDiffractionStarTexture() {
+      const c = document.createElement('canvas');
+      c.width = 128; c.height = 128;
+      const ctx = c.getContext('2d');
+
+      const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+      grad.addColorStop(0.15, 'rgba(224, 242, 254, 0.8)');
+      grad.addColorStop(0.5, 'rgba(139, 92, 246, 0.2)');
+      grad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 128, 128);
+
+      ctx.lineWidth = 1.0;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+      ctx.beginPath();
+      ctx.moveTo(64, 20); ctx.lineTo(64, 108);
+      ctx.moveTo(20, 64); ctx.lineTo(108, 64);
+      ctx.stroke();
+
+      return new THREE.CanvasTexture(c);
+    }
+
+    function createProceduralNebulaTexture(c1, c2) {
+      const c = document.createElement('canvas');
+      c.width = 256; c.height = 256;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+      grad.addColorStop(0, c1);
+      grad.addColorStop(0.5, c2);
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 256, 256);
       return new THREE.CanvasTexture(c);
     }
 
@@ -3102,11 +3371,9 @@
       c.width = 1024; c.height = 512;
       const ctx = c.getContext('2d');
 
-      // Transparent/dark cyber base
       ctx.fillStyle = 'rgba(2, 6, 20, 0.4)';
       ctx.fillRect(0, 0, 1024, 512);
 
-      // Fine Longitude / Latitude Tech Lines
       ctx.strokeStyle = 'rgba(6, 182, 212, 0.18)';
       ctx.lineWidth = 0.8;
       for (let x = 0; x < 1024; x += 64) {
@@ -3116,7 +3383,6 @@
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(1024, y); ctx.stroke();
       }
 
-      // Subtle continental nodes
       ctx.fillStyle = 'rgba(6, 182, 212, 0.65)';
       const drawNodes = (cx, cy, radius, count) => {
         for (let i = 0; i < count; i++) {
@@ -3138,39 +3404,47 @@
     }
 
     /* -------------------------------------------------------------
-       8. SUBTLE MOUSE PARALLAX & CONTINUOUS ANIMATION LOOP
+       13. SUBTLE MOUSE PARALLAX & CONTINUOUS ANIMATION LOOP
        ------------------------------------------------------------- */
     window.addEventListener('mousemove', (e) => {
-      // Subtle: 2-3% displacement only
+      // Subtle 2-3% perspective parallax displacement
       mouse.targetX = (e.clientX / window.innerWidth - 0.5) * 1.2;
       mouse.targetY = -(e.clientY / window.innerHeight - 0.5) * 1.0;
     }, { passive: true });
 
-    function animateUniverseClean() {
-      requestAnimationFrame(animateUniverseClean);
+    function animateMilkyWayUniverse() {
+      requestAnimationFrame(animateMilkyWayUniverse);
 
       const elapsed = clock.getElapsedTime();
 
-      // Smooth mouse damping
+      // Smooth mouse spring damping
       mouse.x += (mouse.targetX - mouse.x) * 0.04;
       mouse.y += (mouse.targetY - mouse.y) * 0.04;
 
       if (!isZoomingTransition) {
-        // Subtle camera parallax
         camera.position.x = baseCamX + mouse.x * 3.5;
         camera.position.y = baseCamY + mouse.y * 2.5;
         camera.lookAt(globeCenterX * 0.45 + mouse.x * 1.2, globeCenterY + mouse.y * 0.8, 0);
       }
 
-      // Globe axial rotation
-      if (globeMesh) globeMesh.rotation.y += 0.0014 * warpSpeedFactor;
+      // Slow organic Milky Way rotation
+      if (milkyWayGroup) {
+        milkyWayGroup.rotation.z += 0.00035 * warpSpeedFactor;
+      }
 
-      // Logo gentle bobbing
+      // Subtle breathing for atmospheric nebula puffs
+      nebulaPuffs.forEach(np => {
+        const pulse = 1.0 + 0.06 * Math.sin(elapsed * 0.5 + np.seed);
+        np.sprite.scale.set(np.baseScale * pulse, np.baseScale * pulse, 1);
+      });
+
+      // Globe axial rotation & logo gentle floating
+      if (globeMesh) globeMesh.rotation.y += 0.0014 * warpSpeedFactor;
       if (logoSprite) {
         logoSprite.position.y = Math.sin(elapsed * 1.5) * 0.5;
       }
 
-      // Orbital particles
+      // 3D Orbital particles motion
       ringParticles.forEach((p) => {
         p.progress = (p.progress + p.speed * warpSpeedFactor + 1) % 1;
         const pt = p.curve.getPoint(p.progress);
@@ -3179,17 +3453,21 @@
         p.mesh.position.copy(v);
       });
 
-      // Galaxy disk rotation
-      if (galaxyDisk) galaxyDisk.rotation.z += 0.002 * warpSpeedFactor;
+      // Accretion disk rotation
+      if (accretionDisk) accretionDisk.rotation.z += 0.002 * warpSpeedFactor;
 
       // Energy beam pulsing
-      if (galaxyEnergyBeam) {
-        const pulse = 1 + 0.05 * Math.sin(elapsed * 3);
-        galaxyEnergyBeam.scale.set(pulse, 1, pulse);
+      if (energyBeam) {
+        const pulse = 1 + 0.06 * Math.sin(elapsed * 3.2);
+        energyBeam.scale.set(pulse, 1, pulse);
       }
 
-      // Gentle star drift
-      if (starLayer1) starLayer1.rotation.y += 0.0001 * warpSpeedFactor;
+      // Distant galaxies rotation
+      if (distantGalaxiesGroup) {
+        distantGalaxiesGroup.children.forEach((g) => {
+          g.rotation.z += 0.00015;
+        });
+      }
 
       renderer.render(scene, camera);
     }
@@ -3202,7 +3480,7 @@
     });
 
     /* -------------------------------------------------------------
-       9. SMOOTH 3D CAMERA ZOOM (SCROLL & BUTTON)
+       14. SMOOTH 3D CAMERA TRAVEL (SCROLL & BUTTON)
        ------------------------------------------------------------- */
     function triggerCinematicCameraZoom() {
       if (isZoomingTransition) return;
@@ -3271,7 +3549,7 @@
     }, { passive: true });
 
     /* -------------------------------------------------------------
-       10. CLEAN CANVAS 3D FALLBACK
+       15. HIGH-PERFORMANCE 2D PROCEDURAL CANVAS FALLBACK
        ------------------------------------------------------------- */
     function initCanvas3DFallbackClean() {
       const ctx = canvas.getContext('2d');
@@ -3286,14 +3564,14 @@
         h = canvas.height = window.innerHeight;
       });
 
-      // 180 clean stars
+      // 320 Procedural 3D perspective stars
       const stars = [];
-      for (let i = 0; i < 180; i++) {
+      for (let i = 0; i < 320; i++) {
         stars.push({
-          x: (Math.random() - 0.5) * w * 2,
-          y: (Math.random() - 0.5) * h * 2,
+          x: (Math.random() - 0.5) * w * 2.2,
+          y: (Math.random() - 0.5) * h * 2.2,
           z: Math.random() * 1000 + 50,
-          size: Math.random() * 1.5 + 0.8
+          size: Math.random() * 1.6 + 0.8
         });
       }
 
@@ -3302,12 +3580,12 @@
         ctx.clearRect(0, 0, w, h);
         angle += 0.01;
 
-        // Subtle 3D stars
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        // 3D Starfield Projection
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
         stars.forEach(s => {
-          s.z -= 0.5;
+          s.z -= 0.6;
           if (s.z <= 0) s.z = 1000;
-          const k = 300 / s.z;
+          const k = 320 / s.z;
           const px = s.x * k + w / 2;
           const py = s.y * k + h / 2;
           if (px >= 0 && px <= w && py >= 0 && py <= h) {
@@ -3345,7 +3623,7 @@
         ctx.ellipse(gx, gy, gr * 1.45, gr * 0.32, -0.60, 0, Math.PI * 2);
         ctx.stroke();
 
-        // 1 travelling photon bead
+        // Travelling photon bead
         const b1Angle = angle * 1.2;
         const b1x = gx + Math.cos(b1Angle) * gr * 1.35 * Math.cos(0.45) - Math.sin(b1Angle) * gr * 0.42 * Math.sin(0.45);
         const b1y = gy + Math.cos(b1Angle) * gr * 1.35 * Math.sin(0.45) + Math.sin(b1Angle) * gr * 0.42 * Math.cos(0.45);
