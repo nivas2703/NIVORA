@@ -64,12 +64,20 @@ async function run() {
 
   let id = 1;
   const callbacks = new Map();
+  const consoleErrors = [];
 
   ws.onmessage = (event) => {
     const data = JSON.parse(event.data);
     if (data.id && callbacks.has(data.id)) {
       callbacks.get(data.id)(data.result);
       callbacks.delete(data.id);
+    }
+    if (data.method === 'Runtime.exceptionThrown') {
+      consoleErrors.push(data.params.exceptionDetails);
+      console.error('Browser Exception:', data.params.exceptionDetails.text, data.params.exceptionDetails.exception);
+    }
+    if (data.method === 'Runtime.consoleAPICalled' && data.params.type === 'error') {
+      console.error('Console Error:', data.params.args);
     }
   };
 
@@ -118,7 +126,6 @@ async function run() {
   await evaluate(`
     window.scrollBy({ top: 900, behavior: 'instant' });
   `);
-  // Capture immediately while velocity is high (star trails stretched)
   await new Promise(r => setTimeout(r, 60));
   const cam2 = await evaluate(`({ z: camera?.position?.z, scrollP: targetScrollP, vel: rawScrollVelocity })`);
   console.log('Warp Streaks State:', cam2);
@@ -134,7 +141,7 @@ async function run() {
   console.log('Products State:', cam3);
   await screenshot('03_space_dest_products.png');
 
-  // 4. Travel to The Builder (About)
+  // 4. Travel to The Builder (About) - VERIFY NO DONUT / RINGS SHAPES
   console.log('Travelling to Destination: The Builder (About)...');
   await evaluate(`
     document.getElementById('about').scrollIntoView({ behavior: 'instant', block: 'start' });
@@ -154,7 +161,15 @@ async function run() {
   console.log('Portfolio State:', cam5);
   await screenshot('05_space_dest_portfolio.png');
 
-  // 6. Travel to The Transmission Point (Contact)
+  // 6. Travel to EXPANDED FOLIVIO SHOWCASE
+  console.log('Travelling to Destination: FOLIVIO Showcase...');
+  await evaluate(`
+    document.getElementById('folivio').scrollIntoView({ behavior: 'instant', block: 'start' });
+  `);
+  await new Promise(r => setTimeout(r, 500));
+  await screenshot('08_folivio_expanded_showcase.png');
+
+  // 7. Travel to The Transmission Point (Contact) - VERIFY NO CYLINDER / CONCENTRIC RINGS
   console.log('Travelling to Destination: Transmission (Contact)...');
   await evaluate(`
     document.getElementById('contact').scrollIntoView({ behavior: 'instant', block: 'start' });
@@ -164,20 +179,36 @@ async function run() {
   console.log('Contact State:', cam6);
   await screenshot('06_space_dest_transmission.png');
 
-  // 7. Simulate Fast Scroll UP (Reverse Warp Travel)
-  console.log('Simulating Reverse Scroll UP (reverse star flow)...');
-  await evaluate(`
-    window.scrollBy({ top: -800, behavior: 'instant' });
-  `);
-  await new Promise(r => setTimeout(r, 60));
-  const cam7 = await evaluate(`({ z: camera?.position?.z, scrollP: targetScrollP, vel: rawScrollVelocity })`);
-  console.log('Reverse State:', cam7);
-  await screenshot('07_space_reverse_warp.png');
+  // 8. Test Mobile Viewport (390 x 844) & Mobile Menu Drawer
+  console.log('Testing Mobile Viewport (390x844)...');
+  await send('Emulation.setDeviceMetricsOverride', {
+    width: 390,
+    height: 844,
+    deviceScaleFactor: 2,
+    mobile: true
+  });
+  await evaluate(`window.scrollTo({ top: 0, behavior: 'instant' });`);
+  await new Promise(r => setTimeout(r, 600));
+  await screenshot('09_mobile_hero.png');
 
-  console.log('Space Travel test sequence completed successfully!');
+  // Open Mobile Drawer
+  console.log('Opening Mobile Drawer...');
+  await evaluate(`
+    document.getElementById('mobileMenuToggle').click();
+  `);
+  await new Promise(r => setTimeout(r, 400));
+  await screenshot('10_mobile_menu_drawer.png');
+
+  console.log('Total Uncaught Browser Exceptions:', consoleErrors.length);
+  if (consoleErrors.length > 0) {
+    console.error('FAIL: Uncaught browser errors detected:', consoleErrors);
+  } else {
+    console.log('PASS: Zero uncaught browser errors detected!');
+  }
+
   chromeProc.kill();
   server.close();
-  process.exit(0);
+  process.exit(consoleErrors.length > 0 ? 1 : 0);
 }
 
 run().catch(err => {
