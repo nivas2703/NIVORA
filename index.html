@@ -3031,7 +3031,7 @@
       const armAngles = [0.45, 0.45 + Math.PI, 1.85, 1.85 + Math.PI];
       const armWeights = [0.38, 0.38, 0.12, 0.12];
       const rMin = 22;
-      const rMax = 380;
+      const rMax = 260;
 
       const cosX = Math.cos(0.82), sinX = Math.sin(0.82);
       const cosY = Math.cos(0.22), sinY = Math.sin(0.22);
@@ -3052,7 +3052,7 @@
         const spiralAngle = baseAngle + 2.25 * Math.log(r / rMin) + 0.22 * (r / rMax);
 
         // Radial and vertical Gaussian dispersion
-        const armWidth = 4.0 + 24.0 * (r / rMax);
+        const armWidth = 4.0 + 20.0 * (r / rMax);
         const rDisp = (Math.random() + Math.random() - 1.0) * armWidth;
         const tDisp = (Math.random() + Math.random() - 1.0) * (armWidth / (r + 25));
 
@@ -3069,10 +3069,10 @@
         const wx = globeCenterX + lx * cosY - lz * sinY;
         const wy = globeCenterY + ly * cosX - (lx * sinY + lz * cosY) * sinX;
 
-        // Quiet zone protection for left hero typography
+        // Clean deep-space quiet zone for left hero typography & branding
         let starWeight = 1.0;
-        if (wx < 12 && wy > -35 && wy < 45) {
-          starWeight = 0.12;
+        if (wx < 18) {
+          starWeight = Math.max(0.0, Math.min(1.0, (wx + 15) / 33)) * 0.15;
         }
 
         positions[i * 3] = lx;
@@ -3164,6 +3164,7 @@
        ------------------------------------------------------------- */
     function build3DProductWorlds() {
       productWorldsGroup = new THREE.Group();
+      productWorldsGroup.visible = false;
       scene.add(productWorldsGroup);
 
       const texLoader = new THREE.TextureLoader();
@@ -3185,7 +3186,7 @@
         }));
         pathLine.position.set(globeCenterX, globeCenterY, globeCenterZ);
         pathLine.rotation.set(cfg.inclinationX, cfg.inclinationY, cfg.inclinationZ);
-        scene.add(pathLine);
+        productWorldsGroup.add(pathLine);
 
         // 2. World Container Group
         const worldGroup = new THREE.Group();
@@ -3387,6 +3388,7 @@
       });
       builderSpatialHalo = new THREE.Mesh(bHaloGeo, bHaloMat);
       builderSpatialHalo.position.set(24, 6, -530);
+      builderSpatialHalo.visible = false;
       scene.add(builderSpatialHalo);
 
       // 450 Shimmering Golden & Cyan Floating Embers
@@ -3418,12 +3420,14 @@
         blending: THREE.AdditiveBlending,
         depthWrite: false
       }));
+      builderEmbersPoints.visible = false;
       scene.add(builderEmbersPoints);
 
       // 2. CREATION FIELD DESTINATION (Z = -840)
       // 6 Glowing Constellation Nodes floating in space
       portfolioConstellationGroup = new THREE.Group();
       portfolioConstellationGroup.position.set(0, 8, -840);
+      portfolioConstellationGroup.visible = false;
       const nodeCoords = [
         [-38, 22, -20], [35, 18, -40], [-25, -18, -15],
         [32, -22, -35], [0, 26, -55], [0, -28, -25]
@@ -3451,6 +3455,7 @@
       // Edge of Universe: Central radiant transmission beacon
       transmissionBeaconGroup = new THREE.Group();
       transmissionBeaconGroup.position.set(0, 10, -1480);
+      transmissionBeaconGroup.visible = false;
 
       const beaconRings = [
         { r: 8, col: 0xffffff, op: 0.95 },
@@ -3950,768 +3955,6 @@
       });
     }
 
-    function build3DProductWorlds() {
-      productWorldsGroup = new THREE.Group();
-      scene.add(productWorldsGroup);
-
-      const texLoader = new THREE.TextureLoader();
-
-      productConfigs.forEach((cfg) => {
-        // 1. Orbital Path Line
-        const curve = new THREE.EllipseCurve(
-          0, 0,
-          cfg.radius, cfg.radius * 0.92,
-          0, 2 * Math.PI, false, 0
-        );
-        const curvePoints = curve.getPoints(120);
-        const pathGeo = new THREE.BufferGeometry().setFromPoints(curvePoints);
-        const pathLine = new THREE.Line(pathGeo, new THREE.LineBasicMaterial({
-          color: cfg.color,
-          transparent: true,
-          opacity: 0.22,
-          blending: THREE.AdditiveBlending
-        }));
-        pathLine.position.set(globeCenterX, globeCenterY, globeCenterZ);
-        pathLine.rotation.set(cfg.inclinationX, cfg.inclinationY, cfg.inclinationZ);
-        scene.add(pathLine);
-
-        // 2. World Container Group
-        const worldGroup = new THREE.Group();
-
-        // 3. Central Planetary Sphere
-        const planetGeo = new THREE.SphereGeometry(cfg.sphereSize, 24, 24);
-        const planetMat = new THREE.MeshBasicMaterial({
-          color: cfg.color,
-          transparent: true,
-          opacity: 0.9
-        });
-        const planetMesh = new THREE.Mesh(planetGeo, planetMat);
-        worldGroup.add(planetMesh);
-
-        // 4. Atmospheric Glow Shell
-        const haloMat = new THREE.SpriteMaterial({
-          map: createSoftPointTexture(),
-          color: cfg.color,
-          transparent: true,
-          opacity: 0.7,
-          blending: THREE.AdditiveBlending
-        });
-        const haloSprite = new THREE.Sprite(haloMat);
-        haloSprite.scale.set(cfg.sphereSize * 5.0, cfg.sphereSize * 5.0, 1);
-        worldGroup.add(haloSprite);
-
-        // 5. Billboard Emblem Sprite
-        texLoader.load(cfg.emblem, (tex) => {
-          tex.minFilter = THREE.LinearFilter;
-          tex.magFilter = THREE.LinearFilter;
-          const emblemMat = new THREE.SpriteMaterial({
-            map: tex,
-            transparent: true,
-            opacity: 0.95,
-            depthTest: false
-          });
-          const emblemSprite = new THREE.Sprite(emblemMat);
-          emblemSprite.scale.set(8.5, 8.5, 1);
-          emblemSprite.position.set(0, cfg.sphereSize * 2.2, 0);
-          emblemSprite.renderOrder = 30;
-          worldGroup.add(emblemSprite);
-        });
-
-        // 6. Orbiting Photon Moon
-        const moon = new THREE.Mesh(
-          new THREE.SphereGeometry(0.5, 12, 12),
-          new THREE.MeshBasicMaterial({ color: 0xffffff })
-        );
-        worldGroup.add(moon);
-
-        // 7. Raycast Hit Proxy Sphere (Invisible)
-        const hitGeo = new THREE.SphereGeometry(cfg.sphereSize * 3.2, 12, 12);
-        const hitMat = new THREE.MeshBasicMaterial({ visible: false });
-        const hitMesh = new THREE.Mesh(hitGeo, hitMat);
-        hitMesh.userData = {
-          isProductWorld: true,
-          id: cfg.id,
-          name: cfg.name,
-          tagline: cfg.tagline,
-          color: cfg.glowColor,
-          group: worldGroup,
-          pathLine: pathLine
-        };
-        worldGroup.add(hitMesh);
-        productHitTargets.push(hitMesh);
-
-        productWorldsGroup.add(worldGroup);
-
-        productWorlds.push({
-          config: cfg,
-          group: worldGroup,
-          curve: curve,
-          moon: moon,
-          pathLine: pathLine,
-          progress: cfg.startProgress,
-          speed: cfg.speed
-        });
-      });
-    }
-
-    /* -------------------------------------------------------------
-       6. PROCEDURAL NEBULA CLOUDS & STELLAR STARFIELDS
-       ------------------------------------------------------------- */
-    function buildSubtleCosmicNebula() {
-      const texNavy = createProceduralNebulaTexture('#0a0e27', '#030514');
-      const texViolet = createProceduralNebulaTexture('#1e123d', '#070414');
-      const texCyan = createProceduralNebulaTexture('#083344', '#020b14');
-
-      for (let i = 0; i < 32; i++) {
-        const tex = (i % 3 === 0) ? texCyan : (i % 3 === 1 ? texViolet : texNavy);
-        const mat = new THREE.SpriteMaterial({
-          map: tex,
-          transparent: true,
-          opacity: 0.035 + Math.random() * 0.035,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false
-        });
-        const sprite = new THREE.Sprite(mat);
-
-        const r = 30 + Math.pow(Math.random(), 1.3) * 180;
-        const a = Math.random() * Math.PI * 2;
-        sprite.position.set(
-          globeCenterX + Math.cos(a) * r,
-          globeCenterY + (Math.random() - 0.5) * 45,
-          globeCenterZ + Math.sin(a) * r - 20
-        );
-        const s = 150 + Math.random() * 220;
-        sprite.scale.set(s, s, 1);
-        scene.add(sprite);
-        nebulaPuffs.push({ sprite, baseScale: s, seed: Math.random() * 10 });
-      }
-    }
-
-    /* -------------------------------------------------------------
-       2B. DYNAMIC HYPERSPACE WARP STARFIELD (MOTION TRAILS & REAL DEPTH)
-       ------------------------------------------------------------- */
-    function buildWarpStarfield() {
-      const palette = [
-        { r: 1.0, g: 1.0, b: 1.0 },       // Diamond white (70%)
-        { r: 0.82, g: 0.90, b: 1.0 },      // Celestial soft blue (15%)
-        { r: 0.22, g: 0.74, b: 0.97 },     // Electric cyan (7%)
-        { r: 0.75, g: 0.52, b: 0.98 },     // Cosmic violet (5%)
-        { r: 0.96, g: 0.45, b: 0.72 }      // Magenta energy (3%)
-      ];
-
-      for (let i = 0; i < WARP_STAR_COUNT; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const radius = 20 + Math.pow(Math.random(), 0.85) * 540;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
-        const z = (Math.random() - 0.5) * 2200 - 500;
-        const baseSpeed = 0.25 + Math.random() * 0.45;
-
-        const rand = Math.random();
-        let col = palette[0];
-        if (rand > 0.97) col = palette[4];
-        else if (rand > 0.92) col = palette[3];
-        else if (rand > 0.85) col = palette[2];
-        else if (rand > 0.70) col = palette[1];
-
-        const brightness = 0.5 + Math.random() * 0.5;
-
-        warpStarData.push({
-          x, y, z,
-          baseSpeed,
-          r: col.r * brightness,
-          g: col.g * brightness,
-          b: col.b * brightness
-        });
-
-        const idx6 = i * 6;
-        warpStarPositions[idx6] = x;
-        warpStarPositions[idx6 + 1] = y;
-        warpStarPositions[idx6 + 2] = z;
-
-        warpStarPositions[idx6 + 3] = x;
-        warpStarPositions[idx6 + 4] = y;
-        warpStarPositions[idx6 + 5] = z + 0.5;
-
-        warpStarColors[idx6] = col.r * brightness;
-        warpStarColors[idx6 + 1] = col.g * brightness;
-        warpStarColors[idx6 + 2] = col.b * brightness;
-
-        warpStarColors[idx6 + 3] = col.r * brightness * 0.4;
-        warpStarColors[idx6 + 4] = col.g * brightness * 0.4;
-        warpStarColors[idx6 + 5] = col.b * brightness * 0.4;
-      }
-
-      warpLinesGeo = new THREE.BufferGeometry();
-      warpLinesGeo.setAttribute('position', new THREE.BufferAttribute(warpStarPositions, 3));
-      warpLinesGeo.setAttribute('color', new THREE.BufferAttribute(warpStarColors, 3));
-
-      const lineMat = new THREE.LineBasicMaterial({
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.88,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      });
-
-      warpLinesMesh = new THREE.LineSegments(warpLinesGeo, lineMat);
-      scene.add(warpLinesMesh);
-    }
-
-    /* -------------------------------------------------------------
-       2C. 3D SPATIAL DESTINATION STRUCTURES (ABOUT, PORTFOLIO, CONTACT)
-       ------------------------------------------------------------- */
-    function buildSpatialDestinations() {
-      // 1. THE BUILDER DESTINATION (Z = -530)
-      // Holographic aura halo ring positioned behind founder card
-      const bHaloGeo = new THREE.RingGeometry(24, 38, 48);
-      const bHaloMat = new THREE.MeshBasicMaterial({
-        color: 0x06b6d4,
-        transparent: true,
-        opacity: 0.35,
-        side: THREE.DoubleSide,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      });
-      builderSpatialHalo = new THREE.Mesh(bHaloGeo, bHaloMat);
-      builderSpatialHalo.position.set(24, 6, -530);
-      scene.add(builderSpatialHalo);
-
-      // 450 Shimmering Golden & Cyan Floating Embers
-      const emberCount = 450;
-      const emberPos = new Float32Array(emberCount * 3);
-      const emberCol = new Float32Array(emberCount * 3);
-      for (let i = 0; i < emberCount; i++) {
-        const a = Math.random() * Math.PI * 2;
-        const r = 5 + Math.pow(Math.random(), 1.2) * 45;
-        emberPos[i * 3] = 24 + Math.cos(a) * r;
-        emberPos[i * 3 + 1] = 6 + Math.sin(a) * r;
-        emberPos[i * 3 + 2] = -530 + (Math.random() - 0.5) * 25;
-
-        if (Math.random() > 0.4) {
-          emberCol[i * 3] = 0.98; emberCol[i * 3 + 1] = 0.75; emberCol[i * 3 + 2] = 0.25; // Gold
-        } else {
-          emberCol[i * 3] = 0.12; emberCol[i * 3 + 1] = 0.78; emberCol[i * 3 + 2] = 0.95; // Cyan
-        }
-      }
-      const emberGeo = new THREE.BufferGeometry();
-      emberGeo.setAttribute('position', new THREE.BufferAttribute(emberPos, 3));
-      emberGeo.setAttribute('color', new THREE.BufferAttribute(emberCol, 3));
-      builderEmbersPoints = new THREE.Points(emberGeo, new THREE.PointsMaterial({
-        size: 2.2,
-        vertexColors: true,
-        map: createSoftPointTexture(),
-        transparent: true,
-        opacity: 0.75,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      }));
-      scene.add(builderEmbersPoints);
-
-      // 2. CREATION FIELD DESTINATION (Z = -840)
-      // 6 Glowing Constellation Nodes floating in space
-      portfolioConstellationGroup = new THREE.Group();
-      portfolioConstellationGroup.position.set(0, 8, -840);
-      const nodeCoords = [
-        [-38, 22, -20], [35, 18, -40], [-25, -18, -15],
-        [32, -22, -35], [0, 26, -55], [0, -28, -25]
-      ];
-      nodeCoords.forEach((nc) => {
-        const nMesh = new THREE.Mesh(
-          new THREE.SphereGeometry(1.4, 12, 12),
-          new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9 })
-        );
-        nMesh.position.set(nc[0], nc[1], nc[2]);
-        const nHalo = new THREE.Sprite(new THREE.SpriteMaterial({
-          map: createSoftPointTexture(),
-          color: 0x8b5cf6,
-          transparent: true,
-          opacity: 0.65,
-          blending: THREE.AdditiveBlending
-        }));
-        nHalo.scale.set(7.5, 7.5, 1);
-        nMesh.add(nHalo);
-        portfolioConstellationGroup.add(nMesh);
-      });
-      scene.add(portfolioConstellationGroup);
-
-      // 3. THE TRANSMISSION DESTINATION (Z = -1480)
-      // Edge of Universe: Central radiant transmission beacon
-      transmissionBeaconGroup = new THREE.Group();
-      transmissionBeaconGroup.position.set(0, 10, -1480);
-
-      const beaconRings = [
-        { r: 8, col: 0xffffff, op: 0.95 },
-        { r: 22, col: 0x06b6d4, op: 0.75 },
-        { r: 42, col: 0xa855f7, op: 0.55 },
-        { r: 68, col: 0xec4899, op: 0.35 }
-      ];
-      beaconRings.forEach(br => {
-        const ringLine = new THREE.Line(
-          new THREE.BufferGeometry().setFromPoints(new THREE.EllipseCurve(0, 0, br.r, br.r, 0, Math.PI * 2).getPoints(80)),
-          new THREE.LineBasicMaterial({ color: br.col, transparent: true, opacity: br.op, blending: THREE.AdditiveBlending })
-        );
-        transmissionBeaconGroup.add(ringLine);
-      });
-
-      // Central Pillar Beam
-      const tBeam = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.8, 3.2, 50, 16, 1, true),
-        new THREE.MeshBasicMaterial({ color: 0x06b6d4, transparent: true, opacity: 0.65, blending: THREE.AdditiveBlending, side: THREE.DoubleSide })
-      );
-      transmissionBeaconGroup.add(tBeam);
-      scene.add(transmissionBeaconGroup);
-    }
-
-    function buildDistantStarfield() {
-      const count = 14000;
-      const pos = new Float32Array(count * 3);
-      const col = new Float32Array(count * 3);
-
-      for (let i = 0; i < count; i++) {
-        pos[i * 3] = (Math.random() - 0.5) * 1600;
-        pos[i * 3 + 1] = (Math.random() - 0.5) * 1000;
-        pos[i * 3 + 2] = -400 - Math.random() * 1100;
-
-        const isCyan = Math.random() < 0.08;
-        if (isCyan) {
-          col[i * 3] = 0.5; col[i * 3 + 1] = 0.85; col[i * 3 + 2] = 1.0;
-        } else {
-          const shade = 0.45 + Math.random() * 0.5;
-          col[i * 3] = shade; col[i * 3 + 1] = shade; col[i * 3 + 2] = shade * 1.05;
-        }
-      }
-
-      const geo = new THREE.BufferGeometry();
-      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-      geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-
-      const mat = new THREE.PointsMaterial({
-        size: 1.1,
-        sizeAttenuation: true,
-        vertexColors: true,
-        map: createSoftPointTexture(),
-        transparent: true,
-        opacity: 0.65,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      });
-
-      distantStarField = new THREE.Points(geo, mat);
-      scene.add(distantStarField);
-    }
-
-    function buildBrightStellarBeacons() {
-      brightBeaconsGroup = new THREE.Group();
-      const count = 160;
-      const starTex = createDiffractionStarTexture();
-
-      for (let i = 0; i < count; i++) {
-        const mat = new THREE.SpriteMaterial({
-          map: starTex,
-          transparent: true,
-          opacity: 0.5 + Math.random() * 0.35,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false
-        });
-        const sprite = new THREE.Sprite(mat);
-
-        let x = (Math.random() - 0.5) * 850;
-        let y = (Math.random() - 0.5) * 550;
-        let z = (Math.random() - 0.5) * 450 - 50;
-
-        if (x < -10 && y > -40 && y < 50) x -= 90;
-
-        sprite.position.set(x, y, z);
-        const s = 3.5 + Math.random() * 6.0;
-        sprite.scale.set(s, s, 1);
-        brightBeaconsGroup.add(sprite);
-      }
-      scene.add(brightBeaconsGroup);
-    }
-
-    /* -------------------------------------------------------------
-       7. CELESTIAL FOREGROUND & BACKGROUND (PLANETS & GALAXY)
-       ------------------------------------------------------------- */
-    function buildCelestialForeAndBackground() {
-      // 1. Bottom-Left Curved Horizon (Massive Deep-Blue Planet Framing Corner)
-      const blGeo = new THREE.SphereGeometry(135, 48, 48);
-      const blMat = new THREE.MeshBasicMaterial({
-        map: createOceanPlanetTexture(),
-        transparent: true,
-        opacity: 0.98
-      });
-      blPlanetMesh = new THREE.Mesh(blGeo, blMat);
-      blPlanetMesh.position.set(-170, -170, 75);
-      scene.add(blPlanetMesh);
-
-      // Atmospheric Rim for Bottom-Left Planet
-      const blAtmosGeo = new THREE.SphereGeometry(137, 48, 48);
-      const blAtmosMat = new THREE.ShaderMaterial({
-        vertexShader: `
-          varying vec3 vNormal;
-          void main() {
-            vNormal = normalize(normalMatrix * normal);
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          varying vec3 vNormal;
-          void main() {
-            float fresnel = 1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0));
-            fresnel = pow(fresnel, 3.2);
-            vec3 atmosColor = vec3(0.05, 0.75, 1.0); // Vibrant electric cyan
-            gl_FragColor = vec4(atmosColor, fresnel * 0.95);
-          }
-        `,
-        transparent: true,
-        blending: THREE.AdditiveBlending,
-        side: THREE.FrontSide,
-        depthWrite: false
-      });
-      blPlanetAtmos = new THREE.Mesh(blAtmosGeo, blAtmosMat);
-      blPlanetAtmos.position.set(-170, -170, 75);
-      scene.add(blPlanetAtmos);
-
-      // 2. Bottom-Right Planet with Warm Magenta/Violet Rim Light
-      const brGeo = new THREE.SphereGeometry(44, 36, 36);
-      const brMat = new THREE.MeshBasicMaterial({
-        map: createShadowedPlanetTexture('#150624', '#080210'),
-        transparent: true,
-        opacity: 0.96
-      });
-      brPlanetMesh = new THREE.Mesh(brGeo, brMat);
-      brPlanetMesh.position.set(175, -125, 50);
-      scene.add(brPlanetMesh);
-
-      const brAtmosGeo = new THREE.SphereGeometry(45, 36, 36);
-      const brAtmosMat = new THREE.ShaderMaterial({
-        vertexShader: `
-          varying vec3 vNormal;
-          void main() {
-            vNormal = normalize(normalMatrix * normal);
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          varying vec3 vNormal;
-          void main() {
-            float fresnel = 1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0));
-            fresnel = pow(fresnel, 2.8);
-            vec3 atmosColor = vec3(0.92, 0.28, 0.94); // Magenta / purple
-            gl_FragColor = vec4(atmosColor, fresnel * 0.88);
-          }
-        `,
-        transparent: true,
-        blending: THREE.AdditiveBlending,
-        side: THREE.FrontSide,
-        depthWrite: false
-      });
-      brPlanetAtmos = new THREE.Mesh(brAtmosGeo, brAtmosMat);
-      brPlanetAtmos.position.set(175, -125, 50);
-      scene.add(brPlanetAtmos);
-
-      // 3. Top-Right Prominent Spiral Galaxy
-      trGalaxyGroup = new THREE.Group();
-      trGalaxyGroup.position.set(185, 120, -190);
-      trGalaxyGroup.rotation.set(0.72, 0.42, -0.32);
-
-      const trPoints = 1800;
-      const trPos = new Float32Array(trPoints * 3);
-      const trCol = new Float32Array(trPoints * 3);
-
-      for (let i = 0; i < trPoints; i++) {
-        const arm = i % 2;
-        const r = 2 + 58 * Math.pow(Math.random(), 1.5);
-        const theta = arm * Math.PI + 2.5 * Math.log(r / 3) + (Math.random() - 0.5) * 0.35;
-
-        trPos[i * 3] = Math.cos(theta) * r + (Math.random() - 0.5) * 3;
-        trPos[i * 3 + 1] = (Math.random() - 0.5) * 3;
-        trPos[i * 3 + 2] = Math.sin(theta) * r + (Math.random() - 0.5) * 3;
-
-        const p = r / 60;
-        if (p < 0.18) {
-          trCol[i * 3] = 1.0; trCol[i * 3 + 1] = 0.98; trCol[i * 3 + 2] = 1.0;
-        } else if (p < 0.5) {
-          trCol[i * 3] = 0.72; trCol[i * 3 + 1] = 0.45; trCol[i * 3 + 2] = 1.0;
-        } else {
-          trCol[i * 3] = 0.28; trCol[i * 3 + 1] = 0.72; trCol[i * 3 + 2] = 1.0;
-        }
-      }
-
-      const trGeo = new THREE.BufferGeometry();
-      trGeo.setAttribute('position', new THREE.BufferAttribute(trPos, 3));
-      trGeo.setAttribute('color', new THREE.BufferAttribute(trCol, 3));
-      const trPts = new THREE.Points(trGeo, new THREE.PointsMaterial({
-        size: 1.8,
-        vertexColors: true,
-        map: createSoftPointTexture(),
-        transparent: true,
-        opacity: 0.85,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      }));
-      trGalaxyGroup.add(trPts);
-      scene.add(trGalaxyGroup);
-    }
-
-    /* -------------------------------------------------------------
-       8. NIVORA DIGITAL CORE (CYBER HOLOGRAPHIC GLOBE & SUSPENDED LOGO)
-       ------------------------------------------------------------- */
-    function buildNivoraGlobeCore() {
-      globeGroup = new THREE.Group();
-      globeGroup.position.set(globeCenterX, globeCenterY, globeCenterZ);
-
-      const globeRadius = 25.5;
-      const cyberTex = createDigitalWorldTextureCinematic();
-
-      // Inner Cyber Continents Globe
-      const sphereGeo = new THREE.SphereGeometry(globeRadius, 64, 64);
-      const sphereMat = new THREE.MeshBasicMaterial({
-        map: cyberTex,
-        transparent: true,
-        opacity: 0.92,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      });
-      globeMesh = new THREE.Mesh(sphereGeo, sphereMat);
-      globeGroup.add(globeMesh);
-
-      // Atmospheric Glass Shell with Brilliant Fresnel Rim
-      const atmosGeo = new THREE.SphereGeometry(globeRadius * 1.05, 48, 48);
-      const atmosMat = new THREE.ShaderMaterial({
-        vertexShader: `
-          varying vec3 vNormal;
-          void main() {
-            vNormal = normalize(normalMatrix * normal);
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          varying vec3 vNormal;
-          void main() {
-            float fresnel = 1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0));
-            fresnel = pow(fresnel, 2.5);
-
-            vec3 cyanColor = vec3(0.02, 0.71, 0.83);    // #06b6d4
-            vec3 purpleColor = vec3(0.66, 0.33, 0.97);  // #a855f7
-            vec3 magentaColor = vec3(0.93, 0.28, 0.94); // #ec4899
-
-            vec3 rimColor = mix(cyanColor, purpleColor, fresnel * 0.8);
-            rimColor = mix(rimColor, magentaColor, pow(fresnel, 3.8));
-
-            gl_FragColor = vec4(rimColor, fresnel * 0.95);
-          }
-        `,
-        transparent: true,
-        blending: THREE.AdditiveBlending,
-        side: THREE.FrontSide,
-        depthWrite: false
-      });
-      atmosphereMesh = new THREE.Mesh(atmosGeo, atmosMat);
-      globeGroup.add(atmosphereMesh);
-
-      // Radiant Atmospheric Corona Sprite
-      const haloMat = new THREE.SpriteMaterial({
-        map: createCoronaHaloTexture(),
-        transparent: true,
-        opacity: 0.75,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      });
-      globeHaloSprite = new THREE.Sprite(haloMat);
-      globeHaloSprite.scale.set(82, 82, 1);
-      globeHaloSprite.renderOrder = 15;
-      globeGroup.add(globeHaloSprite);
-
-      // Official NIVORA 3D Logo (Suspended at Center with Glowing Aura)
-      const logoLoader = new THREE.TextureLoader();
-      const domLogo = document.querySelector('.nav-logo-icon');
-      const logoSrc = (domLogo && domLogo.getAttribute('src')) ? domLogo.src : 'assets/images/nivora-logo.png';
-      logoLoader.load(logoSrc, (tex) => {
-        tex.minFilter = THREE.LinearFilter;
-        tex.magFilter = THREE.LinearFilter;
-        const logoMat = new THREE.SpriteMaterial({
-          map: tex,
-          transparent: true,
-          opacity: 1.0,
-          blending: THREE.NormalBlending,
-          depthTest: false
-        });
-        logoSprite = new THREE.Sprite(logoMat);
-        logoSprite.scale.set(17.5, 17.5, 1);
-        logoSprite.renderOrder = 30;
-        globeGroup.add(logoSprite);
-
-        const auraMat = new THREE.SpriteMaterial({
-          map: createSoftPointTexture(),
-          color: 0x06b6d4,
-          transparent: true,
-          opacity: 0.65,
-          blending: THREE.AdditiveBlending,
-          depthTest: false
-        });
-        const auraSprite = new THREE.Sprite(auraMat);
-        auraSprite.scale.set(24, 24, 1);
-        auraSprite.renderOrder = 25;
-        globeGroup.add(auraSprite);
-      });
-
-      scene.add(globeGroup);
-    }
-
-    /* -------------------------------------------------------------
-       9. GALACTIC SWIRLING VORTEX ACCRETION DISC & BEAM
-       ------------------------------------------------------------- */
-    function buildGalacticAccretionPlatform() {
-      const beamHeight = 22;
-      const vortexY = globeCenterY - 25.5 - beamHeight + 3;
-
-      accretionGroup = new THREE.Group();
-      accretionGroup.position.set(globeCenterX, vortexY, globeCenterZ);
-      accretionGroup.rotation.set(Math.PI / 2.3, 0, 0.1);
-
-      // 1. Concentric luminous vortex rings
-      const ringConfigs = [
-        { inner: 3, outer: 14, color: 0xffffff, opacity: 0.95 },
-        { inner: 12, outer: 28, color: 0x06b6d4, opacity: 0.85 },
-        { inner: 26, outer: 48, color: 0xa855f7, opacity: 0.75 },
-        { inner: 45, outer: 72, color: 0xec4899, opacity: 0.65 },
-        { inner: 68, outer: 95, color: 0x8b5cf6, opacity: 0.35 }
-      ];
-
-      ringConfigs.forEach(rc => {
-        const rGeo = new THREE.RingGeometry(rc.inner, rc.outer, 64);
-        const rMat = new THREE.MeshBasicMaterial({
-          color: rc.color,
-          transparent: true,
-          opacity: rc.opacity,
-          side: THREE.DoubleSide,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false
-        });
-        const rMesh = new THREE.Mesh(rGeo, rMat);
-        accretionGroup.add(rMesh);
-      });
-
-      // 2. 4,500 Swirling Spiral Particles
-      const dPoints = 4500;
-      const dPos = new Float32Array(dPoints * 3);
-      const dCol = new Float32Array(dPoints * 3);
-
-      for (let i = 0; i < dPoints; i++) {
-        const arm = i % 4;
-        const radius = 6 + Math.pow(Math.random(), 1.2) * 88;
-        const angle = (arm * Math.PI / 2) + 2.8 * Math.log(radius / 5) + (Math.random() - 0.5) * 0.45;
-
-        dPos[i * 3] = Math.cos(angle) * radius;
-        dPos[i * 3 + 1] = (Math.random() - 0.5) * 2.2;
-        dPos[i * 3 + 2] = Math.sin(angle) * radius;
-
-        const p = radius / 94;
-        if (p < 0.2) {
-          dCol[i * 3] = 1.0; dCol[i * 3 + 1] = 1.0; dCol[i * 3 + 2] = 1.0;
-        } else if (p < 0.45) {
-          dCol[i * 3] = 0.05; dCol[i * 3 + 1] = 0.75; dCol[i * 3 + 2] = 0.95;
-        } else if (p < 0.75) {
-          dCol[i * 3] = 0.92; dCol[i * 3 + 1] = 0.28; dCol[i * 3 + 2] = 0.94;
-        } else {
-          dCol[i * 3] = 0.55; dCol[i * 3 + 1] = 0.22; dCol[i * 3 + 2] = 0.95;
-        }
-      }
-
-      const dGeo = new THREE.BufferGeometry();
-      dGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3));
-      dGeo.setAttribute('color', new THREE.BufferAttribute(dCol, 3));
-      accretionParticles = new THREE.Points(dGeo, new THREE.PointsMaterial({
-        size: 2.2,
-        vertexColors: true,
-        map: createSoftPointTexture(),
-        transparent: true,
-        opacity: 0.85,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      }));
-      accretionGroup.add(accretionParticles);
-      scene.add(accretionGroup);
-
-      // 3. Vertical Projection Light Column
-      const beamGeo = new THREE.CylinderGeometry(1.6, 5.0, beamHeight, 32, 1, true);
-      const beamCanvas = document.createElement('canvas');
-      beamCanvas.width = 128; beamCanvas.height = 256;
-      const bCtx = beamCanvas.getContext('2d');
-      const bGrad = bCtx.createLinearGradient(0, 0, 0, 256);
-      bGrad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
-      bGrad.addColorStop(0.2, 'rgba(6, 182, 212, 0.85)');
-      bGrad.addColorStop(0.7, 'rgba(168, 85, 247, 0.65)');
-      bGrad.addColorStop(1, 'rgba(236, 72, 153, 0.1)');
-      bCtx.fillStyle = bGrad;
-      bCtx.fillRect(0, 0, 128, 256);
-
-      energyBeam = new THREE.Mesh(beamGeo, new THREE.MeshBasicMaterial({
-        map: new THREE.CanvasTexture(beamCanvas),
-        transparent: true,
-        opacity: 0.85,
-        blending: THREE.AdditiveBlending,
-        side: THREE.DoubleSide,
-        depthWrite: false
-      }));
-      energyBeam.position.set(globeCenterX, globeCenterY - 25.5 - beamHeight / 2 + 2, globeCenterZ);
-      scene.add(energyBeam);
-    }
-
-    /* -------------------------------------------------------------
-       10. 4 ELEGANT 3D ORBITAL RINGS WITH GLOWING SATELLITES
-       ------------------------------------------------------------- */
-    function buildOrbitalRings3D() {
-      const ringSpecs = [
-        { radiusX: 38, radiusY: 34, rotX: 1.25, rotY: 0.15, rotZ: 0.25, color: 0x06b6d4, speed: 0.002 },
-        { radiusX: 44, radiusY: 38, rotX: 0.55, rotY: 1.15, rotZ: -0.50, color: 0xa855f7, speed: -0.0018 },
-        { radiusX: 52, radiusY: 44, rotX: -0.75, rotY: 0.45, rotZ: 0.95, color: 0x38bdf8, speed: 0.0022 },
-        { radiusX: 60, radiusY: 48, rotX: 0.35, rotY: -0.85, rotZ: 0.65, color: 0xec4899, speed: -0.0015 }
-      ];
-
-      ringSpecs.forEach((spec, rIdx) => {
-        const curve = new THREE.EllipseCurve(0, 0, spec.radiusX, spec.radiusY, 0, 2 * Math.PI, false, 0);
-        const points = curve.getPoints(120);
-        const ringGeo = new THREE.BufferGeometry().setFromPoints(points);
-
-        const ringLine = new THREE.Line(ringGeo, new THREE.LineBasicMaterial({
-          color: spec.color,
-          transparent: true,
-          opacity: 0.52,
-          blending: THREE.AdditiveBlending
-        }));
-        ringLine.rotation.set(spec.rotX, spec.rotY, spec.rotZ);
-        globeGroup.add(ringLine);
-
-        const bead = new THREE.Mesh(
-          new THREE.SphereGeometry(1.0, 12, 12),
-          new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.95 })
-        );
-        const halo = new THREE.Sprite(new THREE.SpriteMaterial({
-          map: createSoftPointTexture(),
-          color: spec.color,
-          transparent: true,
-          opacity: 0.8,
-          blending: THREE.AdditiveBlending
-        }));
-        halo.scale.set(5.5, 5.5, 1);
-        bead.add(halo);
-
-        globeGroup.add(bead);
-        ringParticles.push({
-          mesh: bead,
-          curve: curve,
-          rotX: spec.rotX,
-          rotY: spec.rotY,
-          rotZ: spec.rotZ,
-          progress: rIdx * 0.25,
-          speed: spec.speed
-        });
-      });
-    }
-
     /* -------------------------------------------------------------
        10. TEXTURE GENERATORS
        ------------------------------------------------------------- */
@@ -4905,101 +4148,101 @@
        12. CINEMATIC CAMERA SCROLL TRAJECTORY (ZOOM OUT JOURNEY)
        ------------------------------------------------------------- */
     function getCameraTrajectory(p) {
-      // 6-STAGE SPACE-TRAVEL FLIGHT PATH (Z: +260 -> -1380)
-      if (p <= 0.16) {
-        // Stage 1: HERO -> Space-travel forward acceleration past the core into the cosmos
-        const t = p / 0.16;
+      // 6-STAGE SPACE-TRAVEL FLIGHT PATH (Z: +260 -> -1420)
+      if (p <= 0.12) {
+        // Stage 1: HERO -> Forward warp acceleration past the Core into the galaxy
+        const t = p / 0.12;
         const ease = t * t * (3 - 2 * t);
         return {
           pos: new THREE.Vector3(
-            0 + (12 - 0) * ease,
             0 + (8 - 0) * ease,
-            baseCamZ + (110 - baseCamZ) * ease   // 260 -> 110 (Forward travel!)
+            0 + (6 - 0) * ease,
+            baseCamZ + (-40 - baseCamZ) * ease   // 260 -> -40 (Flies past Core into deep cosmos!)
           ),
           look: new THREE.Vector3(
-            20 + (15 - 20) * ease,
+            20 + (10 - 20) * ease,
             8 + (8 - 8) * ease,
-            0 + (-120 - 0) * ease
+            0 + (-180 - 0) * ease
           )
         };
-      } else if (p <= 0.38) {
-        // Stage 2: PRODUCT CONSTELLATION ARRIVAL (Z: -190)
-        const t = (p - 0.16) / 0.22;
+      } else if (p <= 0.36) {
+        // Stage 2: PRODUCT CONSTELLATION DESTINATION (Z: -40 -> -240)
+        const t = (p - 0.12) / 0.24;
         const ease = t * t * (3 - 2 * t);
         return {
           pos: new THREE.Vector3(
-            12 + (-4 - 12) * ease,
-            8 + (10 - 8) * ease,
-            110 + (-190 - 110) * ease
+            8 + (0 - 8) * ease,
+            6 + (8 - 6) * ease,
+            -40 + (-240 - -40) * ease
           ),
           look: new THREE.Vector3(
-            15 + (0 - 15) * ease,
-            8 + (10 - 8) * ease,
-            -120 + (-350 - -120) * ease
+            10 + (0 - 10) * ease,
+            8 + (8 - 8) * ease,
+            -180 + (-420 - -180) * ease
           )
         };
       } else if (p <= 0.58) {
-        // Stage 3: THE BUILDER (NIVAS) ARRIVAL (Z: -520)
-        const t = (p - 0.38) / 0.20;
+        // Stage 3: THE BUILDER (NIVAS) ARRIVAL (Z: -240 -> -540)
+        const t = (p - 0.36) / 0.22;
         const ease = t * t * (3 - 2 * t);
         return {
           pos: new THREE.Vector3(
-            -4 + (-14 - -4) * ease,
-            10 + (6 - 10) * ease,
-            -190 + (-520 - -190) * ease
+            0 + (-12 - 0) * ease,
+            8 + (6 - 8) * ease,
+            -240 + (-540 - -240) * ease
           ),
           look: new THREE.Vector3(
-            0 + (-10 - 0) * ease,
-            10 + (6 - 10) * ease,
-            -350 + (-720 - -350) * ease
+            0 + (-8 - 0) * ease,
+            8 + (6 - 8) * ease,
+            -420 + (-740 - -420) * ease
           )
         };
-      } else if (p <= 0.78) {
-        // Stage 4: PORTFOLIO ARCHIVES ARRIVAL (Z: -820)
-        const t = (p - 0.58) / 0.20;
+      } else if (p <= 0.76) {
+        // Stage 4: PORTFOLIO ARCHIVES ARRIVAL (Z: -540 -> -840)
+        const t = (p - 0.58) / 0.18;
         const ease = t * t * (3 - 2 * t);
         return {
           pos: new THREE.Vector3(
-            -14 + (8 - -14) * ease,
-            6 + (12 - 6) * ease,
-            -520 + (-820 - -520) * ease
-          ),
-          look: new THREE.Vector3(
-            -10 + (4 - -10) * ease,
+            -12 + (6 - -12) * ease,
             6 + (10 - 6) * ease,
-            -720 + (-1050 - -720) * ease
+            -540 + (-840 - -540) * ease
+          ),
+          look: new THREE.Vector3(
+            -8 + (2 - -8) * ease,
+            6 + (8 - 6) * ease,
+            -740 + (-1060 - -740) * ease
           )
         };
-      } else if (p <= 0.90) {
-        // Stage 5: ECOSYSTEM PHILOSOPHY & VISION (Z: -1100)
-        const t = (p - 0.78) / 0.12;
+      } else if (p <= 0.88) {
+        // Stage 5: ECOSYSTEM PHILOSOPHY & VISION (Z: -840 -> -1120)
+        const t = (p - 0.76) / 0.12;
         const ease = t * t * (3 - 2 * t);
         return {
           pos: new THREE.Vector3(
-            8 + (-2 - 8) * ease,
-            12 + (8 - 12) * ease,
-            -820 + (-1100 - -820) * ease
+            6 + (-2 - 6) * ease,
+            10 + (8 - 10) * ease,
+            -840 + (-1120 - -840) * ease
           ),
           look: new THREE.Vector3(
-            4 + (0 - 4) * ease,
-            10 + (8 - 10) * ease,
-            -1050 + (-1280 - -1050) * ease
+            2 + (0 - 2) * ease,
+            8 + (8 - 8) * ease,
+            -1060 + (-1320 - -1060) * ease
           )
         };
       } else {
-        // Stage 6: TRANSMISSION TERMINAL (Z: -1380)
-        const t = (p - 0.90) / 0.10;
+        // Stage 6: TRANSMISSION TERMINAL (Z: -1120 -> -1420)
+        const t = (p - 0.88) / 0.12;
         const ease = t * t * (3 - 2 * t);
         return {
           pos: new THREE.Vector3(
             -2 + (0 - -2) * ease,
             8 + (4 - 8) * ease,
-            -1100 + (-1380 - -1100) * ease
+            -1120 + (-1420 - -1120) * ease
           ),
           look: new THREE.Vector3(
             0,
             8 + (4 - 8) * ease,
-            -1280 + (-1560 - -1280) * ease
+            -1320 + (-1600 - -1320) * ease
           )
         };
       }
@@ -5019,9 +4262,14 @@
         currentCamPos.lerp(targetTrajectory.pos, 0.055);
         currentLookAt.lerp(targetTrajectory.look, 0.055);
 
+        // Hyperspace cosmic turbulence during high-speed travel
+        const warpShake = Math.min(0.35, Math.abs(smoothedScrollVelocity) * 0.012);
+        const shakeX = (Math.random() - 0.5) * warpShake;
+        const shakeY = (Math.random() - 0.5) * warpShake;
+
         camera.position.set(
-          currentCamPos.x + mouse.x * 4.0,
-          currentCamPos.y + mouse.y * 3.0,
+          currentCamPos.x + mouse.x * 4.0 + shakeX,
+          currentCamPos.y + mouse.y * 3.0 + shakeY,
           currentCamPos.z
         );
         camera.lookAt(
@@ -5109,25 +4357,39 @@
       if (trGalaxyGroup) trGalaxyGroup.rotation.z += 0.0012;
       if (accretionGroup) accretionGroup.rotation.z += 0.0032 * effectiveWarpFactor;
 
-      // Animate Spatial Destinations
+      // Hero Core Celestial visibility (visible at Home, smoothly passes camera into cosmos)
+      const isCoreNear = (camera.position.z > 30);
+      if (globeGroup) globeGroup.visible = isCoreNear;
+      if (accretionGroup) accretionGroup.visible = isCoreNear;
+      if (blPlanetMesh) blPlanetMesh.visible = isCoreNear;
+      if (brPlanetMesh) brPlanetMesh.visible = isCoreNear;
+      if (trGalaxyGroup) trGalaxyGroup.visible = isCoreNear;
+
+      // Animate Spatial Destinations & Toggle Visibility based on scroll journey
       if (builderSpatialHalo) {
-        builderSpatialHalo.rotation.z += 0.0015;
+        builderSpatialHalo.visible = (targetScrollP > 0.35 && targetScrollP < 0.72);
+        if (builderSpatialHalo.visible) builderSpatialHalo.rotation.z += 0.0015;
       }
       if (builderEmbersPoints) {
-        builderEmbersPoints.rotation.z -= 0.0008;
+        builderEmbersPoints.visible = (targetScrollP > 0.35 && targetScrollP < 0.72);
+        if (builderEmbersPoints.visible) builderEmbersPoints.rotation.z -= 0.0008;
       }
       if (portfolioConstellationGroup) {
-        portfolioConstellationGroup.rotation.y = Math.sin(elapsed * 0.3) * 0.06;
+        portfolioConstellationGroup.visible = (targetScrollP > 0.55 && targetScrollP < 0.88);
+        if (portfolioConstellationGroup.visible) portfolioConstellationGroup.rotation.y = Math.sin(elapsed * 0.3) * 0.06;
       }
       if (transmissionBeaconGroup) {
-        const pulse = 1.0 + 0.08 * Math.sin(elapsed * 2.5);
-        transmissionBeaconGroup.children.forEach((c, idx) => {
-          if (c.geometry && c.geometry.type === 'CylinderGeometry') {
-            c.scale.set(pulse, 1, pulse);
-          } else {
-            c.rotation.z += 0.001 * (idx % 2 === 0 ? 1 : -1);
-          }
-        });
+        transmissionBeaconGroup.visible = (targetScrollP > 0.75);
+        if (transmissionBeaconGroup.visible) {
+          const pulse = 1.0 + 0.08 * Math.sin(elapsed * 2.5);
+          transmissionBeaconGroup.children.forEach((c, idx) => {
+            if (c.geometry && c.geometry.type === 'CylinderGeometry') {
+              c.scale.set(pulse, 1, pulse);
+            } else {
+              c.rotation.z += 0.001 * (idx % 2 === 0 ? 1 : -1);
+            }
+          });
+        }
       }
 
       // 4 Orbital Product Worlds Animation (Dynamic Spatial Journey)
@@ -5139,7 +4401,7 @@
       const constCenterZ = globeCenterZ + (-210 - globeCenterZ) * cEase;
       const orbitScale = 1.0 + 0.45 * cEase; // Expands outward as user arrives at Products!
 
-      if (productWorldsGroup) productWorldsGroup.visible = (targetScrollP > 0.12);
+      if (productWorldsGroup) productWorldsGroup.visible = (targetScrollP > 0.08 && targetScrollP < 0.55);
       productWorlds.forEach((pw) => {
         if (pw.pathLine) {
           pw.pathLine.position.set(constCenterX, constCenterY, constCenterZ);
@@ -5238,6 +4500,100 @@
     });
 
     /* -------------------------------------------------------------
+       13B. REAL-TIME SPACE-TRAVEL SCROLL & VELOCITY CONTROLLER
+       ------------------------------------------------------------- */
+    let lastTrackedScrollY = window.scrollY || 0;
+    let lastTrackedTime = performance.now();
+
+    function updateActiveNavLink(p) {
+      const navLinks = document.querySelectorAll('.nav-links .nav-link');
+      if (!navLinks.length) return;
+      let activeId = '#hero';
+      if (p >= 0.92) activeId = '#contact';
+      else if (p >= 0.86) activeId = '#folivio';
+      else if (p >= 0.76) activeId = '#vision';
+      else if (p >= 0.58) activeId = '#portfolio';
+      else if (p >= 0.38) activeId = '#about';
+      else if (p >= 0.15) activeId = '#products';
+
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === activeId) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    function handleScrollTravelUpdate(scrollY, maxScroll, velocity) {
+      if (maxScroll <= 0) {
+        targetScrollP = 0;
+      } else {
+        targetScrollP = Math.min(1.0, Math.max(0.0, scrollY / maxScroll));
+      }
+
+      if (typeof velocity === 'number' && !isNaN(velocity)) {
+        rawScrollVelocity = Math.max(-55, Math.min(55, velocity * 0.85));
+      }
+
+      // 1. Dynamic Hero Perspective Exit during space travel
+      const heroContent = document.querySelector('.hero-content');
+      const heroIndicator = document.querySelector('.hero-scroll-indicator');
+      if (heroContent) {
+        const heroAlpha = Math.max(0, 1.0 - targetScrollP * 6.5);
+        heroContent.style.opacity = heroAlpha;
+        heroContent.style.transform = `translate3d(0, ${-targetScrollP * 140}px, 0) scale(${1.0 + targetScrollP * 0.12})`;
+        heroContent.style.pointerEvents = targetScrollP > 0.08 ? 'none' : 'auto';
+      }
+      if (heroIndicator) {
+        heroIndicator.style.opacity = Math.max(0, 1.0 - targetScrollP * 16.0);
+        heroIndicator.style.pointerEvents = targetScrollP > 0.03 ? 'none' : 'auto';
+      }
+
+      updateActiveNavLink(targetScrollP);
+    }
+
+    // Lenis Smooth Scroll binding
+    if (lenis) {
+      lenis.on('scroll', (e) => {
+        const limit = e.limit || (document.documentElement.scrollHeight - window.innerHeight);
+        handleScrollTravelUpdate(e.scroll, limit, e.velocity);
+      });
+    }
+
+    // Native scroll event listener (fallback and instant sync)
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const now = performance.now();
+      const dt = Math.max(8, now - lastTrackedTime);
+      const dy = scrollY - lastTrackedScrollY;
+      const calcVel = (dy / dt) * 16.0;
+
+      handleScrollTravelUpdate(scrollY, maxScroll, calcVel);
+      lastTrackedScrollY = scrollY;
+      lastTrackedTime = now;
+    }, { passive: true });
+
+    // Smooth navigation clicks to space destinations
+    document.querySelectorAll('.nav-links a, .nav-brand').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        const href = anchor.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          const target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+            if (lenis) {
+              lenis.scrollTo(target, { duration: 1.5 });
+            } else {
+              target.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+        }
+      });
+    });
+
+    /* -------------------------------------------------------------
        14. CINEMATIC INTRO SEQUENCE (UNDER 3 SECONDS)
        ------------------------------------------------------------- */
     function runCinematicIntro() {
@@ -5300,7 +4656,11 @@
           // Smooth glide down to products
           const target = document.getElementById('products');
           if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
+            if (lenis) {
+              lenis.scrollTo(target, { duration: 1.5 });
+            } else {
+              target.scrollIntoView({ behavior: 'smooth' });
+            }
           }
         }
       }
@@ -5312,11 +4672,15 @@
       isZoomingTransition = true;
 
       // Accelerated camera travel towards product constellation
-      rawScrollVelocity = 24;
+      rawScrollVelocity = 28;
 
       const targetElem = document.getElementById('products');
       if (targetElem) {
-        targetElem.scrollIntoView({ behavior: 'smooth' });
+        if (lenis) {
+          lenis.scrollTo(targetElem, { duration: 1.5 });
+        } else {
+          targetElem.scrollIntoView({ behavior: 'smooth' });
+        }
       }
 
       setTimeout(() => {

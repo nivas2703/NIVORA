@@ -109,6 +109,8 @@ async function run() {
 
   // 1. Initial Hero state (NIVORA CORE)
   console.log('Capturing: 01_space_hero_core.png');
+  const cam1 = await evaluate(`({ z: camera?.position?.z, scrollP: targetScrollP, vel: rawScrollVelocity })`);
+  console.log('Hero State:', cam1);
   await screenshot('01_space_hero_core.png');
 
   // 2. Simulate fast scroll DOWN to trigger warp streaks / motion trails!
@@ -118,6 +120,8 @@ async function run() {
   `);
   // Capture immediately while velocity is high (star trails stretched)
   await new Promise(r => setTimeout(r, 60));
+  const cam2 = await evaluate(`({ z: camera?.position?.z, scrollP: targetScrollP, vel: rawScrollVelocity })`);
+  console.log('Warp Streaks State:', cam2);
   await screenshot('02_space_warp_streaks_down.png');
 
   // 3. Arrival at Products (Destination: Product Constellation)
@@ -126,6 +130,8 @@ async function run() {
     document.getElementById('products').scrollIntoView({ behavior: 'instant', block: 'start' });
   `);
   await new Promise(r => setTimeout(r, 500));
+  const cam3 = await evaluate(`({ z: camera?.position?.z, scrollP: targetScrollP, vel: rawScrollVelocity })`);
+  console.log('Products State:', cam3);
   await screenshot('03_space_dest_products.png');
 
   // 4. Travel to The Builder (About)
@@ -134,6 +140,8 @@ async function run() {
     document.getElementById('about').scrollIntoView({ behavior: 'instant', block: 'start' });
   `);
   await new Promise(r => setTimeout(r, 500));
+  const cam4 = await evaluate(`({ z: camera?.position?.z, scrollP: targetScrollP, vel: rawScrollVelocity })`);
+  console.log('About State:', cam4);
   await screenshot('04_space_dest_about.png');
 
   // 5. Travel to Creation Field (Portfolio)
@@ -142,6 +150,8 @@ async function run() {
     document.getElementById('portfolio').scrollIntoView({ behavior: 'instant', block: 'start' });
   `);
   await new Promise(r => setTimeout(r, 500));
+  const cam5 = await evaluate(`({ z: camera?.position?.z, scrollP: targetScrollP, vel: rawScrollVelocity })`);
+  console.log('Portfolio State:', cam5);
   await screenshot('05_space_dest_portfolio.png');
 
   // 6. Travel to The Transmission Point (Contact)
@@ -150,6 +160,8 @@ async function run() {
     document.getElementById('contact').scrollIntoView({ behavior: 'instant', block: 'start' });
   `);
   await new Promise(r => setTimeout(r, 500));
+  const cam6 = await evaluate(`({ z: camera?.position?.z, scrollP: targetScrollP, vel: rawScrollVelocity })`);
+  console.log('Contact State:', cam6);
   await screenshot('06_space_dest_transmission.png');
 
   // 7. Simulate Fast Scroll UP (Reverse Warp Travel)
@@ -158,6 +170,8 @@ async function run() {
     window.scrollBy({ top: -800, behavior: 'instant' });
   `);
   await new Promise(r => setTimeout(r, 60));
+  const cam7 = await evaluate(`({ z: camera?.position?.z, scrollP: targetScrollP, vel: rawScrollVelocity })`);
+  console.log('Reverse State:', cam7);
   await screenshot('07_space_reverse_warp.png');
 
   console.log('Space Travel test sequence completed successfully!');
