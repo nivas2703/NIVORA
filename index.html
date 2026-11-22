@@ -110,7 +110,7 @@
       height: 100vh;
       z-index: 0;
       pointer-events: none;
-      background: radial-gradient(circle at 70% 48%, rgba(15, 12, 40, 0.5) 0%, rgba(5, 7, 20, 0.8) 45%, #02040a 100%);
+      background: radial-gradient(circle at 68% 45%, rgba(18, 10, 48, 0.6) 0%, rgba(4, 7, 24, 0.88) 45%, #02040b 100%);
       overflow: hidden;
     }
 
@@ -154,6 +154,65 @@
       0% { transform: scale(1) translate(0, 0); opacity: 0.85; }
       50% { transform: scale(1.08) translate(10px, -8px); opacity: 1; }
       100% { transform: scale(0.96) translate(-10px, 8px); opacity: 0.8; }
+    }
+
+    /* 3D PRODUCT WORLD HOVER HUD PILL */
+    .product-world-tooltip {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 150;
+      pointer-events: none;
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 1.15rem;
+      background: rgba(8, 12, 28, 0.88);
+      border: 1px solid rgba(6, 182, 212, 0.45);
+      box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(6, 182, 212, 0.35);
+      border-radius: 9999px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transform: translate(-50%, -135%);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      white-space: nowrap;
+    }
+    .pwt-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #06b6d4;
+      box-shadow: 0 0 10px #06b6d4;
+    }
+    .pwt-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+    .pwt-name {
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #ffffff;
+    }
+    .pwt-tagline {
+      font-family: var(--font-body);
+      font-size: 0.66rem;
+      color: #94a3b8;
+    }
+    .pwt-hint {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: #38bdf8;
+      padding-left: 0.5rem;
+      border-left: 1px solid rgba(255, 255, 255, 0.15);
+      letter-spacing: 0.05em;
+    }
+
+    /* Initial state for cinematic intro */
+    .hero-content {
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     /* =========================================================
@@ -439,9 +498,15 @@
       right: 0.05em;
       bottom: -2px;
       height: 2px;
-      background: linear-gradient(90deg, #ec4899, #a855f7, #06b6d4);
       border-radius: 9999px;
-      box-shadow: 0 0 10px rgba(236, 72, 153, 0.8);
+    }
+    .accent-ideas::after {
+      background: #a855f7;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.9);
+    }
+    .accent-products::after {
+      background: #ec4899;
+      box-shadow: 0 0 10px rgba(236, 72, 153, 0.9);
     }
 
     /* Description */
@@ -1887,6 +1952,16 @@
   <!-- FIXED FULL-SCREEN 3D UNIVERSE CANVAS -->
   <canvas id="webglUniverseCanvas"></canvas>
 
+  <!-- 3D PRODUCT WORLD HOVER HUD PILL -->
+  <div id="productWorldTooltip" class="product-world-tooltip">
+    <div class="pwt-dot" id="pwtDot"></div>
+    <div class="pwt-text">
+      <span class="pwt-name" id="pwtName">CHECKRA</span>
+      <span class="pwt-tagline" id="pwtTagline">Writing Integrity Space</span>
+    </div>
+    <span class="pwt-hint">Explore World &nearr;</span>
+  </div>
+
   <!-- AMBIENT COSMIC BACKGROUND LAYER (BEHIND WEBGL) -->
   <div class="cosmic-ambient-backdrop">
     <div class="cosmic-nebula-topleft"></div>
@@ -1942,7 +2017,7 @@
         <div class="hero-content">
           <div class="hero-badge">
             <span class="dot"></span>
-            <span>// A NIVAS BENNABATTHULA INITIATIVE</span>
+            <span>A NIVAS BENNABATTHULA INITIATIVE</span>
           </div>
 
           <h1 class="hero-title">
@@ -1951,11 +2026,11 @@
           </h1>
 
           <div class="hero-tagline">
-            Turning <em class="editorial-accent">Ideas</em> Into Intelligent <em class="editorial-accent">Products</em>.
+            Turning <em class="editorial-accent accent-ideas">Ideas</em> Into Intelligent <em class="editorial-accent accent-products">Products</em>.
           </div>
 
           <p class="hero-copy">
-            NIVORA is the <strong>technology and innovation universe built by Nivas Bennabatthula</strong> &mdash; where ambitious ideas become intelligent products, meaningful experiences and new digital possibilities.
+            NIVORA is the <strong>technology and innovation universe</strong> built by <strong>Nivas Bennabatthula</strong> &mdash; where ambitious ideas become intelligent products, meaningful experiences and new digital possibilities.
           </p>
 
           <div class="hero-actions">
@@ -1968,11 +2043,16 @@
             </a>
           </div>
 
-          <!-- Hero Metrics with Elegant Icons -->
+          <!-- Hero Metrics with Matching Target Icons -->
           <div class="hero-metrics">
             <div class="metric-card">
               <div class="metric-icon-wrap m-purple">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <!-- Atom / Orbital Worlds Icon -->
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(30 12 12)"></ellipse>
+                  <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(-30 12 12)"></ellipse>
+                  <circle cx="12" cy="12" r="2.2" fill="currentColor"></circle>
+                </svg>
               </div>
               <div class="metric-info">
                 <strong>4</strong>
@@ -1982,7 +2062,12 @@
 
             <div class="metric-card">
               <div class="metric-icon-wrap m-cyan">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <!-- 3D Stacked Layers Icon -->
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                  <polyline points="2 12 12 17 22 12"></polyline>
+                  <polyline points="2 17 12 22 22 17"></polyline>
+                </svg>
               </div>
               <div class="metric-info">
                 <strong>1</strong>
@@ -1992,10 +2077,13 @@
 
             <div class="metric-card">
               <div class="metric-icon-wrap m-magenta">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                <!-- Infinity Possibilities Icon -->
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18.178 8c5.096 0 5.096 8 0 8-3.084 0-4.321-2.91-6.178-5.334C10.143 8.244 8.906 8 5.822 8 0.726 8 0.726 16 5.822 16c3.084 0 4.321-2.91 6.178-5.334C13.857 13.09 15.094 16 18.178 16z"></path>
+                </svg>
               </div>
               <div class="metric-info">
-                <strong>&infin;</strong>
+                <strong>&infin; &infin;</strong>
                 <span>Digital Possibilities</span>
               </div>
             </div>
@@ -2732,17 +2820,31 @@
     document.getElementById('currentYear').innerText = new Date().getFullYear();
 
     /* -------------------------------------------------------------
-       2. THREE.JS PROCEDURAL MILKY WAY 3D UNIVERSE ENGINE
-          (MATHEMATICAL SPIRAL ARMS, 3D DEPTH, PARTICLES & SHADERS)
+       2. THREE.JS FULL 3D CINEMATIC UNIVERSE ENGINE
+          (PROCEDURAL MILKY WAY + ORBITAL PRODUCT WORLDS + CAMERA TRAVEL)
        ------------------------------------------------------------- */
     const canvas = document.getElementById('webglUniverseCanvas');
     let renderer, scene, camera;
-    let milkyWayGroup, galacticBulge, spiralArmStars, armDustStars;
+    let milkyWayGroup, galacticBulge, spiralArmStars;
     let distantStarField, brightBeaconsGroup, distantGalaxiesGroup;
-    let globeGroup, globeMesh, logoSprite, atmosphereMesh;
+    let globeGroup, globeMesh, logoSprite, atmosphereMesh, globeHaloSprite;
     let orbitalRings = [], ringParticles = [];
-    let accretionDisk, energyBeam;
+    let accretionGroup, accretionDisk, accretionParticles, energyBeam;
+    let blPlanetMesh, blPlanetAtmos, brPlanetMesh, brPlanetAtmos, trGalaxyGroup;
     let nebulaPuffs = [];
+
+    // 3D Product Worlds
+    let productWorldsGroup;
+    let productWorlds = [];
+    let productHitTargets = [];
+    let hoveredProduct = null;
+    const raycaster = new THREE.Raycaster();
+    const mouseRay = new THREE.Vector2(-999, -999);
+    const tooltipEl = document.getElementById('productWorldTooltip');
+    const pwtNameEl = document.getElementById('pwtName');
+    const pwtTaglineEl = document.getElementById('pwtTagline');
+    const pwtDotEl = document.getElementById('pwtDot');
+
     let isWebGLEnabled = false;
     let isZoomingTransition = false;
     let warpSpeedFactor = 1.0;
@@ -2750,12 +2852,80 @@
     let clock = new THREE.Clock();
 
     // Base Camera Coordinates (Perspective view: Globe on Right, UI on Left)
-    const baseCamX = -26;
-    const baseCamY = 3;
+    const baseCamX = 0;
+    const baseCamY = 4;
     const baseCamZ = 270;
     const globeCenterX = 66;
     const globeCenterY = 5;
     const globeCenterZ = 0;
+
+    let currentCamPos = new THREE.Vector3(baseCamX, baseCamY, baseCamZ);
+    let currentLookAt = new THREE.Vector3(0, 4, 0);
+    let targetScrollP = 0;
+
+    // 4 Product Worlds Configuration
+    const productConfigs = [
+      {
+        id: 'checkra',
+        name: 'CHECKRA',
+        tagline: 'Writing Integrity & Plagiarism Intelligence',
+        color: 0x8b5cf6,
+        glowColor: '#8b5cf6',
+        emblem: 'assets/images/checkra-emblem.png',
+        radius: 46,
+        speed: 0.0016,
+        inclinationX: 0.35,
+        inclinationY: 0.12,
+        inclinationZ: 0.18,
+        sphereSize: 2.5,
+        startProgress: 0.18
+      },
+      {
+        id: 'homora',
+        name: 'HOMORA',
+        tagline: 'Smart Living & Shared Finance',
+        color: 0x06b6d4,
+        glowColor: '#06b6d4',
+        emblem: 'assets/images/homora-logo.png',
+        radius: 72,
+        speed: 0.0012,
+        inclinationX: -0.42,
+        inclinationY: 0.32,
+        inclinationZ: -0.22,
+        sphereSize: 2.8,
+        startProgress: 0.44
+      },
+      {
+        id: 'bubora',
+        name: 'BUBORA',
+        tagline: 'Intimate Digital Sanctuary for Two',
+        color: 0xec4899,
+        glowColor: '#ec4899',
+        emblem: 'assets/images/bubora-logo.png',
+        radius: 100,
+        speed: -0.0009,
+        inclinationX: 0.48,
+        inclinationY: -0.28,
+        inclinationZ: 0.35,
+        sphereSize: 2.6,
+        startProgress: 0.68
+      },
+      {
+        id: 'sayora',
+        name: 'SAYORA',
+        tagline: 'Social Impact & Financial Shield',
+        color: 0x10b981,
+        glowColor: '#10b981',
+        emblem: 'assets/images/sayora-emblem.png',
+        radius: 130,
+        speed: 0.0007,
+        inclinationX: -0.28,
+        inclinationY: 0.45,
+        inclinationZ: 0.12,
+        sphereSize: 3.0,
+        startProgress: 0.88
+      }
+    ];
 
     function initUniverse3D() {
       try {
@@ -2767,28 +2937,31 @@
         });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x02040a, 0); // Transparent over deep space gradient
+        renderer.setClearColor(0x02040a, 0);
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
         renderer.toneMappingExposure = 1.25;
 
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 4000);
         camera.position.set(baseCamX, baseCamY, baseCamZ);
-        camera.lookAt(globeCenterX * 0.45, globeCenterY, 0);
+        camera.lookAt(0, 4, 0);
 
-        // Build Master 3D Procedural Universe Components
+        // Build 3D Cinematic Universe
         buildDistantStarfield();
         buildProceduralMilkyWay();
         buildGalacticBulge();
         buildSubtleCosmicNebula();
         buildBrightStellarBeacons();
-        buildDistantSpiralGalaxies();
+        buildCelestialForeAndBackground();
         buildNivoraGlobeCore();
-        buildOrbitalRings3D();
         buildGalacticAccretionPlatform();
+        buildOrbitalRings3D();
+        build3DProductWorlds();
 
+        setupInteractivity();
         isWebGLEnabled = true;
-        animateMilkyWayUniverse();
+        animateUniverseCinematic();
+        runCinematicIntro();
       } catch (e) {
         console.warn("WebGL notice, running high-performance 2D canvas fallback:", e);
         initCanvas3DFallbackClean();
@@ -2796,11 +2969,10 @@
     }
 
     /* -------------------------------------------------------------
-       3. PROCEDURAL MILKY WAY SPIRAL ARMS (42,000 PARTICLES)
+       3. PROCEDURAL MILKY WAY SPIRAL ARMS (42,000 GPU PARTICLES)
        ------------------------------------------------------------- */
     function buildProceduralMilkyWay() {
       milkyWayGroup = new THREE.Group();
-      // Perfectly aligned with the NIVORA Core at (66, 5, 0)
       milkyWayGroup.position.set(globeCenterX, globeCenterY, globeCenterZ);
       milkyWayGroup.rotation.set(0.82, 0.22, -0.15); // Majestic cinematic 3D tilt
 
@@ -2808,19 +2980,15 @@
       const positions = new Float32Array(starCount * 3);
       const colors = new Float32Array(starCount * 3);
 
-      // Grand Design Spiral: 2 Major Arms (Scutum & Perseus style) + 2 Intermediate Spurs
       const armAngles = [0.45, 0.45 + Math.PI, 1.85, 1.85 + Math.PI];
       const armWeights = [0.38, 0.38, 0.12, 0.12];
-      const rMin = 22; // Clearance around central NIVORA core
+      const rMin = 22;
       const rMax = 380;
 
-      // Pre-compute rotation matrix for typography quiet-zone test
       const cosX = Math.cos(0.82), sinX = Math.sin(0.82);
       const cosY = Math.cos(0.22), sinY = Math.sin(0.22);
-      const cosZ = Math.cos(-0.15), sinZ = Math.sin(-0.15);
 
       for (let i = 0; i < starCount; i++) {
-        // Pick arm based on weight
         const randArm = Math.random();
         let armIdx = 0;
         if (randArm < armWeights[0]) armIdx = 0;
@@ -2829,20 +2997,17 @@
         else armIdx = 3;
 
         const baseAngle = armAngles[armIdx];
-
-        // Power-law radial distribution (denser towards inner core)
         const pRand = Math.random();
         const r = rMin + (rMax - rMin) * Math.pow(pRand, 1.65);
 
-        // Mathematical logarithmic spiral: theta = theta_0 + b * ln(r / rMin)
+        // Mathematical logarithmic spiral
         const spiralAngle = baseAngle + 2.25 * Math.log(r / rMin) + 0.22 * (r / rMax);
 
-        // Radial and tangential Gaussian dispersion (arms widen gracefully outwards)
+        // Radial and vertical Gaussian dispersion
         const armWidth = 4.0 + 24.0 * (r / rMax);
         const rDisp = (Math.random() + Math.random() - 1.0) * armWidth;
         const tDisp = (Math.random() + Math.random() - 1.0) * (armWidth / (r + 25));
 
-        // Vertical Gaussian dispersion (thick bulge, thin outer rim)
         const vertThickness = 12.0 * Math.exp(-r / 100) + 3.0 * (1.0 - r / rMax);
         const yDisp = (Math.random() + Math.random() - 1.0) * vertThickness;
 
@@ -2853,37 +3018,29 @@
         const lz = actualR * Math.sin(actualTheta);
         const ly = yDisp;
 
-        // Transform local coordinates to estimated world space
-        // World coordinates: globeCenterX + rotated local vector
         const wx = globeCenterX + lx * cosY - lz * sinY;
         const wy = globeCenterY + ly * cosX - (lx * sinY + lz * cosY) * sinX;
 
-        // RULE #27: STRICT QUIET ZONE FOR LEFT TYPOGRAPHY
-        // If star projects onto the left screen area (wx < 10 && wy between -35 and 45),
-        // dampen it or push it into deep background so typography has crystal-clear contrast
+        // Quiet zone protection for left hero typography
         let starWeight = 1.0;
         if (wx < 12 && wy > -35 && wy < 45) {
-          starWeight = 0.12; // 88% reduction in density/brightness
+          starWeight = 0.12;
         }
 
         positions[i * 3] = lx;
         positions[i * 3 + 1] = ly;
         positions[i * 3 + 2] = lz;
 
-        // Astronomically Realistic Star Color Grading
+        // Color Grading: soft white, electric cyan, indigo, violet, magenta
         const frac = r / rMax;
         let cr, cg, cb;
         if (frac < 0.18) {
-          // Inner bulge: Luminous warm white / soft champagne & electric cyan
           cr = 0.96; cg = 0.98; cb = 1.0;
         } else if (frac < 0.52) {
-          // Mid spiral arms: Electric cyan & deep azure indigo
           cr = 0.30; cg = 0.72; cb = 1.0;
         } else if (frac < 0.8) {
-          // Outer spiral arms: Royal violet & indigo
           cr = 0.65; cg = 0.42; cb = 0.95;
         } else {
-          // Outer rim: Faint icy white & magenta dust accents
           cr = 0.82; cg = 0.38; cb = 0.78;
         }
 
@@ -2913,7 +3070,7 @@
     }
 
     /* -------------------------------------------------------------
-       4. GALACTIC BULGE (7,500 CORE STELLAR PARTICLES)
+       4. GALACTIC BULGE (7,500 CORE PARTICLES)
        ------------------------------------------------------------- */
     function buildGalacticBulge() {
       const bulgeCount = 7500;
@@ -2921,13 +3078,12 @@
       const colors = new Float32Array(bulgeCount * 3);
 
       for (let i = 0; i < bulgeCount; i++) {
-        // Clearance around immediate center (r: 16 to 48) so logo is prominent
         const r = 16 + Math.pow(Math.random(), 2.0) * 32;
         const theta = Math.random() * Math.PI * 2;
         const phi = (Math.random() - 0.5) * Math.PI;
 
         positions[i * 3] = r * Math.cos(phi) * Math.cos(theta);
-        positions[i * 3 + 1] = r * Math.sin(phi) * 0.38; // Oblate spheroid
+        positions[i * 3 + 1] = r * Math.sin(phi) * 0.38;
         positions[i * 3 + 2] = r * Math.cos(phi) * Math.sin(theta);
 
         const p = (r - 16) / 32;
@@ -2956,20 +3112,126 @@
     }
 
     /* -------------------------------------------------------------
-       5. SUBTLE COSMIC NEBULA (RESTRAINED, ZERO SOLID BURN)
+       5. 4 ORBITAL PRODUCT WORLDS (CHECKRA, HOMORA, BUBORA, SAYORA)
+       ------------------------------------------------------------- */
+    function build3DProductWorlds() {
+      productWorldsGroup = new THREE.Group();
+      scene.add(productWorldsGroup);
+
+      const texLoader = new THREE.TextureLoader();
+
+      productConfigs.forEach((cfg) => {
+        // 1. Orbital Path Line
+        const curve = new THREE.EllipseCurve(
+          0, 0,
+          cfg.radius, cfg.radius * 0.92,
+          0, 2 * Math.PI, false, 0
+        );
+        const curvePoints = curve.getPoints(120);
+        const pathGeo = new THREE.BufferGeometry().setFromPoints(curvePoints);
+        const pathLine = new THREE.Line(pathGeo, new THREE.LineBasicMaterial({
+          color: cfg.color,
+          transparent: true,
+          opacity: 0.22,
+          blending: THREE.AdditiveBlending
+        }));
+        pathLine.position.set(globeCenterX, globeCenterY, globeCenterZ);
+        pathLine.rotation.set(cfg.inclinationX, cfg.inclinationY, cfg.inclinationZ);
+        scene.add(pathLine);
+
+        // 2. World Container Group
+        const worldGroup = new THREE.Group();
+
+        // 3. Central Planetary Sphere
+        const planetGeo = new THREE.SphereGeometry(cfg.sphereSize, 24, 24);
+        const planetMat = new THREE.MeshBasicMaterial({
+          color: cfg.color,
+          transparent: true,
+          opacity: 0.9
+        });
+        const planetMesh = new THREE.Mesh(planetGeo, planetMat);
+        worldGroup.add(planetMesh);
+
+        // 4. Atmospheric Glow Shell
+        const haloMat = new THREE.SpriteMaterial({
+          map: createSoftPointTexture(),
+          color: cfg.color,
+          transparent: true,
+          opacity: 0.7,
+          blending: THREE.AdditiveBlending
+        });
+        const haloSprite = new THREE.Sprite(haloMat);
+        haloSprite.scale.set(cfg.sphereSize * 5.0, cfg.sphereSize * 5.0, 1);
+        worldGroup.add(haloSprite);
+
+        // 5. Billboard Emblem Sprite
+        texLoader.load(cfg.emblem, (tex) => {
+          tex.minFilter = THREE.LinearFilter;
+          tex.magFilter = THREE.LinearFilter;
+          const emblemMat = new THREE.SpriteMaterial({
+            map: tex,
+            transparent: true,
+            opacity: 0.95,
+            depthTest: false
+          });
+          const emblemSprite = new THREE.Sprite(emblemMat);
+          emblemSprite.scale.set(8.5, 8.5, 1);
+          emblemSprite.position.set(0, cfg.sphereSize * 2.2, 0);
+          emblemSprite.renderOrder = 30;
+          worldGroup.add(emblemSprite);
+        });
+
+        // 6. Orbiting Photon Moon
+        const moon = new THREE.Mesh(
+          new THREE.SphereGeometry(0.5, 12, 12),
+          new THREE.MeshBasicMaterial({ color: 0xffffff })
+        );
+        worldGroup.add(moon);
+
+        // 7. Raycast Hit Proxy Sphere (Invisible)
+        const hitGeo = new THREE.SphereGeometry(cfg.sphereSize * 3.2, 12, 12);
+        const hitMat = new THREE.MeshBasicMaterial({ visible: false });
+        const hitMesh = new THREE.Mesh(hitGeo, hitMat);
+        hitMesh.userData = {
+          isProductWorld: true,
+          id: cfg.id,
+          name: cfg.name,
+          tagline: cfg.tagline,
+          color: cfg.glowColor,
+          group: worldGroup,
+          pathLine: pathLine
+        };
+        worldGroup.add(hitMesh);
+        productHitTargets.push(hitMesh);
+
+        productWorldsGroup.add(worldGroup);
+
+        productWorlds.push({
+          config: cfg,
+          group: worldGroup,
+          curve: curve,
+          moon: moon,
+          pathLine: pathLine,
+          progress: cfg.startProgress,
+          speed: cfg.speed
+        });
+      });
+    }
+
+    /* -------------------------------------------------------------
+       6. PROCEDURAL NEBULA CLOUDS & STELLAR STARFIELDS
        ------------------------------------------------------------- */
     function buildSubtleCosmicNebula() {
       const texNavy = createProceduralNebulaTexture('#0a0e27', '#030514');
       const texViolet = createProceduralNebulaTexture('#1e123d', '#070414');
       const texCyan = createProceduralNebulaTexture('#083344', '#020b14');
 
-      // 32 soft, expansive, low-opacity volumetric clouds (ZERO solid burn)
       for (let i = 0; i < 32; i++) {
         const tex = (i % 3 === 0) ? texCyan : (i % 3 === 1 ? texViolet : texNavy);
         const mat = new THREE.SpriteMaterial({
           map: tex,
           transparent: true,
-          opacity: 0.035 + Math.random() * 0.035, // Restrained, dark & atmospheric
+          opacity: 0.035 + Math.random() * 0.035,
           blending: THREE.AdditiveBlending,
           depthWrite: false
         });
@@ -2989,9 +3251,6 @@
       }
     }
 
-    /* -------------------------------------------------------------
-       6. DISTANT BACKGROUND STARFIELD (14,000 STARS)
-       ------------------------------------------------------------- */
     function buildDistantStarfield() {
       const count = 14000;
       const pos = new Float32Array(count * 3);
@@ -3030,9 +3289,6 @@
       scene.add(distantStarField);
     }
 
-    /* -------------------------------------------------------------
-       7. BRIGHT STELLAR BEACONS (160 STARS WITH DIFFRACTION SPIKES)
-       ------------------------------------------------------------- */
     function buildBrightStellarBeacons() {
       brightBeaconsGroup = new THREE.Group();
       const count = 160;
@@ -3052,10 +3308,7 @@
         let y = (Math.random() - 0.5) * 550;
         let z = (Math.random() - 0.5) * 450 - 50;
 
-        // Push away from left hero typography
-        if (x < -10 && y > -40 && y < 50) {
-          x -= 90;
-        }
+        if (x < -10 && y > -40 && y < 50) x -= 90;
 
         sprite.position.set(x, y, z);
         const s = 3.5 + Math.random() * 6.0;
@@ -3066,106 +3319,204 @@
     }
 
     /* -------------------------------------------------------------
-       8. DISTANT SPIRAL GALAXIES (3 MINI PROCEDURAL GALAXIES)
+       7. CELESTIAL FOREGROUND & BACKGROUND (PLANETS & GALAXY)
        ------------------------------------------------------------- */
-    function buildDistantSpiralGalaxies() {
-      distantGalaxiesGroup = new THREE.Group();
-
-      const galaxyConfigs = [
-        { x: -320, y: 160, z: -850, rotX: 0.6, rotY: 0.4, scale: 0.22, points: 420 },
-        { x: 260, y: -140, z: -1000, rotX: -0.8, rotY: 0.2, scale: 0.18, points: 320 },
-        { x: -90, y: -220, z: -900, rotX: 0.4, rotY: -0.5, scale: 0.15, points: 260 }
-      ];
-
-      galaxyConfigs.forEach((cfg) => {
-        const gGroup = new THREE.Group();
-        gGroup.position.set(cfg.x, cfg.y, cfg.z);
-        gGroup.rotation.set(cfg.rotX, cfg.rotY, 0);
-
-        const pos = new Float32Array(cfg.points * 3);
-        const col = new Float32Array(cfg.points * 3);
-
-        for (let i = 0; i < cfg.points; i++) {
-          const arm = i % 2;
-          const r = 5 + 75 * Math.pow(Math.random(), 1.6);
-          const theta = arm * Math.PI + 2.5 * Math.log(r / 5) + (Math.random() - 0.5) * 0.35;
-
-          pos[i * 3] = (Math.cos(theta) * r + (Math.random() - 0.5) * 4) * cfg.scale;
-          pos[i * 3 + 1] = ((Math.random() - 0.5) * 4) * cfg.scale;
-          pos[i * 3 + 2] = (Math.sin(theta) * r + (Math.random() - 0.5) * 4) * cfg.scale;
-
-          col[i * 3] = 0.65;
-          col[i * 3 + 1] = 0.55;
-          col[i * 3 + 2] = 0.95;
-        }
-
-        const geo = new THREE.BufferGeometry();
-        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-        geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-        const pts = new THREE.Points(geo, new THREE.PointsMaterial({
-          size: 1.6,
-          vertexColors: true,
-          map: createSoftPointTexture(),
-          transparent: true,
-          opacity: 0.5,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false
-        }));
-        gGroup.add(pts);
-        distantGalaxiesGroup.add(gGroup);
+    function buildCelestialForeAndBackground() {
+      // 1. Bottom-Left Curved Horizon (Massive Deep-Blue Planet Framing Corner)
+      const blGeo = new THREE.SphereGeometry(135, 48, 48);
+      const blMat = new THREE.MeshBasicMaterial({
+        map: createOceanPlanetTexture(),
+        transparent: true,
+        opacity: 0.98
       });
+      blPlanetMesh = new THREE.Mesh(blGeo, blMat);
+      blPlanetMesh.position.set(-170, -170, 75);
+      scene.add(blPlanetMesh);
 
-      scene.add(distantGalaxiesGroup);
+      // Atmospheric Rim for Bottom-Left Planet
+      const blAtmosGeo = new THREE.SphereGeometry(137, 48, 48);
+      const blAtmosMat = new THREE.ShaderMaterial({
+        vertexShader: `
+          varying vec3 vNormal;
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vNormal;
+          void main() {
+            float fresnel = 1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0));
+            fresnel = pow(fresnel, 3.2);
+            vec3 atmosColor = vec3(0.05, 0.75, 1.0); // Vibrant electric cyan
+            gl_FragColor = vec4(atmosColor, fresnel * 0.95);
+          }
+        `,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        side: THREE.FrontSide,
+        depthWrite: false
+      });
+      blPlanetAtmos = new THREE.Mesh(blAtmosGeo, blAtmosMat);
+      blPlanetAtmos.position.set(-170, -170, 75);
+      scene.add(blPlanetAtmos);
+
+      // 2. Bottom-Right Planet with Warm Magenta/Violet Rim Light
+      const brGeo = new THREE.SphereGeometry(44, 36, 36);
+      const brMat = new THREE.MeshBasicMaterial({
+        map: createShadowedPlanetTexture('#150624', '#080210'),
+        transparent: true,
+        opacity: 0.96
+      });
+      brPlanetMesh = new THREE.Mesh(brGeo, brMat);
+      brPlanetMesh.position.set(175, -125, 50);
+      scene.add(brPlanetMesh);
+
+      const brAtmosGeo = new THREE.SphereGeometry(45, 36, 36);
+      const brAtmosMat = new THREE.ShaderMaterial({
+        vertexShader: `
+          varying vec3 vNormal;
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vNormal;
+          void main() {
+            float fresnel = 1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0));
+            fresnel = pow(fresnel, 2.8);
+            vec3 atmosColor = vec3(0.92, 0.28, 0.94); // Magenta / purple
+            gl_FragColor = vec4(atmosColor, fresnel * 0.88);
+          }
+        `,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        side: THREE.FrontSide,
+        depthWrite: false
+      });
+      brPlanetAtmos = new THREE.Mesh(brAtmosGeo, brAtmosMat);
+      brPlanetAtmos.position.set(175, -125, 50);
+      scene.add(brPlanetAtmos);
+
+      // 3. Top-Right Prominent Spiral Galaxy
+      trGalaxyGroup = new THREE.Group();
+      trGalaxyGroup.position.set(185, 120, -190);
+      trGalaxyGroup.rotation.set(0.72, 0.42, -0.32);
+
+      const trPoints = 1800;
+      const trPos = new Float32Array(trPoints * 3);
+      const trCol = new Float32Array(trPoints * 3);
+
+      for (let i = 0; i < trPoints; i++) {
+        const arm = i % 2;
+        const r = 2 + 58 * Math.pow(Math.random(), 1.5);
+        const theta = arm * Math.PI + 2.5 * Math.log(r / 3) + (Math.random() - 0.5) * 0.35;
+
+        trPos[i * 3] = Math.cos(theta) * r + (Math.random() - 0.5) * 3;
+        trPos[i * 3 + 1] = (Math.random() - 0.5) * 3;
+        trPos[i * 3 + 2] = Math.sin(theta) * r + (Math.random() - 0.5) * 3;
+
+        const p = r / 60;
+        if (p < 0.18) {
+          trCol[i * 3] = 1.0; trCol[i * 3 + 1] = 0.98; trCol[i * 3 + 2] = 1.0;
+        } else if (p < 0.5) {
+          trCol[i * 3] = 0.72; trCol[i * 3 + 1] = 0.45; trCol[i * 3 + 2] = 1.0;
+        } else {
+          trCol[i * 3] = 0.28; trCol[i * 3 + 1] = 0.72; trCol[i * 3 + 2] = 1.0;
+        }
+      }
+
+      const trGeo = new THREE.BufferGeometry();
+      trGeo.setAttribute('position', new THREE.BufferAttribute(trPos, 3));
+      trGeo.setAttribute('color', new THREE.BufferAttribute(trCol, 3));
+      const trPts = new THREE.Points(trGeo, new THREE.PointsMaterial({
+        size: 1.8,
+        vertexColors: true,
+        map: createSoftPointTexture(),
+        transparent: true,
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      }));
+      trGalaxyGroup.add(trPts);
+      scene.add(trGalaxyGroup);
     }
 
     /* -------------------------------------------------------------
-       9. NIVORA DIGITAL CORE (3D GLOBE WITH CRISP SUSPENDED LOGO)
+       8. NIVORA DIGITAL CORE (CYBER HOLOGRAPHIC GLOBE & SUSPENDED LOGO)
        ------------------------------------------------------------- */
     function buildNivoraGlobeCore() {
       globeGroup = new THREE.Group();
       globeGroup.position.set(globeCenterX, globeCenterY, globeCenterZ);
 
-      const globeRadius = 24.5;
-      const cyberTex = createDigitalWorldTextureClean();
+      const globeRadius = 25.5;
+      const cyberTex = createDigitalWorldTextureCinematic();
 
-      const sphereGeo = new THREE.SphereGeometry(globeRadius, 48, 48);
+      // Inner Cyber Continents Globe
+      const sphereGeo = new THREE.SphereGeometry(globeRadius, 64, 64);
       const sphereMat = new THREE.MeshBasicMaterial({
         map: cyberTex,
         transparent: true,
-        opacity: 0.78,
+        opacity: 0.92,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       });
       globeMesh = new THREE.Mesh(sphereGeo, sphereMat);
       globeGroup.add(globeMesh);
 
-      // Atmospheric Rim Shell
-      const atmosGeo = new THREE.SphereGeometry(globeRadius * 1.06, 36, 36);
-      const atmosCanvas = document.createElement('canvas');
-      atmosCanvas.width = 256; atmosCanvas.height = 256;
-      const aCtx = atmosCanvas.getContext('2d');
-      const aGrad = aCtx.createRadialGradient(128, 128, 80, 128, 128, 128);
-      aGrad.addColorStop(0, 'rgba(6, 182, 212, 0)');
-      aGrad.addColorStop(0.7, 'rgba(6, 182, 212, 0.18)');
-      aGrad.addColorStop(0.9, 'rgba(168, 85, 247, 0.35)');
-      aGrad.addColorStop(1, 'rgba(6, 182, 212, 0.65)');
-      aCtx.fillStyle = aGrad;
-      aCtx.fillRect(0, 0, 256, 256);
+      // Atmospheric Glass Shell with Brilliant Fresnel Rim
+      const atmosGeo = new THREE.SphereGeometry(globeRadius * 1.05, 48, 48);
+      const atmosMat = new THREE.ShaderMaterial({
+        vertexShader: `
+          varying vec3 vNormal;
+          void main() {
+            vNormal = normalize(normalMatrix * normal);
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vNormal;
+          void main() {
+            float fresnel = 1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0));
+            fresnel = pow(fresnel, 2.5);
 
-      const atmosTex = new THREE.CanvasTexture(atmosCanvas);
-      atmosphereMesh = new THREE.Mesh(atmosGeo, new THREE.MeshBasicMaterial({
-        map: atmosTex,
+            vec3 cyanColor = vec3(0.02, 0.71, 0.83);    // #06b6d4
+            vec3 purpleColor = vec3(0.66, 0.33, 0.97);  // #a855f7
+            vec3 magentaColor = vec3(0.93, 0.28, 0.94); // #ec4899
+
+            vec3 rimColor = mix(cyanColor, purpleColor, fresnel * 0.8);
+            rimColor = mix(rimColor, magentaColor, pow(fresnel, 3.8));
+
+            gl_FragColor = vec4(rimColor, fresnel * 0.95);
+          }
+        `,
         transparent: true,
-        opacity: 0.65,
         blending: THREE.AdditiveBlending,
-        side: THREE.BackSide,
+        side: THREE.FrontSide,
         depthWrite: false
-      }));
+      });
+      atmosphereMesh = new THREE.Mesh(atmosGeo, atmosMat);
       globeGroup.add(atmosphereMesh);
 
-      // Official NIVORA Logo (Crisp, Suspended in Exact Center, High Render Order)
+      // Radiant Atmospheric Corona Sprite
+      const haloMat = new THREE.SpriteMaterial({
+        map: createCoronaHaloTexture(),
+        transparent: true,
+        opacity: 0.75,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+      globeHaloSprite = new THREE.Sprite(haloMat);
+      globeHaloSprite.scale.set(82, 82, 1);
+      globeHaloSprite.renderOrder = 15;
+      globeGroup.add(globeHaloSprite);
+
+      // Official NIVORA 3D Logo (Suspended at Center with Glowing Aura)
       const logoLoader = new THREE.TextureLoader();
-      logoLoader.load('assets/images/nivora-logo.png', (tex) => {
+      const domLogo = document.querySelector('.nav-logo-icon');
+      const logoSrc = (domLogo && domLogo.getAttribute('src')) ? domLogo.src : 'assets/images/nivora-logo.png';
+      logoLoader.load(logoSrc, (tex) => {
         tex.minFilter = THREE.LinearFilter;
         tex.magFilter = THREE.LinearFilter;
         const logoMat = new THREE.SpriteMaterial({
@@ -3176,22 +3527,21 @@
           depthTest: false
         });
         logoSprite = new THREE.Sprite(logoMat);
-        logoSprite.scale.set(17, 17, 1);
-        logoSprite.renderOrder = 20;
+        logoSprite.scale.set(17.5, 17.5, 1);
+        logoSprite.renderOrder = 30;
         globeGroup.add(logoSprite);
 
-        // Core Backing Aura
         const auraMat = new THREE.SpriteMaterial({
           map: createSoftPointTexture(),
           color: 0x06b6d4,
           transparent: true,
-          opacity: 0.45,
+          opacity: 0.65,
           blending: THREE.AdditiveBlending,
           depthTest: false
         });
         const auraSprite = new THREE.Sprite(auraMat);
-        auraSprite.scale.set(22, 22, 1);
-        auraSprite.renderOrder = 18;
+        auraSprite.scale.set(24, 24, 1);
+        auraSprite.renderOrder = 25;
         globeGroup.add(auraSprite);
       });
 
@@ -3199,122 +3549,159 @@
     }
 
     /* -------------------------------------------------------------
-       10. 3 ELEGANT 3D ORBITAL RINGS & PARTICLES
-       ------------------------------------------------------------- */
-    function buildOrbitalRings3D() {
-      const ringSpecs = [
-        { radiusX: 38, radiusY: 34, rotX: 1.25, rotY: 0.15, rotZ: 0.25, color: 0x06b6d4, speed: 0.002 },
-        { radiusX: 44, radiusY: 38, rotX: 0.55, rotY: 1.15, rotZ: -0.50, color: 0xa855f7, speed: -0.0018 },
-        { radiusX: 50, radiusY: 42, rotX: -0.75, rotY: 0.45, rotZ: 0.95, color: 0x38bdf8, speed: 0.0022 }
-      ];
-
-      ringSpecs.forEach((spec, rIdx) => {
-        const curve = new THREE.EllipseCurve(0, 0, spec.radiusX, spec.radiusY, 0, 2 * Math.PI, false, 0);
-        const points = curve.getPoints(100);
-        const ringGeo = new THREE.BufferGeometry().setFromPoints(points);
-
-        const ringLine = new THREE.Line(ringGeo, new THREE.LineBasicMaterial({
-          color: spec.color,
-          transparent: true,
-          opacity: 0.42,
-          blending: THREE.AdditiveBlending
-        }));
-        ringLine.rotation.set(spec.rotX, spec.rotY, spec.rotZ);
-        globeGroup.add(ringLine);
-
-        // 1 to 2 travelling photon beads per orbit
-        const particleCount = rIdx === 1 ? 2 : 1;
-        for (let p = 0; p < particleCount; p++) {
-          const bead = new THREE.Mesh(
-            new THREE.SphereGeometry(0.9, 12, 12),
-            new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9 })
-          );
-          const halo = new THREE.Sprite(new THREE.SpriteMaterial({
-            map: createSoftPointTexture(),
-            color: spec.color,
-            transparent: true,
-            opacity: 0.65,
-            blending: THREE.AdditiveBlending
-          }));
-          halo.scale.set(4.5, 4.5, 1);
-          bead.add(halo);
-
-          globeGroup.add(bead);
-          ringParticles.push({
-            mesh: bead,
-            curve: curve,
-            rotX: spec.rotX,
-            rotY: spec.rotY,
-            rotZ: spec.rotZ,
-            progress: p * 0.5 + rIdx * 0.33,
-            speed: spec.speed
-          });
-        }
-      });
-    }
-
-    /* -------------------------------------------------------------
-       11. GALACTIC ENERGY ACCRETION PLATFORM & BEAM
+       9. GALACTIC SWIRLING VORTEX ACCRETION DISC & BEAM
        ------------------------------------------------------------- */
     function buildGalacticAccretionPlatform() {
-      const dPoints = 1200;
+      const beamHeight = 22;
+      const vortexY = globeCenterY - 25.5 - beamHeight + 3;
+
+      accretionGroup = new THREE.Group();
+      accretionGroup.position.set(globeCenterX, vortexY, globeCenterZ);
+      accretionGroup.rotation.set(Math.PI / 2.3, 0, 0.1);
+
+      // 1. Concentric luminous vortex rings
+      const ringConfigs = [
+        { inner: 3, outer: 14, color: 0xffffff, opacity: 0.95 },
+        { inner: 12, outer: 28, color: 0x06b6d4, opacity: 0.85 },
+        { inner: 26, outer: 48, color: 0xa855f7, opacity: 0.75 },
+        { inner: 45, outer: 72, color: 0xec4899, opacity: 0.65 },
+        { inner: 68, outer: 95, color: 0x8b5cf6, opacity: 0.35 }
+      ];
+
+      ringConfigs.forEach(rc => {
+        const rGeo = new THREE.RingGeometry(rc.inner, rc.outer, 64);
+        const rMat = new THREE.MeshBasicMaterial({
+          color: rc.color,
+          transparent: true,
+          opacity: rc.opacity,
+          side: THREE.DoubleSide,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        });
+        const rMesh = new THREE.Mesh(rGeo, rMat);
+        accretionGroup.add(rMesh);
+      });
+
+      // 2. 4,500 Swirling Spiral Particles
+      const dPoints = 4500;
       const dPos = new Float32Array(dPoints * 3);
       const dCol = new Float32Array(dPoints * 3);
 
       for (let i = 0; i < dPoints; i++) {
-        const radius = 8 + Math.pow(Math.random(), 1.3) * 56;
-        const angle = Math.random() * Math.PI * 2;
-        const spiralOffset = radius * 0.06;
-        const theta = angle + spiralOffset;
+        const arm = i % 4;
+        const radius = 6 + Math.pow(Math.random(), 1.2) * 88;
+        const angle = (arm * Math.PI / 2) + 2.8 * Math.log(radius / 5) + (Math.random() - 0.5) * 0.45;
 
-        dPos[i * 3] = Math.cos(theta) * radius;
-        dPos[i * 3 + 1] = (Math.random() - 0.5) * 1.8;
-        dPos[i * 3 + 2] = Math.sin(theta) * radius;
+        dPos[i * 3] = Math.cos(angle) * radius;
+        dPos[i * 3 + 1] = (Math.random() - 0.5) * 2.2;
+        dPos[i * 3 + 2] = Math.sin(angle) * radius;
 
-        const p = radius / 64;
-        if (p < 0.25) {
-          dCol[i * 3] = 0.95; dCol[i * 3 + 1] = 0.98; dCol[i * 3 + 2] = 1.0;
-        } else if (p < 0.6) {
-          dCol[i * 3] = 0.55; dCol[i * 3 + 1] = 0.2; dCol[i * 3 + 2] = 0.85; // Violet
-        } else if (p < 0.8) {
-          dCol[i * 3] = 0.85; dCol[i * 3 + 1] = 0.2; dCol[i * 3 + 2] = 0.75; // Magenta
+        const p = radius / 94;
+        if (p < 0.2) {
+          dCol[i * 3] = 1.0; dCol[i * 3 + 1] = 1.0; dCol[i * 3 + 2] = 1.0;
+        } else if (p < 0.45) {
+          dCol[i * 3] = 0.05; dCol[i * 3 + 1] = 0.75; dCol[i * 3 + 2] = 0.95;
+        } else if (p < 0.75) {
+          dCol[i * 3] = 0.92; dCol[i * 3 + 1] = 0.28; dCol[i * 3 + 2] = 0.94;
         } else {
-          dCol[i * 3] = 0.05; dCol[i * 3 + 1] = 0.7; dCol[i * 3 + 2] = 0.9; // Cyan
+          dCol[i * 3] = 0.55; dCol[i * 3 + 1] = 0.22; dCol[i * 3 + 2] = 0.95;
         }
       }
 
       const dGeo = new THREE.BufferGeometry();
       dGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3));
       dGeo.setAttribute('color', new THREE.BufferAttribute(dCol, 3));
-      accretionDisk = new THREE.Points(dGeo, new THREE.PointsMaterial({
-        size: 2.0,
+      accretionParticles = new THREE.Points(dGeo, new THREE.PointsMaterial({
+        size: 2.2,
         vertexColors: true,
         map: createSoftPointTexture(),
         transparent: true,
-        opacity: 0.65,
+        opacity: 0.85,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       }));
-      accretionDisk.position.set(globeCenterX, globeCenterY - 35, globeCenterZ);
-      accretionDisk.rotation.set(Math.PI / 2.3, 0, 0.1);
-      scene.add(accretionDisk);
+      accretionGroup.add(accretionParticles);
+      scene.add(accretionGroup);
 
-      // Subtle Vertical Energy Column
-      const beamGeo = new THREE.CylinderGeometry(1.2, 3.2, 18, 24, 1, true);
+      // 3. Vertical Projection Light Column
+      const beamGeo = new THREE.CylinderGeometry(1.6, 5.0, beamHeight, 32, 1, true);
+      const beamCanvas = document.createElement('canvas');
+      beamCanvas.width = 128; beamCanvas.height = 256;
+      const bCtx = beamCanvas.getContext('2d');
+      const bGrad = bCtx.createLinearGradient(0, 0, 0, 256);
+      bGrad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+      bGrad.addColorStop(0.2, 'rgba(6, 182, 212, 0.85)');
+      bGrad.addColorStop(0.7, 'rgba(168, 85, 247, 0.65)');
+      bGrad.addColorStop(1, 'rgba(236, 72, 153, 0.1)');
+      bCtx.fillStyle = bGrad;
+      bCtx.fillRect(0, 0, 128, 256);
+
       energyBeam = new THREE.Mesh(beamGeo, new THREE.MeshBasicMaterial({
-        color: 0x06b6d4,
+        map: new THREE.CanvasTexture(beamCanvas),
         transparent: true,
-        opacity: 0.35,
+        opacity: 0.85,
         blending: THREE.AdditiveBlending,
         side: THREE.DoubleSide,
         depthWrite: false
       }));
-      energyBeam.position.set(globeCenterX, globeCenterY - 22, globeCenterZ);
+      energyBeam.position.set(globeCenterX, globeCenterY - 25.5 - beamHeight / 2 + 2, globeCenterZ);
       scene.add(energyBeam);
     }
 
     /* -------------------------------------------------------------
-       12. PROCEDURAL TEXTURE GENERATORS
+       10. 4 ELEGANT 3D ORBITAL RINGS WITH GLOWING SATELLITES
+       ------------------------------------------------------------- */
+    function buildOrbitalRings3D() {
+      const ringSpecs = [
+        { radiusX: 38, radiusY: 34, rotX: 1.25, rotY: 0.15, rotZ: 0.25, color: 0x06b6d4, speed: 0.002 },
+        { radiusX: 44, radiusY: 38, rotX: 0.55, rotY: 1.15, rotZ: -0.50, color: 0xa855f7, speed: -0.0018 },
+        { radiusX: 52, radiusY: 44, rotX: -0.75, rotY: 0.45, rotZ: 0.95, color: 0x38bdf8, speed: 0.0022 },
+        { radiusX: 60, radiusY: 48, rotX: 0.35, rotY: -0.85, rotZ: 0.65, color: 0xec4899, speed: -0.0015 }
+      ];
+
+      ringSpecs.forEach((spec, rIdx) => {
+        const curve = new THREE.EllipseCurve(0, 0, spec.radiusX, spec.radiusY, 0, 2 * Math.PI, false, 0);
+        const points = curve.getPoints(120);
+        const ringGeo = new THREE.BufferGeometry().setFromPoints(points);
+
+        const ringLine = new THREE.Line(ringGeo, new THREE.LineBasicMaterial({
+          color: spec.color,
+          transparent: true,
+          opacity: 0.52,
+          blending: THREE.AdditiveBlending
+        }));
+        ringLine.rotation.set(spec.rotX, spec.rotY, spec.rotZ);
+        globeGroup.add(ringLine);
+
+        const bead = new THREE.Mesh(
+          new THREE.SphereGeometry(1.0, 12, 12),
+          new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.95 })
+        );
+        const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+          map: createSoftPointTexture(),
+          color: spec.color,
+          transparent: true,
+          opacity: 0.8,
+          blending: THREE.AdditiveBlending
+        }));
+        halo.scale.set(5.5, 5.5, 1);
+        bead.add(halo);
+
+        globeGroup.add(bead);
+        ringParticles.push({
+          mesh: bead,
+          curve: curve,
+          rotX: spec.rotX,
+          rotY: spec.rotY,
+          rotZ: spec.rotZ,
+          progress: rIdx * 0.25,
+          speed: spec.speed
+        });
+      });
+    }
+
+    /* -------------------------------------------------------------
+       10. TEXTURE GENERATORS
        ------------------------------------------------------------- */
     function createSoftPointTexture() {
       const c = document.createElement('canvas');
@@ -3366,54 +3753,275 @@
       return new THREE.CanvasTexture(c);
     }
 
-    function createDigitalWorldTextureClean() {
+    function createOceanPlanetTexture() {
       const c = document.createElement('canvas');
       c.width = 1024; c.height = 512;
       const ctx = c.getContext('2d');
-
-      ctx.fillStyle = 'rgba(2, 6, 20, 0.4)';
+      const bg = ctx.createLinearGradient(0, 0, 1024, 512);
+      bg.addColorStop(0, '#030c24');
+      bg.addColorStop(0.5, '#051838');
+      bg.addColorStop(1, '#072b5c');
+      ctx.fillStyle = bg;
       ctx.fillRect(0, 0, 1024, 512);
 
-      ctx.strokeStyle = 'rgba(6, 182, 212, 0.18)';
-      ctx.lineWidth = 0.8;
-      for (let x = 0; x < 1024; x += 64) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 512); ctx.stroke();
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.14)';
+      for (let i = 0; i < 35; i++) {
+        const x = Math.random() * 1024;
+        const y = Math.random() * 512;
+        const r = 35 + Math.random() * 85;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
       }
-      for (let y = 0; y < 512; y += 48) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(1024, y); ctx.stroke();
+      return new THREE.CanvasTexture(c);
+    }
+
+    function createShadowedPlanetTexture(c1, c2) {
+      const c = document.createElement('canvas');
+      c.width = 512; c.height = 256;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 512, 256);
+      grad.addColorStop(0, c1);
+      grad.addColorStop(0.5, c2);
+      grad.addColorStop(1, '#020108');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 512, 256);
+      return new THREE.CanvasTexture(c);
+    }
+
+    function createCoronaHaloTexture() {
+      const c = document.createElement('canvas');
+      c.width = 256; c.height = 256;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createRadialGradient(128, 128, 60, 128, 128, 128);
+      grad.addColorStop(0, 'rgba(6, 182, 212, 0)');
+      grad.addColorStop(0.65, 'rgba(6, 182, 212, 0.35)');
+      grad.addColorStop(0.85, 'rgba(168, 85, 247, 0.55)');
+      grad.addColorStop(1, 'rgba(236, 72, 153, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 256, 256);
+      return new THREE.CanvasTexture(c);
+    }
+
+    function createDigitalWorldTextureCinematic() {
+      const c = document.createElement('canvas');
+      c.width = 2048; c.height = 1024;
+      const ctx = c.getContext('2d');
+
+      // Deep space base
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(0, 0, 2048, 1024);
+
+      // High-tech digital grid
+      ctx.strokeStyle = 'rgba(6, 182, 212, 0.12)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < 2048; x += 40) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 1024); ctx.stroke();
+      }
+      for (let y = 0; y < 1024; y += 40) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(2048, y); ctx.stroke();
       }
 
-      ctx.fillStyle = 'rgba(6, 182, 212, 0.65)';
-      const drawNodes = (cx, cy, radius, count) => {
-        for (let i = 0; i < count; i++) {
-          const r = Math.random() * radius;
-          const a = Math.random() * Math.PI * 2;
-          ctx.beginPath();
-          ctx.arc(cx + Math.cos(a) * r, cy + Math.sin(a) * r * 0.7, 1.2 + Math.random() * 1.4, 0, Math.PI * 2);
-          ctx.fill();
+      // Meridians
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(0, 512); ctx.lineTo(2048, 512); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, 370); ctx.lineTo(2048, 370); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, 654); ctx.lineTo(2048, 654); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(512, 0); ctx.lineTo(512, 1024); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(1024, 0); ctx.lineTo(1024, 1024); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(1536, 0); ctx.lineTo(1536, 1024); ctx.stroke();
+
+      // Continents
+      const continents = [
+        [[350, 150], [580, 120], [680, 220], [600, 380], [520, 480], [420, 520], [380, 450], [280, 320], [280, 200]],
+        [[480, 530], [600, 560], [640, 680], [580, 850], [500, 920], [460, 750], [450, 600]],
+        [[950, 180], [1120, 160], [1180, 260], [1080, 360], [980, 380], [920, 300]],
+        [[960, 400], [1180, 410], [1250, 540], [1180, 750], [1100, 850], [980, 680], [930, 520]],
+        [[1150, 160], [1650, 150], [1780, 280], [1700, 480], [1500, 550], [1320, 520], [1200, 420], [1160, 280]],
+        [[1520, 650], [1720, 640], [1760, 760], [1680, 840], [1540, 820], [1480, 720]]
+      ];
+
+      continents.forEach(poly => {
+        ctx.beginPath();
+        ctx.moveTo(poly[0][0], poly[0][1]);
+        for (let i = 1; i < poly.length; i++) ctx.lineTo(poly[i][0], poly[i][1]);
+        ctx.closePath();
+
+        ctx.fillStyle = 'rgba(6, 182, 212, 0.22)';
+        ctx.fill();
+
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.85)';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        let minX = 2048, maxX = 0, minY = 1024, maxY = 0;
+        poly.forEach(pt => {
+          minX = Math.min(minX, pt[0]); maxX = Math.max(maxX, pt[0]);
+          minY = Math.min(minY, pt[1]); maxY = Math.max(maxY, pt[1]);
+        });
+
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.95)';
+        for (let dx = minX; dx <= maxX; dx += 14) {
+          for (let dy = minY; dy <= maxY; dy += 14) {
+            if (ctx.isPointInPath(dx, dy)) {
+              ctx.beginPath();
+              ctx.arc(dx + (Math.random() - 0.5) * 4, dy + (Math.random() - 0.5) * 4, 1.8 + Math.random() * 1.5, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
         }
-      };
-      drawNodes(260, 200, 100, 120);
-      drawNodes(340, 360, 80, 90);
-      drawNodes(530, 180, 75, 100);
-      drawNodes(560, 310, 90, 110);
-      drawNodes(740, 190, 120, 160);
-      drawNodes(860, 380, 65, 80);
+      });
+
+      // Neural connection hubs
+      const hubs = [
+        [480, 320], [560, 240], [540, 620], [1040, 280], [1100, 600],
+        [1350, 320], [1500, 380], [1620, 720]
+      ];
+      ctx.strokeStyle = 'rgba(168, 85, 247, 0.7)';
+      ctx.lineWidth = 1.5;
+      for (let i = 0; i < hubs.length; i++) {
+        for (let j = i + 1; j < hubs.length; j++) {
+          const d = Math.hypot(hubs[i][0] - hubs[j][0], hubs[i][1] - hubs[j][1]);
+          if (d < 350) {
+            ctx.beginPath();
+            ctx.moveTo(hubs[i][0], hubs[i][1]);
+            ctx.lineTo(hubs[j][0], hubs[j][1]);
+            ctx.stroke();
+          }
+        }
+      }
+
+      hubs.forEach(h => {
+        const radGrad = ctx.createRadialGradient(h[0], h[1], 0, h[0], h[1], 16);
+        radGrad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        radGrad.addColorStop(0.3, 'rgba(6, 182, 212, 0.9)');
+        radGrad.addColorStop(1, 'rgba(168, 85, 247, 0)');
+        ctx.fillStyle = radGrad;
+        ctx.beginPath();
+        ctx.arc(h[0], h[1], 16, 0, Math.PI * 2);
+        ctx.fill();
+      });
 
       return new THREE.CanvasTexture(c);
     }
 
     /* -------------------------------------------------------------
-       13. SUBTLE MOUSE PARALLAX & CONTINUOUS ANIMATION LOOP
+       11. INTERACTIVITY & RAYCASTING
        ------------------------------------------------------------- */
-    window.addEventListener('mousemove', (e) => {
-      // Subtle 2-3% perspective parallax displacement
-      mouse.targetX = (e.clientX / window.innerWidth - 0.5) * 1.2;
-      mouse.targetY = -(e.clientY / window.innerHeight - 0.5) * 1.0;
+    function setupInteractivity() {
+      window.addEventListener('mousemove', (e) => {
+        mouse.targetX = (e.clientX / window.innerWidth - 0.5) * 1.2;
+        mouse.targetY = -(e.clientY / window.innerHeight - 0.5) * 1.0;
+
+        mouseRay.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouseRay.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+        if (tooltipEl && hoveredProduct) {
+          tooltipEl.style.left = e.clientX + 'px';
+          tooltipEl.style.top = e.clientY + 'px';
+        }
+      }, { passive: true });
+
+      canvas.addEventListener('click', () => {
+        if (hoveredProduct && hoveredProduct.userData && hoveredProduct.userData.id) {
+          openConceptModal(hoveredProduct.userData.id);
+        }
+      });
+    }
+
+    /* -------------------------------------------------------------
+       12. CINEMATIC CAMERA SCROLL TRAJECTORY (ZOOM OUT JOURNEY)
+       ------------------------------------------------------------- */
+    function getCameraTrajectory(p) {
+      if (p < 0.25) {
+        // 0.0 to 0.25: Hero -> Zoom out & reveal product orbits
+        const t = p / 0.25;
+        const ease = t * t * (3 - 2 * t);
+        return {
+          pos: new THREE.Vector3(
+            baseCamX + (15 - baseCamX) * ease,
+            baseCamY + (18 - baseCamY) * ease,
+            baseCamZ + (410 - baseCamZ) * ease
+          ),
+          look: new THREE.Vector3(
+            30 + (50 - 30) * ease,
+            5,
+            0
+          )
+        };
+      } else if (p < 0.55) {
+        // 0.25 to 0.55: Revealing product worlds & constellation (#products)
+        const t = (p - 0.25) / 0.30;
+        const ease = t * t * (3 - 2 * t);
+        return {
+          pos: new THREE.Vector3(
+            15 + (38 - 15) * ease,
+            18 + (40 - 18) * ease,
+            410 + (530 - 410) * ease
+          ),
+          look: new THREE.Vector3(
+            50 + (66 - 50) * ease,
+            5,
+            0
+          )
+        };
+      } else if (p < 0.80) {
+        // 0.55 to 0.80: Architecture Lifecycle & Meet the Builder (#about, #portfolio)
+        const t = (p - 0.55) / 0.25;
+        const ease = t * t * (3 - 2 * t);
+        return {
+          pos: new THREE.Vector3(
+            38 + (-8 - 38) * ease,
+            40 + (58 - 40) * ease,
+            530 + (640 - 530) * ease
+          ),
+          look: new THREE.Vector3(
+            66 + (50 - 66) * ease,
+            5 + (8 - 5) * ease,
+            -15 * ease
+          )
+        };
+      } else {
+        // 0.80 to 1.0: Panoramic wide galaxy overview (#vision, #folivio, #contact)
+        const t = (p - 0.80) / 0.20;
+        const ease = t * t * (3 - 2 * t);
+        return {
+          pos: new THREE.Vector3(
+            -8 + (-15 - -8) * ease,
+            58 + (76 - 58) * ease,
+            640 + (760 - 640) * ease
+          ),
+          look: new THREE.Vector3(
+            50 + (35 - 50) * ease,
+            8 + (12 - 8) * ease,
+            -15 + (-30 - -15) * ease
+          )
+        };
+      }
+    }
+
+    window.addEventListener('scroll', () => {
+      if (isZoomingTransition || !isWebGLEnabled) return;
+      const scrollY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      targetScrollP = Math.max(0, Math.min(1, scrollY / (maxScroll || 1)));
+
+      // Subtle Hero UI Fade as user scrolls past hero
+      const heroContentEl = document.querySelector('.hero-content');
+      if (heroContentEl) {
+        const heroH = window.innerHeight;
+        const fadeP = Math.max(0, Math.min(1, 1 - (scrollY / (heroH * 0.7))));
+        heroContentEl.style.opacity = fadeP.toString();
+        heroContentEl.style.transform = `translateY(${-scrollY * 0.25}px)`;
+      }
     }, { passive: true });
 
-    function animateMilkyWayUniverse() {
-      requestAnimationFrame(animateMilkyWayUniverse);
+    /* -------------------------------------------------------------
+       13. CONTINUOUS ANIMATION LOOP
+       ------------------------------------------------------------- */
+    function animateUniverseCinematic() {
+      requestAnimationFrame(animateUniverseCinematic);
 
       const elapsed = clock.getElapsedTime();
 
@@ -3422,29 +4030,62 @@
       mouse.y += (mouse.targetY - mouse.y) * 0.04;
 
       if (!isZoomingTransition) {
-        camera.position.x = baseCamX + mouse.x * 3.5;
-        camera.position.y = baseCamY + mouse.y * 2.5;
-        camera.lookAt(globeCenterX * 0.45 + mouse.x * 1.2, globeCenterY + mouse.y * 0.8, 0);
+        const targetTrajectory = getCameraTrajectory(targetScrollP);
+        currentCamPos.lerp(targetTrajectory.pos, 0.055);
+        currentLookAt.lerp(targetTrajectory.look, 0.055);
+
+        camera.position.set(
+          currentCamPos.x + mouse.x * 4.0,
+          currentCamPos.y + mouse.y * 3.0,
+          currentCamPos.z
+        );
+        camera.lookAt(
+          currentLookAt.x + mouse.x * 1.5,
+          currentLookAt.y + mouse.y * 1.0,
+          currentLookAt.z
+        );
       }
 
-      // Slow organic Milky Way rotation
+      // Milky Way organic slow rotation
       if (milkyWayGroup) {
         milkyWayGroup.rotation.z += 0.00035 * warpSpeedFactor;
       }
 
-      // Subtle breathing for atmospheric nebula puffs
+      // Atmospheric nebula breathing
       nebulaPuffs.forEach(np => {
         const pulse = 1.0 + 0.06 * Math.sin(elapsed * 0.5 + np.seed);
         np.sprite.scale.set(np.baseScale * pulse, np.baseScale * pulse, 1);
       });
 
-      // Globe axial rotation & logo gentle floating
+      // Globe axial rotation & logo floating
       if (globeMesh) globeMesh.rotation.y += 0.0014 * warpSpeedFactor;
       if (logoSprite) {
         logoSprite.position.y = Math.sin(elapsed * 1.5) * 0.5;
       }
 
-      // 3D Orbital particles motion
+      // Foreground & background celestial rotation
+      if (blPlanetMesh) blPlanetMesh.rotation.y += 0.0003;
+      if (brPlanetMesh) brPlanetMesh.rotation.y += 0.0004;
+      if (trGalaxyGroup) trGalaxyGroup.rotation.z += 0.0012;
+      if (accretionGroup) accretionGroup.rotation.z += 0.0032 * warpSpeedFactor;
+
+      // 4 Orbital Product Worlds Animation
+      productWorlds.forEach((pw) => {
+        pw.progress = (pw.progress + pw.speed * warpSpeedFactor + 1) % 1;
+        const pt = pw.curve.getPoint(pw.progress);
+        const v = new THREE.Vector3(pt.x, pt.y, 0);
+        v.applyEuler(new THREE.Euler(pw.config.inclinationX, pw.config.inclinationY, pw.config.inclinationZ));
+        pw.group.position.set(globeCenterX + v.x, globeCenterY + v.y, globeCenterZ + v.z);
+
+        // Micro photon moon orbiting the planet
+        if (pw.moon) {
+          const mAngle = elapsed * 3.0 + pw.config.startProgress * 10;
+          const mR = pw.config.sphereSize * 1.8;
+          pw.moon.position.set(Math.cos(mAngle) * mR, Math.sin(mAngle * 0.8) * 0.8, Math.sin(mAngle) * mR);
+        }
+      });
+
+      // Orbital rings photon beads
       ringParticles.forEach((p) => {
         p.progress = (p.progress + p.speed * warpSpeedFactor + 1) % 1;
         const pt = p.curve.getPoint(p.progress);
@@ -3469,6 +4110,49 @@
         });
       }
 
+      // Raycasting Hover Detection
+      if (!isZoomingTransition && camera && productHitTargets.length > 0) {
+        raycaster.setFromCamera(mouseRay, camera);
+        const intersects = raycaster.intersectObjects(productHitTargets);
+
+        if (intersects.length > 0) {
+          const hit = intersects[0].object;
+          if (hoveredProduct !== hit) {
+            if (hoveredProduct && hoveredProduct.userData && hoveredProduct.userData.group) {
+              hoveredProduct.userData.group.scale.set(1, 1, 1);
+              if (hoveredProduct.userData.pathLine) hoveredProduct.userData.pathLine.material.opacity = 0.22;
+            }
+            hoveredProduct = hit;
+            if (hit.userData && hit.userData.group) {
+              hit.userData.group.scale.set(1.25, 1.25, 1.25);
+              if (hit.userData.pathLine) hit.userData.pathLine.material.opacity = 0.65;
+            }
+            canvas.style.cursor = 'pointer';
+            if (tooltipEl) {
+              pwtNameEl.innerText = hit.userData.name;
+              pwtTaglineEl.innerText = hit.userData.tagline;
+              pwtDotEl.style.background = hit.userData.color;
+              pwtDotEl.style.boxShadow = `0 0 10px ${hit.userData.color}`;
+              tooltipEl.style.display = 'flex';
+              tooltipEl.style.opacity = '1';
+            }
+          }
+        } else {
+          if (hoveredProduct) {
+            if (hoveredProduct.userData && hoveredProduct.userData.group) {
+              hoveredProduct.userData.group.scale.set(1, 1, 1);
+              if (hoveredProduct.userData.pathLine) hoveredProduct.userData.pathLine.material.opacity = 0.22;
+            }
+            hoveredProduct = null;
+            canvas.style.cursor = 'default';
+            if (tooltipEl) {
+              tooltipEl.style.opacity = '0';
+              setTimeout(() => { if (!hoveredProduct) tooltipEl.style.display = 'none'; }, 200);
+            }
+          }
+        }
+      }
+
       renderer.render(scene, camera);
     }
 
@@ -3480,7 +4164,19 @@
     });
 
     /* -------------------------------------------------------------
-       14. SMOOTH 3D CAMERA TRAVEL (SCROLL & BUTTON)
+       14. CINEMATIC INTRO SEQUENCE (UNDER 3 SECONDS)
+       ------------------------------------------------------------- */
+    function runCinematicIntro() {
+      const heroContent = document.querySelector('.hero-content');
+      if (heroContent) {
+        heroContent.style.opacity = '1';
+        heroContent.style.transform = 'translateY(0)';
+      }
+      canvas.style.opacity = '1';
+    }
+
+    /* -------------------------------------------------------------
+       15. HYPERSPACE CAMERA WARP DIVE
        ------------------------------------------------------------- */
     function triggerCinematicCameraZoom() {
       if (isZoomingTransition) return;
@@ -3528,7 +4224,7 @@
               isZoomingTransition = false;
               warpSpeedFactor = 1.0;
               camera.position.set(baseCamX, baseCamY, baseCamZ);
-              camera.lookAt(globeCenterX * 0.45, globeCenterY, 0);
+              camera.lookAt(0, 4, 0);
             }, 350);
           }, 150);
         }
@@ -3536,20 +4232,8 @@
       requestAnimationFrame(step);
     }
 
-    window.addEventListener('scroll', () => {
-      if (isZoomingTransition || !isWebGLEnabled) return;
-      const scrollY = window.scrollY;
-      const heroH = window.innerHeight;
-      if (scrollY < heroH * 1.5) {
-        const p = Math.min(scrollY / (heroH * 0.95), 1);
-        camera.position.x = baseCamX + (globeCenterX - baseCamX) * (p * 0.55);
-        camera.position.z = baseCamZ - (p * 150);
-        camera.lookAt(globeCenterX * 0.45 + (globeCenterX * 0.45 * p), globeCenterY, 0);
-      }
-    }, { passive: true });
-
     /* -------------------------------------------------------------
-       15. HIGH-PERFORMANCE 2D PROCEDURAL CANVAS FALLBACK
+       16. HIGH-PERFORMANCE 2D PROCEDURAL CANVAS FALLBACK
        ------------------------------------------------------------- */
     function initCanvas3DFallbackClean() {
       const ctx = canvas.getContext('2d');
@@ -3564,7 +4248,6 @@
         h = canvas.height = window.innerHeight;
       });
 
-      // 320 Procedural 3D perspective stars
       const stars = [];
       for (let i = 0; i < 320; i++) {
         stars.push({
@@ -3580,7 +4263,6 @@
         ctx.clearRect(0, 0, w, h);
         angle += 0.01;
 
-        // 3D Starfield Projection
         ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
         stars.forEach(s => {
           s.z -= 0.6;
@@ -3595,12 +4277,10 @@
           }
         });
 
-        // 3D Luminous Globe & Rings on Right Side
         const gx = w * 0.72;
         const gy = h * 0.48;
         const gr = Math.min(w, h) * 0.17;
 
-        // Soft Atmospheric Glow
         const atmosGrad = ctx.createRadialGradient(gx, gy, gr * 0.2, gx, gy, gr * 1.15);
         atmosGrad.addColorStop(0, 'rgba(168, 85, 247, 0.35)');
         atmosGrad.addColorStop(0.6, 'rgba(6, 182, 212, 0.22)');
@@ -3611,7 +4291,6 @@
         ctx.arc(gx, gy, gr * 1.15, 0, Math.PI * 2);
         ctx.fill();
 
-        // 3 Thin Orbital Rings
         ctx.lineWidth = 1.2;
         ctx.strokeStyle = 'rgba(168, 85, 247, 0.45)';
         ctx.beginPath();
@@ -3623,7 +4302,6 @@
         ctx.ellipse(gx, gy, gr * 1.45, gr * 0.32, -0.60, 0, Math.PI * 2);
         ctx.stroke();
 
-        // Travelling photon bead
         const b1Angle = angle * 1.2;
         const b1x = gx + Math.cos(b1Angle) * gr * 1.35 * Math.cos(0.45) - Math.sin(b1Angle) * gr * 0.42 * Math.sin(0.45);
         const b1y = gy + Math.cos(b1Angle) * gr * 1.35 * Math.sin(0.45) + Math.sin(b1Angle) * gr * 0.42 * Math.cos(0.45);
@@ -3632,7 +4310,6 @@
         ctx.arc(b1x, b1y, 2.8, 0, Math.PI * 2);
         ctx.fill();
 
-        // Crisp Suspended NIVORA Logo in Center
         if (fallbackLogo.complete && fallbackLogo.naturalWidth > 0) {
           const lw = gr * 0.75;
           const lh = lw * (fallbackLogo.naturalHeight / fallbackLogo.naturalWidth);
