@@ -40,7 +40,9 @@ async function run() {
   const chromeProc = spawn(chromePath, [
     '--headless=new',
     '--remote-debugging-port=9224',
-    '--disable-gpu',
+    '--enable-webgl',
+    '--use-gl=angle',
+    '--use-angle=metal',
     '--window-size=1920,1080',
     '--user-data-dir=/tmp/chrome-space-travel-profile-' + Date.now()
   ]);

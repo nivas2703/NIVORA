@@ -40,15 +40,22 @@ async function run() {
   const chromeProc = spawn(chromePath, [
     '--headless=new',
     '--remote-debugging-port=9222',
-    '--disable-gpu',
-    '--window-size=1440,900',
+    '--use-gl=angle',
+    '--use-angle=swiftshader',
+    '--window-size=1920,1080',
     '--user-data-dir=/tmp/chrome-cinematic-profile-' + Date.now()
   ]);
 
-  await new Promise(r => setTimeout(r, 1500));
-
-  const listRes = await fetch('http://127.0.0.1:9222/json/list');
-  const pages = await listRes.json();
+  let pages = null;
+  for (let i = 0; i < 15; i++) {
+    await new Promise(r => setTimeout(r, 400));
+    try {
+      const listRes = await fetch('http://127.0.0.1:9222/json/list');
+      pages = await listRes.json();
+      if (pages && pages.length > 0) break;
+    } catch(e) {}
+  }
+  if (!pages || !pages.length) throw new Error('Could not connect to Chrome debugging port');
   const page = pages.find(p => p.type === 'page') || pages[0];
   const wsUrl = page.webSocketDebuggerUrl;
 
@@ -101,6 +108,9 @@ async function run() {
 
   // Wait for 2.6s cinematic intro
   await new Promise(r => setTimeout(r, 2800));
+
+  const webglState = await evaluate('({ isWebGL: typeof isWebGLEnabled !== "undefined" && isWebGLEnabled, err: window._webglException || null })');
+  console.log('Browser WebGL State:', JSON.stringify(webglState));
 
   // 1. Capture Target Universe Hero
   await screenshot('target_universe_hero.png');
