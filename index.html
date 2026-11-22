@@ -370,38 +370,93 @@
     }
 
     /* =========================================================
-       HERO SECTION — THE 3D UNIVERSE IS THE HERO
+       HERO COMPOSITION — EXACT CENTERED UNIVERSE & TYPOGRAPHY
        ========================================================= */
     .hero {
       position: relative;
       min-height: 100vh;
       width: 100%;
       display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 5.5rem 4% 2rem;
       flex-direction: column;
+      align-items: center;
       justify-content: center;
+      padding: 6.5rem 4% 3rem;
       z-index: 10;
       pointer-events: none; /* UI inside is enabled selectively */
+      text-align: center;
     }
 
     .hero-container {
       width: 100%;
-      max-width: 1360px;
+      max-width: 860px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 3rem;
+      justify-content: center;
+      text-align: center;
       position: relative;
       z-index: 10;
+      pointer-events: auto;
     }
 
-    /* Left Hero Content */
+    /* Centered Official NIVORA Logo Stage */
+    .hero-center-logo-stage {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.6rem;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 25;
+    }
+
+    .hero-center-logo-stage:hover {
+      transform: scale(1.05);
+    }
+
+    .hero-logo-glow-disc {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.32) 0%, rgba(168, 85, 247, 0.22) 40%, rgba(2, 6, 23, 0) 70%);
+      filter: blur(30px);
+      pointer-events: none;
+      animation: logoAuraPulse 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes logoAuraPulse {
+      0% { transform: scale(0.92); opacity: 0.65; }
+      100% { transform: scale(1.1); opacity: 0.95; }
+    }
+
+    .hero-center-logo-img {
+      position: relative;
+      z-index: 2;
+      width: clamp(175px, 17vw, 235px);
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 25px rgba(6, 182, 212, 0.65))
+              drop-shadow(0 0 55px rgba(168, 85, 247, 0.5));
+      animation: logoFloatGently 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes logoFloatGently {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-7px); }
+    }
+
+    /* Centered Hero Content */
     .hero-content {
-      max-width: 540px;
-      pointer-events: auto; /* Enable clicks */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      max-width: 820px;
+      pointer-events: auto;
       position: relative;
       z-index: 20;
     }
@@ -416,7 +471,7 @@
       background: rgba(139, 92, 246, 0.12);
       border: 1px solid rgba(139, 92, 246, 0.4);
       box-shadow: 0 0 25px rgba(139, 92, 246, 0.35);
-      margin-bottom: 1.2rem;
+      margin: 0 auto 1.25rem;
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
     }
@@ -442,20 +497,27 @@
     /* Main Typography */
     .hero-title {
       font-family: var(--font-display);
-      font-size: clamp(3.2rem, 5.8vw, 5.4rem);
-      font-weight: 800;
-      line-height: 1.04;
-      letter-spacing: -0.04em;
-      margin-bottom: 0.85rem;
+      text-align: center;
+      margin-bottom: 0.95rem;
     }
 
     .hero-welcome {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 3.8vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
       color: #ffffff;
-      display: inline-block;
+      display: block;
+      margin-bottom: 0.15rem;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.95), 0 0 35px rgba(168, 85, 247, 0.35);
     }
 
     .hero-brand {
       display: inline-block;
+      font-size: clamp(3.8rem, 7.5vw, 6.2rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.0;
       background: linear-gradient(135deg, #a855f7 0%, #d946ef 35%, #3b82f6 70%, #06b6d4 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -472,11 +534,13 @@
     /* Tagline */
     .hero-tagline {
       font-family: var(--font-ui);
-      font-size: clamp(1.35rem, 2.3vw, 1.95rem);
+      font-size: clamp(1.25rem, 2.2vw, 1.85rem);
       font-weight: 500;
       color: #f1f5f9;
       line-height: 1.3;
-      margin-bottom: 1.15rem;
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 1.25rem;
       letter-spacing: -0.02em;
     }
 
@@ -509,13 +573,14 @@
       box-shadow: 0 0 10px rgba(236, 72, 153, 0.9);
     }
 
-    /* Description */
+    /* Description (Exact 600-720px width) */
     .hero-copy {
-      font-size: clamp(0.95rem, 1.15vw, 1.05rem);
-      line-height: 1.65;
+      font-size: clamp(0.98rem, 1.2vw, 1.08rem);
+      line-height: 1.7;
       color: #cbd5e1;
-      margin-bottom: 1.6rem;
-      max-width: 500px;
+      text-align: center;
+      max-width: 660px;
+      margin: 0 auto 1.85rem;
     }
 
     .hero-copy strong {
@@ -526,9 +591,10 @@
     /* Action Buttons */
     .hero-actions {
       display: flex;
+      justify-content: center;
       align-items: center;
       gap: 1.25rem;
-      margin-bottom: 1.8rem;
+      margin: 0 auto 2.2rem;
       flex-wrap: wrap;
     }
 
@@ -613,14 +679,17 @@
       color: var(--brand-cyan);
     }
 
-    /* Metrics Grid */
+    /* Metrics Grid (Centered) */
     .hero-metrics {
       display: flex;
+      justify-content: center;
       align-items: center;
-      gap: 1.75rem;
-      padding-top: 1.15rem;
+      gap: 2.8rem;
+      padding-top: 1.4rem;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
-      max-width: 480px;
+      max-width: 580px;
+      margin: 0 auto;
+      width: 100%;
     }
 
     .metric-card {
@@ -648,6 +717,7 @@
     .metric-info {
       display: flex;
       flex-direction: column;
+      text-align: left;
     }
 
     .metric-info strong {
@@ -662,27 +732,6 @@
       font-size: 0.76rem;
       color: var(--text-muted);
       letter-spacing: 0.02em;
-    }
-
-    /* Right Hero Click Target Area for Three.js Globe */
-    .hero-art-stage {
-      position: relative;
-      width: 100%;
-      height: 600px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: auto; /* Allow clicking on 3D globe to trigger zoom */
-      cursor: pointer;
-    }
-
-    /* Invisible click capture proxy for 3D globe */
-    .globe-click-proxy {
-      width: 440px;
-      height: 440px;
-      border-radius: 50%;
-      position: relative;
-      cursor: pointer;
     }
 
     /* HUD Bottom Scroll Indicator */
@@ -2042,7 +2091,13 @@
   <main>
     <section class="hero" id="hero">
       <div class="hero-container">
-        <!-- LEFT HERO CONTENT: BRANDING, TYPOGRAPHY, CTAS -->
+        <!-- 1. EXACT CENTERED OFFICIAL NIVORA LOGO -->
+        <div class="hero-center-logo-stage" onclick="triggerCinematicCameraZoom()">
+          <div class="hero-logo-glow-disc"></div>
+          <img src="assets/images/nivora-logo.png" alt="NIVORA" class="hero-center-logo-img" id="heroCenterLogo">
+        </div>
+
+        <!-- 2. EXACT CENTERED HERO TYPOGRAPHY & ACTIONS (BELOW LOGO) -->
         <div class="hero-content">
           <div class="hero-badge">
             <span class="dot"></span>
@@ -2050,7 +2105,7 @@
           </div>
 
           <h1 class="hero-title">
-            <span class="hero-welcome">Welcome to</span><br>
+            <span class="hero-welcome">Welcome to</span>
             <span class="hero-brand">NIVORA.</span>
           </h1>
 
@@ -2072,12 +2127,11 @@
             </button>
           </div>
 
-          <!-- Hero Metrics with Matching Target Icons -->
+          <!-- Hero Metrics (Centered) -->
           <div class="hero-metrics">
             <div class="metric-card">
               <div class="metric-icon-wrap m-purple">
-                <!-- Atom / Orbital Worlds Icon -->
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                   <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(30 12 12)"></ellipse>
                   <ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(-30 12 12)"></ellipse>
                   <circle cx="12" cy="12" r="2.2" fill="currentColor"></circle>
@@ -2091,8 +2145,7 @@
 
             <div class="metric-card">
               <div class="metric-icon-wrap m-cyan">
-                <!-- 3D Stacked Layers Icon -->
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                   <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
                   <polyline points="2 12 12 17 22 12"></polyline>
                   <polyline points="2 17 12 22 22 17"></polyline>
@@ -2106,22 +2159,16 @@
 
             <div class="metric-card">
               <div class="metric-icon-wrap m-magenta">
-                <!-- Infinity Possibilities Icon -->
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M18.178 8c5.096 0 5.096 8 0 8-3.084 0-4.321-2.91-6.178-5.334C10.143 8.244 8.906 8 5.822 8 0.726 8 0.726 16 5.822 16c3.084 0 4.321-2.91 6.178-5.334C13.857 13.09 15.094 16 18.178 16z"></path>
                 </svg>
               </div>
               <div class="metric-info">
-                <strong>&infin; &infin;</strong>
+                <strong>&infin;</strong>
                 <span>Digital Possibilities</span>
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- RIGHT HERO CONTENT: 3D GLOBE CLICK PROXY (CANVAS IS BEHIND/INTERACTIVE) -->
-        <div class="hero-art-stage" id="heroArtStage" onclick="triggerCinematicCameraZoom()" title="Click to Enter the NIVORA Universe">
-          <div class="globe-click-proxy"></div>
         </div>
       </div>
 
@@ -2856,10 +2903,7 @@
     let renderer, scene, camera;
     let milkyWayGroup, galacticBulge, spiralArmStars;
     let distantStarField, brightBeaconsGroup, distantGalaxiesGroup;
-    let globeGroup, globeMesh, logoSprite, atmosphereMesh, globeHaloSprite;
-    let orbitalRings = [], ringParticles = [];
-    let accretionGroup, accretionDisk, accretionParticles, energyBeam;
-    let blPlanetMesh, blPlanetAtmos, brPlanetMesh, brPlanetAtmos, trGalaxyGroup;
+    let globeGroup, globeHaloSprite;
     let nebulaPuffs = [];
 
     // SPACE-TRAVEL & HYPERSPACE WARP SYSTEM (REAL DEPTH + STREAKS)
@@ -2897,16 +2941,16 @@
     let mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
     let clock = new THREE.Clock();
 
-    // Base Camera Coordinates (Perspective view: Globe on Right, UI on Left)
+    // Base Camera Coordinates (Exact Centered Universe Composition)
     const baseCamX = 0;
-    const baseCamY = 0;
+    const baseCamY = 16;
     const baseCamZ = 260;
-    const globeCenterX = 68.0;
-    const globeCenterY = 12.0;
+    const globeCenterX = 0.0;
+    const globeCenterY = 36.0;
     const globeCenterZ = 0.0;
 
     let currentCamPos = new THREE.Vector3(baseCamX, baseCamY, baseCamZ);
-    let currentLookAt = new THREE.Vector3(0, 4, 0);
+    let currentLookAt = new THREE.Vector3(0, 18, 0);
     let targetScrollP = 0;
 
     // 4 Product Worlds Configuration
@@ -2990,19 +3034,16 @@
         scene = new THREE.Scene();
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 4000);
         camera.position.set(baseCamX, baseCamY, baseCamZ);
-        camera.lookAt(0, 4, 0);
+        camera.lookAt(0, 18, 0);
 
-        // Build 3D Cinematic Universe
+        // Build 3D Cinematic Universe (Clean Procedural Milky Way & Centered Core Halo)
         buildDistantStarfield();
         buildWarpStarfield();
         buildProceduralMilkyWay();
         buildGalacticBulge();
         buildSubtleCosmicNebula();
         buildBrightStellarBeacons();
-        buildCelestialForeAndBackground();
         buildNivoraGlobeCore();
-        buildGalacticAccretionPlatform();
-        buildOrbitalRings3D();
         build3DProductWorlds();
         buildSpatialDestinations();
 
@@ -3069,10 +3110,13 @@
         const wx = globeCenterX + lx * cosY - lz * sinY;
         const wy = globeCenterY + ly * cosX - (lx * sinY + lz * cosY) * sinX;
 
-        // Clean deep-space quiet zone for left hero typography & branding
+        // Clean deep-space quiet zone for centered hero logo & typography
         let starWeight = 1.0;
-        if (wx < 18) {
-          starWeight = Math.max(0.0, Math.min(1.0, (wx + 15) / 33)) * 0.15;
+        const distFromLogoCenter = Math.sqrt(wx * wx + (wy - globeCenterY) * (wy - globeCenterY));
+        if (distFromLogoCenter < 30) {
+          starWeight = Math.max(0.0, (distFromLogoCenter - 20) / 10);
+        } else if (Math.abs(wx) < 38 && wy < globeCenterY + 2 && wy > globeCenterY - 56) {
+          starWeight = 0.12;
         }
 
         positions[i * 3] = lx;
@@ -3126,7 +3170,7 @@
       const colors = new Float32Array(bulgeCount * 3);
 
       for (let i = 0; i < bulgeCount; i++) {
-        const r = 16 + Math.pow(Math.random(), 2.0) * 32;
+        const r = 22 + Math.pow(Math.random(), 2.0) * 36;
         const theta = Math.random() * Math.PI * 2;
         const phi = (Math.random() - 0.5) * Math.PI;
 
@@ -3134,10 +3178,14 @@
         positions[i * 3 + 1] = r * Math.sin(phi) * 0.38;
         positions[i * 3 + 2] = r * Math.cos(phi) * Math.sin(theta);
 
-        const p = (r - 16) / 32;
-        colors[i * 3] = 0.95 - p * 0.15;
-        colors[i * 3 + 1] = 0.98 - p * 0.12;
-        colors[i * 3 + 2] = 1.0;
+        const p = (r - 22) / 36;
+        let bWeight = 1.0;
+        if (phi < 0 && Math.abs(positions[i * 3]) < 26) {
+          bWeight = 0.15;
+        }
+        colors[i * 3] = (0.95 - p * 0.15) * bWeight;
+        colors[i * 3 + 1] = (0.98 - p * 0.12) * bWeight;
+        colors[i * 3 + 2] = 1.0 * bWeight;
       }
 
       const bulgeGeo = new THREE.BufferGeometry();
@@ -3548,187 +3596,13 @@
     }
 
     /* -------------------------------------------------------------
-       7. CELESTIAL FOREGROUND & BACKGROUND (PLANETS & GALAXY)
+       7. NIVORA UNIVERSE CORE — AURA & SUBTLE ORBITAL HALO
        ------------------------------------------------------------- */
-    function buildCelestialForeAndBackground() {
-      // 1. Bottom-Left Curved Horizon (Massive Deep-Blue Planet Framing Corner)
-      const blGeo = new THREE.SphereGeometry(135, 48, 48);
-      const blMat = new THREE.MeshBasicMaterial({
-        map: createOceanPlanetTexture(),
-        transparent: true,
-        opacity: 0.98
-      });
-      blPlanetMesh = new THREE.Mesh(blGeo, blMat);
-      blPlanetMesh.position.set(-170, -170, 75);
-      scene.add(blPlanetMesh);
-
-      // Atmospheric Rim for Bottom-Left Planet
-      const blAtmosGeo = new THREE.SphereGeometry(137, 48, 48);
-      const blAtmosMat = new THREE.ShaderMaterial({
-        vertexShader: `
-          varying vec3 vNormal;
-          void main() {
-            vNormal = normalize(normalMatrix * normal);
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          varying vec3 vNormal;
-          void main() {
-            float fresnel = 1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0));
-            fresnel = pow(fresnel, 3.2);
-            vec3 atmosColor = vec3(0.05, 0.85, 1.0); // Vibrant electric cyan
-            gl_FragColor = vec4(atmosColor, fresnel * 0.95);
-          }
-        `,
-        transparent: true,
-        blending: THREE.AdditiveBlending,
-        side: THREE.FrontSide,
-        depthWrite: false
-      });
-      blPlanetAtmos = new THREE.Mesh(blAtmosGeo, blAtmosMat);
-      blPlanetAtmos.position.set(-170, -170, 75);
-      scene.add(blPlanetAtmos);
-
-      // 2. Bottom-Right Planet with Warm Magenta/Violet Rim Light
-      const brGeo = new THREE.SphereGeometry(44, 36, 36);
-      const brMat = new THREE.MeshBasicMaterial({
-        map: createShadowedPlanetTexture('#150624', '#080210'),
-        transparent: true,
-        opacity: 0.96
-      });
-      brPlanetMesh = new THREE.Mesh(brGeo, brMat);
-      brPlanetMesh.position.set(175, -125, 50);
-      scene.add(brPlanetMesh);
-
-      const brAtmosGeo = new THREE.SphereGeometry(45, 36, 36);
-      const brAtmosMat = new THREE.ShaderMaterial({
-        vertexShader: `
-          varying vec3 vNormal;
-          void main() {
-            vNormal = normalize(normalMatrix * normal);
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          varying vec3 vNormal;
-          void main() {
-            float fresnel = 1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0));
-            fresnel = pow(fresnel, 2.8);
-            vec3 atmosColor = vec3(0.92, 0.28, 0.94); // Magenta / purple
-            gl_FragColor = vec4(atmosColor, fresnel * 0.88);
-          }
-        `,
-        transparent: true,
-        blending: THREE.AdditiveBlending,
-        side: THREE.FrontSide,
-        depthWrite: false
-      });
-      brPlanetAtmos = new THREE.Mesh(brAtmosGeo, brAtmosMat);
-      brPlanetAtmos.position.set(175, -125, 50);
-      scene.add(brPlanetAtmos);
-
-      // 3. Top-Right Prominent Spiral Galaxy
-      trGalaxyGroup = new THREE.Group();
-      trGalaxyGroup.position.set(185, 120, -190);
-      trGalaxyGroup.rotation.set(0.72, 0.42, -0.32);
-
-      const trPoints = 2500;
-      const trPos = new Float32Array(trPoints * 3);
-      const trCol = new Float32Array(trPoints * 3);
-
-      for (let i = 0; i < trPoints; i++) {
-        const arm = i % 2;
-        const r = 2 + 58 * Math.pow(Math.random(), 1.5);
-        const theta = arm * Math.PI + 2.5 * Math.log(r / 3) + (Math.random() - 0.5) * 0.35;
-
-        trPos[i * 3] = Math.cos(theta) * r + (Math.random() - 0.5) * (r * 0.12);
-        trPos[i * 3 + 1] = Math.sin(theta) * r + (Math.random() - 0.5) * (r * 0.12);
-        trPos[i * 3 + 2] = (Math.random() - 0.5) * 4.0;
-
-        const normR = r / 60;
-        if (normR < 0.2) {
-          trCol[i * 3] = 1.0; trCol[i * 3 + 1] = 0.95; trCol[i * 3 + 2] = 0.9;
-        } else {
-          trCol[i * 3] = 0.4 + 0.4 * normR;
-          trCol[i * 3 + 1] = 0.7 * (1 - normR * 0.4);
-          trCol[i * 3 + 2] = 1.0;
-        }
-      }
-
-      const trGeo = new THREE.BufferGeometry();
-      trGeo.setAttribute('position', new THREE.BufferAttribute(trPos, 3));
-      trGeo.setAttribute('color', new THREE.BufferAttribute(trCol, 3));
-
-      const trMat = new THREE.PointsMaterial({
-        size: 1.6,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.85,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-        map: createSoftPointTexture()
-      });
-
-      const trPointsMesh = new THREE.Points(trGeo, trMat);
-      trGalaxyGroup.add(trPointsMesh);
-      scene.add(trGalaxyGroup);
-    }
-
     function buildNivoraGlobeCore() {
       globeGroup = new THREE.Group();
       globeGroup.position.set(globeCenterX, globeCenterY, globeCenterZ);
 
-      const globeRadius = 25.5;
-      const cyberTex = createDigitalWorldTextureCinematic();
-
-      // 1. Inner Translucent Cyber Continents Globe
-      const sphereGeo = new THREE.SphereGeometry(globeRadius, 64, 64);
-      const sphereMat = new THREE.MeshBasicMaterial({
-        map: cyberTex,
-        transparent: true,
-        opacity: 0.52,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      });
-      globeMesh = new THREE.Mesh(sphereGeo, sphereMat);
-      globeGroup.add(globeMesh);
-
-      // 2. Atmospheric Glass Shell with Brilliant Fresnel Rim
-      const atmosGeo = new THREE.SphereGeometry(globeRadius * 1.05, 48, 48);
-      const atmosMat = new THREE.ShaderMaterial({
-        vertexShader: `
-          varying vec3 vNormal;
-          void main() {
-            vNormal = normalize(normalMatrix * normal);
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-          }
-        `,
-        fragmentShader: `
-          varying vec3 vNormal;
-          void main() {
-            float fresnel = 1.0 - dot(vNormal, vec3(0.0, 0.0, 1.0));
-            fresnel = pow(fresnel, 2.4);
-
-            vec3 cyanColor = vec3(0.02, 0.75, 0.95);    // #00f5ff
-            vec3 purpleColor = vec3(0.66, 0.33, 0.97);  // #a855f7
-            vec3 magentaColor = vec3(0.93, 0.28, 0.94); // #ec4899
-
-            vec3 rimColor = mix(cyanColor, purpleColor, fresnel * 0.7);
-            rimColor = mix(rimColor, magentaColor, pow(fresnel, 3.2));
-
-            gl_FragColor = vec4(rimColor, fresnel * 0.92);
-          }
-        `,
-        transparent: true,
-        blending: THREE.AdditiveBlending,
-        side: THREE.FrontSide,
-        depthWrite: false
-      });
-      atmosphereMesh = new THREE.Mesh(atmosGeo, atmosMat);
-      globeGroup.add(atmosphereMesh);
-
-      // 3. Radiant Atmospheric Corona Sprite
+      // 1. Radiant Atmospheric Corona Sprite (Centered behind official logo)
       const haloMat = new THREE.SpriteMaterial({
         map: createCoronaHaloTexture(),
         transparent: true,
@@ -3737,222 +3611,50 @@
         depthWrite: false
       });
       globeHaloSprite = new THREE.Sprite(haloMat);
-      globeHaloSprite.scale.set(78, 78, 1);
-      globeHaloSprite.renderOrder = 15;
+      globeHaloSprite.scale.set(72, 72, 1);
+      globeHaloSprite.position.set(0, 0, -10);
+      globeHaloSprite.renderOrder = 10;
       globeGroup.add(globeHaloSprite);
 
-      // 4. Official NIVORA 3D Ribbon Logo (Suspended at Exact Center, Bright & Crisp)
-      const logoLoader = new THREE.TextureLoader();
-      const domLogo = document.querySelector('.nav-logo-icon');
-      const logoSrc = (domLogo && domLogo.getAttribute('src')) ? domLogo.src : 'assets/images/nivora-logo.png';
-      logoLoader.load(logoSrc, (tex) => {
-        tex.minFilter = THREE.LinearFilter;
-        tex.magFilter = THREE.LinearFilter;
-        const logoMat = new THREE.SpriteMaterial({
-          map: tex,
-          transparent: true,
-          opacity: 1.0,
-          blending: THREE.NormalBlending,
-          depthTest: false
-        });
-        logoSprite = new THREE.Sprite(logoMat);
-        logoSprite.scale.set(19.0, 19.0, 1);
-        logoSprite.renderOrder = 50;
-        globeGroup.add(logoSprite);
+      // 2. 2,200 Subtle Orbital Quantum Particles (Delicate cosmic halo orbiting r = 22 to 32)
+      const haloPointCount = 2200;
+      const haloPos = new Float32Array(haloPointCount * 3);
+      const haloCol = new Float32Array(haloPointCount * 3);
 
-        // Radiant Backing Aura
-        const auraMat = new THREE.SpriteMaterial({
-          map: createSoftPointTexture(),
-          color: 0x06b6d4,
-          transparent: true,
-          opacity: 0.55,
-          blending: THREE.AdditiveBlending,
-          depthTest: false
-        });
-        const auraSprite = new THREE.Sprite(auraMat);
-        auraSprite.scale.set(25, 25, 1);
-        auraSprite.renderOrder = 45;
-        globeGroup.add(auraSprite);
-      });
+      for (let i = 0; i < haloPointCount; i++) {
+        const r = 22.0 + Math.random() * 9.0;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = (Math.random() - 0.5) * 0.75;
 
-      // 5. Orbiting Purple Moon
-      const moonGeo = new THREE.SphereGeometry(3.6, 24, 24);
-      const moonMat = new THREE.MeshBasicMaterial({
-        color: 0x8b5cf6,
-        transparent: true,
-        opacity: 0.90
-      });
-      const moonMesh = new THREE.Mesh(moonGeo, moonMat);
-      moonMesh.position.set(-36, 32, -15);
-      globeGroup.add(moonMesh);
+        haloPos[i * 3] = r * Math.cos(phi) * Math.cos(theta);
+        haloPos[i * 3 + 1] = r * Math.sin(phi) + (Math.random() - 0.5) * 2.2;
+        haloPos[i * 3 + 2] = r * Math.cos(phi) * Math.sin(theta);
 
-      const moonHalo = new THREE.Sprite(new THREE.SpriteMaterial({
-        map: createSoftPointTexture(),
-        color: 0xc084fc,
-        transparent: true,
-        opacity: 0.65,
-        blending: THREE.AdditiveBlending
-      }));
-      moonHalo.scale.set(14, 14, 1);
-      moonHalo.position.set(-36, 32, -15);
-      globeGroup.add(moonHalo);
-
-      scene.add(globeGroup);
-    }
-
-    /* -------------------------------------------------------------
-       9. GALACTIC SWIRLING VORTEX ACCRETION DISC & BEAM
-       ------------------------------------------------------------- */
-    function buildGalacticAccretionPlatform() {
-      const beamHeight = 22;
-      const vortexY = globeCenterY - 25.5 - beamHeight + 3;
-
-      accretionGroup = new THREE.Group();
-      accretionGroup.position.set(globeCenterX, vortexY, globeCenterZ);
-      accretionGroup.rotation.set(Math.PI / 2.3, 0, 0.1);
-
-      // 1. Soft glowing gradient disc base
-      const discCanvas = document.createElement('canvas');
-      discCanvas.width = 512; discCanvas.height = 512;
-      const dCtx = discCanvas.getContext('2d');
-      const dGrad = dCtx.createRadialGradient(256, 256, 10, 256, 256, 256);
-      dGrad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
-      dGrad.addColorStop(0.15, 'rgba(6, 182, 212, 0.75)');
-      dGrad.addColorStop(0.40, 'rgba(168, 85, 247, 0.55)');
-      dGrad.addColorStop(0.70, 'rgba(236, 72, 153, 0.35)');
-      dGrad.addColorStop(1, 'rgba(2, 6, 23, 0)');
-      dCtx.fillStyle = dGrad;
-      dCtx.fillRect(0, 0, 512, 512);
-
-      const discTex = new THREE.CanvasTexture(discCanvas);
-      const discGeo = new THREE.PlaneGeometry(160, 160);
-      const discMat = new THREE.MeshBasicMaterial({
-        map: discTex,
-        transparent: true,
-        opacity: 0.85,
-        side: THREE.DoubleSide,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      });
-      accretionDisk = new THREE.Mesh(discGeo, discMat);
-      accretionGroup.add(accretionDisk);
-
-      // 2. 4,200 Swirling Spiral Vortex Particles
-      const dPoints = 4200;
-      const dPos = new Float32Array(dPoints * 3);
-      const dCol = new Float32Array(dPoints * 3);
-
-      for (let i = 0; i < dPoints; i++) {
-        const arm = i % 3;
-        const radius = 6 + Math.pow(Math.random(), 1.25) * 82;
-        const angle = (arm * (2 * Math.PI / 3)) + (radius * 0.08) + (Math.random() - 0.5) * 0.42;
-
-        dPos[i * 3] = Math.cos(angle) * radius;
-        dPos[i * 3 + 1] = Math.sin(angle) * radius;
-        dPos[i * 3 + 2] = (Math.random() - 0.5) * (4.0 * (1 - radius / 88));
-
-        // Color transition: White/cyan core -> Violet -> Magenta outer edge
-        const t = radius / 82;
-        if (t < 0.25) {
-          dCol[i * 3] = 0.55 + 0.45 * (1 - t * 4);
-          dCol[i * 3 + 1] = 0.90 + 0.10 * (1 - t * 4);
-          dCol[i * 3 + 2] = 1.0;
-        } else if (t < 0.65) {
-          const st = (t - 0.25) / 0.40;
-          dCol[i * 3] = 0.45 + 0.35 * st;
-          dCol[i * 3 + 1] = 0.55 * (1 - st);
-          dCol[i * 3 + 2] = 0.95;
-        } else {
-          const st = (t - 0.65) / 0.35;
-          dCol[i * 3] = 0.80 + 0.15 * st;
-          dCol[i * 3 + 1] = 0.20 * (1 - st);
-          dCol[i * 3 + 2] = 0.85 * (1 - st * 0.3);
-        }
+        const t = (r - 22.0) / 9.0;
+        haloCol[i * 3] = 0.05 + 0.60 * t;
+        haloCol[i * 3 + 1] = 0.75 + 0.10 * (1 - t);
+        haloCol[i * 3 + 2] = 0.95;
       }
 
-      const dGeo = new THREE.BufferGeometry();
-      dGeo.setAttribute('position', new THREE.BufferAttribute(dPos, 3));
-      dGeo.setAttribute('color', new THREE.BufferAttribute(dCol, 3));
+      const haloGeo = new THREE.BufferGeometry();
+      haloGeo.setAttribute('position', new THREE.BufferAttribute(haloPos, 3));
+      haloGeo.setAttribute('color', new THREE.BufferAttribute(haloCol, 3));
 
-      const dMat = new THREE.PointsMaterial({
-        size: 1.8,
+      const haloPointsMat = new THREE.PointsMaterial({
+        size: 1.4,
+        sizeAttenuation: true,
         vertexColors: true,
+        map: createSoftPointTexture(),
         transparent: true,
-        opacity: 0.90,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-        map: createSoftPointTexture()
-      });
-
-      accretionParticles = new THREE.Points(dGeo, dMat);
-      accretionGroup.add(accretionParticles);
-      scene.add(accretionGroup);
-
-      // 3. Vertical Cyan Light Projection Beam
-      const beamGeo = new THREE.CylinderGeometry(1.2, 5.5, beamHeight, 32, 1, true);
-      const beamMat = new THREE.MeshBasicMaterial({
-        color: 0x06b6d4,
-        transparent: true,
-        opacity: 0.48,
-        side: THREE.DoubleSide,
+        opacity: 0.85,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       });
-      energyBeam = new THREE.Mesh(beamGeo, beamMat);
-      energyBeam.position.set(globeCenterX, globeCenterY - 25.5 - (beamHeight / 2) + 2, globeCenterZ);
-      scene.add(energyBeam);
-    }
 
-    /* -------------------------------------------------------------
-       10. 4 ELEGANT 3D ORBITAL RINGS WITH GLOWING SATELLITES
-       ------------------------------------------------------------- */
-    function buildOrbitalRings3D() {
-      const ringSpecs = [
-        { radiusX: 38, radiusY: 34, rotX: 1.25, rotY: 0.15, rotZ: 0.25, color: 0x06b6d4, speed: 0.002 },
-        { radiusX: 44, radiusY: 38, rotX: 0.55, rotY: 1.15, rotZ: -0.50, color: 0xa855f7, speed: -0.0018 },
-        { radiusX: 52, radiusY: 44, rotX: -0.75, rotY: 0.45, rotZ: 0.95, color: 0x38bdf8, speed: 0.0022 },
-        { radiusX: 60, radiusY: 48, rotX: 0.35, rotY: -0.85, rotZ: 0.65, color: 0xec4899, speed: -0.0015 }
-      ];
+      const coreParticleHalo = new THREE.Points(haloGeo, haloPointsMat);
+      globeGroup.add(coreParticleHalo);
 
-      ringSpecs.forEach((spec, rIdx) => {
-        const curve = new THREE.EllipseCurve(0, 0, spec.radiusX, spec.radiusY, 0, 2 * Math.PI, false, 0);
-        const points = curve.getPoints(120);
-        const ringGeo = new THREE.BufferGeometry().setFromPoints(points);
-
-        const ringLine = new THREE.Line(ringGeo, new THREE.LineBasicMaterial({
-          color: spec.color,
-          transparent: true,
-          opacity: 0.52,
-          blending: THREE.AdditiveBlending
-        }));
-        ringLine.rotation.set(spec.rotX, spec.rotY, spec.rotZ);
-        globeGroup.add(ringLine);
-
-        const bead = new THREE.Mesh(
-          new THREE.SphereGeometry(1.0, 12, 12),
-          new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.95 })
-        );
-        const halo = new THREE.Sprite(new THREE.SpriteMaterial({
-          map: createSoftPointTexture(),
-          color: spec.color,
-          transparent: true,
-          opacity: 0.8,
-          blending: THREE.AdditiveBlending
-        }));
-        halo.scale.set(4.5, 4.5, 1);
-        bead.add(halo);
-
-        globeGroup.add(bead);
-        ringParticles.push({
-          mesh: bead,
-          curve: curve,
-          rotX: spec.rotX,
-          rotY: spec.rotY,
-          rotZ: spec.rotZ,
-          speed: spec.speed,
-          progress: rIdx * 0.25
-        });
-      });
+      scene.add(globeGroup);
     }
 
     /* -------------------------------------------------------------
@@ -4048,11 +3750,11 @@
       const c = document.createElement('canvas');
       c.width = 256; c.height = 256;
       const ctx = c.getContext('2d');
-      const grad = ctx.createRadialGradient(128, 128, 60, 128, 128, 128);
-      grad.addColorStop(0, 'rgba(6, 182, 212, 0)');
-      grad.addColorStop(0.65, 'rgba(6, 182, 212, 0.35)');
-      grad.addColorStop(0.85, 'rgba(168, 85, 247, 0.55)');
-      grad.addColorStop(1, 'rgba(236, 72, 153, 0)');
+      const grad = ctx.createRadialGradient(128, 128, 10, 128, 128, 128);
+      grad.addColorStop(0, 'rgba(6, 182, 212, 0.45)');
+      grad.addColorStop(0.35, 'rgba(168, 85, 247, 0.35)');
+      grad.addColorStop(0.70, 'rgba(59, 130, 246, 0.18)');
+      grad.addColorStop(1, 'rgba(2, 6, 23, 0)');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, 256, 256);
       return new THREE.CanvasTexture(c);
@@ -4155,13 +3857,13 @@
         const ease = t * t * (3 - 2 * t);
         return {
           pos: new THREE.Vector3(
-            0 + (8 - 0) * ease,
-            0 + (6 - 0) * ease,
-            baseCamZ + (-40 - baseCamZ) * ease   // 260 -> -40 (Flies past Core into deep cosmos!)
+            0,
+            baseCamY + (8 - baseCamY) * ease,
+            baseCamZ + (-40 - baseCamZ) * ease   // 260 -> -40 (Flies straight past Core into deep cosmos!)
           ),
           look: new THREE.Vector3(
-            20 + (10 - 20) * ease,
-            8 + (8 - 8) * ease,
+            0,
+            currentLookAt.y + (8 - currentLookAt.y) * ease,
             0 + (-180 - 0) * ease
           )
         };
@@ -4171,13 +3873,13 @@
         const ease = t * t * (3 - 2 * t);
         return {
           pos: new THREE.Vector3(
-            8 + (0 - 8) * ease,
-            6 + (8 - 6) * ease,
+            0,
+            8,
             -40 + (-240 - -40) * ease
           ),
           look: new THREE.Vector3(
-            10 + (0 - 10) * ease,
-            8 + (8 - 8) * ease,
+            0,
+            8,
             -180 + (-420 - -180) * ease
           )
         };
@@ -4345,25 +4047,11 @@
         colAttr.needsUpdate = true;
       }
 
-      // Globe axial rotation & logo floating
-      if (globeMesh) globeMesh.rotation.y += 0.0014 * effectiveWarpFactor;
-      if (logoSprite) {
-        logoSprite.position.y = Math.sin(elapsed * 1.5) * 0.5;
+      // Core Universe Halo rotation & visibility
+      if (globeGroup) {
+        globeGroup.rotation.y += 0.0012 * effectiveWarpFactor;
+        globeGroup.visible = (camera.position.z > 30);
       }
-
-      // Foreground & background celestial rotation
-      if (blPlanetMesh) blPlanetMesh.rotation.y += 0.0003;
-      if (brPlanetMesh) brPlanetMesh.rotation.y += 0.0004;
-      if (trGalaxyGroup) trGalaxyGroup.rotation.z += 0.0012;
-      if (accretionGroup) accretionGroup.rotation.z += 0.0032 * effectiveWarpFactor;
-
-      // Hero Core Celestial visibility (visible at Home, smoothly passes camera into cosmos)
-      const isCoreNear = (camera.position.z > 30);
-      if (globeGroup) globeGroup.visible = isCoreNear;
-      if (accretionGroup) accretionGroup.visible = isCoreNear;
-      if (blPlanetMesh) blPlanetMesh.visible = isCoreNear;
-      if (brPlanetMesh) brPlanetMesh.visible = isCoreNear;
-      if (trGalaxyGroup) trGalaxyGroup.visible = isCoreNear;
 
       // Animate Spatial Destinations & Toggle Visibility based on scroll journey
       if (builderSpatialHalo) {
@@ -4421,22 +4109,10 @@
         }
       });
 
-      // Orbital rings photon beads
-      ringParticles.forEach((p) => {
-        p.progress = (p.progress + p.speed * warpSpeedFactor + 1) % 1;
-        const pt = p.curve.getPoint(p.progress);
-        const v = new THREE.Vector3(pt.x, pt.y, 0);
-        v.applyEuler(new THREE.Euler(p.rotX, p.rotY, p.rotZ));
-        p.mesh.position.copy(v);
-      });
-
-      // Accretion disk rotation
-      if (accretionDisk) accretionDisk.rotation.z += 0.002 * warpSpeedFactor;
-
-      // Energy beam pulsing
-      if (energyBeam) {
-        const pulse = 1 + 0.06 * Math.sin(elapsed * 3.2);
-        energyBeam.scale.set(pulse, 1, pulse);
+      // Core halo breathing
+      if (globeHaloSprite) {
+        const hPulse = 1.0 + 0.05 * Math.sin(elapsed * 2.0);
+        globeHaloSprite.scale.set(72 * hPulse, 72 * hPulse, 1);
       }
 
       // Distant galaxies rotation
