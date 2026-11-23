@@ -22,8 +22,6 @@ def build_consultancy_html():
   <!-- THREE.JS, GSAP & LENIS CDNS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
-
   <style>
     /* =========================================================
        NIVORA CONSULTANCY DESIGN SYSTEM & COSMIC UNIVERSE
@@ -58,6 +56,8 @@ def build_consultancy_html():
     }
 
     html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
       scroll-behavior: smooth;
       background-color: var(--bg-dark);
       color: var(--text-main);
@@ -3113,7 +3113,7 @@ def build_consultancy_html():
         <div class="founder-card">
           <div class="founder-img-col">
             <div class="founder-portrait-frame">
-              <img src="assets/images/founder-nivas.png" alt="Nivas Bennabatthula" class="founder-portrait" loading="lazy" width="180" height="180">
+              <img src="assets/images/founder-nivas.webp" alt="Nivas Bennabatthula" class="founder-portrait" loading="lazy" width="180" height="180">
             </div>
             <div class="founder-name-tag">Nivas Bennabatthula</div>
             <div class="founder-title-tag">Founder &amp; Principal Consultant</div>
@@ -3827,19 +3827,19 @@ def build_consultancy_html():
        ========================================================= -->
   <script>
     /* -------------------------------------------------------------
-       1. CENTRALIZED ANIMATION MANAGER & ADAPTIVE PERFORMANCE
+       1. GLOBAL STATE & PERFORMANCE ARCHITECTURE
        ------------------------------------------------------------- */
     const PerformanceEngine = {
       fps: 60,
       frameCount: 0,
       lastFpsTimestamp: performance.now(),
-      mode: 'HIGH', // HIGH | MEDIUM | LOW
+      tier: 'HIGH', // HIGH | MEDIUM | LOW
       isTabVisible: true,
-      subscribers: [],
       pixelRatio: 1.0,
+      particleScale: 1.0,
       
       init() {
-        this.detectInitialTier();
+        this.detectTier();
         document.addEventListener('visibilitychange', () => {
           this.isTabVisible = (document.visibilityState === 'visible');
           if (this.isTabVisible) {
@@ -3847,121 +3847,56 @@ def build_consultancy_html():
             if (clock) clock.getDelta();
           }
         });
-        
-        requestAnimationFrame((t) => this.tick(t));
       },
 
-      detectInitialTier() {
+      detectTier() {
         const isMobile = (window.innerWidth < 768) || ('ontouchstart' in window);
         const cores = navigator.hardwareConcurrency || 4;
         const mem = navigator.deviceMemory || 4;
         
-        if (isMobile || cores <= 4 || mem < 4) {
-          this.mode = isMobile ? 'LOW' : 'MEDIUM';
+        if (isMobile) {
+          this.tier = 'LOW';
+          this.particleScale = 0.40;
+          this.pixelRatio = 1.0;
+        } else if (cores <= 4 || mem < 4) {
+          this.tier = 'MEDIUM';
+          this.particleScale = 0.70;
+          this.pixelRatio = Math.min(window.devicePixelRatio || 1, 1.25);
         } else {
-          this.mode = 'HIGH';
-        }
-
-        // Cap DPR: 1.0 for mobile/low, max 1.5 for desktop
-        const rawDpr = window.devicePixelRatio || 1;
-        this.pixelRatio = (this.mode === 'LOW') ? 1.0 : Math.min(rawDpr, (this.mode === 'MEDIUM' ? 1.25 : 1.5));
-      },
-
-      subscribe(fn) {
-        this.subscribers.push(fn);
-      },
-
-      tick(timestamp) {
-        requestAnimationFrame((t) => this.tick(t));
-        if (!this.isTabVisible) return;
-
-        // Rolling FPS Calculation every 3.0s
-        this.frameCount++;
-        const elapsed = timestamp - this.lastFpsTimestamp;
-        if (elapsed >= 3000) {
-          this.fps = (this.frameCount * 1000) / elapsed;
-          this.frameCount = 0;
-          this.lastFpsTimestamp = timestamp;
-          this.evaluateAdaptiveQuality();
-        }
-
-        // 1. Central Lenis Tick
-        if (lenis) {
-          lenis.raf(timestamp);
-        }
-
-        // 2. Central Universe & Animation Ticks
-        for (let i = 0; i < this.subscribers.length; i++) {
-          this.subscribers[i](timestamp);
-        }
-      },
-
-      evaluateAdaptiveQuality() {
-        if (this.fps < 36 && this.mode !== 'LOW') {
-          this.mode = 'LOW';
-          this.applyQualityTier();
-        } else if (this.fps < 48 && this.mode === 'HIGH') {
-          this.mode = 'MEDIUM';
-          this.applyQualityTier();
-        }
-      },
-
-      applyQualityTier() {
-        if (!renderer) return;
-        const targetDpr = (this.mode === 'LOW') ? 1.0 : (this.mode === 'MEDIUM' ? 1.25 : 1.5);
-        if (this.pixelRatio !== targetDpr) {
-          this.pixelRatio = targetDpr;
-          renderer.setPixelRatio(this.pixelRatio);
+          this.tier = 'HIGH';
+          this.particleScale = 1.0;
+          this.pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
         }
       }
     };
-
-    /* -------------------------------------------------------------
-       2. LENIS SMOOTH SCROLLING (SINGLE LOOP INTEGRATED)
-       ------------------------------------------------------------- */
-    let lenis = null;
-    try {
-      if (typeof Lenis !== 'undefined') {
-        lenis = new Lenis({
-          duration: 1.15,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          smoothWheel: true,
-          touchMultiplier: 1.4,
-          infinite: false
-        });
-      }
-    } catch (err) {
-      console.warn("Lenis init notice:", err);
-    }
 
     // Dynamic Year
     const yrEl = document.getElementById('currentYear');
     if (yrEl) yrEl.innerText = new Date().getFullYear();
 
     /* -------------------------------------------------------------
-       3. THREE.JS OPTIMIZED 3D UNIVERSE ENGINE
+       2. THREE.JS 3D CINEMATIC UNIVERSE ENGINE
+          (FULL PROCEDURAL MILKY WAY + ZERO-ALLOCATION LOOP)
        ------------------------------------------------------------- */
     const canvas = document.getElementById('webglUniverseCanvas');
     let renderer, scene, camera;
     let milkyWayGroup, galacticBulge, spiralArmStars;
-    let distantStarField, brightBeaconsPoints, distantGalaxiesGroup;
+    let distantStarField, brightBeaconsPoints;
     let globeGroup, globeHaloSprite;
     let nebulaPuffs = [];
 
-    // Hyperspace Warp System (Ultra-Lightweight)
+    // Hyperspace Warp System (Conditional Updates)
     let warpLinesMesh, warpLinesGeo;
-    let activeWarpCount = 400;
+    let activeWarpCount = 600;
     let warpStarPositions, warpStarColors, warpStarData = [];
     let rawScrollVelocity = 0;
     let smoothedScrollVelocity = 0;
     let lastScrollPosition = 0;
-    let isUserScrolling = false;
     let scrollTimeoutId = null;
 
     let isZoomingTransition = false;
     let warpSpeedFactor = 1.0;
     let isWebGLEnabled = false;
-    let isHeroInView = true;
 
     // Zero-allocation mouse & vectors
     const mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
@@ -3987,15 +3922,15 @@ def build_consultancy_html():
     function getSoftPointTexture() {
       if (_cachedSoftPointTexture) return _cachedSoftPointTexture;
       const c = document.createElement('canvas');
-      c.width = 32; c.height = 32;
+      c.width = 64; c.height = 64;
       const ctx = c.getContext('2d');
-      const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
+      const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
       grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-      grad.addColorStop(0.25, 'rgba(235, 245, 255, 0.85)');
-      grad.addColorStop(0.65, 'rgba(160, 210, 255, 0.25)');
-      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      grad.addColorStop(0.22, 'rgba(235, 245, 255, 0.85)');
+      grad.addColorStop(0.60, 'rgba(6, 182, 212, 0.28)');
+      grad.addColorStop(1, 'rgba(6, 182, 212, 0)');
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 32, 32);
+      ctx.fillRect(0, 0, 64, 64);
       _cachedSoftPointTexture = new THREE.CanvasTexture(c);
       return _cachedSoftPointTexture;
     }
@@ -4003,16 +3938,23 @@ def build_consultancy_html():
     function getBeaconTexture() {
       if (_cachedBeaconTexture) return _cachedBeaconTexture;
       const c = document.createElement('canvas');
-      c.width = 64; c.height = 64;
+      c.width = 128; c.height = 128;
       const ctx = c.getContext('2d');
-      const cx = 32, cy = 32;
-      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 28);
+      const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
       grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-      grad.addColorStop(0.18, 'rgba(186, 230, 253, 0.9)');
-      grad.addColorStop(0.5, 'rgba(56, 189, 248, 0.25)');
-      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      grad.addColorStop(0.18, 'rgba(224, 242, 254, 0.85)');
+      grad.addColorStop(0.50, 'rgba(139, 92, 246, 0.22)');
+      grad.addColorStop(1, 'rgba(6, 182, 212, 0)');
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 64, 64);
+      ctx.fillRect(0, 0, 128, 128);
+
+      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.beginPath();
+      ctx.moveTo(64, 18); ctx.lineTo(64, 110);
+      ctx.moveTo(18, 64); ctx.lineTo(110, 64);
+      ctx.stroke();
+
       _cachedBeaconTexture = new THREE.CanvasTexture(c);
       return _cachedBeaconTexture;
     }
@@ -4052,7 +3994,7 @@ def build_consultancy_html():
 
         renderer = new THREE.WebGLRenderer({
           canvas: canvas,
-          antialias: (PerformanceEngine.mode === 'HIGH'),
+          antialias: (PerformanceEngine.tier === 'HIGH'),
           alpha: true,
           powerPreference: 'high-performance'
         });
@@ -4061,27 +4003,26 @@ def build_consultancy_html():
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setClearColor(0x02040a, 0);
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.2;
+        renderer.toneMappingExposure = 1.25;
 
         scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 3500);
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 4000);
         camera.position.set(baseCamX, baseCamY, baseCamZ);
         camera.lookAt(0, 18, 0);
 
-        // Adaptive Starfield Counts
-        buildDistantStarfield();
-        buildWarpStarfield();
-        buildProceduralMilkyWay();
-        buildGalacticBulge();
+        // Build Universe Elements with Full Atmospheric Quality
+        buildDistantStarfield(PerformanceEngine.particleScale);
+        buildWarpStarfield(PerformanceEngine.particleScale);
+        buildProceduralMilkyWay(PerformanceEngine.particleScale);
+        buildGalacticBulge(PerformanceEngine.particleScale);
         buildSubtleCosmicNebula();
         buildBrightStellarBeacons();
-        buildNivoraGlobeCore();
+        buildNivoraGlobeCore(PerformanceEngine.particleScale);
 
         setupInteractivity();
-        setupVisibilityObservers();
 
         isWebGLEnabled = true;
-        PerformanceEngine.subscribe(animateUniverseFrame);
+        requestAnimationFrame(animateUniverseFrame);
         runCinematicIntro();
 
         // Dismiss Universe Loader smoothly
@@ -4097,26 +4038,21 @@ def build_consultancy_html():
     }
 
     /* -------------------------------------------------------------
-       PROCEDURAL MILKY WAY SPIRAL ARMS (OPTIMIZED DENSITY)
+       PROCEDURAL MILKY WAY SPIRAL ARMS (FULL CINEMATIC VOLUME)
        ------------------------------------------------------------- */
-    function buildProceduralMilkyWay() {
+    function buildProceduralMilkyWay(scale = 1.0) {
       milkyWayGroup = new THREE.Group();
       milkyWayGroup.position.set(globeCenterX, globeCenterY, globeCenterZ);
       milkyWayGroup.rotation.set(0.82, 0.22, -0.15);
 
-      // Desktop High: ~3,400 | Medium: ~2,200 | Mobile: ~1,100 | Low: ~600
-      let starCount = 3400;
-      if (PerformanceEngine.mode === 'LOW') starCount = 600;
-      else if (PerformanceEngine.mode === 'MEDIUM') starCount = 2200;
-      else if (window.innerWidth < 768) starCount = 1100;
-
+      const starCount = Math.floor(38000 * scale);
       const positions = new Float32Array(starCount * 3);
       const colors = new Float32Array(starCount * 3);
 
       const armAngles = [0.45, 0.45 + Math.PI, 1.85, 1.85 + Math.PI];
       const armWeights = [0.38, 0.38, 0.12, 0.12];
       const rMin = 22;
-      const rMax = 255;
+      const rMax = 260;
 
       const cosX = Math.cos(0.82), sinX = Math.sin(0.82);
       const cosY = Math.cos(0.22), sinY = Math.sin(0.22);
@@ -4186,12 +4122,12 @@ def build_consultancy_html():
       armGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
       const armMat = new THREE.PointsMaterial({
-        size: 1.6,
+        size: 1.5,
         sizeAttenuation: true,
         vertexColors: true,
         map: getSoftPointTexture(),
         transparent: true,
-        opacity: 0.85,
+        opacity: 0.88,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       });
@@ -4202,14 +4138,10 @@ def build_consultancy_html():
     }
 
     /* -------------------------------------------------------------
-       GALACTIC BULGE PARTICLES (OPTIMIZED)
+       GALACTIC BULGE PARTICLES (FULL DENSITY)
        ------------------------------------------------------------- */
-    function buildGalacticBulge() {
-      let bulgeCount = 600;
-      if (PerformanceEngine.mode === 'LOW') bulgeCount = 90;
-      else if (PerformanceEngine.mode === 'MEDIUM') bulgeCount = 350;
-      else if (window.innerWidth < 768) bulgeCount = 180;
-
+    function buildGalacticBulge(scale = 1.0) {
+      const bulgeCount = Math.floor(6500 * scale);
       const positions = new Float32Array(bulgeCount * 3);
       const colors = new Float32Array(bulgeCount * 3);
 
@@ -4237,12 +4169,12 @@ def build_consultancy_html():
       bulgeGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
       const bulgeMat = new THREE.PointsMaterial({
-        size: 1.8,
+        size: 1.7,
         sizeAttenuation: true,
         vertexColors: true,
         map: getSoftPointTexture(),
         transparent: true,
-        opacity: 0.88,
+        opacity: 0.90,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       });
@@ -4252,18 +4184,17 @@ def build_consultancy_html():
     }
 
     /* -------------------------------------------------------------
-       COSMIC NEBULA PUFFS (REDUCED TO 8 BACKGROUND ACCENTS)
+       COSMIC NEBULA PUFFS (12 SUBTLE GLOWING PUFFS)
        ------------------------------------------------------------- */
     function buildSubtleCosmicNebula() {
       const puffs = [
-        { color1: 'rgba(168, 85, 247, 0.24)', color2: 'rgba(59, 130, 246, 0.10)', scale: 300 },
-        { color1: 'rgba(6, 182, 212, 0.20)', color2: 'rgba(147, 51, 234, 0.08)', scale: 340 },
-        { color1: 'rgba(236, 72, 153, 0.16)', color2: 'rgba(30, 58, 138, 0.10)', scale: 260 },
-        { color1: 'rgba(99, 102, 241, 0.18)', color2: 'rgba(6, 182, 212, 0.08)', scale: 300 }
+        { color1: 'rgba(168, 85, 247, 0.26)', color2: 'rgba(59, 130, 246, 0.12)', scale: 320 },
+        { color1: 'rgba(6, 182, 212, 0.22)', color2: 'rgba(147, 51, 234, 0.10)', scale: 360 },
+        { color1: 'rgba(236, 72, 153, 0.18)', color2: 'rgba(30, 58, 138, 0.12)', scale: 280 },
+        { color1: 'rgba(99, 102, 241, 0.20)', color2: 'rgba(6, 182, 212, 0.08)', scale: 320 }
       ];
 
-      const count = (PerformanceEngine.mode === 'LOW') ? 4 : 8;
-      for (let i = 0; i < count; i++) {
+      for (let i = 0; i < 12; i++) {
         const pCfg = puffs[i % puffs.length];
         const tex = createProceduralNebulaTexture(pCfg.color1, pCfg.color2);
         const mat = new THREE.SpriteMaterial({
@@ -4275,14 +4206,14 @@ def build_consultancy_html():
         });
         const sprite = new THREE.Sprite(mat);
 
-        const r = 35 + Math.pow(Math.random(), 1.3) * 160;
+        const r = 30 + Math.pow(Math.random(), 1.3) * 170;
         const a = Math.random() * Math.PI * 2;
         sprite.position.set(
           globeCenterX + Math.cos(a) * r,
-          globeCenterY + (Math.random() - 0.5) * 40,
-          globeCenterZ + Math.sin(a) * r - 30
+          globeCenterY + (Math.random() - 0.5) * 45,
+          globeCenterZ + Math.sin(a) * r - 25
         );
-        const s = 140 + Math.random() * 180;
+        const s = 150 + Math.random() * 200;
         sprite.scale.set(s, s, 1);
         scene.add(sprite);
         nebulaPuffs.push({ sprite, baseScale: s, baseOpacity: mat.opacity, seed: Math.random() * 10 });
@@ -4290,9 +4221,9 @@ def build_consultancy_html():
     }
 
     /* -------------------------------------------------------------
-       WARP STARFIELD (HYPERSPACE STREAKS — CONDITIONAL CPU UPDATES)
+       WARP STARFIELD (HYPERSPACE TRAILS — CONDITIONAL CPU UPDATES)
        ------------------------------------------------------------- */
-    function buildWarpStarfield() {
+    function buildWarpStarfield(scale = 1.0) {
       const palette = [
         { r: 1.0, g: 1.0, b: 1.0 },
         { r: 0.82, g: 0.90, b: 1.0 },
@@ -4301,17 +4232,17 @@ def build_consultancy_html():
         { r: 0.96, g: 0.45, b: 0.72 }
       ];
 
-      activeWarpCount = (PerformanceEngine.mode === 'LOW' || window.innerWidth < 768) ? 180 : 400;
+      activeWarpCount = Math.floor(600 * scale);
       warpStarPositions = new Float32Array(activeWarpCount * 6);
       warpStarColors = new Float32Array(activeWarpCount * 6);
 
       for (let i = 0; i < activeWarpCount; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const radius = 25 + Math.pow(Math.random(), 0.85) * 480;
+        const radius = 20 + Math.pow(Math.random(), 0.85) * 520;
         const x = Math.cos(angle) * radius;
         const y = Math.sin(angle) * radius;
-        const z = (Math.random() - 0.5) * 2000 - 450;
-        const baseSpeed = 0.28 + Math.random() * 0.42;
+        const z = (Math.random() - 0.5) * 2200 - 480;
+        const baseSpeed = 0.25 + Math.random() * 0.45;
 
         const rand = Math.random();
         let col = palette[0];
@@ -4337,15 +4268,15 @@ def build_consultancy_html():
 
         warpStarPositions[idx6 + 3] = x;
         warpStarPositions[idx6 + 4] = y;
-        warpStarPositions[idx6 + 5] = z + 0.4;
+        warpStarPositions[idx6 + 5] = z + 0.5;
 
         warpStarColors[idx6] = col.r * brightness;
         warpStarColors[idx6 + 1] = col.g * brightness;
         warpStarColors[idx6 + 2] = col.b * brightness;
 
-        warpStarColors[idx6 + 3] = col.r * brightness * 0.35;
-        warpStarColors[idx6 + 4] = col.g * brightness * 0.35;
-        warpStarColors[idx6 + 5] = col.b * brightness * 0.35;
+        warpStarColors[idx6 + 3] = col.r * brightness * 0.4;
+        warpStarColors[idx6 + 4] = col.g * brightness * 0.4;
+        warpStarColors[idx6 + 5] = col.b * brightness * 0.4;
       }
 
       warpLinesGeo = new THREE.BufferGeometry();
@@ -4355,7 +4286,7 @@ def build_consultancy_html():
       const lineMat = new THREE.LineBasicMaterial({
         vertexColors: true,
         transparent: true,
-        opacity: 0.85,
+        opacity: 0.88,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       });
@@ -4366,23 +4297,19 @@ def build_consultancy_html():
     }
 
     /* -------------------------------------------------------------
-       DISTANT STARFIELD ACROSS DEPTH (OPTIMIZED)
+       DISTANT STARFIELD ACROSS DEPTH
        ------------------------------------------------------------- */
-    function buildDistantStarfield() {
-      let count = 1200;
-      if (PerformanceEngine.mode === 'LOW') count = 250;
-      else if (PerformanceEngine.mode === 'MEDIUM') count = 700;
-      else if (window.innerWidth < 768) count = 350;
-
+    function buildDistantStarfield(scale = 1.0) {
+      const count = Math.floor(12000 * scale);
       const pos = new Float32Array(count * 3);
       const col = new Float32Array(count * 3);
 
       for (let i = 0; i < count; i++) {
-        pos[i * 3] = (Math.random() - 0.5) * 1500;
-        pos[i * 3 + 1] = (Math.random() - 0.5) * 950;
-        pos[i * 3 + 2] = -380 - Math.random() * 1100;
+        pos[i * 3] = (Math.random() - 0.5) * 1600;
+        pos[i * 3 + 1] = (Math.random() - 0.5) * 1000;
+        pos[i * 3 + 2] = -400 - Math.random() * 1100;
 
-        const isCyan = Math.random() < 0.10;
+        const isCyan = Math.random() < 0.08;
         if (isCyan) {
           col[i * 3] = 0.5; col[i * 3 + 1] = 0.85; col[i * 3 + 2] = 1.0;
         } else {
@@ -4396,7 +4323,7 @@ def build_consultancy_html():
       geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
 
       const mat = new THREE.PointsMaterial({
-        size: 1.2,
+        size: 1.1,
         sizeAttenuation: true,
         vertexColors: true,
         map: getSoftPointTexture(),
@@ -4411,26 +4338,26 @@ def build_consultancy_html():
     }
 
     /* -------------------------------------------------------------
-       BRIGHT STELLAR BEACONS (SINGLE POINTS SYSTEM — 1 DRAW CALL)
+       BRIGHT STELLAR BEACONS (DIFFRACTION STARS — 1 DRAW CALL)
        ------------------------------------------------------------- */
     function buildBrightStellarBeacons() {
-      const beaconCount = (PerformanceEngine.mode === 'LOW') ? 25 : 60;
-      const pos = new Float32Array(beaconCount * 3);
-      const col = new Float32Array(beaconCount * 3);
+      const count = 80;
+      const pos = new Float32Array(count * 3);
+      const col = new Float32Array(count * 3);
 
-      for (let i = 0; i < beaconCount; i++) {
-        let x = (Math.random() - 0.5) * 800;
-        let y = (Math.random() - 0.5) * 520;
-        let z = (Math.random() - 0.5) * 420 - 40;
+      for (let i = 0; i < count; i++) {
+        let x = (Math.random() - 0.5) * 850;
+        let y = (Math.random() - 0.5) * 550;
+        let z = (Math.random() - 0.5) * 450 - 50;
 
-        if (x < -10 && y > -40 && y < 50) x -= 80;
+        if (x < -10 && y > -40 && y < 50) x -= 90;
 
         pos[i * 3] = x;
         pos[i * 3 + 1] = y;
         pos[i * 3 + 2] = z;
 
-        col[i * 3] = 0.85 + Math.random() * 0.15;
-        col[i * 3 + 1] = 0.92 + Math.random() * 0.08;
+        col[i * 3] = 0.90;
+        col[i * 3 + 1] = 0.95;
         col[i * 3 + 2] = 1.0;
       }
 
@@ -4439,7 +4366,7 @@ def build_consultancy_html():
       geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
 
       const mat = new THREE.PointsMaterial({
-        size: 5.5,
+        size: 6.0,
         sizeAttenuation: true,
         vertexColors: true,
         map: getBeaconTexture(),
@@ -4456,7 +4383,7 @@ def build_consultancy_html():
     /* -------------------------------------------------------------
        NIVORA UNIVERSE CORE — AURA & DELICATE ORBITAL HALO
        ------------------------------------------------------------- */
-    function buildNivoraGlobeCore() {
+    function buildNivoraGlobeCore(scale = 1.0) {
       globeGroup = new THREE.Group();
       globeGroup.position.set(globeCenterX, globeCenterY, globeCenterZ);
 
@@ -4468,24 +4395,25 @@ def build_consultancy_html():
         depthWrite: false
       });
       globeHaloSprite = new THREE.Sprite(haloMat);
-      globeHaloSprite.scale.set(70, 70, 1);
+      globeHaloSprite.scale.set(72, 72, 1);
       globeHaloSprite.position.set(0, 0, -10);
+      globeHaloSprite.renderOrder = 10;
       globeGroup.add(globeHaloSprite);
 
-      const haloPointCount = (PerformanceEngine.mode === 'LOW') ? 120 : 350;
+      const haloPointCount = Math.floor(1800 * scale);
       const haloPos = new Float32Array(haloPointCount * 3);
       const haloCol = new Float32Array(haloPointCount * 3);
 
       for (let i = 0; i < haloPointCount; i++) {
-        const r = 22.0 + Math.random() * 8.0;
+        const r = 22.0 + Math.random() * 9.0;
         const theta = Math.random() * Math.PI * 2;
-        const phi = (Math.random() - 0.5) * 0.70;
+        const phi = (Math.random() - 0.5) * 0.75;
 
         haloPos[i * 3] = r * Math.cos(phi) * Math.cos(theta);
-        haloPos[i * 3 + 1] = r * Math.sin(phi) + (Math.random() - 0.5) * 2.0;
+        haloPos[i * 3 + 1] = r * Math.sin(phi) + (Math.random() - 0.5) * 2.2;
         haloPos[i * 3 + 2] = r * Math.cos(phi) * Math.sin(theta);
 
-        const t = (r - 22.0) / 8.0;
+        const t = (r - 22.0) / 9.0;
         haloCol[i * 3] = 0.05 + 0.60 * t;
         haloCol[i * 3 + 1] = 0.75 + 0.10 * (1 - t);
         haloCol[i * 3 + 2] = 0.95;
@@ -4510,27 +4438,6 @@ def build_consultancy_html():
       globeGroup.add(coreParticleHalo);
 
       scene.add(globeGroup);
-    }
-
-    /* -------------------------------------------------------------
-       SECTION VISIBILITY OBSERVERS (STOP ANIMATING OFF-SCREEN)
-       ------------------------------------------------------------- */
-    function setupVisibilityObservers() {
-      const heroEl = document.getElementById('hero');
-      if (heroEl && 'IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            isHeroInView = entry.isIntersecting;
-            if (milkyWayGroup) {
-              milkyWayGroup.visible = isHeroInView;
-            }
-            if (globeGroup) {
-              globeGroup.visible = isHeroInView && (camera.position.z > 30);
-            }
-          });
-        }, { threshold: 0.05 });
-        observer.observe(heroEl);
-      }
     }
 
     /* -------------------------------------------------------------
@@ -4603,10 +4510,11 @@ def build_consultancy_html():
     }
 
     /* -------------------------------------------------------------
-       CENTRAL UNIVERSE FRAME RENDERER (COORDINATED VIA MANAGER)
+       CENTRAL UNIVERSE FRAME RENDERER (SINGLE 60+ FPS LOOP)
        ------------------------------------------------------------- */
-    function animateUniverseFrame(timestamp) {
-      if (!isWebGLEnabled || !renderer || !camera) return;
+    function animateUniverseFrame() {
+      requestAnimationFrame(animateUniverseFrame);
+      if (!PerformanceEngine.isTabVisible || !isWebGLEnabled || !renderer || !camera) return;
 
       const elapsed = clock.getElapsedTime();
 
@@ -4641,42 +4549,41 @@ def build_consultancy_html():
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const effectiveWarpFactor = prefersReducedMotion ? 0.15 : warpSpeedFactor;
 
-      // Only animate Milky Way when hero section is in view
-      if (isHeroInView) {
-        if (milkyWayGroup) {
-          milkyWayGroup.rotation.z += 0.00030 * effectiveWarpFactor;
-          const mwFade = Math.max(0.0, Math.min(1.0, (camera.position.z - 40) / 140));
-          if (spiralArmStars && spiralArmStars.material) {
-            spiralArmStars.material.opacity = 0.85 * mwFade;
-            spiralArmStars.visible = mwFade > 0.01;
-          }
-          if (galacticBulge && galacticBulge.material) {
-            galacticBulge.material.opacity = 0.88 * mwFade;
-            galacticBulge.visible = mwFade > 0.01;
-          }
-        }
+      // Milky Way remains persistent in the universe with atmospheric depth fading
+      if (milkyWayGroup) {
+        milkyWayGroup.rotation.z += 0.00032 * effectiveWarpFactor;
+        // In hero: full brilliance (0.88). In deep space sections: atmospheric cosmic backdrop (0.45)
+        const depthT = Math.max(0.0, Math.min(1.0, (camera.position.z - 40) / 180));
+        const armOpacity = 0.45 + 0.43 * depthT;
+        const bulgeOpacity = 0.48 + 0.42 * depthT;
 
-        if (globeGroup) {
-          globeGroup.rotation.y += 0.0010 * effectiveWarpFactor;
-          globeGroup.visible = (camera.position.z > 30);
+        if (spiralArmStars && spiralArmStars.material) {
+          spiralArmStars.material.opacity = armOpacity;
         }
-
-        if (globeHaloSprite) {
-          const hPulse = 1.0 + 0.04 * Math.sin(elapsed * 2.0);
-          globeHaloSprite.scale.set(70 * hPulse, 70 * hPulse, 1);
+        if (galacticBulge && galacticBulge.material) {
+          galacticBulge.material.opacity = bulgeOpacity;
         }
       }
 
-      // Subtle Nebula Updates (only 8 sprites, pulse throttled)
+      if (globeGroup) {
+        globeGroup.rotation.y += 0.0010 * effectiveWarpFactor;
+        globeGroup.visible = (camera.position.z > 30);
+      }
+
+      if (globeHaloSprite) {
+        const hPulse = 1.0 + 0.04 * Math.sin(elapsed * 2.0);
+        globeHaloSprite.scale.set(72 * hPulse, 72 * hPulse, 1);
+      }
+
+      // Subtle Nebula Updates
       for (let i = 0; i < nebulaPuffs.length; i++) {
         const np = nebulaPuffs[i];
         const distZ = Math.abs(camera.position.z - np.sprite.position.z);
-        const fade = Math.min(1.0, Math.max(0.0, (distZ - 60) / 140));
+        const fade = Math.min(1.0, Math.max(0.0, (distZ - 50) / 130));
         np.sprite.material.opacity = (np.baseOpacity || 0.35) * fade;
-        np.sprite.visible = fade > 0.02;
       }
 
-      // Warp Line System — CONDITIONAL CPU BUFFER MUTATIONS (Idle = ZERO CPU WORK)
+      // Warp Line System — CONDITIONAL CPU UPDATES (Zero CPU when stationary)
       const absVelocity = Math.abs(smoothedScrollVelocity);
       if (warpLinesGeo && warpLinesMesh) {
         if (absVelocity > 0.06 && !prefersReducedMotion) {
@@ -4727,7 +4634,7 @@ def build_consultancy_html():
     }
 
     /* -------------------------------------------------------------
-       SCROLL CONTROLLER
+       SCROLL CONTROLLER (NATIVE HARDWARE-ACCELERATED)
        ------------------------------------------------------------- */
     function updateUniverseScroll(currentScroll) {
       const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
@@ -4736,31 +4643,23 @@ def build_consultancy_html():
       const delta = currentScroll - lastScrollPosition;
       rawScrollVelocity = delta;
       lastScrollPosition = currentScroll;
-      isUserScrolling = true;
 
       clearTimeout(scrollTimeoutId);
       scrollTimeoutId = setTimeout(() => {
-        isUserScrolling = false;
         rawScrollVelocity = 0;
       }, 140);
     }
 
-    if (lenis) {
-      lenis.on('scroll', (e) => {
-        updateUniverseScroll(e.scroll);
-      });
-    } else {
-      let ticking = false;
-      window.addEventListener('scroll', () => {
-        if (!ticking) {
-          requestAnimationFrame(() => {
-            updateUniverseScroll(window.scrollY);
-            ticking = false;
-          });
-          ticking = true;
-        }
-      }, { passive: true });
-    }
+    let scrollTicking = false;
+    window.addEventListener('scroll', () => {
+      if (!scrollTicking) {
+        requestAnimationFrame(() => {
+          updateUniverseScroll(window.scrollY);
+          scrollTicking = false;
+        });
+        scrollTicking = true;
+      }
+    }, { passive: true });
 
     /* -------------------------------------------------------------
        CINEMATIC INTRO & TRANSITIONS
@@ -4773,12 +4672,8 @@ def build_consultancy_html():
     }
 
     function triggerCinematicCameraZoom() {
-      if (lenis) {
-        lenis.scrollTo('#services', { duration: 1.6 });
-      } else {
-        const s = document.getElementById('services');
-        if (s) s.scrollIntoView({ behavior: 'smooth' });
-      }
+      const s = document.getElementById('services');
+      if (s) s.scrollIntoView({ behavior: 'smooth' });
     }
 
     /* -------------------------------------------------------------
@@ -4799,11 +4694,7 @@ def build_consultancy_html():
       }
       const contactSec = document.getElementById('contact');
       if (contactSec) {
-        if (lenis) {
-          lenis.scrollTo(contactSec, { duration: 1.2 });
-        } else {
-          contactSec.scrollIntoView({ behavior: 'smooth' });
-        }
+        contactSec.scrollIntoView({ behavior: 'smooth' });
         const nameInput = document.getElementById('cName');
         if (nameInput) setTimeout(() => nameInput.focus(), 600);
       }
@@ -4823,7 +4714,6 @@ def build_consultancy_html():
       overlay.classList.add('open');
       overlay.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
-      if (lenis) lenis.stop();
     }
 
     function closeConceptModal() {
@@ -4832,7 +4722,6 @@ def build_consultancy_html():
       overlay.classList.remove('open');
       overlay.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
-      if (lenis) lenis.start();
     }
 
     document.addEventListener('keydown', (e) => {
@@ -4884,7 +4773,7 @@ def build_consultancy_html():
         if (!camera || !renderer) return;
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        PerformanceEngine.detectInitialTier();
+        PerformanceEngine.detectTier();
         renderer.setPixelRatio(PerformanceEngine.pixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
       }, 100);
