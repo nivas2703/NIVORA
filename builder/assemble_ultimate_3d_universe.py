@@ -176,6 +176,8 @@ def build_ultimate_universe_html():
 
     .section-head {
       margin-bottom: 3.8rem;
+      position: relative;
+      z-index: 5;
     }
 
     .kicker {
@@ -187,6 +189,7 @@ def build_ultimate_universe_html():
       text-transform: uppercase;
       color: var(--brand-cyan);
       margin-bottom: 0.85rem;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
     }
 
     .section-head h2 {
@@ -196,20 +199,23 @@ def build_ultimate_universe_html():
       line-height: 1.1;
       letter-spacing: -0.035em;
       color: #ffffff;
+      text-shadow: 0 4px 28px rgba(0, 0, 0, 0.95);
     }
 
     .section-head h2 .grad-accent {
       background: linear-gradient(135deg, #a855f7 0%, #38bdf8 65%, #06b6d4 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.8));
     }
 
     .section-intro-text {
       font-size: clamp(1.05rem, 1.4vw, 1.25rem);
-      color: var(--text-muted);
+      color: #cbd5e1;
       line-height: 1.7;
       max-width: 780px;
       margin-top: 1rem;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
     }
 
     /* -------------------------------------------------------------
@@ -4123,7 +4129,7 @@ def build_ultimate_universe_html():
         const s = 150 + Math.random() * 220;
         sprite.scale.set(s, s, 1);
         scene.add(sprite);
-        nebulaPuffs.push({ sprite, baseScale: s, seed: Math.random() * 10 });
+        nebulaPuffs.push({ sprite, baseScale: s, baseOpacity: mat.opacity, seed: Math.random() * 10 });
       }
     }
 
@@ -4568,11 +4574,24 @@ def build_ultimate_universe_html():
 
       if (milkyWayGroup) {
         milkyWayGroup.rotation.z += 0.00035 * warpSpeedFactor;
+        const mwFade = Math.max(0.0, Math.min(1.0, (camera.position.z - 40) / 140));
+        if (spiralArmStars && spiralArmStars.material) {
+          spiralArmStars.material.opacity = 0.85 * mwFade;
+          spiralArmStars.visible = mwFade > 0.01;
+        }
+        if (galacticBulge && galacticBulge.material) {
+          galacticBulge.material.opacity = 0.88 * mwFade;
+          galacticBulge.visible = mwFade > 0.01;
+        }
       }
 
       nebulaPuffs.forEach(np => {
         const pulse = 1.0 + 0.06 * Math.sin(elapsed * 0.5 + np.seed);
         np.sprite.scale.set(np.baseScale * pulse, np.baseScale * pulse, 1);
+        const distZ = Math.abs(camera.position.z - np.sprite.position.z);
+        const fade = Math.min(1.0, Math.max(0.0, (distZ - 60) / 140));
+        np.sprite.material.opacity = (np.baseOpacity || 0.4) * fade;
+        np.sprite.visible = fade > 0.01;
       });
 
       smoothedScrollVelocity += (rawScrollVelocity - smoothedScrollVelocity) * 0.12;
