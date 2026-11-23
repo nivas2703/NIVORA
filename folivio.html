@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FOLIVIO — Executive Career Branding & Digital Portfolios | A NIVORA Studio</title>
+  <meta name="description" content="FOLIVIO by NIVORA engineers bespoke personal portfolio websites, high-impact ATS resumes, and executive digital positioning for leaders, engineers, consultants, and specialists.">
+  <link rel="icon" type="image/png" href="assets/images/nivora-logo.png">
+
+  <!-- Inter, Syne & JetBrains Mono Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --font-display: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-subtle: #f1f5f9;
+      --border-subtle: #e2e8f0;
+      --border-strong: #cbd5e1;
+
+      --text-heading: #0f172a;
+      --text-body: #475569;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --violet: #7c3aed;
+      --cyan: #0284c7;
+      --emerald: #059669;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-pill: 9999px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-body);
+      font-family: var(--font-ui);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient soft iridescent light glow */
+    .ambient-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient-glow-1 {
+      position: absolute;
+      top: -10%;
+      left: 15%;
+      width: 60vw;
+      height: 50vh;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.04) 50%, transparent 70%);
+      filter: blur(80px);
+    }
+
+    .ambient-glow-2 {
+      position: absolute;
+      top: 40%;
+      right: 5%;
+      width: 50vw;
+      height: 60vh;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.07) 0%, rgba(99, 102, 241, 0.03) 50%, transparent 70%);
+      filter: blur(90px);
+    }
+
+    .ambient-glow-3 {
+      position: absolute;
+      bottom: -10%;
+      left: 10%;
+      width: 55vw;
+      height: 55vh;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.06) 0%, transparent 70%);
+      filter: blur(80px);
+    }
+
+    /* Architectural micro-dot pattern */
+    .bg-grid-pattern {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-image: radial-gradient(rgba(15, 23, 42, 0.06) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.7;
+    }
+
+    .content-wrap {
+      position: relative;
+      z-index: 2;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* -------------------------------------------------------------
+       NAVBAR
+       ------------------------------------------------------------- */
+    .folivio-nav-wrap {
+      position: fixed;
+      top: 1.25rem;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      padding: 0 1.25rem;
+    }
+
+    .folivio-nav {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 8px 30px -4px rgba(15, 23, 42, 0.06), 0 0 0 1px #ffffff inset;
+      border-radius: var(--radius-pill);
+      padding: 0.55rem 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      max-width: 980px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .nav-brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .nav-brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+
+    .nav-brand-text {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      color: var(--text-heading);
+    }
+
+    .nav-studio-badge {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      background: #eef2ff;
+      border: 1px solid #e0e7ff;
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-pill);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-body);
+      font-size: 0.86rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      transition: all 0.2s ease;
+    }
+
+    .nav-back-link:hover {
+      color: var(--text-heading);
+      border-color: var(--border-strong);
+      background: #f8fafc;
+      transform: translateX(-2px);
+    }
+
+    .nav-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      padding: 0.5rem 1.15rem;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .nav-cta-btn:hover {
+      background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
+      transform: translateY(-1px);
+    }
+
+    /* -------------------------------------------------------------
+       HERO SECTION
+       ------------------------------------------------------------- */
+    .hero-section {
+      padding: 9.5rem 0 5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+      padding: 0.35rem 0.95rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-bottom: 1.8rem;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--violet);
+      box-shadow: 0 0 8px rgba(124, 58, 237, 0.6);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 4.2rem);
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.1;
+      color: var(--text-heading);
+      max-width: 920px;
+      margin: 0 auto 1.4rem;
+    }
+
+    .hero-title-grad {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 45%, #0284c7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      color: var(--text-body);
+      max-width: 720px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 3.5rem;
+    }
+
+    .btn-hero-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.2);
+      transition: all 0.25s ease;
+    }
+
+    .btn-hero-primary:hover {
+      background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+      box-shadow: 0 10px 28px rgba(79, 70, 229, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .btn-hero-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      background: #ffffff;
+      color: var(--text-heading);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.85rem 1.8rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border-subtle);
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+      transition: all 0.25s ease;
+    }
+
+    .btn-hero-secondary:hover {
+      border-color: var(--border-strong);
+      background: #f8fafc;
+      transform: translateY(-2px);
+    }
+
+    /* Hero Key Pillars Row */
+    .hero-pillars-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      max-width: 1080px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .hero-pillar-box {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.04), 0 0 0 1px #ffffff inset;
+      border-radius: var(--radius-md);
+      padding: 1.35rem 1.25rem;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .hero-pillar-box:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 30px -4px rgba(79, 70, 229, 0.1);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .pillar-icon-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: #eef2ff;
+      border: 1px solid #e0e7ff;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--radius-pill);
+      display: inline-block;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-pillar-box h4 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 0.35rem;
+    }
+
+    .hero-pillar-box p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION HEADERS
+       ------------------------------------------------------------- */
+    .section {
+      padding: 5.5rem 0;
+      position: relative;
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .kicker {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 0.85rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.5vw, 2.7rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+    }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 01: PORTFOLIO ARCHETYPES & LAYOUTS (AUTHENTIC)
+       ------------------------------------------------------------- */
+    .archetypes-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.75rem;
+    }
+
+    .archetype-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.04), 0 0 0 1px #ffffff inset;
+      border-radius: var(--radius-lg);
+      padding: 2.2rem 2.0rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .archetype-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #4f46e5, #7c3aed, #0284c7);
+      opacity: 0.75;
+      transition: opacity 0.3s ease;
+    }
+
+    .archetype-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 22px 45px -8px rgba(79, 70, 229, 0.14);
+      border-color: rgba(99, 102, 241, 0.35);
+    }
+
+    .archetype-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.15rem;
+    }
+
+    .archetype-number {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: #eef2ff;
+      border: 1px solid #e0e7ff;
+      padding: 0.2rem 0.65rem;
+      border-radius: var(--radius-pill);
+    }
+
+    .archetype-target {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .archetype-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-heading);
+      margin-bottom: 0.65rem;
+    }
+
+    .archetype-summary {
+      font-size: 0.92rem;
+      line-height: 1.55;
+      color: var(--text-body);
+      margin-bottom: 1.35rem;
+    }
+
+    /* Architecture Blueprint Box */
+    .blueprint-box {
+      background: #f8fafc;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 1.15rem;
+      margin-bottom: 1.45rem;
+    }
+
+    .blueprint-title {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-heading);
+      margin-bottom: 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .blueprint-title::before {
+      content: '◫';
+      color: var(--violet);
+    }
+
+    .blueprint-items {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .blueprint-items li {
+      font-size: 0.82rem;
+      color: var(--text-body);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .blueprint-items li::before {
+      content: '✓';
+      color: var(--emerald);
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    .archetype-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 1.6rem;
+    }
+
+    .archetype-pills span {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #334155;
+      background: #f1f5f9;
+      border: 1px solid var(--border-subtle);
+      padding: 0.22rem 0.6rem;
+      border-radius: var(--radius-pill);
+    }
+
+    .btn-archetype-audit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.75rem 1.25rem;
+      background: #f8fafc;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-pill);
+      color: var(--text-heading);
+      font-size: 0.86rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-archetype-audit:hover {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.25);
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 02: CORE SERVICES & DELIVERABLES
+       ------------------------------------------------------------- */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .service-box {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.04), 0 0 0 1px #ffffff inset;
+      border-radius: var(--radius-lg);
+      padding: 2.0rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+    }
+
+    .service-box:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 36px -6px rgba(79, 70, 229, 0.12);
+      border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .service-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: #eef2ff;
+      border: 1px solid #e0e7ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: var(--primary);
+      margin-bottom: 1.25rem;
+    }
+
+    .service-box h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 0.65rem;
+    }
+
+    .service-box p {
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: var(--text-body);
+      margin-bottom: 1.25rem;
+    }
+
+    .service-features-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 1.15rem;
+    }
+
+    .service-features-list li {
+      font-size: 0.82rem;
+      color: var(--text-body);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .service-features-list li::before {
+      content: '✓';
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 03: 4-STEP PRODUCTION PROCESS
+       ------------------------------------------------------------- */
+    .process-timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      position: relative;
+    }
+
+    .process-step-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.04), 0 0 0 1px #ffffff inset;
+      border-radius: var(--radius-md);
+      padding: 1.8rem 1.45rem;
+      position: relative;
+    }
+
+    .step-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--violet);
+      background: #f5f3ff;
+      border: 1px solid #ddd6fe;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--radius-pill);
+      display: inline-block;
+      margin-bottom: 0.85rem;
+    }
+
+    .process-step-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 0.5rem;
+    }
+
+    .process-step-card p {
+      font-size: 0.84rem;
+      line-height: 1.5;
+      color: var(--text-body);
+      margin-bottom: 0.85rem;
+    }
+
+    .step-deliverable {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: #f8fafc;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 0.35rem 0.65rem;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 04: PACKAGES & TRANSPARENT PRICING
+       ------------------------------------------------------------- */
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+      align-items: stretch;
+    }
+
+    .package-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.04), 0 0 0 1px #ffffff inset;
+      border-radius: var(--radius-lg);
+      padding: 2.4rem 2.0rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: all 0.25s ease;
+    }
+
+    .package-card.highlighted {
+      border: 2px solid var(--primary);
+      box-shadow: 0 18px 40px -6px rgba(79, 70, 229, 0.18), 0 0 0 1px #ffffff inset;
+      transform: scale(1.02);
+    }
+
+    .popular-pill {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.85rem;
+      border-radius: var(--radius-pill);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+
+    .package-tier-name {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 0.4rem;
+    }
+
+    .package-title {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: var(--text-heading);
+      margin-bottom: 0.65rem;
+    }
+
+    .package-desc {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text-body);
+      margin-bottom: 1.6rem;
+    }
+
+    .package-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-bottom: 2.2rem;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 1.4rem;
+    }
+
+    .package-features li {
+      font-size: 0.85rem;
+      color: var(--text-body);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+    }
+
+    .package-features li::before {
+      content: '✓';
+      color: var(--emerald);
+      font-weight: 700;
+      margin-top: 1px;
+    }
+
+    .btn-package-select {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 0.85rem 1.4rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-pkg-default {
+      background: #f8fafc;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-heading);
+    }
+
+    .btn-pkg-default:hover {
+      background: #0f172a;
+      color: #ffffff;
+      border-color: #0f172a;
+    }
+
+    .btn-pkg-primary {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.2);
+    }
+
+    .btn-pkg-primary:hover {
+      background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.35);
+      transform: translateY(-2px);
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 05: CONSULTATION & AUDIT FORM
+       ------------------------------------------------------------- */
+    .audit-wrap-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: 0 16px 40px -6px rgba(15, 23, 42, 0.06), 0 0 0 1px #ffffff inset;
+      border-radius: var(--radius-lg);
+      padding: clamp(2.2rem, 5vw, 3.8rem);
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 3.5rem;
+      align-items: start;
+    }
+
+    .audit-info h3 {
+      font-family: var(--font-display);
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-heading);
+      margin-bottom: 1.1rem;
+    }
+
+    .audit-info p {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: var(--text-body);
+      margin-bottom: 2rem;
+    }
+
+    .audit-contact-channels {
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .contact-item-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #eef2ff;
+      border: 1px solid #e0e7ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    .contact-item-text div:first-child {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .contact-item-text a {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--text-heading);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .contact-item-text a:hover {
+      color: var(--primary);
+    }
+
+    /* Form Styles */
+    .audit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .form-group label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-heading);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.15rem;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: #f8fafc;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1.0rem;
+      font-family: var(--font-ui);
+      font-size: 0.88rem;
+      color: var(--text-heading);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      background: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+    }
+
+    .form-textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .btn-submit-audit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.9rem 1.8rem;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.2);
+      transition: all 0.25s ease;
+      margin-top: 0.5rem;
+    }
+
+    .btn-submit-audit:hover {
+      background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .form-guarantee-note {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    /* -------------------------------------------------------------
+       FOOTER
+       ------------------------------------------------------------- */
+    .folivio-footer {
+      border-top: 1px solid var(--border-subtle);
+      background: #ffffff;
+      padding: 3.5rem 0 2.5rem;
+      margin-top: 4.5rem;
+    }
+
+    .footer-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .footer-brand h4 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-heading);
+      margin-bottom: 0.35rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .footer-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .footer-nav a {
+      font-size: 0.85rem;
+      color: var(--text-body);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-nav a:hover {
+      color: var(--primary);
+    }
+
+    .footer-bottom-row {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* -------------------------------------------------------------
+       RESPONSIVE BREAKPOINTS
+       ------------------------------------------------------------- */
+    @media (max-width: 1024px) {
+      .hero-pillars-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .archetypes-grid {
+        grid-template-columns: 1fr;
+      }
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      .process-timeline-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .packages-grid {
+        grid-template-columns: 1fr;
+      }
+      .package-card.highlighted {
+        transform: none;
+      }
+      .audit-wrap-card {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .hero-pillars-row {
+        grid-template-columns: 1fr;
+      }
+      .process-timeline-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .footer-top-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient light glows -->
+  <div class=ambient-canvas>
+    <div class=ambient-glow-1></div>
+    <div class=ambient-glow-2></div>
+    <div class=ambient-glow-3></div>
+  </div>
+  <div class=bg-grid-pattern></div>
+
+  <div class=content-wrap>
+
+    <!-- FLOATING NAVBAR -->
+    <header class=folivio-nav-wrap>
+      <nav class=folivio-nav>
+        <a href=#hero class=nav-brand-group>
+          <img src="assets/images/folivio-logo.webp" alt="FOLIVIO Studio Logo" class="nav-brand-logo" width="32" height="32">
+          <span class="nav-brand-text">FOLIVIO</span>
+          <span class="nav-studio-badge">A NIVORA Studio</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#archetypes">Archetypes</a></li>
+          <li><a href="#services">Deliverables</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#packages">Packages</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="index.html" class="nav-back-link">
+            <span>←</span> NIVORA Home
+          </a>
+          <a href="#booking" class="nav-cta-btn">
+            Schedule Audit
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero-section" id="hero">
+      <div class="container">
+        <div class="hero-badge-pill">
+          <span class="badge-dot"></span>
+          <span>A Specialized Studio by NIVORA &middot; Engineering Digital Authority</span>
+        </div>
+
+        <h1 class="hero-title">
+          Executive Career Portfolios &amp;<br>
+          <span class="hero-title-grad">Personal Digital Identity Systems.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          We architect bespoke custom-domain personal websites, ATS-optimized executive resumes, and commanding digital presence systems for leaders, software architects, finance consultants, and specialists.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#archetypes" class="btn-hero-primary">
+            <span>Explore Layout Archetypes</span>
+            <span>↓</span>
+          </a>
+          <a href="#booking" class="btn-hero-secondary">
+            <span>Request Direct Consultation</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <!-- 4 Key Deliverables Row -->
+        <div class="hero-pillars-row">
+          <div class="hero-pillar-box">
+            <span class="pillar-icon-tag">01 &middot; CODE &amp; DOMAIN</span>
+            <h4>Custom Domain Website</h4>
+            <p>High-speed responsive web application hosted on global edge CDN with custom DNS.</p>
+          </div>
+          <div class="hero-pillar-box">
+            <span class="pillar-icon-tag">02 &middot; ATS-ENGINEERED</span>
+            <h4>Executive Resume</h4>
+            <p>Precision typographic resume formatted to parse with 100% fidelity through enterprise ATS.</p>
+          </div>
+          <div class="hero-pillar-box">
+            <span class="pillar-icon-tag">03 &middot; DIGITAL PERSONA</span>
+            <h4>LinkedIn Alignment</h4>
+            <p>Harmonized executive headline, visual banners, and strategic positioning narrative.</p>
+          </div>
+          <div class="hero-pillar-box">
+            <span class="pillar-icon-tag">04 &middot; CASE STUDIES</span>
+            <h4>Project Narratives</h4>
+            <p>Deep-dive case study architecture showcasing verified business and technical outcomes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 01: CURATED PORTFOLIO ARCHETYPES -->
+    <section class="section" id="archetypes">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">// 01 &middot; Portfolio Layout Systems</div>
+          <h2 class="section-title">Engineered Around Your Discipline.</h2>
+          <p class="section-desc">
+            We do not use generic cookie-cutter templates. Every portfolio is engineered around the structural expectations of hiring committees, board members, and enterprise clients in your specific domain.
+          </p>
+        </div>
+
+        <div class="archetypes-grid">
+
+          <!-- ARCHETYPE 1: SYSTEMS & AI ENGINEER -->
+          <div class="archetype-card">
+            <div>
+              <div class="archetype-top">
+                <span class="archetype-number">ARCHETYPE &middot; 01</span>
+                <span class="archetype-target">For Technical Leaders &amp; AI Researchers</span>
+              </div>
+              <h3>The Systems &amp; AI Engineer Framework</h3>
+              <p class="archetype-summary">
+                Designed for Staff+ Engineers, ML Researchers, and Engineering Leaders who need to demonstrate algorithmic depth, production scale, and architecture decisions.
+              </p>
+
+              <div class="blueprint-box">
+                <div class="blueprint-title">Engineered Architectural Components</div>
+                <ul class="blueprint-items">
+                  <li>System Architecture Diagrams &amp; Data Pipeline Schemas</li>
+                  <li>Live GitHub Activity Integration &amp; Star Metrics</li>
+                  <li>Interactive Code Sandboxes &amp; Live API Endpoint Demos</li>
+                  <li>Quantitative Benchmark Visualizations (Latency, QPS, Memory)</li>
+                </ul>
+              </div>
+
+              <div class="archetype-pills">
+                <span>Next.js / React</span>
+                <span>Interactive Sandboxes</span>
+                <span>GitHub GraphQL API</span>
+                <span>Mermaid / WebGL Diagrams</span>
+              </div>
+            </div>
+
+            <a href="#booking" class="btn-archetype-audit">
+              <span>Request Technical Blueprint</span>
+              <span>→</span>
+            </a>
+          </div>
+
+          <!-- ARCHETYPE 2: EXECUTIVE & STRATEGY ADVISOR -->
+          <div class="archetype-card">
+            <div>
+              <div class="archetype-top">
+                <span class="archetype-number">ARCHETYPE &middot; 02</span>
+                <span class="archetype-target">For CFOs, Partners &amp; Strategic Advisors</span>
+              </div>
+              <h3>The Corporate Advisory &amp; Finance Framework</h3>
+              <p class="archetype-summary">
+                Engineered for management consultants, fractional CFOs, and M&amp;A advisors requiring discreet credentials, confidential deal sheet summaries, and advisory retainers.
+              </p>
+
+              <div class="blueprint-box">
+                <div class="blueprint-title">Engineered Architectural Components</div>
+                <ul class="blueprint-items">
+                  <li>Confidential Deal Flow &amp; Transaction Value Matrix</li>
+                  <li>Board Governance &amp; Executive Committee Affiliations</li>
+                  <li>Advisory Retainer Structure &amp; Direct Calendar Booking</li>
+                  <li>Authored Whitepapers &amp; Financial Model Executive Summaries</li>
+                </ul>
+              </div>
+
+              <div class="archetype-pills">
+                <span>Editorial Typography</span>
+                <span>Deal Sheet Matrix</span>
+                <span>Cal.com Integration</span>
+                <span>PDF Teaser Exports</span>
+              </div>
+            </div>
+
+            <a href="#booking" class="btn-archetype-audit">
+              <span>Request Advisory Blueprint</span>
+              <span>→</span>
+            </a>
+          </div>
+
+          <!-- ARCHETYPE 3: PRODUCT & SPATIAL DESIGNER -->
+          <div class="archetype-card">
+            <div>
+              <div class="archetype-top">
+                <span class="archetype-number">ARCHETYPE &middot; 03</span>
+                <span class="archetype-target">For UX Leaders &amp; Creative Directors</span>
+              </div>
+              <h3>The Product &amp; Spatial Design Framework</h3>
+              <p class="archetype-summary">
+                Crafted for Principal Designers, Design Directors, and 3D artists whose visual craft demands full-bleed case studies, typography focus, and micro-interactions.
+              </p>
+
+              <div class="blueprint-box">
+                <div class="blueprint-title">Engineered Architectural Components</div>
+                <ul class="blueprint-items">
+                  <li>Full-Bleed Responsive Prototype Showcases &amp; Design Tokens</li>
+                  <li>Interactive User Journey Maps &amp; Design System Atoms</li>
+                  <li>Before/After Redesign Comparison Sliders</li>
+                  <li>Press Feature Grid &amp; Industry Award Citations</li>
+                </ul>
+              </div>
+
+              <div class="archetype-pills">
+                <span>Fluid Canvas Transitions</span>
+                <span>Interactive Prototypes</span>
+                <span>Figma Embeds</span>
+                <span>High-DPI Galleries</span>
+              </div>
+            </div>
+
+            <a href="#booking" class="btn-archetype-audit">
+              <span>Request Design Blueprint</span>
+              <span>→</span>
+            </a>
+          </div>
+
+          <!-- ARCHETYPE 4: HEALTHCARE & CLINICAL SPECIALIST -->
+          <div class="archetype-card">
+            <div>
+              <div class="archetype-top">
+                <span class="archetype-number">ARCHETYPE &middot; 04</span>
+                <span class="archetype-target">For Physicians, Surgeons &amp; Clinical Leaders</span>
+              </div>
+              <h3>The Clinical Specialist &amp; Medical Authority Framework</h3>
+              <p class="archetype-summary">
+                Engineered for physicians, surgical specialists, and biomedical innovators with verified board certifications, academic research, and hospital appointments.
+              </p>
+
+              <div class="blueprint-box">
+                <div class="blueprint-title">Engineered Architectural Components</div>
+                <ul class="blueprint-items">
+                  <li>Medical Board Certifications &amp; Clinical Fellowships</li>
+                  <li>Peer-Reviewed Publications &amp; PubMed / DOI Indexed Links</li>
+                  <li>Hospital Affiliations &amp; Clinic Practice Locations</li>
+                  <li>Patient Consultation Scheduler &amp; Direct Referral Portal</li>
+                </ul>
+              </div>
+
+              <div class="archetype-pills">
+                <span>HIPAA-Compliant Inquiries</span>
+                <span>PubMed Citation Links</span>
+                <span>Credential Badges</span>
+                <span>Multi-Clinic Routing</span>
+              </div>
+            </div>
+
+            <a href="#booking" class="btn-archetype-audit">
+              <span>Request Clinical Blueprint</span>
+              <span>→</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 02: DELIVERABLES -->
+    <section class="section" id="services" style="background: rgba(255, 255, 255, 0.6); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">// 02 &middot; What We Deliver</div>
+          <h2 class="section-title">End-to-End Digital Identity Architecture.</h2>
+          <p class="section-desc">
+            From technical DNS deployment to executive copywriting and resume typography, our multidisciplinary team handles the complete build lifecycle.
+          </p>
+        </div>
+
+        <div class="services-grid">
+          <div class="service-box">
+            <div>
+              <div class="service-icon-wrap">🌐</div>
+              <h3>Bespoke Custom Domain Website</h3>
+              <p>
+                A high-performance personal web application built with modern frameworks, deployed on global edge CDNs, and bound to your personal domain (e.g. yourname.com).
+              </p>
+            </div>
+            <ul class="service-features-list">
+              <li>Sub-second global load times</li>
+              <li>Fully responsive on all mobile viewports</li>
+              <li>Custom domain DNS &amp; SSL setup</li>
+              <li>Interactive contact &amp; scheduler integration</li>
+            </ul>
+          </div>
+
+          <div class="service-box">
+            <div>
+              <div class="service-icon-wrap">📄</div>
+              <h3>ATS-Engineered Executive Resume</h3>
+              <p>
+                A rigorously formatted executive resume engineered to parse with 100% fidelity across major enterprise Applicant Tracking Systems (Workday, Taleo, Ashby, Greenhouse).
+              </p>
+            </div>
+            <ul class="service-features-list">
+              <li>100% parser-safe hierarchical typography</li>
+              <li>High-impact quantifiable accomplishment bullets</li>
+              <li>Print-ready vector PDF &amp; markdown source</li>
+              <li>Tailored for senior &amp; C-suite review</li>
+            </ul>
+          </div>
+
+          <div class="service-box">
+            <div>
+              <div class="service-icon-wrap">💎</div>
+              <h3>LinkedIn &amp; Executive Persona Kit</h3>
+              <p>
+                Comprehensive alignment of your public digital presence to ensure your LinkedIn headline, bio narrative, and banner graphics match your personal website.
+              </p>
+            </div>
+            <ul class="service-features-list">
+              <li>Custom high-resolution LinkedIn banner graphic</li>
+              <li>Compelling first-person executive bio narrative</li>
+              <li>Curated 'Featured' section asset layouts</li>
+              <li>Search-optimized domain keyword placement</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 03: 4-STEP METHODOLOGY -->
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">// 03 &middot; The Methodology</div>
+          <h2 class="section-title">Transparent 4-Step Production Process.</h2>
+          <p class="section-desc">
+            A collaborative, sprint-driven workflow designed to respect your schedule and deliver institutional-grade results.
+          </p>
+        </div>
+
+        <div class="process-timeline-grid">
+          <div class="process-step-card">
+            <span class="step-badge">STEP 01</span>
+            <h4>Discovery &amp; Career Audit</h4>
+            <p>We review your career trajectory, target audience (recruiters, board members, investors), and collect existing materials.</p>
+            <div class="step-deliverable">Deliverable: Positioning Strategy Deck</div>
+          </div>
+
+          <div class="process-step-card">
+            <span class="step-badge">STEP 02</span>
+            <h4>Information Architecture</h4>
+            <p>We wireframe your personal website sitemap, design the narrative flow for case studies, and draft executive resume copy.</p>
+            <div class="step-deliverable">Deliverable: Interactive Wireframes</div>
+          </div>
+
+          <div class="process-step-card">
+            <span class="step-badge">STEP 03</span>
+            <h4>Development &amp; Visual Craft</h4>
+            <p>Our engineers build your website with clean code, test responsive viewports, and format the ATS-compliant resume.</p>
+            <div class="step-deliverable">Deliverable: Live Staging Preview</div>
+          </div>
+
+          <div class="process-step-card">
+            <span class="step-badge">STEP 04</span>
+            <h4>Domain Launch &amp; Handover</h4>
+            <p>We connect your custom domain, verify SSL certificates, configure analytics, and deliver all source files and documentation.</p>
+            <div class="step-deliverable">Deliverable: Live Domain &amp; Source Assets</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 04: PACKAGES & TRANSPARENT PRICING -->
+    <section class="section" id="packages" style="background: rgba(255, 255, 255, 0.6); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">// 04 &middot; Transparent Engagement Models</div>
+          <h2 class="section-title">Structured Engagement Tiers.</h2>
+          <p class="section-desc">
+            Select the tier aligned with your career stage and digital presence objectives.
+          </p>
+        </div>
+
+        <div class="packages-grid">
+
+          <!-- TIER 1 -->
+          <div class="package-card">
+            <div>
+              <div class="package-tier-name">TIER 01 &middot; FOUNDATION</div>
+              <h3 class="package-title">Career Foundation</h3>
+              <p class="package-desc">
+                Ideal for emerging specialists and consultants establishing their professional digital foundation.
+              </p>
+              <ul class="package-features">
+                <li>Single-Page Personal Identity Hub</li>
+                <li>ATS-Engineered Executive Resume (PDF &amp; MD)</li>
+                <li>LinkedIn Headline &amp; Bio Strategic Copy</li>
+                <li>Mobile-Responsive Layout</li>
+                <li>Custom Contact Form &amp; Mail Routing</li>
+                <li>Fast 7-Day Turnaround</li>
+              </ul>
+            </div>
+            <a href="#booking" class="btn-package-select btn-pkg-default">
+              <span>Select Foundation</span>
+            </a>
+          </div>
+
+          <!-- TIER 2 (HIGHLIGHTED) -->
+          <div class="package-card highlighted">
+            <div class="popular-pill">Most Popular</div>
+            <div>
+              <div class="package-tier-name">TIER 02 &middot; COMPLETE SUITE</div>
+              <h3 class="package-title">Executive Suite</h3>
+              <p class="package-desc">
+                The comprehensive solution for senior engineers, advisors, founders, and specialized practitioners.
+              </p>
+              <ul class="package-features">
+                <li>Full Multi-Page Custom Domain Website</li>
+                <li>Interactive Case Studies &amp; Project Demos</li>
+                <li>ATS-Engineered Executive Resume (PDF + Source)</li>
+                <li>Full LinkedIn Branding (Custom Banner + Bio)</li>
+                <li>Custom Domain DNS, SSL &amp; CDN Setup</li>
+                <li>Calendar / Scheduler Integration</li>
+                <li>Interactive Code or Deal Matrix Showcases</li>
+              </ul>
+            </div>
+            <a href="#booking" class="btn-package-select btn-pkg-primary">
+              <span>Select Executive Suite</span>
+            </a>
+          </div>
+
+          <!-- TIER 3 -->
+          <div class="package-card">
+            <div>
+              <div class="package-tier-name">TIER 03 &middot; BESPOKE STUDIO</div>
+              <h3 class="package-title">C-Suite &amp; Advisory</h3>
+              <p class="package-desc">
+                Tailored for C-suite leaders, partners, and high-profile figures requiring custom interactive architectures.
+              </p>
+              <ul class="package-features">
+                <li>Bespoke Architecture &amp; Custom 3D / WebGL Accents</li>
+                <li>Confidential Deal / Research Repository</li>
+                <li>Executive Bio &amp; Press Feature Kit</li>
+                <li>Multi-Domain Architecture Routing</li>
+                <li>Private Consultation Scheduling System</li>
+                <li>Priority Quarterly Updates &amp; Retainer Support</li>
+              </ul>
+            </div>
+            <a href="#booking" class="btn-package-select btn-pkg-default">
+              <span>Select Bespoke Studio</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 05: CONSULTATION & AUDIT FORM -->
+    <section class="section" id="booking">
+      <div class="container">
+        <div class="audit-wrap-card">
+
+          <!-- Left Info Column -->
+          <div class="audit-info">
+            <div class="kicker">// 05 &middot; Start Your Engagement</div>
+            <h3>Schedule a Career Identity Audit.</h3>
+            <p>
+              Share your current professional links and career objectives. Our team will review your existing presence and deliver a bespoke architecture recommendation.
+            </p>
+
+            <div class="audit-contact-channels">
+              <div class="contact-item">
+                <div class="contact-item-icon">✉</div>
+                <div class="contact-item-text">
+                  <div>Direct Studio Email</div>
+                  <a href="mailto:nivora.consulting@gmail.com">nivora.consulting@gmail.com</a>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-item-icon">🏢</div>
+                <div class="contact-item-text">
+                  <div>Parent Organization</div>
+                  <a href="index.html">NIVORA Business &amp; Technology Advisory</a>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-item-icon">⏱</div>
+                <div class="contact-item-text">
+                  <div>Response Timeline</div>
+                  <span>Within 24 Business Hours</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Form Column -->
+          <div>
+            <form class="audit-form" id="folivioAuditForm" onsubmit="handleFolivioSubmit(event)">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="fName">Full Name *</label>
+                  <input type="text" id="fName" name="fullName" class="form-input" placeholder="e.g. Nivas Bennabatthula" required>
+                </div>
+                <div class="form-group">
+                  <label for="fEmail">Email Address *</label>
+                  <input type="email" id="fEmail" name="email" class="form-input" placeholder="e.g. name@example.com" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="fTitle">Current Role / Discipline *</label>
+                  <input type="text" id="fTitle" name="title" class="form-input" placeholder="e.g. Principal AI Engineer / Strategy Consultant" required>
+                </div>
+                <div class="form-group">
+                  <label for="fPackage">Target Engagement</label>
+                  <select id="fPackage" name="package" class="form-select">
+                    <option value="Executive Suite (Recommended)">Executive Suite (Recommended)</option>
+                    <option value="Career Foundation">Career Foundation</option>
+                    <option value="C-Suite &amp; Advisory">C-Suite &amp; Advisory</option>
+                    <option value="Custom Consultation">Custom Consultation</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="fUrl">Current LinkedIn Profile or Portfolio URL</label>
+                <input type="url" id="fUrl" name="currentUrl" class="form-input" placeholder="https://linkedin.com/in/yourprofile">
+              </div>
+
+              <div class="form-group">
+                <label for="fMessage">Primary Career Objective &amp; Timeline</label>
+                <textarea id="fMessage" name="message" class="form-textarea" placeholder="Tell us about the roles, consulting advisory clients, or speaking opportunities you are aiming for..."></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit-audit" id="fSubmitBtn">
+                <span>Submit Audit Request</span>
+                <span>→</span>
+              </button>
+
+              <div class="form-guarantee-note">
+                🔒 Your career information is treated with strict confidentiality. Direct dispatch to nivora.consulting@gmail.com.
+              </div>
+
+              <div id="fbToast" style="display: none; background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 0.85rem 1.15rem; border-radius: 8px; font-size: 0.85rem; text-align: center; margin-top: 0.75rem;">
+                ✓ Thank you! Your audit request has been sent. Our advisory team will contact you within 24 hours.
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="folivio-footer">
+      <div class="container">
+        <div class="footer-top-row">
+          <div class="footer-brand">
+            <h4>FOLIVIO</h4>
+            <p>A Dedicated Career Studio by NIVORA Business &middot; Finance &middot; Technology</p>
+          </div>
+
+          <ul class="footer-nav">
+            <li><a href="index.html">NIVORA Home</a></li>
+            <li><a href="#archetypes">Archetypes</a></li>
+            <li><a href="#services">Deliverables</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#packages">Packages</a></li>
+            <li><a href="mailto:nivora.consulting@gmail.com">Contact Studio</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-bottom-row">
+          <div>&copy; 2026 FOLIVIO Studio. All Rights Reserved. A NIVORA Enterprise Initiative.</div>
+          <div>Official Studio Inquiries: <a href="mailto:nivora.consulting@gmail.com" style="color: var(--primary); text-decoration: none; font-weight: 600;">nivora.consulting@gmail.com</a></div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    function handleFolivioSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('fSubmitBtn');
+      const toast = document.getElementById('fbToast');
+      const origText = btn.innerHTML;
+
+      const name = document.getElementById('fName').value;
+      const email = document.getElementById('fEmail').value;
+      const title = document.getElementById('fTitle').value;
+      const pkg = document.getElementById('fPackage').value;
+      const url = document.getElementById('fUrl').value;
+      const msg = document.getElementById('fMessage').value;
+
+      btn.disabled = true;
+      btn.innerHTML = '<span>Submitting Request...</span>';
+
+      // Open mailto in background as a robust fallback
+      const subject = encodeURIComponent();
+      const body = encodeURIComponent(
+        
+      );
+      
+      setTimeout(() => {
+        btn.innerHTML = '<span>Request Submitted!</span>';
+        if (toast) toast.style.display = 'block';
+        e.target.reset();
+
+        // Also trigger mailto so client has direct draft if desired
+        window.location.href = ;
+
+        setTimeout(() => {
+          btn.innerHTML = origText;
+          btn.disabled = false;
+        }, 4000);
+      }, 600);
+    }
+  </script>
+</body>
+</html>

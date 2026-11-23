@@ -156,7 +156,7 @@ def build_ultimate_universe_html():
       display: block;
     }
 
-    /* Rich Deep Space Milky Way Galaxy Backdrop & Cosmic Nebulae */
+    /* Clean, Elegant Deep Space Milky Way Backdrop */
     .cosmic-nebula-bg {
       position: fixed;
       inset: 0;
@@ -164,26 +164,7 @@ def build_ultimate_universe_html():
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      background:
-        radial-gradient(ellipse 75% 55% at 50% -5%, rgba(124, 58, 237, 0.28) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 45% at 88% 32%, rgba(6, 182, 212, 0.20) 0%, transparent 55%),
-        radial-gradient(ellipse 65% 50% at 12% 58%, rgba(168, 85, 247, 0.22) 0%, transparent 58%),
-        radial-gradient(ellipse 85% 65% at 65% 85%, rgba(14, 165, 233, 0.16) 0%, transparent 65%),
-        radial-gradient(circle at 50% 50%, rgba(11, 16, 32, 0.92) 0%, #030611 65%, #010307 100%);
-    }
-
-    .cosmic-nebula-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(1.5px 1.5px at 15% 25%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
-        radial-gradient(1px 1px at 35% 65%, rgba(56, 189, 248, 0.45) 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 75% 15%, rgba(168, 85, 247, 0.4) 0%, transparent 100%),
-        radial-gradient(1px 1px at 85% 75%, rgba(255, 255, 255, 0.35) 0%, transparent 100%),
-        radial-gradient(ellipse 90% 80% at 50% 50%, transparent 50%, rgba(1, 3, 7, 0.6) 100%);
-      opacity: 0.85;
-      pointer-events: none;
+      background: radial-gradient(ellipse 90% 70% at 50% 20%, #060a1a 0%, #030612 50%, #010206 100%);
     }
 
     /* Global Typography & Utilities */
@@ -340,20 +321,49 @@ def build_ultimate_universe_html():
       font-family: var(--font-ui);
       font-size: 0.84rem;
       font-weight: 500;
-      color: #cbd5e1;
+      color: #94a3b8;
       text-decoration: none;
-      padding: 0.42rem 0.75rem;
+      padding: 0.42rem 0.8rem;
       border-radius: var(--radius-pill);
-      transition: all 0.25s ease;
+      border: 1px solid transparent;
+      transition: all 0.22s ease;
       white-space: nowrap !important;
       display: inline-block;
+      position: relative;
     }
 
-    .nav-link:hover, .nav-link.active {
+    .nav-link:hover {
       color: #ffffff;
       background: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 0 16px rgba(56, 189, 248, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .nav-link.active {
+      color: #38bdf8 !important;
+      background: rgba(56, 189, 248, 0.15) !important;
+      border-color: rgba(56, 189, 248, 0.45) !important;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.3), inset 0 0 10px rgba(56, 189, 248, 0.12) !important;
+      font-weight: 600 !important;
+    }
+
+    .folivio-nav-pill {
+      background: rgba(168, 85, 247, 0.12) !important;
+      border-color: rgba(168, 85, 247, 0.35) !important;
+      color: #c084fc !important;
+    }
+
+    .folivio-nav-pill:hover {
+      background: rgba(168, 85, 247, 0.25) !important;
+      border-color: rgba(168, 85, 247, 0.6) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 18px rgba(168, 85, 247, 0.4) !important;
+    }
+
+    .drawer-link.active {
+      color: #38bdf8 !important;
+      background: rgba(56, 189, 248, 0.14) !important;
+      border-left: 3px solid #38bdf8 !important;
+      font-weight: 600 !important;
     }
 
     .nav-right-actions {
@@ -965,19 +975,19 @@ def build_ultimate_universe_html():
     }
 
     .service-card {
-      background: rgba(10, 14, 26, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.10);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(10, 14, 26, 0.75) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: 16px;
-      padding: 1.55rem 1.35rem 1.35rem;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      padding: 1.45rem 1.25rem 1.25rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.24), inset 0 0 12px 0 rgba(255, 255, 255, 0.02), 0 18px 36px -10px rgba(0, 0, 0, 0.55);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
       overflow: hidden;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
       cursor: pointer;
     }
 
@@ -1144,68 +1154,89 @@ def build_ultimate_universe_html():
        ------------------------------------------------------------- */
     .solutions-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-      gap: 1.8rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.15rem;
     }
 
     .solution-card {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-lg);
-      padding: 2.2rem 1.8rem;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(13, 19, 36, 0.72) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius-md);
+      padding: 1.45rem 1.25rem 1.35rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.24), inset 0 0 12px 0 rgba(255, 255, 255, 0.02), 0 18px 36px -10px rgba(0, 0, 0, 0.55);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .solution-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(168, 85, 247, 0.7) 50%, transparent 100%);
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
     }
 
     .solution-card:hover {
       transform: translateY(-5px);
-      border-color: rgba(168, 85, 247, 0.4);
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 25px rgba(168, 85, 247, 0.15);
+      border-color: rgba(168, 85, 247, 0.5);
+      box-shadow: inset 0 1px 2px 0 rgba(255, 255, 255, 0.36), 0 22px 48px -10px rgba(0, 0, 0, 0.65), 0 0 26px rgba(168, 85, 247, 0.25);
+    }
+
+    .solution-card:hover::before {
+      opacity: 1;
     }
 
     .solution-badge {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: #c084fc;
-      margin-bottom: 0.65rem;
+      margin-bottom: 0.45rem;
     }
 
     .solution-card h3 {
       font-family: var(--font-display);
-      font-size: 1.5rem;
+      font-size: 1.22rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       color: #ffffff;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.45rem;
     }
 
     .solution-desc {
-      font-size: 0.9rem;
-      line-height: 1.6;
+      font-size: 0.82rem;
+      line-height: 1.45;
       color: #cbd5e1;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.85rem;
+      min-height: 48px;
     }
 
     .solution-items-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.65rem;
-      margin-bottom: 2rem;
+      gap: 0.45rem;
+      margin-bottom: 1.15rem;
     }
 
     .solution-items-list li {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      font-size: 0.88rem;
+      gap: 0.55rem;
+      font-size: 0.8rem;
       color: #e2e8f0;
     }
 
@@ -1220,6 +1251,7 @@ def build_ultimate_universe_html():
       display: inline-flex;
       align-items: center;
       justify-content: space-between;
+      white-space: nowrap !important;
       padding: 0.75rem 1.15rem;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -1235,6 +1267,32 @@ def build_ultimate_universe_html():
     .solution-cta:hover {
       background: rgba(168, 85, 247, 0.2);
       border-color: rgba(168, 85, 247, 0.4);
+    }
+
+    .btn-solution-explore {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      white-space: nowrap !important;
+      padding: 0.72rem 1.15rem;
+      background: rgba(168, 85, 247, 0.12);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      border-radius: var(--radius-pill);
+      color: #ffffff;
+      font-family: var(--font-ui);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      flex: 1;
+    }
+
+    .btn-solution-explore:hover {
+      background: rgba(168, 85, 247, 0.25);
+      border-color: rgba(168, 85, 247, 0.6);
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.35);
+      transform: translateY(-1px);
     }
 
     .solution-actions-row {
@@ -1307,87 +1365,92 @@ def build_ultimate_universe_html():
 
     .products-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
-      gap: 2.2rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.15rem;
     }
 
     .world-card {
-      background: rgba(11, 16, 32, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      border-radius: var(--radius-lg);
-      padding: 2.6rem;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(13, 19, 36, 0.72) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius-md);
+      padding: 1.45rem 1.25rem 1.35rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.24), inset 0 0 12px 0 rgba(255, 255, 255, 0.02), 0 18px 36px -10px rgba(0, 0, 0, 0.55);
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .world-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(56, 189, 248, 0.4);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(56, 189, 248, 0.14);
-    }
-
-    .card-watermark {
+    .world-card::before {
+      content: '';
       position: absolute;
-      right: -30px;
-      top: -30px;
-      width: 220px;
-      height: 220px;
-      opacity: 0.04;
-      pointer-events: none;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.7) 50%, transparent 100%);
+      opacity: 0.5;
       transition: opacity 0.3s ease;
     }
 
-    .world-card:hover .card-watermark {
-      opacity: 0.08;
+    .world-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(56, 189, 248, 0.5);
+      box-shadow: inset 0 1px 2px 0 rgba(255, 255, 255, 0.36), 0 22px 48px -10px rgba(0, 0, 0, 0.65), 0 0 26px rgba(56, 189, 248, 0.25);
+    }
+
+    .world-card:hover::before {
+      opacity: 1;
     }
 
     .world-art-wrap {
       width: 100%;
-      height: 200px;
-      border-radius: var(--radius-md);
+      height: 110px;
+      border-radius: var(--radius-sm);
       background: rgba(2, 6, 23, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 1.8rem;
+      margin-bottom: 1.1rem;
       overflow: hidden;
-      padding: 1.5rem;
+      padding: 0.75rem;
     }
 
     .world-art-wrap img {
       max-width: 100%;
-      max-height: 100%;
+      max-height: 72px;
       object-fit: contain;
-      filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
+      filter: drop-shadow(0 0 18px rgba(0, 0, 0, 0.6));
       transition: transform 0.4s ease;
     }
 
     .world-card:hover .world-art-wrap img {
-      transform: scale(1.05);
+      transform: scale(1.06);
     }
 
     .world-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 0.65rem;
+      gap: 0.5rem;
+      margin-bottom: 0.45rem;
       flex-wrap: wrap;
     }
 
     .world-header h3 {
       font-family: var(--font-display);
-      font-size: 1.7rem;
+      font-size: 1.22rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       color: #ffffff;
       display: flex;
       align-items: center;
-      gap: 0.65rem;
+      gap: 0.45rem;
     }
 
     .formerly-tag {
@@ -1419,34 +1482,35 @@ def build_ultimate_universe_html():
 
     .world-tagline {
       font-family: var(--font-ui);
-      font-size: 1.05rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: #38bdf8;
-      margin-bottom: 0.85rem;
+      margin-bottom: 0.55rem;
     }
 
     .world-desc {
-      font-size: 0.94rem;
-      line-height: 1.65;
+      font-size: 0.8rem;
+      line-height: 1.45;
       color: #cbd5e1;
-      margin-bottom: 1.6rem;
+      margin-bottom: 0.95rem;
+      min-height: 48px;
     }
 
     .world-pills {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 2rem;
+      gap: 0.35rem;
+      margin-bottom: 1.15rem;
       list-style: none;
     }
 
     .world-pills li {
-      font-size: 0.78rem;
+      font-size: 0.68rem;
       color: #94a3b8;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-pill);
-      padding: 0.28rem 0.75rem;
+      padding: 0.2rem 0.52rem;
     }
 
     .world-actions {
@@ -1505,12 +1569,13 @@ def build_ultimate_universe_html():
        SECTION 04: ABOUT & CONSULTANCY ARCHITECTURE
        ------------------------------------------------------------- */
     .founder-card {
-      background: rgba(11, 16, 32, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(11, 16, 32, 0.75) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: var(--radius-lg);
-      padding: clamp(2.2rem, 4.5vw, 3.8rem);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      padding: clamp(2.0rem, 4vw, 3.2rem);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.22), inset 0 0 15px 0 rgba(255, 255, 255, 0.02), 0 20px 44px -10px rgba(0, 0, 0, 0.55);
       display: grid;
       grid-template-columns: 240px 1fr;
       gap: 3.5rem;
@@ -1585,13 +1650,14 @@ def build_ultimate_universe_html():
     }
 
     .pillar-card {
-      background: rgba(15, 23, 42, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 40%, rgba(13, 19, 36, 0.72) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: var(--radius-md);
-      padding: 2.2rem 1.8rem;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      transition: transform 0.3s ease, border-color 0.3s ease;
+      padding: 1.8rem 1.5rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.22), 0 16px 36px -10px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .pillar-card:hover {
@@ -1786,6 +1852,210 @@ def build_ultimate_universe_html():
       transform: translateY(-2px);
       box-shadow: 0 0 35px rgba(56, 189, 248, 0.65);
       color: #ffffff;
+    }
+
+    .folivio-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 1.0rem;
+      flex-wrap: wrap;
+    }
+
+    .folivio-sec-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.88rem 1.8rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e2e8f0;
+      font-family: var(--font-ui);
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .folivio-sec-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    /* FOLIVIO LIVE PORTFOLIO SAMPLES SHOWCASE */
+    .folivio-samples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 4.5rem;
+    }
+
+    .folivio-sample-card {
+      background: rgba(13, 19, 36, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+      position: relative;
+    }
+
+    .folivio-sample-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(168, 85, 247, 0.5);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 35px rgba(168, 85, 247, 0.25);
+    }
+
+    .sample-browser-bar {
+      background: rgba(8, 12, 24, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 0.65rem 1.0rem;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .browser-dots {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .browser-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+
+    .browser-dot.red { background: #ef4444; opacity: 0.85; }
+    .browser-dot.yellow { background: #f59e0b; opacity: 0.85; }
+    .browser-dot.green { background: #10b981; opacity: 0.85; }
+
+    .browser-url-pill {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-pill);
+      padding: 0.22rem 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .browser-url-pill svg {
+      color: #38bdf8;
+      flex-shrink: 0;
+    }
+
+    .sample-img-frame {
+      width: 100%;
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      background: #02040a;
+    }
+
+    .sample-img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      transition: transform 0.5s ease;
+    }
+
+    .folivio-sample-card:hover .sample-img-frame img {
+      transform: scale(1.05);
+    }
+
+    .sample-tag-overlay {
+      position: absolute;
+      bottom: 10px;
+      left: 12px;
+      background: rgba(3, 7, 18, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: var(--radius-pill);
+      padding: 0.25rem 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #38bdf8;
+      text-transform: uppercase;
+    }
+
+    .sample-content {
+      padding: 1.5rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .sample-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+
+    .sample-desc {
+      font-size: 0.86rem;
+      line-height: 1.55;
+      color: #94a3b8;
+      margin-bottom: 1.1rem;
+    }
+
+    .sample-features-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .sample-feature-badge {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-pill);
+      padding: 0.2rem 0.6rem;
+      font-size: 0.72rem;
+      color: #cbd5e1;
+    }
+
+    .sample-view-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      width: 100%;
+      padding: 0.65rem 1rem;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-pill);
+      color: #38bdf8;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .sample-view-btn:hover {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);
     }
     .folivio-services-grid {
       display: grid;
@@ -2462,19 +2732,28 @@ def build_ultimate_universe_html():
     }
 
     .brochure-modal-container {
-      background: #090d1a;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 18px;
-      width: 100%;
-      max-width: 1100px;
-      height: 90vh;
-      max-height: 960px;
+      background: #070b16;
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      border-radius: 16px;
+      width: 96vw;
+      max-width: 1380px;
+      height: 94vh;
+      max-height: 98vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(56, 189, 248, 0.15);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 45px rgba(56, 189, 248, 0.16);
       overflow: hidden;
-      transform: scale(0.96) translateY(12px);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: scale(0.97) translateY(10px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .brochure-modal-container.is-fullscreen {
+      width: 100vw !important;
+      max-width: 100vw !important;
+      height: 100vh !important;
+      max-height: 100vh !important;
+      border-radius: 0 !important;
+      border: none !important;
     }
 
     #brochureModalOverlay.open .brochure-modal-container {
@@ -2696,7 +2975,8 @@ def build_ultimate_universe_html():
 
     @media (max-width: 1024px) {
       .products-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.15rem;
       }
       .contact-grid {
         grid-template-columns: 1fr;
@@ -2716,7 +2996,7 @@ def build_ultimate_universe_html():
       }
       .solutions-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 1.25rem;
+        gap: 1.15rem;
       }
     }
 
@@ -2894,14 +3174,14 @@ def build_ultimate_universe_html():
       </a>
 
       <ul class="nav-links">
-        <li><a href="#hero" class="nav-link active">Home</a></li>
-        <li><a href="#services" class="nav-link">Services</a></li>
-        <li><a href="#solutions" class="nav-link">Solutions</a></li>
-        <li><a href="#products" class="nav-link">Products</a></li>
-        <li><a href="#about" class="nav-link">About</a></li>
-        <li><a href="#folivio" class="nav-link">FOLIVIO</a></li>
-        <li><a href="#insights" class="nav-link">Insights</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li><a href="#hero" class="nav-link active" data-section="hero">Home</a></li>
+        <li><a href="#services" class="nav-link" data-section="services">Services</a></li>
+        <li><a href="#solutions" class="nav-link" data-section="solutions">Solutions</a></li>
+        <li><a href="#products" class="nav-link" data-section="products">Products</a></li>
+        <li><a href="#about" class="nav-link" data-section="about">About</a></li>
+        <li><a href="folivio.html" target="_blank" class="nav-link folivio-nav-pill" data-section="folivio" title="Open FOLIVIO dedicated page">FOLIVIO ↗</a></li>
+        <li><a href="#insights" class="nav-link" data-section="insights">Insights</a></li>
+        <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
       </ul>
 
       <div class="nav-right-actions">
@@ -2930,14 +3210,14 @@ def build_ultimate_universe_html():
       <button type="button" class="drawer-close-btn" id="mobileDrawerClose">&times;</button>
     </div>
     <ul class="drawer-links">
-      <li><a href="#hero" class="drawer-link">Home</a></li>
-      <li><a href="#services" class="drawer-link">Services</a></li>
-      <li><a href="#solutions" class="drawer-link">Solutions</a></li>
-      <li><a href="#products" class="drawer-link">Products</a></li>
-      <li><a href="#about" class="drawer-link">About</a></li>
-      <li><a href="#folivio" class="drawer-link">FOLIVIO</a></li>
-      <li><a href="#insights" class="drawer-link">Insights</a></li>
-      <li><a href="#contact" class="drawer-link">Contact</a></li>
+      <li><a href="#hero" class="drawer-link active" data-section="hero">Home</a></li>
+      <li><a href="#services" class="drawer-link" data-section="services">Services</a></li>
+      <li><a href="#solutions" class="drawer-link" data-section="solutions">Solutions</a></li>
+      <li><a href="#products" class="drawer-link" data-section="products">Products</a></li>
+      <li><a href="#about" class="drawer-link" data-section="about">About</a></li>
+      <li><a href="folivio.html" target="_blank" class="drawer-link" data-section="folivio">FOLIVIO ↗</a></li>
+      <li><a href="#insights" class="drawer-link" data-section="insights">Insights</a></li>
+      <li><a href="#contact" class="drawer-link" data-section="contact">Contact</a></li>
     </ul>
     <div class="drawer-footer">
       <a href="#contact" class="nav-cta-btn" style="display:inline-flex;justify-content:center;" onclick="selectConsultationService('General Business Consultation')">
@@ -3231,7 +3511,7 @@ def build_ultimate_universe_html():
 
         <div class="solutions-grid">
           <!-- PACKAGE 1: FOR STARTUPS -->
-          <div class="solution-card">
+          <div class="solution-card" onclick="openBrochureModal('startups')" title="Click to explore and view brochure">
             <div>
               <div class="solution-badge">LAUNCH &middot; ACCELERATE</div>
               <h3>For Startups</h3>
@@ -3248,19 +3528,15 @@ def build_ultimate_universe_html():
               </ul>
             </div>
             <div class="solution-actions-row">
-              <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
-                <span>Explore Startup Package</span>
-                <span>&rarr;</span>
-              </a>
-              <a href="brochures/solutions-for-startups.pdf" target="_blank" download="NIVORA - Solutions For Startups Package.pdf" class="solution-brochure-btn" onclick="openBrochureModal('startups'); return false;" title="View & Download Solutions For Startups Brochure (PDF)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-                <span>Package PDF</span>
-              </a>
+              <button type="button" class="btn-solution-explore" onclick="event.stopPropagation(); openBrochureModal('startups')">
+                <span>Explore Package &amp; Brochure</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
             </div>
           </div>
 
           <!-- PACKAGE 2: FOR SMES -->
-          <div class="solution-card">
+          <div class="solution-card" onclick="openBrochureModal('smes')" title="Click to explore and view brochure">
             <div>
               <div class="solution-badge">SCALE &middot; CONTROL</div>
               <h3>For SMEs</h3>
@@ -3277,19 +3553,15 @@ def build_ultimate_universe_html():
               </ul>
             </div>
             <div class="solution-actions-row">
-              <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
-                <span>Explore SME Package</span>
-                <span>&rarr;</span>
-              </a>
-              <a href="brochures/solutions-for-smes.pdf" target="_blank" download="NIVORA - Solutions For SMEs Package.pdf" class="solution-brochure-btn" onclick="openBrochureModal('smes'); return false;" title="View & Download Solutions For SMEs Brochure (PDF)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-                <span>Package PDF</span>
-              </a>
+              <button type="button" class="btn-solution-explore" onclick="event.stopPropagation(); openBrochureModal('smes')">
+                <span>Explore Package &amp; Brochure</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
             </div>
           </div>
 
           <!-- PACKAGE 3: FOR ENTREPRENEURS -->
-          <div class="solution-card">
+          <div class="solution-card" onclick="openBrochureModal('entrepreneurs')" title="Click to explore and view brochure">
             <div>
               <div class="solution-badge">VISION &middot; EXECUTE</div>
               <h3>For Entrepreneurs</h3>
@@ -3306,19 +3578,15 @@ def build_ultimate_universe_html():
               </ul>
             </div>
             <div class="solution-actions-row">
-              <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
-                <span>Explore Entrepreneur Solutions</span>
-                <span>&rarr;</span>
-              </a>
-              <a href="brochures/solutions-for-entrepreneurs.pdf" target="_blank" download="NIVORA - Solutions For Entrepreneurs Package.pdf" class="solution-brochure-btn" onclick="openBrochureModal('entrepreneurs'); return false;" title="View & Download Solutions For Entrepreneurs Brochure (PDF)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-                <span>Package PDF</span>
-              </a>
+              <button type="button" class="btn-solution-explore" onclick="event.stopPropagation(); openBrochureModal('entrepreneurs')">
+                <span>Explore Package &amp; Brochure</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
             </div>
           </div>
 
           <!-- PACKAGE 4: FOR PROFESSIONALS -->
-          <div class="solution-card">
+          <div class="solution-card" onclick="openBrochureModal('professionals')" title="Click to explore and view brochure">
             <div>
               <div class="solution-badge">PRACTICE &middot; ELEVATE</div>
               <h3>For Professionals</h3>
@@ -3335,14 +3603,10 @@ def build_ultimate_universe_html():
               </ul>
             </div>
             <div class="solution-actions-row">
-              <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
-                <span>Explore Professional Support</span>
-                <span>&rarr;</span>
-              </a>
-              <a href="brochures/solutions-for-professionals.pdf" target="_blank" download="NIVORA - Solutions For Professionals Package.pdf" class="solution-brochure-btn" onclick="openBrochureModal('professionals'); return false;" title="View & Download Solutions For Professionals Brochure (PDF)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-                <span>Package PDF</span>
-              </a>
+              <button type="button" class="btn-solution-explore" onclick="event.stopPropagation(); openBrochureModal('professionals')">
+                <span>Explore Package &amp; Brochure</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
             </div>
           </div>
         </div>
@@ -3366,7 +3630,6 @@ def build_ultimate_universe_html():
         <div class="products-grid">
           <!-- CARD 1: CHECKRA -->
           <article class="world-card card-checkra">
-            <img src="assets/images/checkra-emblem.png" alt="" class="card-watermark">
             <div class="world-art-wrap">
               <img src="assets/images/checkra-logo.png" alt="CHECKRA logo" loading="lazy">
             </div>
@@ -3493,7 +3756,6 @@ def build_ultimate_universe_html():
 
           <!-- CARD 4: SAYORA -->
           <article class="world-card card-sayora">
-            <img src="assets/images/sayora-emblem.png" alt="" class="card-watermark">
             <div class="world-art-wrap">
               <img src="assets/images/sayora-logo.png" alt="SAYORA logo" loading="lazy">
             </div>
@@ -3641,11 +3903,19 @@ def build_ultimate_universe_html():
     <section class="section folivio-section" id="folivio">
       <div class="section-divider"></div>
       <div class="container">
-        <!-- 1. FOLIVIO HERO & STRATEGIC POSITIONING -->
-        <div class="folivio-hero-box">
+        <div class="section-head" style="margin-bottom: 2.2rem;">
+          <div class="kicker">// 05 &middot; Career Branding &amp; Digital Presence</div>
+          <h2>Executive Branding &amp;<br><span class="grad-accent">Personal Digital Presence.</span></h2>
+          <p class="section-intro-text">
+            For professionals, founders, and leaders who need their digital identity and credentials to command absolute market respect.
+          </p>
+        </div>
+
+        <!-- FOLIVIO CONCISE BRIEF BOX -->
+        <div class="folivio-hero-box" style="margin-bottom: 0;">
           <div class="folivio-badge-pill">
             <span class="folivio-badge-dot"></span>
-            <span>A Professional Service by Nivas Bennabatthula</span>
+            <span>A Professional Service by Nivas Bennabatthula &middot; NIVORA</span>
           </div>
 
           <div class="folivio-brand-row">
@@ -3656,117 +3926,46 @@ def build_ultimate_universe_html():
               <h2 class="folivio-title">FOLIVIO</h2>
               <div class="folivio-subtag">Build. Showcase. Grow.</div>
               <div class="folivio-pills-row">
-                <span>Career Branding</span>
+                <span>Personal Websites</span>
                 <span class="folivio-pill-sep">&middot;</span>
-                <span>Digital Presence</span>
+                <span>ATS Resumes</span>
+                <span class="folivio-pill-sep">&middot;</span>
+                <span>LinkedIn Strategy</span>
               </div>
             </div>
           </div>
 
           <p class="folivio-manifesto">
-            FOLIVIO helps students, freshers and professionals turn their education, skills, projects, certifications and experience into a polished professional identity that is ready to be seen, shared and remembered.
+            FOLIVIO is NIVORA's specialized career branding and portfolio studio. We help ambitious professionals, leaders, engineers, and consultants transform their achievements, skills, and projects into high-converting personal websites and interview-winning resumes.
           </p>
 
-          <div class="folivio-cta-wrap">
-            <a href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="folivio-prime-btn">
-              <span>Connect with FOLIVIO &rarr;</span>
+          <div class="folivio-brief-pillars" style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-bottom:2.2rem;">
+            <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-pill);padding:0.45rem 1.05rem;font-size:0.84rem;color:#e2e8f0;display:inline-flex;align-items:center;gap:0.45rem;">
+              <span style="color:#38bdf8;font-weight:700;">✓</span> Custom Portfolio Websites with Custom Domains
+            </div>
+            <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-pill);padding:0.45rem 1.05rem;font-size:0.84rem;color:#e2e8f0;display:inline-flex;align-items:center;gap:0.45rem;">
+              <span style="color:#38bdf8;font-weight:700;">✓</span> ATS-Engineered Executive Resumes (98% Pass Rate)
+            </div>
+            <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-pill);padding:0.45rem 1.05rem;font-size:0.84rem;color:#e2e8f0;display:inline-flex;align-items:center;gap:0.45rem;">
+              <span style="color:#38bdf8;font-weight:700;">✓</span> Strategic LinkedIn Makeovers &amp; Thought Leadership
+            </div>
+          </div>
+
+          <div class="folivio-actions-row">
+            <a href="folivio.html" target="_blank" class="folivio-prime-btn">
+              <span>Explore FOLIVIO &amp; View All Portfolios 📃 ↗</span>
+            </a>
+            <a href="#contact" class="folivio-sec-btn" onclick="selectConsultationService('FOLIVIO Career Branding')">
+              <span>Book Portfolio Consultation &rarr;</span>
+            </a>
+            <a href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="folivio-sec-btn" title="Visit FOLIVIO on Instagram">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+              <span>Instagram @folivio.ai</span>
             </a>
           </div>
         </div>
-
-        <!-- 2. FOLIVIO 4-CARD SERVICE GRID -->
-        <div class="folivio-sub-head">
-          <div class="kicker">// 01 &middot; Career Branding Services</div>
-          <h3 style="font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.4rem);color:#fff;margin-top:0.4rem;">Tailored Services for Every Professional</h3>
-        </div>
-
-        <div class="folivio-services-grid">
-          <div class="folivio-card">
-            <div class="folivio-card-num">01 &mdash; RESUMES</div>
-            <h4>Professional Resumes</h4>
-            <p>Create polished, role-focused resumes designed to present education, skills, projects, certifications and experience clearly.</p>
-          </div>
-          <div class="folivio-card">
-            <div class="folivio-card-num">02 &mdash; PORTFOLIOS</div>
-            <h4>Personal Portfolios</h4>
-            <p>Build modern personal portfolio websites that showcase your work, projects, achievements and professional story.</p>
-          </div>
-          <div class="folivio-card">
-            <div class="folivio-card-num">03 &mdash; LINKEDIN</div>
-            <h4>LinkedIn Makeovers</h4>
-            <p>Improve your LinkedIn presence with stronger positioning, profile content, project presentation and professional branding.</p>
-          </div>
-          <div class="folivio-card">
-            <div class="folivio-card-num">04 &mdash; WEBSITES</div>
-            <h4>Portfolio Websites</h4>
-            <p>Create a dedicated personal website that gives recruiters, clients and collaborators one place to understand your professional profile.</p>
-          </div>
-        </div>
-
-        <!-- 3. FOLIVIO BENEFITS -->
-        <div class="folivio-sub-head">
-          <div class="kicker">// 02 &middot; Strategic Benefits</div>
-          <h3 style="font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.4rem);color:#fff;margin-top:0.4rem;">Why FOLIVIO?</h3>
-        </div>
-
-        <div class="folivio-benefits-grid">
-          <div class="folivio-benefit-card">
-            <h5>Stronger First Impression</h5>
-            <p>Present yourself professionally from the first interaction.</p>
-          </div>
-          <div class="folivio-benefit-card">
-            <h5>Clear Professional Identity</h5>
-            <p>Turn scattered education, skills and experiences into one coherent career story.</p>
-          </div>
-          <div class="folivio-benefit-card">
-            <h5>Better Project Visibility</h5>
-            <p>Showcase projects and achievements instead of simply listing them.</p>
-          </div>
-          <div class="folivio-benefit-card">
-            <h5>Recruiter-Friendly Presentation</h5>
-            <p>Make important information easier to discover and understand.</p>
-          </div>
-          <div class="folivio-benefit-card">
-            <h5>Consistent Personal Brand</h5>
-            <p>Maintain a professional identity across your resume, LinkedIn and portfolio.</p>
-          </div>
-          <div class="folivio-benefit-card">
-            <h5>Ready to Showcase</h5>
-            <p>Create digital assets that can be shared with recruiters, employers, clients and collaborators.</p>
-          </div>
-        </div>
-
-        <!-- 4. FOLIVIO PROCESS -->
-        <div class="folivio-sub-head">
-          <div class="kicker">// 03 &middot; The Methodology</div>
-          <h3 style="font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.4rem);color:#fff;margin-top:0.4rem;">The FOLIVIO Process</h3>
-        </div>
-
-        <div class="folivio-process-steps">
-          <div class="folivio-step-card">
-            <div class="step-badge">01 &middot; DISCOVER</div>
-            <h4>Discover</h4>
-            <p>Understand your background, goals, skills and experience.</p>
-          </div>
-          <div class="folivio-step-arrow">&rarr;</div>
-          <div class="folivio-step-card">
-            <div class="step-badge">02 &middot; DEFINE</div>
-            <h4>Define</h4>
-            <p>Build a clear professional positioning.</p>
-          </div>
-          <div class="folivio-step-arrow">&rarr;</div>
-          <div class="folivio-step-card">
-            <div class="step-badge">03 &middot; DESIGN</div>
-            <h4>Design</h4>
-            <p>Create the required career assets.</p>
-          </div>
-          <div class="folivio-step-arrow">&rarr;</div>
-          <div class="folivio-step-card">
-            <div class="step-badge">04 &middot; SHOWCASE</div>
-            <h4>Showcase</h4>
-            <p>Present everything through a polished digital presence.</p>
-          </div>
-        </div>
+      </div>
+    </section>
       </div>
     </section>
 
@@ -4070,6 +4269,10 @@ def build_ultimate_universe_html():
           <h3 class="brochure-modal-title" id="bmTitle">Service Brochure</h3>
         </div>
         <div class="brochure-header-actions">
+          <button type="button" class="btn-bm-tab" id="bmFullscreenBtn" onclick="toggleBrochureFullscreen()" title="Toggle Fullscreen / Expansive View">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+            <span id="bmFsText">Full View</span>
+          </button>
           <a id="bmDownloadBtn" href="#" download="" class="btn-bm-download" title="Download Full PDF Brochure">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             <span>Download PDF</span>
@@ -4358,7 +4561,6 @@ def build_ultimate_universe_html():
     let milkyWayGroup, galacticBulge, spiralArmStars;
     let distantStarField, brightBeaconsPoints;
     let globeGroup, globeHaloSprite;
-    let nebulaPuffs = [];
 
     // Hyperspace Warp System (Conditional Updates)
     let warpLinesMesh, warpLinesGeo;
@@ -4456,19 +4658,6 @@ def build_ultimate_universe_html():
       return new THREE.CanvasTexture(c);
     }
 
-    function createProceduralNebulaTexture(c1, c2) {
-      const c = document.createElement('canvas');
-      c.width = 128; c.height = 128;
-      const ctx = c.getContext('2d');
-      const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
-      grad.addColorStop(0, c1);
-      grad.addColorStop(0.55, c2);
-      grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 128, 128);
-      return new THREE.CanvasTexture(c);
-    }
-
     function initUniverseEngineCinematic() {
       try {
         if (!canvas) return;
@@ -4493,12 +4682,11 @@ def build_ultimate_universe_html():
         camera.position.set(baseCamX, baseCamY, baseCamZ);
         camera.lookAt(0, 18, 0);
 
-        // Build Universe Elements with Full Atmospheric Quality
+        // Build Universe Elements with Full Atmospheric Quality (Milky Way + Stars + Bulge)
         buildDistantStarfield(PerformanceEngine.particleScale);
         buildWarpStarfield(PerformanceEngine.particleScale);
         buildProceduralMilkyWay(PerformanceEngine.particleScale);
         buildGalacticBulge(PerformanceEngine.particleScale);
-        buildSubtleCosmicNebula();
         buildBrightStellarBeacons();
         buildNivoraGlobeCore(PerformanceEngine.particleScale);
 
@@ -4664,44 +4852,6 @@ def build_ultimate_universe_html():
 
       galacticBulge = new THREE.Points(bulgeGeo, bulgeMat);
       milkyWayGroup.add(galacticBulge);
-    }
-
-    /* -------------------------------------------------------------
-       COSMIC NEBULA PUFFS (12 SUBTLE GLOWING PUFFS)
-       ------------------------------------------------------------- */
-    function buildSubtleCosmicNebula() {
-      const puffs = [
-        { color1: 'rgba(168, 85, 247, 0.26)', color2: 'rgba(59, 130, 246, 0.12)', scale: 320 },
-        { color1: 'rgba(6, 182, 212, 0.22)', color2: 'rgba(147, 51, 234, 0.10)', scale: 360 },
-        { color1: 'rgba(236, 72, 153, 0.18)', color2: 'rgba(30, 58, 138, 0.12)', scale: 280 },
-        { color1: 'rgba(99, 102, 241, 0.20)', color2: 'rgba(6, 182, 212, 0.08)', scale: 320 }
-      ];
-
-      for (let i = 0; i < 16; i++) {
-        const pCfg = puffs[i % puffs.length];
-        const tex = createProceduralNebulaTexture(pCfg.color1, pCfg.color2);
-        const mat = new THREE.SpriteMaterial({
-          map: tex,
-          transparent: true,
-          opacity: 0.32,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false
-        });
-        const sprite = new THREE.Sprite(mat);
-
-        const zPos = 180 - i * 110 + (Math.random() - 0.5) * 60;
-        const angle = (i * 0.9) + Math.random() * 0.5;
-        const radius = 60 + Math.random() * 140;
-        sprite.position.set(
-          Math.cos(angle) * radius,
-          18 + Math.sin(angle) * 0.6 * radius + (Math.random() - 0.5) * 40,
-          zPos
-        );
-        const s = 180 + Math.random() * 220;
-        sprite.scale.set(s, s, 1);
-        scene.add(sprite);
-        nebulaPuffs.push({ sprite, baseScale: s, baseOpacity: mat.opacity, seed: Math.random() * 10 });
-      }
     }
 
     /* -------------------------------------------------------------
@@ -4958,6 +5108,55 @@ def build_ultimate_universe_html():
           }
         });
       }
+
+      // Setup Nav ScrollSpy & Active Tab Highlighting
+      const sections = ['hero', 'services', 'solutions', 'products', 'about', 'folivio', 'insights', 'contact'];
+      const navLinks = document.querySelectorAll('.nav-link[data-section], .drawer-link[data-section]');
+
+      function updateActiveTab() {
+        const scrollY = window.scrollY || window.pageYOffset;
+        const triggerY = scrollY + 220;
+        let activeSection = 'hero';
+
+        for (let i = 0; i < sections.length; i++) {
+          const sec = document.getElementById(sections[i]);
+          if (sec) {
+            const top = sec.offsetTop;
+            const height = sec.offsetHeight;
+            if (triggerY >= top && triggerY < top + height) {
+              activeSection = sections[i];
+              break;
+            } else if (triggerY >= top) {
+              activeSection = sections[i];
+            }
+          }
+        }
+
+        if ((window.innerHeight + scrollY) >= document.documentElement.scrollHeight - 100) {
+          activeSection = 'contact';
+        }
+
+        navLinks.forEach(link => {
+          if (link.getAttribute('data-section') === activeSection) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', updateActiveTab, { passive: true });
+      updateActiveTab();
+
+      document.querySelectorAll('.nav-link[href^="#"], .drawer-link[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function() {
+          const sec = this.getAttribute('data-section');
+          if (sec) {
+            navLinks.forEach(l => l.classList.remove('active'));
+            document.querySelectorAll(`[data-section="${sec}"]`).forEach(l => l.classList.add('active'));
+          }
+        });
+      });
     }
 
     /* -------------------------------------------------------------
@@ -5061,14 +5260,6 @@ def build_ultimate_universe_html():
       if (globeHaloSprite) {
         const hPulse = 1.0 + 0.04 * Math.sin(elapsed * 2.0);
         globeHaloSprite.scale.set(72 * hPulse, 72 * hPulse, 1);
-      }
-
-      // Subtle Nebula Updates
-      for (let i = 0; i < nebulaPuffs.length; i++) {
-        const np = nebulaPuffs[i];
-        const distZ = Math.abs(camera.position.z - np.sprite.position.z);
-        const fade = Math.min(1.0, Math.max(0.0, (distZ - 50) / 130));
-        np.sprite.material.opacity = (np.baseOpacity || 0.35) * fade;
       }
 
       // Warp Line System — CONDITIONAL CPU UPDATES (Zero CPU when stationary)
@@ -5341,7 +5532,7 @@ def build_ultimate_universe_html():
         tabBtn.href = data.pdf;
       }
       if (iframe) {
-        iframe.src = data.pdf + '#toolbar=1&navpanes=0';
+        iframe.src = data.pdf + '#toolbar=1&navpanes=0&view=FitH';
       }
 
       if (overlay) {
@@ -5351,12 +5542,27 @@ def build_ultimate_universe_html():
       document.body.style.overflow = 'hidden';
     }
 
+    function toggleBrochureFullscreen() {
+      const container = document.querySelector('.brochure-modal-container');
+      const fsText = document.getElementById('bmFsText');
+      if (container) {
+        container.classList.toggle('is-fullscreen');
+        if (fsText) {
+          fsText.textContent = container.classList.contains('is-fullscreen') ? 'Exit Full View' : 'Full View';
+        }
+      }
+    }
+
     function closeBrochureModal() {
       const overlay = document.getElementById('brochureModalOverlay');
       if (overlay) {
         overlay.classList.remove('open');
         overlay.setAttribute('aria-hidden', 'true');
       }
+      const container = document.querySelector('.brochure-modal-container');
+      if (container) container.classList.remove('is-fullscreen');
+      const fsText = document.getElementById('bmFsText');
+      if (fsText) fsText.textContent = 'Full View';
       const iframe = document.getElementById('brochureIframe');
       if (iframe) iframe.src = 'about:blank';
       document.body.style.overflow = '';
