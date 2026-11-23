@@ -907,27 +907,29 @@ def build_consultancy_html():
     }
 
     /* -------------------------------------------------------------
-       SECTION 01: PROFESSIONAL SERVICES GRID
+       SECTION 01: PROFESSIONAL SERVICES GRID (COMPACT SMALL CARDS)
        ------------------------------------------------------------- */
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-      gap: 2.0rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
     }
 
     .service-card {
-      background: rgba(11, 16, 32, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: var(--radius-lg);
-      padding: 2.4rem;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      background: rgba(10, 14, 26, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      border-radius: 16px;
+      padding: 1.55rem 1.35rem 1.35rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
       overflow: hidden;
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      cursor: pointer;
     }
 
     .service-card::before {
@@ -937,15 +939,16 @@ def build_consultancy_html():
       left: 0;
       right: 0;
       height: 2px;
-      background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.5) 50%, transparent 100%);
-      opacity: 0.6;
+      background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.6) 50%, transparent 100%);
+      opacity: 0.4;
       transition: opacity 0.3s ease;
     }
 
     .service-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(56, 189, 248, 0.35);
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 35px rgba(56, 189, 248, 0.12);
+      transform: translateY(-5px);
+      border-color: rgba(56, 189, 248, 0.45);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(56, 189, 248, 0.15);
+      background: rgba(15, 23, 42, 0.90);
     }
 
     .service-card:hover::before {
@@ -953,79 +956,74 @@ def build_consultancy_html():
     }
 
     .service-header {
-      margin-bottom: 1.25rem;
+      margin-bottom: 0.75rem;
     }
 
     .service-kicker {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 600;
       letter-spacing: 0.14em;
       color: #38bdf8;
       text-transform: uppercase;
-      margin-bottom: 0.45rem;
+      margin-bottom: 0.35rem;
     }
 
     .service-title {
       font-family: var(--font-display);
-      font-size: 1.6rem;
+      font-size: 1.25rem;
       font-weight: 700;
-      letter-spacing: -0.025em;
+      letter-spacing: -0.02em;
       color: #ffffff;
-      margin-bottom: 0.75rem;
+      line-height: 1.25;
+      margin-bottom: 0.45rem;
     }
 
     .service-desc {
-      font-size: 0.94rem;
-      line-height: 1.65;
-      color: #cbd5e1;
-      margin-bottom: 1.5rem;
-    }
-
-    .service-note-box {
-      font-size: 0.8rem;
+      font-size: 0.86rem;
+      line-height: 1.55;
       color: #94a3b8;
-      background: rgba(255, 255, 255, 0.03);
-      border-left: 2px solid rgba(56, 189, 248, 0.4);
-      padding: 0.5rem 0.85rem;
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      margin-bottom: 1.4rem;
-      font-style: italic;
+      margin-bottom: 1.15rem;
     }
 
-    .service-features-label {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #94a3b8;
-      margin-bottom: 0.85rem;
+    .service-card-bottom {
+      margin-top: auto;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
 
-    .service-features-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 2.0rem;
-      list-style: none;
-    }
-
-    .service-tag {
-      font-family: var(--font-ui);
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: #e2e8f0;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .btn-service-explore {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.65rem 1.05rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: var(--radius-pill);
-      padding: 0.28rem 0.75rem;
-      transition: all 0.2s ease;
+      color: #f1f5f9;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s ease;
     }
 
-    .service-card:hover .service-tag {
-      background: rgba(56, 189, 248, 0.08);
-      border-color: rgba(56, 189, 248, 0.25);
+    .btn-service-explore:hover {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(56, 189, 248, 0.25) 100%);
+      border-color: rgba(56, 189, 248, 0.5);
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.2);
+    }
+
+    .explore-arrow {
+      transition: transform 0.25s ease;
+    }
+
+    .service-card:hover .explore-arrow,
+    .btn-service-explore:hover .explore-arrow {
+      transform: translateX(4px);
     }
 
     .service-cta-btn {
@@ -2390,6 +2388,244 @@ def build_consultancy_html():
       color: #94a3b8;
     }
 
+
+    /* -------------------------------------------------------------
+       BROCHURE MODAL VIEWER SYSTEM
+       ------------------------------------------------------------- */
+    #brochureModalOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 5, 12, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #brochureModalOverlay.open {
+      display: flex;
+      opacity: 1;
+    }
+
+    .brochure-modal-container {
+      background: #090d1a;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 1100px;
+      height: 90vh;
+      max-height: 960px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(56, 189, 248, 0.15);
+      overflow: hidden;
+      transform: scale(0.96) translateY(12px);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #brochureModalOverlay.open .brochure-modal-container {
+      transform: scale(1) translateY(0);
+    }
+
+    .brochure-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.0rem 1.5rem;
+      background: rgba(13, 19, 36, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+      gap: 1.0rem;
+    }
+
+    .brochure-header-left {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .brochure-kicker-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: #38bdf8;
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+
+    .brochure-modal-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brochure-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .btn-bm-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.15rem;
+      background: linear-gradient(135deg, #a855f7 0%, #38bdf8 100%);
+      color: #ffffff;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+    }
+
+    .btn-bm-download:hover {
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .btn-bm-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 0.95rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #cbd5e1;
+      font-family: var(--font-ui);
+      font-size: 0.8rem;
+      font-weight: 500;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-bm-tab:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+
+    .btn-bm-close {
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      color: #cbd5e1;
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-bm-close:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: rgba(239, 68, 68, 0.5);
+      color: #ffffff;
+    }
+
+    .brochure-modal-viewport {
+      flex: 1;
+      background: #050811;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brochure-pdf-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #0b0f19;
+    }
+
+    .brochure-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 1.5rem;
+      background: rgba(13, 19, 36, 0.9);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+      gap: 1.0rem;
+    }
+
+    .brochure-footer-text {
+      font-size: 0.84rem;
+      color: #94a3b8;
+    }
+
+    .btn-bm-enquire {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 1.1rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: var(--radius-pill);
+      color: #38bdf8;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-bm-enquire:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.7);
+      color: #ffffff;
+    }
+
+    @media (max-width: 768px) {
+      #brochureModalOverlay {
+        padding: 0.5rem;
+      }
+      .brochure-modal-container {
+        height: 94vh;
+        border-radius: 14px;
+      }
+      .brochure-modal-header {
+        padding: 0.75rem 1.0rem;
+      }
+      .brochure-modal-title {
+        font-size: 1.05rem;
+      }
+      .brochure-header-actions {
+        gap: 0.4rem;
+      }
+      .btn-bm-tab {
+        display: none;
+      }
+      .brochure-modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.6rem;
+        padding: 0.75rem 1.0rem;
+        text-align: center;
+      }
+      .btn-bm-enquire {
+        justify-content: center;
+      }
+    }
+
     /* -------------------------------------------------------------
        RESPONSIVE MEDIA QUERIES (DESKTOP, LAPTOP, TABLET, MOBILE)
        ------------------------------------------------------------- */
@@ -2420,7 +2656,8 @@ def build_consultancy_html():
         margin: 0 auto;
       }
       .services-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.15rem;
       }
     }
 
@@ -2464,8 +2701,12 @@ def build_consultancy_html():
         flex-direction: column;
         align-items: flex-start;
       }
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 1.0rem;
+      }
       .service-card {
-        padding: 1.8rem 1.4rem;
+        padding: 1.35rem 1.15rem;
       }
       .contact-form {
         padding: 2.0rem 1.4rem;
@@ -2691,297 +2932,138 @@ def build_consultancy_html():
 
         <div class="services-grid">
           <!-- SERVICE 1: ACCOUNTING & BOOKKEEPING -->
-          <article class="service-card">
-            <div>
-              <div class="service-header">
-                <div class="service-kicker">01 &middot; Core Records</div>
-                <h3 class="service-title">Accounting &amp; Bookkeeping</h3>
-              </div>
-              <p class="service-desc">
-                Accurate, organized and management-ready financial records with structured ledger maintenance, bank reconciliation and reporting support.
-              </p>
-              <div class="service-features-label">Included Services:</div>
-              <ul class="service-features-list">
-                <li class="service-tag">Financial Accounting</li>
-                <li class="service-tag">Bookkeeping &amp; Ledger</li>
-                <li class="service-tag">Financial Statement Prep</li>
-                <li class="service-tag">Bank Reconciliation (BRS)</li>
-                <li class="service-tag">AP &amp; AR Management</li>
-                <li class="service-tag">MIS Reports</li>
-                <li class="service-tag">Financial Analysis</li>
-                <li class="service-tag">Expense &amp; Revenue Review</li>
-                <li class="service-tag">Ledger Scrutiny</li>
-                <li class="service-tag">Management Reporting</li>
-              </ul>
+          <article class="service-card" onclick="openBrochureModal('accounting')" title="Click to explore and view brochure">
+            <div class="service-header">
+              <div class="service-kicker">01 &middot; Core Records</div>
+              <h3 class="service-title">Accounting &amp; Bookkeeping</h3>
             </div>
-            <div class="service-actions-row">
-              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Accounting & Bookkeeping')">
-                <span>Enquire for Accounting</span>
-                <span>&rarr;</span>
-              </a>
-              <a href="brochures/accounting-and-bookkeeping.pdf" target="_blank" download="NIVORA - Accounting & Bookkeeping Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-                <span>Brochure</span>
-              </a>
+            <p class="service-desc">
+              Accurate, organized and management-ready financial records with structured ledger maintenance, bank reconciliation and reporting support.
+            </p>
+            <div class="service-card-bottom">
+              <button type="button" class="btn-service-explore" onclick="event.stopPropagation(); openBrochureModal('accounting')">
+                <span>Explore &amp; Brochure</span>
+                <span class="explore-arrow">&rarr;</span>
+              </button>
             </div>
           </article>
 
           <!-- SERVICE 2: INCOME TAX SERVICES -->
-          <article class="service-card">
-            <div>
-              <div class="service-header">
-                <div class="service-kicker">02 &middot; Direct Tax</div>
-                <h3 class="service-title">Income Tax Services</h3>
-              </div>
-              <p class="service-desc">
-                Practical income-tax compliance and planning support for individuals, professionals and businesses, delivered with appropriate professional coordination where required.
-              </p>
-              <div class="service-note-box">
-                Professional coordination and support where applicable.
-              </div>
-              <div class="service-features-label">Included Services:</div>
-              <ul class="service-features-list">
-                <li class="service-tag">ITR Filing Support</li>
-                <li class="service-tag">Tax Planning &amp; Advisory</li>
-                <li class="service-tag">Advance Tax Computation</li>
-                <li class="service-tag">TDS / TCS Compliance</li>
-                <li class="service-tag">Tax Audit Coordination</li>
-                <li class="service-tag">Assessment Documentation</li>
-                <li class="service-tag">Notice &amp; Compliance Help</li>
-                <li class="service-tag">Tax Documentation Review</li>
-              </ul>
+          <article class="service-card" onclick="openBrochureModal('income-tax')" title="Click to explore and view brochure">
+            <div class="service-header">
+              <div class="service-kicker">02 &middot; Direct Tax</div>
+              <h3 class="service-title">Income Tax Services</h3>
             </div>
-            <div class="service-actions-row">
-              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Income Tax')">
-                <span>Enquire for Tax</span>
-                <span>&rarr;</span>
-              </a>
-              <a href="brochures/income-tax-services.pdf" target="_blank" download="NIVORA - Income Tax Services Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-                <span>Brochure</span>
-              </a>
+            <p class="service-desc">
+              Practical income-tax compliance, advance tax computation, and planning support for individuals, professionals and businesses.
+            </p>
+            <div class="service-card-bottom">
+              <button type="button" class="btn-service-explore" onclick="event.stopPropagation(); openBrochureModal('income-tax')">
+                <span>Explore &amp; Brochure</span>
+                <span class="explore-arrow">&rarr;</span>
+              </button>
             </div>
           </article>
 
           <!-- SERVICE 3: GST SERVICES -->
-          <article class="service-card">
-            <div>
-              <div class="service-header">
-                <div class="service-kicker">03 &middot; Indirect Tax</div>
-                <h3 class="service-title">GST Services</h3>
-              </div>
-              <p class="service-desc">
-                End-to-end GST compliance support for businesses, from registration and return preparation to reconciliation and documentation.
-              </p>
-              <div class="service-note-box">
-                Professional filing and representation coordinated with authorized practitioners.
-              </div>
-              <div class="service-features-label">Included Services:</div>
-              <ul class="service-features-list">
-                <li class="service-tag">GST Registration Support</li>
-                <li class="service-tag">GST Amendments</li>
-                <li class="service-tag">GSTR-1 Preparation / Filing</li>
-                <li class="service-tag">GSTR-3B Preparation / Filing</li>
-                <li class="service-tag">GSTR-9 &amp; 9C Support</li>
-                <li class="service-tag">GST Reconciliation</li>
-                <li class="service-tag">Input Tax Credit (ITC) Review</li>
-                <li class="service-tag">Refund Documentation</li>
-                <li class="service-tag">Notice &amp; Compliance Support</li>
-              </ul>
+          <article class="service-card" onclick="openBrochureModal('gst')" title="Click to explore and view brochure">
+            <div class="service-header">
+              <div class="service-kicker">03 &middot; Indirect Tax</div>
+              <h3 class="service-title">GST Services</h3>
             </div>
-            <div class="service-actions-row">
-              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('GST')">
-                <span>Enquire for GST</span>
-                <span>&rarr;</span>
-              </a>
-              <a href="brochures/gst-services.pdf" target="_blank" download="NIVORA - GST Services Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-                <span>Brochure</span>
-              </a>
+            <p class="service-desc">
+              End-to-end GST compliance support from registration, return preparation (GSTR-1, 3B, 9) to reconciliation and refund documentation.
+            </p>
+            <div class="service-card-bottom">
+              <button type="button" class="btn-service-explore" onclick="event.stopPropagation(); openBrochureModal('gst')">
+                <span>Explore &amp; Brochure</span>
+                <span class="explore-arrow">&rarr;</span>
+              </button>
             </div>
           </article>
 
           <!-- SERVICE 4: PAYROLL & LABOUR COMPLIANCE -->
-          <article class="service-card">
-            <div>
-              <div class="service-header">
-                <div class="service-kicker">04 &middot; Human Capital</div>
-                <h3 class="service-title">Payroll &amp; Labour Compliance</h3>
-              </div>
-              <p class="service-desc">
-                Structured payroll processing and statutory compliance support for growing organizations, ensuring employee satisfaction and regulatory alignment.
-              </p>
-              <div class="service-features-label">Included Services:</div>
-              <ul class="service-features-list">
-                <li class="service-tag">Salary Processing</li>
-                <li class="service-tag">Payroll Management</li>
-                <li class="service-tag">Payslip Preparation</li>
-                <li class="service-tag">PF / EPF Support</li>
-                <li class="service-tag">ESI / ESIC Support</li>
-                <li class="service-tag">Professional Tax (PT)</li>
-                <li class="service-tag">Labour Compliance</li>
-                <li class="service-tag">Form 16 Coordination</li>
-                <li class="service-tag">Attendance &amp; Leave Records</li>
-                <li class="service-tag">Employee Documentation</li>
-              </ul>
+          <article class="service-card" onclick="openBrochureModal('payroll')" title="Click to explore and view brochure">
+            <div class="service-header">
+              <div class="service-kicker">04 &middot; Human Capital</div>
+              <h3 class="service-title">Payroll &amp; Labour Compliance</h3>
             </div>
-            <div class="service-actions-row">
-              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Payroll')">
-                <span>Enquire for Payroll</span>
-                <span>&rarr;</span>
-              </a>
-              <a href="brochures/payroll-and-labour-compliance.pdf" target="_blank" download="NIVORA - Payroll & Labour Compliance Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-                <span>Brochure</span>
-              </a>
+            <p class="service-desc">
+              Structured salary processing, payslip management, PF/ESI/PT statutory filings, and employee documentation for growing teams.
+            </p>
+            <div class="service-card-bottom">
+              <button type="button" class="btn-service-explore" onclick="event.stopPropagation(); openBrochureModal('payroll')">
+                <span>Explore &amp; Brochure</span>
+                <span class="explore-arrow">&rarr;</span>
+              </button>
             </div>
           </article>
 
           <!-- SERVICE 5: FINANCIAL ADVISORY -->
-          <article class="service-card">
-            <div>
-              <div class="service-header">
-                <div class="service-kicker">05 &middot; Strategic Advisory</div>
-                <h3 class="service-title">Financial Advisory</h3>
-              </div>
-              <p class="service-desc">
-                Financial planning and decision-support services designed to help businesses understand performance, manage cash and plan their next stage of growth.
-              </p>
-              <div class="service-note-box">
-                Management decision support and business financial planning within professional consulting scope.
-              </div>
-              <div class="service-features-label">Included Services:</div>
-              <ul class="service-features-list">
-                <li class="service-tag">Business Financial Planning</li>
-                <li class="service-tag">Financial Analysis</li>
-                <li class="service-tag">Cash Flow Planning</li>
-                <li class="service-tag">Working Capital Management</li>
-                <li class="service-tag">Budgeting &amp; Costing</li>
-                <li class="service-tag">Financial Forecasting</li>
-                <li class="service-tag">Bankable Project Reports</li>
-                <li class="service-tag">CMA Data Preparation</li>
-                <li class="service-tag">Loan Documentation Support</li>
-                <li class="service-tag">Financial Model Prep</li>
-                <li class="service-tag">MIS &amp; Board Reports</li>
-              </ul>
+          <article class="service-card" onclick="openBrochureModal('advisory')" title="Click to explore and view brochure">
+            <div class="service-header">
+              <div class="service-kicker">05 &middot; Strategic Advisory</div>
+              <h3 class="service-title">Financial Advisory</h3>
             </div>
-            <div class="service-actions-row">
-              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Financial Advisory')">
-                <span>Discuss Advisory</span>
-                <span>&rarr;</span>
-              </a>
-              <a href="brochures/financial-advisory.pdf" target="_blank" download="NIVORA - Financial Advisory Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-                <span>Brochure</span>
-              </a>
+            <p class="service-desc">
+              Executive financial planning, cash flow forecasting, working capital review, bankable project reports and CMA data preparation.
+            </p>
+            <div class="service-card-bottom">
+              <button type="button" class="btn-service-explore" onclick="event.stopPropagation(); openBrochureModal('advisory')">
+                <span>Explore &amp; Brochure</span>
+                <span class="explore-arrow">&rarr;</span>
+              </button>
             </div>
           </article>
 
           <!-- SERVICE 6: BUSINESS REGISTRATIONS & LICENSING -->
-          <article class="service-card">
-            <div>
-              <div class="service-header">
-                <div class="service-kicker">06 &middot; Entity Setup</div>
-                <h3 class="service-title">Business Registrations &amp; Licensing</h3>
-              </div>
-              <p class="service-desc">
-                Business setup and compliance coordination for entrepreneurs and growing businesses navigating statutory registrations.
-              </p>
-              <div class="service-note-box">
-                Independent documentation facilitation and setup coordination.
-              </div>
-              <div class="service-features-label">Included Services:</div>
-              <ul class="service-features-list">
-                <li class="service-tag">Digital Signature (DSC) Support</li>
-                <li class="service-tag">MSME / Udyam Registration</li>
-                <li class="service-tag">FSSAI Registration Support</li>
-                <li class="service-tag">Import Export Code (IEC)</li>
-                <li class="service-tag">Startup India / DPIIT Support</li>
-                <li class="service-tag">Business Setup Coordination</li>
-                <li class="service-tag">License Documentation</li>
-                <li class="service-tag">Statutory Filings Prep</li>
-              </ul>
+          <article class="service-card" onclick="openBrochureModal('registration')" title="Click to explore and view brochure">
+            <div class="service-header">
+              <div class="service-kicker">06 &middot; Entity Setup</div>
+              <h3 class="service-title">Business Registrations &amp; Licensing</h3>
             </div>
-            <div class="service-actions-row">
-              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Business Registration')">
-                <span>Start Registration</span>
-                <span>&rarr;</span>
-              </a>
-              <a href="brochures/business-registrations-and-licensing.pdf" target="_blank" download="NIVORA - Business Registrations & Licensing Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-                <span>Brochure</span>
-              </a>
+            <p class="service-desc">
+              Entity incorporation, MSME / Udyam, FSSAI, IEC, and regulatory documentation setup for entrepreneurs launching ventures.
+            </p>
+            <div class="service-card-bottom">
+              <button type="button" class="btn-service-explore" onclick="event.stopPropagation(); openBrochureModal('registration')">
+                <span>Explore &amp; Brochure</span>
+                <span class="explore-arrow">&rarr;</span>
+              </button>
             </div>
           </article>
 
           <!-- SERVICE 7: DATA ENTRY & PROCESS MANAGEMENT -->
-          <article class="service-card">
-            <div>
-              <div class="service-header">
-                <div class="service-kicker">07 &middot; Operational Support</div>
-                <h3 class="service-title">Data Entry &amp; Process Management</h3>
-              </div>
-              <p class="service-desc">
-                Reliable back-office support for organizations that need structured data, documentation and spreadsheet operations executed with zero error tolerance.
-              </p>
-              <div class="service-features-label">Included Services:</div>
-              <ul class="service-features-list">
-                <li class="service-tag">Invoice Data Entry</li>
-                <li class="service-tag">Billing Data Extraction</li>
-                <li class="service-tag">Data Cleansing &amp; Scrubbing</li>
-                <li class="service-tag">Document Indexing</li>
-                <li class="service-tag">Document Digitization</li>
-                <li class="service-tag">Excel Data Preparation</li>
-                <li class="service-tag">Spreadsheet Modelling</li>
-                <li class="service-tag">Back-Office Operations</li>
-                <li class="service-tag">Administrative Support</li>
-              </ul>
+          <article class="service-card" onclick="openBrochureModal('data-process')" title="Click to explore and view brochure">
+            <div class="service-header">
+              <div class="service-kicker">07 &middot; Operational Support</div>
+              <h3 class="service-title">Data Entry &amp; Process Management</h3>
             </div>
-            <div class="service-actions-row">
-              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Data & Process Support')">
-                <span>Enquire Process</span>
-                <span>&rarr;</span>
-              </a>
-              <a href="brochures/data-entry-and-process-management.pdf" target="_blank" download="NIVORA - Data Entry & Process Management Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-                <span>Brochure</span>
-              </a>
+            <p class="service-desc">
+              High-accuracy back-office operations, invoice data entry, document digitization, spreadsheet modelling and data scrubbing.
+            </p>
+            <div class="service-card-bottom">
+              <button type="button" class="btn-service-explore" onclick="event.stopPropagation(); openBrochureModal('data-process')">
+                <span>Explore &amp; Brochure</span>
+                <span class="explore-arrow">&rarr;</span>
+              </button>
             </div>
           </article>
 
           <!-- SERVICE 8: DIGITAL & TECHNOLOGY SOLUTIONS -->
-          <article class="service-card">
-            <div>
-              <div class="service-header">
-                <div class="service-kicker">08 &middot; Technology Vertical</div>
-                <h3 class="service-title">Digital &amp; Technology Solutions</h3>
-              </div>
-              <p class="service-desc">
-                Helping businesses use technology, AI and digital products to improve operations, customer experiences and high-velocity decision-making.
-              </p>
-              <div class="service-features-label">Included Services:</div>
-              <ul class="service-features-list">
-                <li class="service-tag">Business Website Development</li>
-                <li class="service-tag">Web Application Engineering</li>
-                <li class="service-tag">AI-Powered Solutions</li>
-                <li class="service-tag">Workflow Automation</li>
-                <li class="service-tag">Process Digitization</li>
-                <li class="service-tag">Dashboard &amp; BI Solutions</li>
-                <li class="service-tag">Digital Product Development</li>
-                <li class="service-tag">UI / UX Architecture</li>
-                <li class="service-tag">Technology Consulting</li>
-                <li class="service-tag">Digital Transformation</li>
-              </ul>
+          <article class="service-card" onclick="openBrochureModal('technology')" title="Click to explore and view brochure">
+            <div class="service-header">
+              <div class="service-kicker">08 &middot; Technology Vertical</div>
+              <h3 class="service-title">Digital &amp; Technology Solutions</h3>
             </div>
-            <div class="service-actions-row">
-              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Technology Solutions')">
-                <span>Discuss Tech</span>
-                <span>&rarr;</span>
-              </a>
-              <a href="brochures/digital-and-technology-solutions.pdf" target="_blank" download="NIVORA - Digital & Technology Solutions Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-                <span>Brochure</span>
-              </a>
+            <p class="service-desc">
+              Custom web applications, AI automation tools, business process digitization and BI analytics dashboards engineered for agility.
+            </p>
+            <div class="service-card-bottom">
+              <button type="button" class="btn-service-explore" onclick="event.stopPropagation(); openBrochureModal('technology')">
+                <span>Explore &amp; Brochure</span>
+                <span class="explore-arrow">&rarr;</span>
+              </button>
             </div>
           </article>
         </div>
@@ -3025,7 +3107,7 @@ def build_consultancy_html():
                 <span>Explore Startup Package</span>
                 <span>&rarr;</span>
               </a>
-              <a href="brochures/solutions-for-startups.pdf" target="_blank" download="NIVORA - Solutions For Startups Package.pdf" class="solution-brochure-btn" title="View & Download Solutions For Startups Brochure (PDF)">
+              <a href="brochures/solutions-for-startups.pdf" target="_blank" download="NIVORA - Solutions For Startups Package.pdf" class="solution-brochure-btn" onclick="openBrochureModal('startups'); return false;" title="View & Download Solutions For Startups Brochure (PDF)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
                 <span>Package PDF</span>
               </a>
@@ -3054,7 +3136,7 @@ def build_consultancy_html():
                 <span>Explore SME Package</span>
                 <span>&rarr;</span>
               </a>
-              <a href="brochures/solutions-for-smes.pdf" target="_blank" download="NIVORA - Solutions For SMEs Package.pdf" class="solution-brochure-btn" title="View & Download Solutions For SMEs Brochure (PDF)">
+              <a href="brochures/solutions-for-smes.pdf" target="_blank" download="NIVORA - Solutions For SMEs Package.pdf" class="solution-brochure-btn" onclick="openBrochureModal('smes'); return false;" title="View & Download Solutions For SMEs Brochure (PDF)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
                 <span>Package PDF</span>
               </a>
@@ -3083,7 +3165,7 @@ def build_consultancy_html():
                 <span>Explore Entrepreneur Solutions</span>
                 <span>&rarr;</span>
               </a>
-              <a href="brochures/solutions-for-entrepreneurs.pdf" target="_blank" download="NIVORA - Solutions For Entrepreneurs Package.pdf" class="solution-brochure-btn" title="View & Download Solutions For Entrepreneurs Brochure (PDF)">
+              <a href="brochures/solutions-for-entrepreneurs.pdf" target="_blank" download="NIVORA - Solutions For Entrepreneurs Package.pdf" class="solution-brochure-btn" onclick="openBrochureModal('entrepreneurs'); return false;" title="View & Download Solutions For Entrepreneurs Brochure (PDF)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
                 <span>Package PDF</span>
               </a>
@@ -3112,7 +3194,7 @@ def build_consultancy_html():
                 <span>Explore Professional Support</span>
                 <span>&rarr;</span>
               </a>
-              <a href="brochures/solutions-for-professionals.pdf" target="_blank" download="NIVORA - Solutions For Professionals Package.pdf" class="solution-brochure-btn" title="View & Download Solutions For Professionals Brochure (PDF)">
+              <a href="brochures/solutions-for-professionals.pdf" target="_blank" download="NIVORA - Solutions For Professionals Package.pdf" class="solution-brochure-btn" onclick="openBrochureModal('professionals'); return false;" title="View & Download Solutions For Professionals Brochure (PDF)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
                 <span>Package PDF</span>
               </a>
@@ -3831,6 +3913,41 @@ def build_consultancy_html():
       </div>
     </div>
   </footer>
+
+  <!-- =========================================================
+       BROCHURE VIEWER MODAL SYSTEM (FULL INTERACTIVE & DOWNLOAD)
+       ========================================================= -->
+  <div id="brochureModalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="brochure-modal-container">
+      <div class="brochure-modal-header">
+        <div class="brochure-header-left">
+          <div class="brochure-kicker-tag" id="bmKicker">// OFFICIAL SERVICE BROCHURE</div>
+          <h3 class="brochure-modal-title" id="bmTitle">Service Brochure</h3>
+        </div>
+        <div class="brochure-header-actions">
+          <a id="bmDownloadBtn" href="#" download="" class="btn-bm-download" title="Download Full PDF Brochure">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Download PDF</span>
+          </a>
+          <a id="bmOpenTabBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-bm-tab" title="Open PDF in dedicated browser tab">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            <span>Open in Tab</span>
+          </a>
+          <button type="button" class="btn-bm-close" onclick="closeBrochureModal()" aria-label="Close Brochure Modal">&times;</button>
+        </div>
+      </div>
+      <div class="brochure-modal-viewport">
+        <iframe id="brochureIframe" class="brochure-pdf-frame" src="about:blank" title="Official NIVORA Brochure Viewer"></iframe>
+      </div>
+      <div class="brochure-modal-footer">
+        <span class="brochure-footer-text">Looking for tailored advisory or implementation for your business?</span>
+        <button type="button" class="btn-bm-enquire" id="bmEnquireBtn" onclick="handleBrochureEnquire()">
+          <span>Book Consultation for this Service</span>
+          <span>&rarr;</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- =========================================================
        CONCEPT MODAL POPUP SYSTEM (FULL PRESERVED)
@@ -4937,13 +5054,167 @@ def build_consultancy_html():
     }
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeConceptModal();
+      if (e.key === 'Escape') {
+        closeConceptModal();
+        closeBrochureModal();
+      }
     });
 
     const overlayEl = document.getElementById('conceptModalOverlay');
     if (overlayEl) {
       overlayEl.addEventListener('click', (e) => {
         if (e.target === overlayEl) closeConceptModal();
+      });
+    }
+
+    /* -------------------------------------------------------------
+       BROCHURE VIEWER MODAL SYSTEM (FULL INTERACTIVE & DOWNLOAD)
+       ------------------------------------------------------------- */
+    const BROCHURE_DATA = {
+      'accounting': {
+        title: 'Accounting & Bookkeeping Services',
+        kicker: '01 · CORE RECORDS PRACTICE',
+        pdf: 'brochures/accounting-and-bookkeeping.pdf',
+        downloadName: 'NIVORA - Accounting & Bookkeeping Brochure.pdf',
+        serviceName: 'Accounting & Bookkeeping'
+      },
+      'income-tax': {
+        title: 'Income Tax Services',
+        kicker: '02 · DIRECT TAX PRACTICE',
+        pdf: 'brochures/income-tax-services.pdf',
+        downloadName: 'NIVORA - Income Tax Services Brochure.pdf',
+        serviceName: 'Income Tax'
+      },
+      'gst': {
+        title: 'GST Compliance & Advisory Services',
+        kicker: '03 · INDIRECT TAX PRACTICE',
+        pdf: 'brochures/gst-services.pdf',
+        downloadName: 'NIVORA - GST Services Brochure.pdf',
+        serviceName: 'GST'
+      },
+      'payroll': {
+        title: 'Payroll & Labour Compliance Services',
+        kicker: '04 · HUMAN CAPITAL PRACTICE',
+        pdf: 'brochures/payroll-and-labour-compliance.pdf',
+        downloadName: 'NIVORA - Payroll & Labour Compliance Brochure.pdf',
+        serviceName: 'Payroll'
+      },
+      'advisory': {
+        title: 'Financial Advisory & Planning',
+        kicker: '05 · STRATEGIC ADVISORY PRACTICE',
+        pdf: 'brochures/financial-advisory.pdf',
+        downloadName: 'NIVORA - Financial Advisory Brochure.pdf',
+        serviceName: 'Financial Advisory'
+      },
+      'registration': {
+        title: 'Business Registrations & Licensing',
+        kicker: '06 · ENTITY SETUP PRACTICE',
+        pdf: 'brochures/business-registrations-and-licensing.pdf',
+        downloadName: 'NIVORA - Business Registrations & Licensing Brochure.pdf',
+        serviceName: 'Business Registration'
+      },
+      'data-process': {
+        title: 'Data Entry & Process Management',
+        kicker: '07 · OPERATIONAL SUPPORT PRACTICE',
+        pdf: 'brochures/data-entry-and-process-management.pdf',
+        downloadName: 'NIVORA - Data Entry & Process Management Brochure.pdf',
+        serviceName: 'Data & Process Support'
+      },
+      'technology': {
+        title: 'Digital & Technology Solutions',
+        kicker: '08 · TECHNOLOGY VERTICAL',
+        pdf: 'brochures/digital-and-technology-solutions.pdf',
+        downloadName: 'NIVORA - Digital & Technology Solutions Brochure.pdf',
+        serviceName: 'Technology Solutions'
+      },
+      'startups': {
+        title: 'Solutions For Startups Package',
+        kicker: 'VENTURE · ARCHITECTURE',
+        pdf: 'brochures/solutions-for-startups.pdf',
+        downloadName: 'NIVORA - Solutions For Startups Package.pdf',
+        serviceName: 'General Business Consultation'
+      },
+      'smes': {
+        title: 'Solutions For SMEs Package',
+        kicker: 'SCALE · RELIABILITY',
+        pdf: 'brochures/solutions-for-smes.pdf',
+        downloadName: 'NIVORA - Solutions For SMEs Package.pdf',
+        serviceName: 'General Business Consultation'
+      },
+      'entrepreneurs': {
+        title: 'Solutions For Entrepreneurs Package',
+        kicker: 'VISION · EXECUTE',
+        pdf: 'brochures/solutions-for-entrepreneurs.pdf',
+        downloadName: 'NIVORA - Solutions For Entrepreneurs Package.pdf',
+        serviceName: 'General Business Consultation'
+      },
+      'professionals': {
+        title: 'Solutions For Professionals Package',
+        kicker: 'PRACTICE · ELEVATE',
+        pdf: 'brochures/solutions-for-professionals.pdf',
+        downloadName: 'NIVORA - Solutions For Professionals Package.pdf',
+        serviceName: 'General Business Consultation'
+      }
+    };
+
+    let currentBrochureService = '';
+
+    function openBrochureModal(key) {
+      const data = BROCHURE_DATA[key];
+      if (!data) return;
+
+      currentBrochureService = data.serviceName;
+
+      const overlay = document.getElementById('brochureModalOverlay');
+      const titleEl = document.getElementById('bmTitle');
+      const kickerEl = document.getElementById('bmKicker');
+      const dlBtn = document.getElementById('bmDownloadBtn');
+      const tabBtn = document.getElementById('bmOpenTabBtn');
+      const iframe = document.getElementById('brochureIframe');
+
+      if (titleEl) titleEl.textContent = data.title;
+      if (kickerEl) kickerEl.textContent = '// ' + data.kicker;
+      if (dlBtn) {
+        dlBtn.href = data.pdf;
+        dlBtn.setAttribute('download', data.downloadName);
+      }
+      if (tabBtn) {
+        tabBtn.href = data.pdf;
+      }
+      if (iframe) {
+        iframe.src = data.pdf + '#toolbar=1&navpanes=0';
+      }
+
+      if (overlay) {
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+      }
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBrochureModal() {
+      const overlay = document.getElementById('brochureModalOverlay');
+      if (overlay) {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+      }
+      const iframe = document.getElementById('brochureIframe');
+      if (iframe) iframe.src = 'about:blank';
+      document.body.style.overflow = '';
+    }
+
+    function handleBrochureEnquire() {
+      const serviceToSelect = currentBrochureService || 'General Business Consultation';
+      closeBrochureModal();
+      setTimeout(() => {
+        selectConsultationService(serviceToSelect);
+      }, 200);
+    }
+
+    const bmOverlayEl = document.getElementById('brochureModalOverlay');
+    if (bmOverlayEl) {
+      bmOverlayEl.addEventListener('click', (e) => {
+        if (e.target === bmOverlayEl) closeBrochureModal();
       });
     }
 
