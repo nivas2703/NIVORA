@@ -1051,6 +1051,46 @@ def build_ultimate_universe_html():
       box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
     }
 
+    .service-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      width: 100%;
+      margin-top: 1.35rem;
+    }
+
+    .service-actions-row .service-cta-btn {
+      flex: 1;
+      margin-top: 0;
+    }
+
+    .service-brochure-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.42rem;
+      padding: 0.78rem 1.05rem;
+      background: rgba(168, 85, 247, 0.10);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      border-radius: var(--radius-pill);
+      color: #d8b4fe;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .service-brochure-btn:hover {
+      background: rgba(168, 85, 247, 0.22);
+      border-color: rgba(168, 85, 247, 0.65);
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+      transform: translateY(-1px);
+    }
+
     /* -------------------------------------------------------------
        SECTION 02: BUSINESS SOLUTIONS (FOR STARTUPS, SMES, ETC.)
        ------------------------------------------------------------- */
@@ -1147,6 +1187,46 @@ def build_ultimate_universe_html():
     .solution-cta:hover {
       background: rgba(168, 85, 247, 0.2);
       border-color: rgba(168, 85, 247, 0.4);
+    }
+
+    .solution-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      width: 100%;
+      margin-top: 1.35rem;
+    }
+
+    .solution-actions-row .solution-cta {
+      flex: 1;
+      margin-top: 0;
+    }
+
+    .solution-brochure-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.42rem;
+      padding: 0.72rem 1.05rem;
+      background: rgba(6, 182, 212, 0.10);
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      border-radius: var(--radius-pill);
+      color: #67e8f9;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .solution-brochure-btn:hover {
+      background: rgba(6, 182, 212, 0.22);
+      border-color: rgba(6, 182, 212, 0.65);
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(6, 182, 212, 0.3);
+      transform: translateY(-1px);
     }
 
     /* -------------------------------------------------------------
@@ -2389,6 +2469,14 @@ def build_ultimate_universe_html():
       .contact-form {
         padding: 2.0rem 1.4rem;
       }
+      .service-actions-row, .solution-actions-row {
+        flex-direction: column;
+        gap: 0.55rem;
+      }
+      .service-brochure-btn, .solution-brochure-btn {
+        width: 100%;
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -2625,10 +2713,16 @@ def build_ultimate_universe_html():
                 <li class="service-tag">Management Reporting</li>
               </ul>
             </div>
-            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Accounting & Bookkeeping')">
-              <span>Enquire for Accounting Services</span>
-              <span>&rarr;</span>
-            </a>
+            <div class="service-actions-row">
+              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Accounting & Bookkeeping')">
+                <span>Enquire for Accounting</span>
+                <span>&rarr;</span>
+              </a>
+              <a href="brochures/accounting-and-bookkeeping.pdf" target="_blank" download="NIVORA - Accounting & Bookkeeping Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
+                <span>Brochure</span>
+              </a>
+            </div>
           </article>
 
           <!-- SERVICE 2: INCOME TAX SERVICES -->
@@ -2656,10 +2750,16 @@ def build_ultimate_universe_html():
                 <li class="service-tag">Tax Documentation Review</li>
               </ul>
             </div>
-            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Income Tax')">
-              <span>Enquire for Tax Services</span>
-              <span>&rarr;</span>
-            </a>
+            <div class="service-actions-row">
+              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Income Tax')">
+                <span>Enquire for Tax</span>
+                <span>&rarr;</span>
+              </a>
+              <a href="brochures/income-tax-services.pdf" target="_blank" download="NIVORA - Income Tax Services Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
+                <span>Brochure</span>
+              </a>
+            </div>
           </article>
 
           <!-- SERVICE 3: GST SERVICES -->
@@ -2688,10 +2788,16 @@ def build_ultimate_universe_html():
                 <li class="service-tag">Notice &amp; Compliance Support</li>
               </ul>
             </div>
-            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('GST')">
-              <span>Enquire for GST Services</span>
-              <span>&rarr;</span>
-            </a>
+            <div class="service-actions-row">
+              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('GST')">
+                <span>Enquire for GST</span>
+                <span>&rarr;</span>
+              </a>
+              <a href="brochures/gst-services.pdf" target="_blank" download="NIVORA - GST Services Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
+                <span>Brochure</span>
+              </a>
+            </div>
           </article>
 
           <!-- SERVICE 4: PAYROLL & LABOUR COMPLIANCE -->
@@ -2718,10 +2824,16 @@ def build_ultimate_universe_html():
                 <li class="service-tag">Employee Documentation</li>
               </ul>
             </div>
-            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Payroll')">
-              <span>Enquire for Payroll Services</span>
-              <span>&rarr;</span>
-            </a>
+            <div class="service-actions-row">
+              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Payroll')">
+                <span>Enquire for Payroll</span>
+                <span>&rarr;</span>
+              </a>
+              <a href="brochures/payroll-and-labour-compliance.pdf" target="_blank" download="NIVORA - Payroll & Labour Compliance Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
+                <span>Brochure</span>
+              </a>
+            </div>
           </article>
 
           <!-- SERVICE 5: FINANCIAL ADVISORY -->
@@ -2752,10 +2864,16 @@ def build_ultimate_universe_html():
                 <li class="service-tag">MIS &amp; Board Reports</li>
               </ul>
             </div>
-            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Financial Advisory')">
-              <span>Discuss Your Financial Needs</span>
-              <span>&rarr;</span>
-            </a>
+            <div class="service-actions-row">
+              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Financial Advisory')">
+                <span>Discuss Advisory</span>
+                <span>&rarr;</span>
+              </a>
+              <a href="brochures/financial-advisory.pdf" target="_blank" download="NIVORA - Financial Advisory Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
+                <span>Brochure</span>
+              </a>
+            </div>
           </article>
 
           <!-- SERVICE 6: BUSINESS REGISTRATIONS & LICENSING -->
@@ -2783,10 +2901,16 @@ def build_ultimate_universe_html():
                 <li class="service-tag">Statutory Filings Prep</li>
               </ul>
             </div>
-            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Business Registration')">
-              <span>Start Your Registration</span>
-              <span>&rarr;</span>
-            </a>
+            <div class="service-actions-row">
+              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Business Registration')">
+                <span>Start Registration</span>
+                <span>&rarr;</span>
+              </a>
+              <a href="brochures/business-registrations-and-licensing.pdf" target="_blank" download="NIVORA - Business Registrations & Licensing Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
+                <span>Brochure</span>
+              </a>
+            </div>
           </article>
 
           <!-- SERVICE 7: DATA ENTRY & PROCESS MANAGEMENT -->
@@ -2812,10 +2936,16 @@ def build_ultimate_universe_html():
                 <li class="service-tag">Administrative Support</li>
               </ul>
             </div>
-            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Data & Process Support')">
-              <span>Enquire for Process Support</span>
-              <span>&rarr;</span>
-            </a>
+            <div class="service-actions-row">
+              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Data & Process Support')">
+                <span>Enquire Process</span>
+                <span>&rarr;</span>
+              </a>
+              <a href="brochures/data-entry-and-process-management.pdf" target="_blank" download="NIVORA - Data Entry & Process Management Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
+                <span>Brochure</span>
+              </a>
+            </div>
           </article>
 
           <!-- SERVICE 8: DIGITAL & TECHNOLOGY SOLUTIONS -->
@@ -2842,10 +2972,16 @@ def build_ultimate_universe_html():
                 <li class="service-tag">Digital Transformation</li>
               </ul>
             </div>
-            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Technology Solutions')">
-              <span>Discuss a Technology Project</span>
-              <span>&rarr;</span>
-            </a>
+            <div class="service-actions-row">
+              <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Technology Solutions')">
+                <span>Discuss Tech</span>
+                <span>&rarr;</span>
+              </a>
+              <a href="brochures/digital-and-technology-solutions.pdf" target="_blank" download="NIVORA - Digital & Technology Solutions Brochure.pdf" class="service-brochure-btn" title="View & Download Official Service Brochure (PDF)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
+                <span>Brochure</span>
+              </a>
+            </div>
           </article>
         </div>
       </div>
@@ -2883,10 +3019,16 @@ def build_ultimate_universe_html():
                 <li>Digital Presence &amp; Website Tech</li>
               </ul>
             </div>
-            <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
-              <span>Explore Startup Package</span>
-              <span>&rarr;</span>
-            </a>
+            <div class="solution-actions-row">
+              <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
+                <span>Explore Startup Package</span>
+                <span>&rarr;</span>
+              </a>
+              <a href="brochures/solutions-for-startups.pdf" target="_blank" download="NIVORA - Solutions For Startups Package.pdf" class="solution-brochure-btn" title="View & Download Solutions For Startups Brochure (PDF)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
+                <span>Package PDF</span>
+              </a>
+            </div>
           </div>
 
           <!-- PACKAGE 2: FOR SMES -->
@@ -2906,10 +3048,16 @@ def build_ultimate_universe_html():
                 <li>Custom Dashboards &amp; Automation</li>
               </ul>
             </div>
-            <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
-              <span>Explore SME Package</span>
-              <span>&rarr;</span>
-            </a>
+            <div class="solution-actions-row">
+              <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
+                <span>Explore SME Package</span>
+                <span>&rarr;</span>
+              </a>
+              <a href="brochures/solutions-for-smes.pdf" target="_blank" download="NIVORA - Solutions For SMEs Package.pdf" class="solution-brochure-btn" title="View & Download Solutions For SMEs Brochure (PDF)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
+                <span>Package PDF</span>
+              </a>
+            </div>
           </div>
 
           <!-- PACKAGE 3: FOR ENTREPRENEURS -->
@@ -2929,10 +3077,16 @@ def build_ultimate_universe_html():
                 <li>Digital Product MVP Development</li>
               </ul>
             </div>
-            <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
-              <span>Explore Entrepreneur Solutions</span>
-              <span>&rarr;</span>
-            </a>
+            <div class="solution-actions-row">
+              <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
+                <span>Explore Entrepreneur Solutions</span>
+                <span>&rarr;</span>
+              </a>
+              <a href="brochures/solutions-for-entrepreneurs.pdf" target="_blank" download="NIVORA - Solutions For Entrepreneurs Package.pdf" class="solution-brochure-btn" title="View & Download Solutions For Entrepreneurs Brochure (PDF)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
+                <span>Package PDF</span>
+              </a>
+            </div>
           </div>
 
           <!-- PACKAGE 4: FOR PROFESSIONALS -->
@@ -2952,10 +3106,16 @@ def build_ultimate_universe_html():
                 <li>LinkedIn Strategy &amp; Makeover</li>
               </ul>
             </div>
-            <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
-              <span>Explore Professional Support</span>
-              <span>&rarr;</span>
-            </a>
+            <div class="solution-actions-row">
+              <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
+                <span>Explore Professional Support</span>
+                <span>&rarr;</span>
+              </a>
+              <a href="brochures/solutions-for-professionals.pdf" target="_blank" download="NIVORA - Solutions For Professionals Package.pdf" class="solution-brochure-btn" title="View & Download Solutions For Professionals Brochure (PDF)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
+                <span>Package PDF</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -3471,7 +3631,7 @@ def build_ultimate_universe_html():
                 <div class="channel-icon">@</div>
                 <div>
                   <strong>Primary Communication</strong><br>
-                  <a href="mailto:nivasbennabathula@gmail.com" style="color:#94a3b8;text-decoration:none;">nivasbennabathula@gmail.com</a>
+                  <a href="mailto:nivora.consulting@gmail.com" style="color:#38bdf8;text-decoration:none;font-weight:600;">nivora.consulting@gmail.com</a>
                 </div>
               </div>
 
@@ -3584,6 +3744,10 @@ def build_ultimate_universe_html():
           <p>
             Building better businesses through financial intelligence, professional services and intelligent technology solutions.
           </p>
+          <div style="margin-top:0.85rem;font-size:0.82rem;color:#94a3b8;">
+            <strong style="color:#ffffff;">Official Inquiries:</strong><br>
+            <a href="mailto:nivora.consulting@gmail.com" style="color:#38bdf8;text-decoration:none;font-weight:500;">nivora.consulting@gmail.com</a>
+          </div>
         </div>
 
         <!-- Col 2: Services -->
@@ -3641,6 +3805,7 @@ def build_ultimate_universe_html():
             <li><a href="#about">About Leadership</a></li>
             <li><a href="#insights">Insights &amp; Articles</a></li>
             <li><a href="#contact">Contact &amp; Enquiry</a></li>
+            <li><a href="mailto:nivora.consulting@gmail.com">nivora.consulting@gmail.com</a></li>
             <li><a href="#hero">Privacy Overview</a></li>
             <li><a href="#hero">Terms of Service</a></li>
           </ul>
@@ -4797,7 +4962,7 @@ def build_ultimate_universe_html():
         btn.innerHTML = '<span>Enquiry Dispatched Successfully ✓</span>';
         if (toast) {
           toast.style.display = 'inline-block';
-          toast.innerText = 'Thank you. Your consultation request has been received. Nivas will reach out directly.';
+          toast.innerText = 'Thank you. Your consultation request has been received. Our team will reach out directly from nivora.consulting@gmail.com.';
         }
         e.target.reset();
 
