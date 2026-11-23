@@ -1,0 +1,4821 @@
+# builder/assemble_consultancy_universe.py
+# Transforms NIVORA into a Premium Business • Finance • Technology Consultancy Company
+
+import os
+import sys
+
+def build_consultancy_html():
+    return """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIVORA — Business • Finance • Technology Consultancy</title>
+  <meta name="description" content="NIVORA is a modern business, finance and technology consultancy helping enterprises, entrepreneurs and professionals manage compliance, finance, operations and digital transformation through practical expertise and intelligent solutions.">
+  <link rel="icon" type="image/png" href="assets/images/nivora-logo.png">
+
+  <!-- GOOGLE FONTS: Sora, Space Grotesk, Inter, Instrument Serif, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- THREE.JS, GSAP & LENIS CDNS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+
+  <style>
+    /* =========================================================
+       NIVORA CONSULTANCY DESIGN SYSTEM & COSMIC UNIVERSE
+       ========================================================= */
+    :root {
+      --bg-dark: #02040a;
+      --bg-surface: #0a0e1a;
+      --bg-elevated: #111827;
+      --brand-cyan: #06b6d4;
+      --brand-blue: #3b82f6;
+      --brand-purple: #8b5cf6;
+      --brand-violet: #a855f7;
+      --brand-magenta: #ec4899;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --font-display: 'Space Grotesk', -apple-system, sans-serif;
+      --font-ui: 'Sora', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 24px;
+      --radius-pill: 9999px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      overflow-x: hidden;
+      width: 100%;
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      position: relative;
+    }
+
+    /* -------------------------------------------------------------
+       UNIVERSE INITIALIZATION LOADER
+       ------------------------------------------------------------- */
+    .universe-loader {
+      position: fixed;
+      inset: 0;
+      background: #02040a;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s ease;
+    }
+    .universe-loader.loaded {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .loader-inner {
+      text-align: center;
+    }
+    .loader-brand {
+      font-family: var(--font-display);
+      font-size: 2.0rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      background: linear-gradient(135deg, #a855f7 0%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .loader-status {
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      letter-spacing: 0.16em;
+      color: #94a3b8;
+      text-transform: uppercase;
+      animation: pulseText 1.5s infinite ease-in-out;
+    }
+    @keyframes pulseText {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1.0; }
+    }
+
+    /* -------------------------------------------------------------
+       PERSISTENT 3D WEBGL UNIVERSE CANVAS
+       ------------------------------------------------------------- */
+    #webglUniverseCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      pointer-events: none;
+      display: block;
+    }
+
+    /* Background Fallback Gradients */
+    .cosmic-nebula-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(139, 92, 246, 0.14) 0%, transparent 60%),
+        radial-gradient(circle at 85% 65%, rgba(6, 182, 212, 0.10) 0%, transparent 50%),
+        radial-gradient(circle at 15% 75%, rgba(236, 72, 153, 0.08) 0%, transparent 55%),
+        #02040a;
+    }
+
+    /* Global Typography & Utilities */
+    .container {
+      width: 100%;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      position: relative;
+      z-index: 20;
+    }
+
+    .section {
+      position: relative;
+      padding: 7rem 0 6rem;
+      z-index: 10;
+    }
+
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.25) 50%, transparent 100%);
+      margin-bottom: 5.5rem;
+    }
+
+    .section-head {
+      margin-bottom: 3.8rem;
+    }
+
+    .kicker {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brand-cyan);
+      margin-bottom: 0.85rem;
+    }
+
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4.4vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.035em;
+      color: #ffffff;
+    }
+
+    .section-head h2 .grad-accent {
+      background: linear-gradient(135deg, #a855f7 0%, #38bdf8 65%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-intro-text {
+      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 780px;
+      margin-top: 1rem;
+    }
+
+    /* -------------------------------------------------------------
+       NAVIGATION: LUXURY FLOATING CAPSULE
+       ------------------------------------------------------------- */
+    .top-nav {
+      position: fixed;
+      top: 1.25rem;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      z-index: 1000;
+      pointer-events: none;
+      padding: 0 1.25rem;
+    }
+
+    .nav-capsule {
+      pointer-events: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: 0.65rem 1.35rem;
+      background: rgba(10, 14, 26, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-pill);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(56, 189, 248, 0.08);
+      max-width: 1320px;
+      width: 100%;
+      transition: all 0.35s ease;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .nav-logo-icon {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(6, 182, 212, 0.5));
+    }
+
+    .nav-brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .brand-subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: var(--brand-cyan);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-family: var(--font-ui);
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: #cbd5e1;
+      text-decoration: none;
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-pill);
+      transition: all 0.25s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 0 12px rgba(56, 189, 248, 0.12);
+    }
+
+    .nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-status-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.32rem 0.75rem;
+      border-radius: var(--radius-pill);
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--brand-cyan);
+    }
+
+    .status-dot-pulse {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: dotPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes dotPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .nav-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.25rem;
+      background: linear-gradient(135deg, #9333ea 0%, #3b82f6 50%, #06b6d4 100%);
+      color: #ffffff;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .nav-cta-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.55);
+      color: #ffffff;
+    }
+
+    /* Mobile Drawer */
+    .nav-mobile-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      cursor: pointer;
+      padding: 0;
+    }
+    .nav-mobile-toggle .bar {
+      width: 17px;
+      height: 2px;
+      background: #ffffff;
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: min(340px, 86vw);
+      height: 100vh;
+      background: rgba(2, 6, 23, 0.96);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      padding: 2.2rem 1.8rem;
+      transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -15px 0 50px rgba(0, 0, 0, 0.85);
+    }
+    .mobile-drawer.open {
+      right: 0;
+    }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 2rem;
+    }
+    .drawer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #fff;
+    }
+    .drawer-close-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 2.0rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+    }
+    .drawer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.35rem;
+    }
+    .drawer-link {
+      font-family: var(--font-ui);
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #cbd5e1;
+      text-decoration: none;
+      display: inline-block;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+    .drawer-link:hover, .drawer-link.active {
+      color: var(--brand-cyan);
+      transform: translateX(6px);
+    }
+    .drawer-footer {
+      margin-top: auto;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .drawer-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #38bdf8;
+      letter-spacing: 0.12em;
+    }
+
+    /* -------------------------------------------------------------
+       HERO SECTION — EXACT CENTERED UNIVERSE & TYPOGRAPHY
+       ------------------------------------------------------------- */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5.8rem 4% 6.5rem;
+      z-index: 10;
+      pointer-events: none;
+      text-align: center;
+    }
+
+    .hero-container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      pointer-events: auto;
+    }
+
+    /* Centered Official NIVORA Logo Stage */
+    .hero-center-logo-stage {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.05rem;
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 25;
+    }
+
+    .hero-center-logo-stage:hover {
+      transform: scale(1.05);
+    }
+
+    .hero-logo-glow-disc {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.32) 0%, rgba(168, 85, 247, 0.22) 40%, rgba(2, 6, 23, 0) 70%);
+      filter: blur(30px);
+      pointer-events: none;
+      animation: logoAuraPulse 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes logoAuraPulse {
+      0% { transform: scale(0.92); opacity: 0.65; }
+      100% { transform: scale(1.1); opacity: 0.95; }
+    }
+
+    .hero-center-logo-img {
+      position: relative;
+      z-index: 2;
+      width: clamp(175px, 17vw, 235px);
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 25px rgba(6, 182, 212, 0.65))
+              drop-shadow(0 0 55px rgba(168, 85, 247, 0.5));
+      animation: logoFloatGently 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes logoFloatGently {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-7px); }
+    }
+
+    /* Centered Hero Content */
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      max-width: 860px;
+      pointer-events: auto;
+      position: relative;
+      z-index: 20;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.42rem 1.15rem;
+      border-radius: 9999px;
+      background: rgba(139, 92, 246, 0.12);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      box-shadow: 0 0 25px rgba(139, 92, 246, 0.35);
+      margin: 0 auto 0.8rem;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .hero-badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--brand-cyan);
+      box-shadow: 0 0 10px var(--brand-cyan);
+      animation: dotPulse 2s infinite ease-in-out;
+    }
+
+    .hero-badge span {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      color: #d8b4fe;
+      text-transform: uppercase;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      text-align: center;
+      margin-bottom: 0.65rem;
+    }
+
+    .hero-welcome {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 3.8vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      display: block;
+      margin-bottom: 0.15rem;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.95), 0 0 35px rgba(168, 85, 247, 0.35);
+    }
+
+    .hero-brand {
+      display: inline-block;
+      font-size: clamp(2.6rem, 5.2vw, 4.6rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #a855f7 0%, #d946ef 35%, #3b82f6 70%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
+      animation: brandGradShift 6s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 35px rgba(168, 85, 247, 0.4));
+    }
+
+    @keyframes brandGradShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    .hero-tagline {
+      font-family: var(--font-ui);
+      font-size: clamp(1.15rem, 1.9vw, 1.55rem);
+      font-weight: 500;
+      color: #f1f5f9;
+      line-height: 1.35;
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 0.85rem;
+      letter-spacing: -0.02em;
+    }
+
+    .editorial-accent {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.15em;
+      font-weight: 400;
+      color: #ffffff;
+      position: relative;
+      display: inline-block;
+      padding: 0 0.1em;
+    }
+
+    .editorial-accent::after {
+      content: '';
+      position: absolute;
+      left: 0.05em;
+      right: 0.05em;
+      bottom: -2px;
+      height: 2px;
+      border-radius: 9999px;
+    }
+    .accent-ideas::after {
+      background: #a855f7;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.9);
+    }
+    .accent-products::after {
+      background: #ec4899;
+      box-shadow: 0 0 10px rgba(236, 72, 153, 0.9);
+    }
+
+    .hero-copy {
+      font-size: clamp(0.96rem, 1.15vw, 1.05rem);
+      line-height: 1.65;
+      color: #cbd5e1;
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 1.25rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.25rem;
+      margin: 0 auto 1.45rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-enter-universe {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      padding: 0.85rem 1.95rem;
+      background: linear-gradient(135deg, #9333ea 0%, #3b82f6 50%, #06b6d4 100%);
+      color: #ffffff;
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 0 30px rgba(147, 51, 234, 0.45), 0 0 60px rgba(6, 182, 212, 0.25);
+      transition: all 0.3s ease;
+    }
+
+    .btn-enter-universe:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 0 45px rgba(147, 51, 234, 0.65), 0 0 80px rgba(6, 182, 212, 0.4);
+      color: #ffffff;
+    }
+
+    .btn-explore-products {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      padding: 0.85rem 1.75rem;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius-pill);
+      color: #e2e8f0;
+      font-family: var(--font-ui);
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transition: all 0.3s ease;
+    }
+
+    .btn-explore-products:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(56, 189, 248, 0.5);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .hero-metrics {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2.2rem;
+      padding-top: 1.05rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      max-width: 720px;
+      margin: 0 auto;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .metric-card {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .metric-icon-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .metric-icon-wrap.m-purple { color: #c084fc; border-color: rgba(168, 85, 247, 0.3); }
+    .metric-icon-wrap.m-cyan { color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); }
+    .metric-icon-wrap.m-magenta { color: #f472b6; border-color: rgba(236, 72, 153, 0.3); }
+
+    .metric-info {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .metric-info strong {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .metric-info span {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .hero-scroll-indicator {
+      position: absolute;
+      bottom: 1.2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.45rem;
+      cursor: pointer;
+      z-index: 25;
+      pointer-events: auto;
+      transition: opacity 0.3s ease;
+    }
+
+    .scroll-mouse-icon {
+      width: 20px;
+      height: 32px;
+      border-radius: 9999px;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .scroll-mouse-wheel {
+      width: 3px;
+      height: 6px;
+      border-radius: 9999px;
+      background: var(--brand-cyan);
+      position: absolute;
+      top: 5px;
+      animation: wheelBounce 2s infinite ease-in-out;
+    }
+
+    @keyframes wheelBounce {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(10px); opacity: 0; }
+    }
+
+    .scroll-hud-text {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .scroll-arrow-bounce {
+      color: var(--brand-cyan);
+      font-size: 0.85rem;
+      animation: arrowBounce 1.8s infinite;
+    }
+
+    @keyframes arrowBounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(4px); }
+      60% { transform: translateY(2px); }
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 01: PROFESSIONAL SERVICES GRID
+       ------------------------------------------------------------- */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 2.0rem;
+    }
+
+    .service-card {
+      background: rgba(11, 16, 32, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 2.4rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.5) 50%, transparent 100%);
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(56, 189, 248, 0.35);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 35px rgba(56, 189, 248, 0.12);
+    }
+
+    .service-card:hover::before {
+      opacity: 1;
+    }
+
+    .service-header {
+      margin-bottom: 1.25rem;
+    }
+
+    .service-kicker {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: #38bdf8;
+      text-transform: uppercase;
+      margin-bottom: 0.45rem;
+    }
+
+    .service-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+    }
+
+    .service-desc {
+      font-size: 0.94rem;
+      line-height: 1.65;
+      color: #cbd5e1;
+      margin-bottom: 1.5rem;
+    }
+
+    .service-note-box {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 2px solid rgba(56, 189, 248, 0.4);
+      padding: 0.5rem 0.85rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin-bottom: 1.4rem;
+      font-style: italic;
+    }
+
+    .service-features-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 0.85rem;
+    }
+
+    .service-features-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2.0rem;
+      list-style: none;
+    }
+
+    .service-tag {
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-pill);
+      padding: 0.28rem 0.75rem;
+      transition: all 0.2s ease;
+    }
+
+    .service-card:hover .service-tag {
+      background: rgba(56, 189, 248, 0.08);
+      border-color: rgba(56, 189, 248, 0.25);
+    }
+
+    .service-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.8rem 1.25rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-pill);
+      color: #f8fafc;
+      font-family: var(--font-ui);
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .service-cta-btn:hover {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(56, 189, 248, 0.25) 100%);
+      border-color: rgba(56, 189, 248, 0.5);
+      color: #ffffff;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 02: BUSINESS SOLUTIONS (FOR STARTUPS, SMES, ETC.)
+       ------------------------------------------------------------- */
+    .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .solution-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 2.2rem 1.8rem;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .solution-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(168, 85, 247, 0.4);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 25px rgba(168, 85, 247, 0.15);
+    }
+
+    .solution-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #c084fc;
+      margin-bottom: 0.65rem;
+    }
+
+    .solution-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+    }
+
+    .solution-desc {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+      margin-bottom: 1.5rem;
+    }
+
+    .solution-items-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      margin-bottom: 2rem;
+    }
+
+    .solution-items-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.88rem;
+      color: #e2e8f0;
+    }
+
+    .solution-items-list li::before {
+      content: '✓';
+      color: var(--brand-cyan);
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    .solution-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.15rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-pill);
+      color: #ffffff;
+      font-family: var(--font-ui);
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .solution-cta:hover {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: rgba(168, 85, 247, 0.4);
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 03: NIVORA DIGITAL PRODUCTS
+       ------------------------------------------------------------- */
+    .product-branding-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.24);
+      border-radius: var(--radius-pill);
+      padding: 0.25rem 0.65rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .product-brand-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #38bdf8;
+      box-shadow: 0 0 8px #38bdf8;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+      gap: 2.2rem;
+    }
+
+    .world-card {
+      background: rgba(11, 16, 32, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius-lg);
+      padding: 2.6rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .world-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(56, 189, 248, 0.4);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(56, 189, 248, 0.14);
+    }
+
+    .card-watermark {
+      position: absolute;
+      right: -30px;
+      top: -30px;
+      width: 220px;
+      height: 220px;
+      opacity: 0.04;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .world-card:hover .card-watermark {
+      opacity: 0.08;
+    }
+
+    .world-art-wrap {
+      width: 100%;
+      height: 200px;
+      border-radius: var(--radius-md);
+      background: rgba(2, 6, 23, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.8rem;
+      overflow: hidden;
+      padding: 1.5rem;
+    }
+
+    .world-art-wrap img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.6));
+      transition: transform 0.4s ease;
+    }
+
+    .world-card:hover .world-art-wrap img {
+      transform: scale(1.05);
+    }
+
+    .world-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .world-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .formerly-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: #94a3b8;
+    }
+
+    .status-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-pill);
+    }
+    .badge-live {
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+    .badge-proto {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+    }
+
+    .world-tagline {
+      font-family: var(--font-ui);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #38bdf8;
+      margin-bottom: 0.85rem;
+    }
+
+    .world-desc {
+      font-size: 0.94rem;
+      line-height: 1.65;
+      color: #cbd5e1;
+      margin-bottom: 1.6rem;
+    }
+
+    .world-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      list-style: none;
+    }
+
+    .world-pills li {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-pill);
+      padding: 0.28rem 0.75rem;
+    }
+
+    .world-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-concept {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.72rem 1.45rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-pill);
+      color: #ffffff;
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn-concept:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .btn-launch {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.72rem 1.45rem;
+      background: transparent;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: var(--radius-pill);
+      color: #38bdf8;
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-launch:hover {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: #38bdf8;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 04: ABOUT & CONSULTANCY ARCHITECTURE
+       ------------------------------------------------------------- */
+    .founder-card {
+      background: rgba(11, 16, 32, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: clamp(2.2rem, 4.5vw, 3.8rem);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 3.5rem;
+      align-items: center;
+      margin-bottom: 5.5rem;
+    }
+
+    .founder-img-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .founder-portrait-frame {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 2px solid rgba(56, 189, 248, 0.4);
+      padding: 6px;
+      box-shadow: 0 0 35px rgba(56, 189, 248, 0.2);
+      margin-bottom: 1.25rem;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .founder-portrait {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .founder-name-tag {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .founder-title-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #38bdf8;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    .founder-bio h3 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: #ffffff;
+      margin-bottom: 1.2rem;
+    }
+
+    .founder-bio p {
+      font-size: 1.0rem;
+      line-height: 1.75;
+      color: #cbd5e1;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Why Businesses Choose NIVORA */
+    .why-nivora-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 5.5rem;
+    }
+
+    .pillar-card {
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 2.2rem 1.8rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .pillar-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    .pillar-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #38bdf8;
+      margin-bottom: 1.25rem;
+      font-size: 1.2rem;
+    }
+
+    .pillar-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.65rem;
+    }
+
+    .pillar-card p {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #94a3b8;
+    }
+
+    /* Consultation Journey Steps */
+    .journey-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .journey-step {
+      background: rgba(11, 16, 32, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 1.8rem 1.4rem;
+      position: relative;
+    }
+
+    .journey-step-num {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #c084fc;
+      letter-spacing: 0.14em;
+      margin-bottom: 0.65rem;
+    }
+
+    .journey-step h5 {
+      font-family: var(--font-display);
+      font-size: 1.18rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+
+    .journey-step p {
+      font-size: 0.86rem;
+      line-height: 1.55;
+      color: #94a3b8;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 05: FOLIVIO SHOWCASE
+       ------------------------------------------------------------- */
+    .folivio-section {
+      position: relative;
+      z-index: 20;
+    }
+    .folivio-hero-box {
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.08) 0%, rgba(168, 85, 247, 0.05) 50%, rgba(2, 6, 23, 0.65) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      padding: clamp(2.2rem, 5vw, 3.8rem);
+      margin-bottom: 3.5rem;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position: relative;
+      overflow: hidden;
+    }
+    .folivio-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1.05rem;
+      border-radius: 9999px;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: #7dd3fc;
+      text-transform: uppercase;
+      margin-bottom: 1.6rem;
+    }
+    .folivio-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #38bdf8;
+      box-shadow: 0 0 10px #38bdf8;
+      animation: dotPulse 2s infinite ease-in-out;
+    }
+    .folivio-brand-row {
+      display: flex;
+      align-items: center;
+      gap: 2.0rem;
+      margin-bottom: 1.6rem;
+      flex-wrap: wrap;
+    }
+    .folivio-logo-badge {
+      width: clamp(76px, 8.5vw, 102px);
+      height: clamp(76px, 8.5vw, 102px);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.85rem;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45);
+    }
+    .folivio-main-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .folivio-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.8vw, 4.0rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      color: #ffffff;
+    }
+    .folivio-subtag {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+      font-weight: 400;
+      color: #cbd5e1;
+      margin-top: 0.25rem;
+    }
+    .folivio-pills-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      margin-top: 0.65rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #a855f7;
+    }
+    .folivio-manifesto {
+      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+      line-height: 1.75;
+      color: #e2e8f0;
+      max-width: 820px;
+      margin-bottom: 2.2rem;
+    }
+    .folivio-prime-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.9rem 2.0rem;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #0284c7 0%, #38bdf8 50%, #a855f7 100%);
+      color: #ffffff;
+      font-family: var(--font-ui);
+      font-size: 0.96rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.45);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .folivio-prime-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(56, 189, 248, 0.65);
+      color: #ffffff;
+    }
+    .folivio-services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.6rem;
+      margin-bottom: 4rem;
+    }
+    .folivio-card {
+      background: rgba(15, 23, 42, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .folivio-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(56, 189, 248, 0.35);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+    }
+    .folivio-card-num {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: #38bdf8;
+      margin-bottom: 0.85rem;
+    }
+    .folivio-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+    }
+    .folivio-card p {
+      font-size: 0.94rem;
+      line-height: 1.65;
+      color: #94a3b8;
+    }
+    .folivio-benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .folivio-benefit-card {
+      background: rgba(2, 6, 23, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: var(--radius-sm);
+      padding: 1.6rem 1.8rem;
+    }
+    .folivio-benefit-card h5 {
+      font-family: var(--font-display);
+      font-size: 1.12rem;
+      font-weight: 600;
+      color: #f8fafc;
+      margin-bottom: 0.4rem;
+    }
+    .folivio-benefit-card p {
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: #94a3b8;
+    }
+    .folivio-process-steps {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 4rem;
+    }
+    .folivio-step-card {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 1.6rem 1.4rem;
+      text-align: center;
+    }
+    .step-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      color: #38bdf8;
+      margin-bottom: 0.6rem;
+      text-transform: uppercase;
+    }
+    .folivio-step-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+    .folivio-step-card p {
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #94a3b8;
+    }
+    .folivio-step-arrow {
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 06: INSIGHTS & THOUGHT LEADERSHIP
+       ------------------------------------------------------------- */
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2.0rem;
+    }
+
+    .insight-card {
+      background: rgba(11, 16, 32, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 2.2rem;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .insight-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    .insight-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .insight-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-pill);
+      padding: 0.2rem 0.65rem;
+    }
+
+    .insight-read-time {
+      font-size: 0.78rem;
+      color: #64748b;
+    }
+
+    .insight-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.3;
+      margin-bottom: 0.85rem;
+    }
+
+    .insight-summary {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #94a3b8;
+      margin-bottom: 1.5rem;
+    }
+
+    .insight-link {
+      color: #38bdf8;
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: gap 0.2s ease;
+    }
+
+    .insight-link:hover {
+      gap: 0.65rem;
+      color: #7dd3fc;
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 07: CONTACT & CONSULTATION INQUIRY
+       ------------------------------------------------------------- */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 4.0rem;
+      align-items: flex-start;
+    }
+
+    .contact-info {
+      padding-right: 1.5rem;
+    }
+
+    .contact-channels {
+      margin: 2.5rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .channel-item {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.25rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      transition: border-color 0.25s ease;
+    }
+
+    .channel-item:hover {
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    .channel-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #38bdf8;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .contact-form {
+      background: rgba(11, 16, 32, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      padding: 2.8rem;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+
+    .form-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 0.45rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8rem 1.05rem;
+      background: rgba(2, 6, 23, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-sm);
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      transition: all 0.25s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #38bdf8;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+    }
+
+    .form-group select option {
+      background: #0b1020;
+      color: #ffffff;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-submit-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: linear-gradient(135deg, #9333ea 0%, #3b82f6 50%, #06b6d4 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.35);
+      transition: all 0.3s ease;
+      margin-top: 0.5rem;
+    }
+
+    .form-submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 35px rgba(56, 189, 248, 0.55);
+    }
+
+    /* -------------------------------------------------------------
+       SECTION 08: COMPREHENSIVE BUSINESS FOOTER
+       ------------------------------------------------------------- */
+    .business-footer {
+      background: #010206;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 5.5rem 0 3rem;
+      position: relative;
+      z-index: 20;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.8fr repeat(5, 1fr);
+      gap: 3.0rem;
+      margin-bottom: 4.5rem;
+    }
+
+    .footer-col-brand .footer-brand-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: #ffffff;
+      margin-bottom: 0.35rem;
+    }
+
+    .footer-col-brand .footer-brand-sub {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #38bdf8;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-col-brand p {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: #94a3b8;
+      max-width: 320px;
+    }
+
+    .footer-col h5 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-links-list a {
+      font-size: 0.86rem;
+      color: #94a3b8;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links-list a:hover {
+      color: #38bdf8;
+    }
+
+    .footer-disclaimer-box {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-disclaimer-text {
+      font-size: 0.78rem;
+      line-height: 1.65;
+      color: #64748b;
+    }
+
+    .footer-bottom-bar {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.82rem;
+      color: #64748b;
+    }
+
+    /* -------------------------------------------------------------
+       CONCEPT MODAL SYSTEM STYLES (PRESERVED)
+       ------------------------------------------------------------- */
+    #conceptModalOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.88);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      z-index: 100000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease;
+    }
+
+    #conceptModalOverlay.open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .modal-container {
+      background: rgba(10, 14, 26, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 980px;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(56, 189, 248, 0.15);
+      overflow: hidden;
+    }
+
+    .modal-top-bar {
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(2, 6, 23, 0.5);
+    }
+
+    .btn-return-modal {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-pill);
+      padding: 0.45rem 1rem;
+      color: #cbd5e1;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-return-modal:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+
+    .modal-close-icon-btn {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.8rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .modal-scroll-body {
+      padding: 2.5rem 2rem;
+      overflow-y: auto;
+    }
+
+    .modal-hero-sec {
+      margin-bottom: 2.5rem;
+    }
+
+    .modal-hero-sec h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+
+    .modal-lead-box {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #cbd5e1;
+    }
+
+    .modal-section-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin: 2rem 0 1.2rem;
+    }
+
+    .modal-caps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .modal-cap-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+    }
+
+    .modal-cap-icon {
+      color: #38bdf8;
+      margin-bottom: 0.75rem;
+    }
+
+    .modal-cap-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.45rem;
+    }
+
+    .modal-cap-card p {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #94a3b8;
+    }
+
+    .modal-flow-box {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .flow-step-box {
+      background: rgba(2, 6, 23, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 1.4rem;
+    }
+
+    .flow-num {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #c084fc;
+      margin-bottom: 0.5rem;
+    }
+
+    .flow-step-box h5 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.4rem;
+    }
+
+    .flow-step-box p {
+      font-size: 0.84rem;
+      line-height: 1.55;
+      color: #94a3b8;
+    }
+
+    .arch-specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .spec-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+    }
+
+    .spec-card h5 {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.45rem;
+    }
+
+    .spec-card p {
+      font-size: 0.86rem;
+      color: #cbd5e1;
+    }
+
+    .modal-bottom-cta-banner {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.5) 0%, rgba(15, 23, 42, 0.8) 100%);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: var(--radius-md);
+      padding: 1.8rem 2.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .modal-bottom-cta-banner h4 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.25rem;
+    }
+
+    .modal-bottom-cta-banner p {
+      font-size: 0.88rem;
+      color: #94a3b8;
+    }
+
+    /* -------------------------------------------------------------
+       RESPONSIVE MEDIA QUERIES (DESKTOP, LAPTOP, TABLET, MOBILE)
+       ------------------------------------------------------------- */
+    @media (max-width: 1200px) {
+      .footer-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
+      }
+      .journey-steps-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 3.0rem;
+      }
+      .founder-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2.5rem;
+      }
+      .founder-img-col {
+        margin: 0 auto;
+      }
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .nav-links, .nav-status-pill, .nav-cta-btn {
+        display: none !important;
+      }
+      .nav-mobile-toggle {
+        display: flex !important;
+      }
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .folivio-process-steps {
+        grid-template-columns: 1fr;
+      }
+      .folivio-step-arrow {
+        display: none;
+      }
+      .journey-steps-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-metrics {
+        flex-direction: column;
+        gap: 1.2rem;
+      }
+      .folivio-brand-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .service-card {
+        padding: 1.8rem 1.4rem;
+      }
+      .contact-form {
+        padding: 2.0rem 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- SUBTLE UNIVERSE INITIALIZATION LOADER -->
+  <div id="universeLoader" class="universe-loader">
+    <div class="loader-inner">
+      <div class="loader-brand">NIVORA</div>
+      <div class="loader-status">Initializing Universe...</div>
+    </div>
+  </div>
+
+  <!-- COSMIC NEBULA BACKDROP -->
+  <div class="cosmic-nebula-bg" aria-hidden="true"></div>
+
+  <!-- PERSISTENT 3D THREE.JS CANVAS -->
+  <canvas id="webglUniverseCanvas"></canvas>
+
+  <!-- LUXURY FLOATING GLASS CAPSULE NAVIGATION -->
+  <header class="top-nav">
+    <nav class="nav-capsule" aria-label="NIVORA Consultancy Navigation">
+      <a href="#hero" class="nav-brand">
+        <img src="assets/images/nivora-logo.png" alt="NIVORA Logo" class="nav-logo-icon">
+        <div class="nav-brand-text">
+          <span class="brand-title">NIVORA</span>
+          <span class="brand-subtitle">BUSINESS &bull; FINANCE &bull; TECHNOLOGY</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link active">Home</a></li>
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="#solutions" class="nav-link">Solutions</a></li>
+        <li><a href="#products" class="nav-link">Products</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#folivio" class="nav-link">FOLIVIO</a></li>
+        <li><a href="#insights" class="nav-link">Insights</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <div class="nav-right-actions">
+        <div class="nav-status-pill">
+          <span class="status-dot-pulse"></span>
+          <span>STATUS: ONLINE</span>
+        </div>
+        <a href="#contact" class="nav-cta-btn" onclick="selectConsultationService('General Business Consultation')">
+          <span>Book a Consultation &rarr;</span>
+        </a>
+        <button type="button" class="nav-mobile-toggle" id="mobileMenuToggle" aria-label="Toggle Navigation Menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- MOBILE NAVIGATION DRAWER -->
+  <div class="mobile-drawer" id="mobileDrawer">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <img src="assets/images/nivora-logo.png" alt="NIVORA" style="width:26px;height:auto;">
+        <span>NIVORA CONSULTANCY</span>
+      </div>
+      <button type="button" class="drawer-close-btn" id="mobileDrawerClose">&times;</button>
+    </div>
+    <ul class="drawer-links">
+      <li><a href="#hero" class="drawer-link">Home</a></li>
+      <li><a href="#services" class="drawer-link">Services</a></li>
+      <li><a href="#solutions" class="drawer-link">Solutions</a></li>
+      <li><a href="#products" class="drawer-link">Products</a></li>
+      <li><a href="#about" class="drawer-link">About</a></li>
+      <li><a href="#folivio" class="drawer-link">FOLIVIO</a></li>
+      <li><a href="#insights" class="drawer-link">Insights</a></li>
+      <li><a href="#contact" class="drawer-link">Contact</a></li>
+    </ul>
+    <div class="drawer-footer">
+      <a href="#contact" class="nav-cta-btn" style="display:inline-flex;justify-content:center;" onclick="selectConsultationService('General Business Consultation')">
+        <span>Book a Consultation &rarr;</span>
+      </a>
+      <div class="drawer-status">
+        <span class="status-dot-pulse"></span>
+        <span>STATUS: ONLINE</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- =========================================================
+         HERO SECTION: BUSINESS • FINANCE • TECHNOLOGY
+         ========================================================= -->
+    <section class="hero" id="hero">
+      <div class="hero-container">
+        <!-- Exact Centered Official NIVORA Logo -->
+        <div class="hero-center-logo-stage" onclick="triggerCinematicCameraZoom()">
+          <div class="hero-logo-glow-disc"></div>
+          <img src="assets/images/nivora-logo.png" alt="NIVORA" class="hero-center-logo-img" id="heroCenterLogo">
+        </div>
+
+        <!-- Exact Centered Hero Typography & Strategy -->
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="dot"></span>
+            <span>Business &middot; Finance &middot; Technology</span>
+          </div>
+
+          <h1 class="hero-title">
+            <span class="hero-welcome">Building Better Businesses.</span>
+            <span class="hero-brand">Through Smarter Solutions.</span>
+          </h1>
+
+          <div class="hero-tagline">
+            Financial Intelligence <em class="editorial-accent accent-ideas">Professional Services</em> &amp; <em class="editorial-accent accent-products">Technology</em>.
+          </div>
+
+          <p class="hero-copy">
+            From accounting and compliance to financial advisory, business support and technology solutions, NIVORA helps organizations operate with greater clarity, efficiency and confidence.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#contact" class="btn-enter-universe" onclick="selectConsultationService('General Business Consultation')">
+              <span>Book a Consultation &rarr;</span>
+            </a>
+            <a href="#services" class="btn-explore-products">
+              <span class="play-icon-circle">&#9658;</span>
+              <span>Explore Services</span>
+            </a>
+          </div>
+
+          <!-- Hero Metrics: 4 Core Pillars of Practice -->
+          <div class="hero-metrics">
+            <div class="metric-card">
+              <div class="metric-icon-wrap m-purple">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <line x1="12" y1="1" x2="12" y2="23"></line>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+              </div>
+              <div class="metric-info">
+                <strong>Finance</strong>
+                <span>Accounting, Tax &amp; GST</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon-wrap m-cyan">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+              </div>
+              <div class="metric-info">
+                <strong>Advisory</strong>
+                <span>Planning, MIS &amp; BRS</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon-wrap m-magenta">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                  <polyline points="2 12 12 17 22 12"></polyline>
+                  <polyline points="2 17 12 22 22 17"></polyline>
+                </svg>
+              </div>
+              <div class="metric-info">
+                <strong>Technology</strong>
+                <span>AI, Web &amp; Automation</span>
+              </div>
+            </div>
+
+            <div class="metric-card">
+              <div class="metric-icon-wrap m-purple">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+              </div>
+              <div class="metric-info">
+                <strong>4 Products</strong>
+                <span>Proprietary Platforms</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HUD Bottom Scroll Indicator -->
+      <div class="hero-scroll-indicator" onclick="triggerCinematicCameraZoom()">
+        <div class="scroll-mouse-icon">
+          <div class="scroll-mouse-wheel"></div>
+        </div>
+        <span class="scroll-hud-text">SCROLL TO EXPLORE SERVICES</span>
+        <span class="scroll-arrow-bounce">&darr;</span>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 01: PROFESSIONAL SERVICES (#services)
+         ========================================================= -->
+    <section class="section" id="services">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">// 01 &middot; Practice Areas &amp; Capabilities</div>
+          <h2>Professional Services for<br><span class="grad-accent">Modern Businesses.</span></h2>
+          <p class="section-intro-text">
+            Practical support across finance, compliance, operations and business management &mdash; designed to give leaders clarity, regulatory peace of mind, and technical agility.
+          </p>
+        </div>
+
+        <div class="services-grid">
+          <!-- SERVICE 1: ACCOUNTING & BOOKKEEPING -->
+          <article class="service-card">
+            <div>
+              <div class="service-header">
+                <div class="service-kicker">01 &middot; Core Records</div>
+                <h3 class="service-title">Accounting &amp; Bookkeeping</h3>
+              </div>
+              <p class="service-desc">
+                Accurate, organized and management-ready financial records with structured ledger maintenance, bank reconciliation and reporting support.
+              </p>
+              <div class="service-features-label">Included Services:</div>
+              <ul class="service-features-list">
+                <li class="service-tag">Financial Accounting</li>
+                <li class="service-tag">Bookkeeping &amp; Ledger</li>
+                <li class="service-tag">Financial Statement Prep</li>
+                <li class="service-tag">Bank Reconciliation (BRS)</li>
+                <li class="service-tag">AP &amp; AR Management</li>
+                <li class="service-tag">MIS Reports</li>
+                <li class="service-tag">Financial Analysis</li>
+                <li class="service-tag">Expense &amp; Revenue Review</li>
+                <li class="service-tag">Ledger Scrutiny</li>
+                <li class="service-tag">Management Reporting</li>
+              </ul>
+            </div>
+            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Accounting & Bookkeeping')">
+              <span>Enquire for Accounting Services</span>
+              <span>&rarr;</span>
+            </a>
+          </article>
+
+          <!-- SERVICE 2: INCOME TAX SERVICES -->
+          <article class="service-card">
+            <div>
+              <div class="service-header">
+                <div class="service-kicker">02 &middot; Direct Tax</div>
+                <h3 class="service-title">Income Tax Services</h3>
+              </div>
+              <p class="service-desc">
+                Practical income-tax compliance and planning support for individuals, professionals and businesses, delivered with appropriate professional coordination where required.
+              </p>
+              <div class="service-note-box">
+                Professional coordination and support where applicable.
+              </div>
+              <div class="service-features-label">Included Services:</div>
+              <ul class="service-features-list">
+                <li class="service-tag">ITR Filing Support</li>
+                <li class="service-tag">Tax Planning &amp; Advisory</li>
+                <li class="service-tag">Advance Tax Computation</li>
+                <li class="service-tag">TDS / TCS Compliance</li>
+                <li class="service-tag">Tax Audit Coordination</li>
+                <li class="service-tag">Assessment Documentation</li>
+                <li class="service-tag">Notice &amp; Compliance Help</li>
+                <li class="service-tag">Tax Documentation Review</li>
+              </ul>
+            </div>
+            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Income Tax')">
+              <span>Enquire for Tax Services</span>
+              <span>&rarr;</span>
+            </a>
+          </article>
+
+          <!-- SERVICE 3: GST SERVICES -->
+          <article class="service-card">
+            <div>
+              <div class="service-header">
+                <div class="service-kicker">03 &middot; Indirect Tax</div>
+                <h3 class="service-title">GST Services</h3>
+              </div>
+              <p class="service-desc">
+                End-to-end GST compliance support for businesses, from registration and return preparation to reconciliation and documentation.
+              </p>
+              <div class="service-note-box">
+                Professional filing and representation coordinated with authorized practitioners.
+              </div>
+              <div class="service-features-label">Included Services:</div>
+              <ul class="service-features-list">
+                <li class="service-tag">GST Registration Support</li>
+                <li class="service-tag">GST Amendments</li>
+                <li class="service-tag">GSTR-1 Preparation / Filing</li>
+                <li class="service-tag">GSTR-3B Preparation / Filing</li>
+                <li class="service-tag">GSTR-9 &amp; 9C Support</li>
+                <li class="service-tag">GST Reconciliation</li>
+                <li class="service-tag">Input Tax Credit (ITC) Review</li>
+                <li class="service-tag">Refund Documentation</li>
+                <li class="service-tag">Notice &amp; Compliance Support</li>
+              </ul>
+            </div>
+            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('GST')">
+              <span>Enquire for GST Services</span>
+              <span>&rarr;</span>
+            </a>
+          </article>
+
+          <!-- SERVICE 4: PAYROLL & LABOUR COMPLIANCE -->
+          <article class="service-card">
+            <div>
+              <div class="service-header">
+                <div class="service-kicker">04 &middot; Human Capital</div>
+                <h3 class="service-title">Payroll &amp; Labour Compliance</h3>
+              </div>
+              <p class="service-desc">
+                Structured payroll processing and statutory compliance support for growing organizations, ensuring employee satisfaction and regulatory alignment.
+              </p>
+              <div class="service-features-label">Included Services:</div>
+              <ul class="service-features-list">
+                <li class="service-tag">Salary Processing</li>
+                <li class="service-tag">Payroll Management</li>
+                <li class="service-tag">Payslip Preparation</li>
+                <li class="service-tag">PF / EPF Support</li>
+                <li class="service-tag">ESI / ESIC Support</li>
+                <li class="service-tag">Professional Tax (PT)</li>
+                <li class="service-tag">Labour Compliance</li>
+                <li class="service-tag">Form 16 Coordination</li>
+                <li class="service-tag">Attendance &amp; Leave Records</li>
+                <li class="service-tag">Employee Documentation</li>
+              </ul>
+            </div>
+            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Payroll')">
+              <span>Enquire for Payroll Services</span>
+              <span>&rarr;</span>
+            </a>
+          </article>
+
+          <!-- SERVICE 5: FINANCIAL ADVISORY -->
+          <article class="service-card">
+            <div>
+              <div class="service-header">
+                <div class="service-kicker">05 &middot; Strategic Advisory</div>
+                <h3 class="service-title">Financial Advisory</h3>
+              </div>
+              <p class="service-desc">
+                Financial planning and decision-support services designed to help businesses understand performance, manage cash and plan their next stage of growth.
+              </p>
+              <div class="service-note-box">
+                Management decision support and business financial planning within professional consulting scope.
+              </div>
+              <div class="service-features-label">Included Services:</div>
+              <ul class="service-features-list">
+                <li class="service-tag">Business Financial Planning</li>
+                <li class="service-tag">Financial Analysis</li>
+                <li class="service-tag">Cash Flow Planning</li>
+                <li class="service-tag">Working Capital Management</li>
+                <li class="service-tag">Budgeting &amp; Costing</li>
+                <li class="service-tag">Financial Forecasting</li>
+                <li class="service-tag">Bankable Project Reports</li>
+                <li class="service-tag">CMA Data Preparation</li>
+                <li class="service-tag">Loan Documentation Support</li>
+                <li class="service-tag">Financial Model Prep</li>
+                <li class="service-tag">MIS &amp; Board Reports</li>
+              </ul>
+            </div>
+            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Financial Advisory')">
+              <span>Discuss Your Financial Needs</span>
+              <span>&rarr;</span>
+            </a>
+          </article>
+
+          <!-- SERVICE 6: BUSINESS REGISTRATIONS & LICENSING -->
+          <article class="service-card">
+            <div>
+              <div class="service-header">
+                <div class="service-kicker">06 &middot; Entity Setup</div>
+                <h3 class="service-title">Business Registrations &amp; Licensing</h3>
+              </div>
+              <p class="service-desc">
+                Business setup and compliance coordination for entrepreneurs and growing businesses navigating statutory registrations.
+              </p>
+              <div class="service-note-box">
+                Independent documentation facilitation and setup coordination.
+              </div>
+              <div class="service-features-label">Included Services:</div>
+              <ul class="service-features-list">
+                <li class="service-tag">Digital Signature (DSC) Support</li>
+                <li class="service-tag">MSME / Udyam Registration</li>
+                <li class="service-tag">FSSAI Registration Support</li>
+                <li class="service-tag">Import Export Code (IEC)</li>
+                <li class="service-tag">Startup India / DPIIT Support</li>
+                <li class="service-tag">Business Setup Coordination</li>
+                <li class="service-tag">License Documentation</li>
+                <li class="service-tag">Statutory Filings Prep</li>
+              </ul>
+            </div>
+            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Business Registration')">
+              <span>Start Your Registration</span>
+              <span>&rarr;</span>
+            </a>
+          </article>
+
+          <!-- SERVICE 7: DATA ENTRY & PROCESS MANAGEMENT -->
+          <article class="service-card">
+            <div>
+              <div class="service-header">
+                <div class="service-kicker">07 &middot; Operational Support</div>
+                <h3 class="service-title">Data Entry &amp; Process Management</h3>
+              </div>
+              <p class="service-desc">
+                Reliable back-office support for organizations that need structured data, documentation and spreadsheet operations executed with zero error tolerance.
+              </p>
+              <div class="service-features-label">Included Services:</div>
+              <ul class="service-features-list">
+                <li class="service-tag">Invoice Data Entry</li>
+                <li class="service-tag">Billing Data Extraction</li>
+                <li class="service-tag">Data Cleansing &amp; Scrubbing</li>
+                <li class="service-tag">Document Indexing</li>
+                <li class="service-tag">Document Digitization</li>
+                <li class="service-tag">Excel Data Preparation</li>
+                <li class="service-tag">Spreadsheet Modelling</li>
+                <li class="service-tag">Back-Office Operations</li>
+                <li class="service-tag">Administrative Support</li>
+              </ul>
+            </div>
+            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Data & Process Support')">
+              <span>Enquire for Process Support</span>
+              <span>&rarr;</span>
+            </a>
+          </article>
+
+          <!-- SERVICE 8: DIGITAL & TECHNOLOGY SOLUTIONS -->
+          <article class="service-card">
+            <div>
+              <div class="service-header">
+                <div class="service-kicker">08 &middot; Technology Vertical</div>
+                <h3 class="service-title">Digital &amp; Technology Solutions</h3>
+              </div>
+              <p class="service-desc">
+                Helping businesses use technology, AI and digital products to improve operations, customer experiences and high-velocity decision-making.
+              </p>
+              <div class="service-features-label">Included Services:</div>
+              <ul class="service-features-list">
+                <li class="service-tag">Business Website Development</li>
+                <li class="service-tag">Web Application Engineering</li>
+                <li class="service-tag">AI-Powered Solutions</li>
+                <li class="service-tag">Workflow Automation</li>
+                <li class="service-tag">Process Digitization</li>
+                <li class="service-tag">Dashboard &amp; BI Solutions</li>
+                <li class="service-tag">Digital Product Development</li>
+                <li class="service-tag">UI / UX Architecture</li>
+                <li class="service-tag">Technology Consulting</li>
+                <li class="service-tag">Digital Transformation</li>
+              </ul>
+            </div>
+            <a href="#contact" class="service-cta-btn" onclick="selectConsultationService('Technology Solutions')">
+              <span>Discuss a Technology Project</span>
+              <span>&rarr;</span>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 02: BUSINESS SOLUTIONS (#solutions)
+         ========================================================= -->
+    <section class="section" id="solutions">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">// 02 &middot; Bundled Packages</div>
+          <h2>Integrated Solutions for<br><span class="grad-accent">Every Growth Stage.</span></h2>
+          <p class="section-intro-text">
+            Instead of piecemeal services, NIVORA delivers cohesive operating systems tailored to the exact lifecycle of your venture.
+          </p>
+        </div>
+
+        <div class="solutions-grid">
+          <!-- PACKAGE 1: FOR STARTUPS -->
+          <div class="solution-card">
+            <div>
+              <div class="solution-badge">LAUNCH &middot; ACCELERATE</div>
+              <h3>For Startups</h3>
+              <p class="solution-desc">
+                Foundational corporate scaffolding enabling founders to focus on product and capital while compliance and finance run smoothly.
+              </p>
+              <ul class="solution-items-list">
+                <li>Business Setup &amp; Registration Support</li>
+                <li>Cloud Accounting &amp; Ledger Setup</li>
+                <li>GST &amp; Statutory Tax Compliance</li>
+                <li>Payroll &amp; Team Onboarding</li>
+                <li>Investor Financial Reporting</li>
+                <li>Digital Presence &amp; Website Tech</li>
+              </ul>
+            </div>
+            <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
+              <span>Explore Startup Package</span>
+              <span>&rarr;</span>
+            </a>
+          </div>
+
+          <!-- PACKAGE 2: FOR SMES -->
+          <div class="solution-card">
+            <div>
+              <div class="solution-badge">SCALE &middot; CONTROL</div>
+              <h3>For SMEs</h3>
+              <p class="solution-desc">
+                Operational control, working capital clarity, and structured management reports for established businesses scaling their revenue.
+              </p>
+              <ul class="solution-items-list">
+                <li>Systematic Bookkeeping &amp; Scrutiny</li>
+                <li>Monthly MIS &amp; Cash Flow Analysis</li>
+                <li>Continuous GST &amp; TDS Compliance</li>
+                <li>Statutory Payroll &amp; Labour Operations</li>
+                <li>Back-Office Process Improvement</li>
+                <li>Custom Dashboards &amp; Automation</li>
+              </ul>
+            </div>
+            <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
+              <span>Explore SME Package</span>
+              <span>&rarr;</span>
+            </a>
+          </div>
+
+          <!-- PACKAGE 3: FOR ENTREPRENEURS -->
+          <div class="solution-card">
+            <div>
+              <div class="solution-badge">VISION &middot; EXECUTE</div>
+              <h3>For Entrepreneurs</h3>
+              <p class="solution-desc">
+                Turn ideas into bankable commercial projects with solid documentation, financial planning, and technology execution.
+              </p>
+              <ul class="solution-items-list">
+                <li>Business Entity Licensing Support</li>
+                <li>Strategic Financial Planning</li>
+                <li>Bankable Project Reports &amp; CMA Data</li>
+                <li>Working Capital Advisory</li>
+                <li>Comprehensive Compliance Oversight</li>
+                <li>Digital Product MVP Development</li>
+              </ul>
+            </div>
+            <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
+              <span>Explore Entrepreneur Solutions</span>
+              <span>&rarr;</span>
+            </a>
+          </div>
+
+          <!-- PACKAGE 4: FOR PROFESSIONALS -->
+          <div class="solution-card">
+            <div>
+              <div class="solution-badge">PRACTICE &middot; ELEVATE</div>
+              <h3>For Professionals</h3>
+              <p class="solution-desc">
+                Tailored support for doctors, architects, consultants, engineers, and freelancers seeking financial order and career prominence.
+              </p>
+              <ul class="solution-items-list">
+                <li>Professional Income Tax Support</li>
+                <li>Financial Organization &amp; Planning</li>
+                <li>Accounts &amp; Invoicing Management</li>
+                <li>Executive Career Branding (FOLIVIO)</li>
+                <li>Personal Portfolio Website Setup</li>
+                <li>LinkedIn Strategy &amp; Makeover</li>
+              </ul>
+            </div>
+            <a href="#contact" class="solution-cta" onclick="selectConsultationService('General Business Consultation')">
+              <span>Explore Professional Support</span>
+              <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 03: NIVORA DIGITAL PRODUCTS (#products)
+         ========================================================= -->
+    <section class="section" id="products">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">// 03 &middot; Proprietary Software &amp; R&amp;D</div>
+          <h2>NIVORA Digital Products &amp;<br><span class="grad-accent">Innovation Initiatives.</span></h2>
+          <p class="section-intro-text">
+            NIVORA is unique: a consultancy that also designs and engineers its own high-impact digital platforms. Each product solves fundamental human and operational frictions with high-grade engineering and AI.
+          </p>
+        </div>
+
+        <div class="products-grid">
+          <!-- CARD 1: CHECKRA -->
+          <article class="world-card card-checkra">
+            <img src="assets/images/checkra-emblem.png" alt="" class="card-watermark">
+            <div class="world-art-wrap">
+              <img src="assets/images/checkra-logo.png" alt="CHECKRA logo" loading="lazy">
+            </div>
+
+            <div class="product-branding-tag">
+              <span class="product-brand-dot"></span>
+              <span>A NIVORA Product</span>
+            </div>
+
+            <div class="world-header">
+              <h3>CHECKRA <span class="formerly-tag">Formerly VeriWrite</span></h3>
+              <span class="status-badge badge-live">Live App</span>
+            </div>
+
+            <div class="world-tagline">
+              Writing Integrity &amp; <em class="editorial-accent">Plagiarism Intelligence</em>
+            </div>
+
+            <p class="world-desc">
+              Advanced verification engine designed to check, verify, and elevate written work through multi-layer plagiarism detection, source authenticity signals, and AI-assisted integrity scoring.
+            </p>
+
+            <ul class="world-pills">
+              <li>Similarity &amp; Plagiarism Detection</li>
+              <li>Source URL &amp; Citation Indexing</li>
+              <li>Multi-Format Document Parsing</li>
+              <li>Contextual Integrity Feedback</li>
+            </ul>
+
+            <div class="world-actions">
+              <button type="button" class="btn-concept" onclick="openConceptModal('checkra')">
+                <span>Explore Concept &rarr;</span>
+              </button>
+              <a href="https://checkra-xi.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn-launch">
+                <span>Launch App</span>
+                <span>&nearr;</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- CARD 2: HOMORA -->
+          <article class="world-card card-homora">
+            <div class="world-art-wrap">
+              <img src="assets/images/homora-logo.png" alt="HOMORA logo" loading="lazy">
+            </div>
+
+            <div class="product-branding-tag">
+              <span class="product-brand-dot"></span>
+              <span>A NIVORA Product</span>
+            </div>
+
+            <div class="world-header">
+              <h3>HOMORA</h3>
+              <span class="status-badge badge-proto">Active Prototype</span>
+            </div>
+
+            <div class="world-tagline">
+              Smart Living &amp; <em class="editorial-accent">Shared Finance</em>
+            </div>
+
+            <p class="world-desc">
+              AI-powered financial harmony platform for shared households, roommates, and co-living spaces &mdash; coordinating contributions, recurring expenses, and agreements without friction.
+            </p>
+
+            <ul class="world-pills">
+              <li>Fair Bill &amp; Chore Splitting</li>
+              <li>Voice-Enabled Expense Capture</li>
+              <li>Smart Group Spending Insights</li>
+              <li>Household Agreement Vault</li>
+            </ul>
+
+            <div class="world-actions">
+              <button type="button" class="btn-concept" onclick="openConceptModal('homora')">
+                <span>Explore Concept &rarr;</span>
+              </button>
+              <a href="https://homora.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-launch">
+                <span>Explore Prototype</span>
+                <span>&nearr;</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- CARD 3: BUBORA -->
+          <article class="world-card card-bubora">
+            <div class="world-art-wrap">
+              <img src="assets/images/bubora-logo.png" alt="BUBORA logo" loading="lazy">
+            </div>
+
+            <div class="product-branding-tag">
+              <span class="product-brand-dot"></span>
+              <span>A NIVORA Product</span>
+            </div>
+
+            <div class="world-header">
+              <h3>BUBORA</h3>
+              <span class="status-badge badge-proto">Active Prototype</span>
+            </div>
+
+            <div class="world-tagline">
+              Private Digital Space &amp; <em class="editorial-accent">Memory Sanctuary</em>
+            </div>
+
+            <p class="world-desc">
+              An encrypted intimate shared ecosystem for couples &mdash; real-time dual journaling, milestone tracking, memory archiving, and mood harmony in an ad-free, secure sanctuary.
+            </p>
+
+            <ul class="world-pills">
+              <li>End-to-End Encrypted Intimacy</li>
+              <li>Joint Timeline &amp; Milestone Archive</li>
+              <li>Sync Mood &amp; Wellness Radar</li>
+              <li>Zero Ad-Network Footprint</li>
+            </ul>
+
+            <div class="world-actions">
+              <button type="button" class="btn-concept" onclick="openConceptModal('bubora')">
+                <span>Explore Concept &rarr;</span>
+              </button>
+              <a href="https://bubora.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-launch">
+                <span>Explore Prototype</span>
+                <span>&nearr;</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- CARD 4: SAYORA -->
+          <article class="world-card card-sayora">
+            <img src="assets/images/sayora-emblem.png" alt="" class="card-watermark">
+            <div class="world-art-wrap">
+              <img src="assets/images/sayora-logo.png" alt="SAYORA logo" loading="lazy">
+            </div>
+
+            <div class="product-branding-tag">
+              <span class="product-brand-dot"></span>
+              <span>A NIVORA Product</span>
+            </div>
+
+            <div class="world-header">
+              <h3>SAYORA</h3>
+              <span class="status-badge badge-proto">In Development</span>
+            </div>
+
+            <div class="world-tagline">
+              Financial Shield &amp; <em class="editorial-accent">Social Impact</em>
+            </div>
+
+            <p class="world-desc">
+              Parametric micro-safety nets for gig delivery riders, daily workers, and vulnerable communities. Automatic weather alerts, emergency distress tokens, and localized welfare networks.
+            </p>
+
+            <ul class="world-pills">
+              <li>Hyper-Local Incident Insurance</li>
+              <li>Community Peer-to-Peer Pool</li>
+              <li>Disruption Shield Payouts</li>
+              <li>Offline Multilingual Assistance</li>
+            </ul>
+
+            <div class="world-actions">
+              <button type="button" class="btn-concept" onclick="openConceptModal('sayora')">
+                <span>Explore Concept &rarr;</span>
+              </button>
+              <a href="#contact" class="btn-launch" onclick="selectConsultationService('Digital Product Development')">
+                <span>Inquire on SAYORA</span>
+                <span>&rarr;</span>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 04: ABOUT & CONSULTANCY ARCHITECTURE (#about)
+         ========================================================= -->
+    <section class="section" id="about">
+      <div class="section-divider"></div>
+      <div class="container">
+        <!-- Founder Profile -->
+        <div class="founder-card">
+          <div class="founder-img-col">
+            <div class="founder-portrait-frame">
+              <img src="assets/images/founder-nivas.png" alt="Nivas Bennabatthula" class="founder-portrait">
+            </div>
+            <div class="founder-name-tag">Nivas Bennabatthula</div>
+            <div class="founder-title-tag">Founder &amp; Principal Consultant</div>
+          </div>
+          <div class="founder-bio">
+            <div class="kicker">// THE ARCHITECT</div>
+            <h3>Building at the Intersection of Financial Intelligence &amp; Technology</h3>
+            <p>
+              Modern commerce demands both quantitative financial rigor and technical agility. Too many organizations suffer from fragmented operations &mdash; their accounting doesn't speak to their operations, and their technology is disconnected from regulatory compliance.
+            </p>
+            <p>
+              NIVORA was established to unify these disciplines. With deep experience across corporate finance, statutory compliance, ledger scrutiny, and full-stack software architecture, I work directly with founders and executives to build clear, resilient, and forward-looking business operations.
+            </p>
+          </div>
+        </div>
+
+        <!-- Why Businesses Choose NIVORA (4 Pillars) -->
+        <div class="section-head">
+          <div class="kicker">// STRATEGIC DIFFERENTIATORS</div>
+          <h2>Why Businesses Choose <span class="grad-accent">NIVORA.</span></h2>
+          <p class="section-intro-text">
+            Four fundamental pillars of execution that distinguish NIVORA from traditional accounting firms and generic IT agencies.
+          </p>
+        </div>
+
+        <div class="why-nivora-grid">
+          <div class="pillar-card">
+            <div class="pillar-icon">01</div>
+            <h4>Financial Clarity</h4>
+            <p>Understand your numbers, manage working capital, and make high-stakes decisions with reliable, structured management reporting.</p>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon">02</div>
+            <h4>Compliance Support</h4>
+            <p>Keep recurring tax, GST, statutory filings, and payroll documentation strictly organized and compliant with timely coordination.</p>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon">03</div>
+            <h4>Business Efficiency</h4>
+            <p>Eliminate manual operational bottlenecks through disciplined ledger maintenance, back-office streamlining, and financial modelling.</p>
+          </div>
+          <div class="pillar-card">
+            <div class="pillar-icon">04</div>
+            <h4>Technology Advantage</h4>
+            <p>Deploy custom web tools, dashboards, workflow automations, and AI to modernize operations rather than relying on legacy methods.</p>
+          </div>
+        </div>
+
+        <!-- The Consultation Journey (5 Steps) -->
+        <div class="section-head">
+          <div class="kicker">// ENGAGEMENT METHODOLOGY</div>
+          <h2>The Consultation <span class="grad-accent">Journey.</span></h2>
+          <p class="section-intro-text">
+            A structured, deliberate 5-stage advisory lifecycle from initial review to continuous operational stewardship.
+          </p>
+        </div>
+
+        <div class="journey-steps-grid">
+          <div class="journey-step">
+            <div class="journey-step-num">01 &middot; DISCOVER</div>
+            <h5>Discover</h5>
+            <p>Understand your venture, operational challenges, financial structure, and strategic growth goals.</p>
+          </div>
+          <div class="journey-step">
+            <div class="journey-step-num">02 &middot; ASSESS</div>
+            <h5>Assess</h5>
+            <p>Conduct a thorough diagnostic of your books, compliance standing, workflows, and technology gaps.</p>
+          </div>
+          <div class="journey-step">
+            <div class="journey-step-num">03 &middot; PLAN</div>
+            <h5>Plan</h5>
+            <p>Define an actionable solution blueprint with transparent scopes, deliverables, timelines, and budgets.</p>
+          </div>
+          <div class="journey-step">
+            <div class="journey-step-num">04 &middot; DELIVER</div>
+            <h5>Deliver</h5>
+            <p>Execute the accounting, filings, financial models, or software development with uncompromising precision.</p>
+          </div>
+          <div class="journey-step">
+            <div class="journey-step-num">05 &middot; SUPPORT</div>
+            <h5>Support</h5>
+            <p>Provide reliable recurring stewardship, advisory check-ins, and continuous process optimization.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 05: FOLIVIO SHOWCASE (#folivio)
+         ========================================================= -->
+    <section class="section folivio-section" id="folivio">
+      <div class="section-divider"></div>
+      <div class="container">
+        <!-- 1. FOLIVIO HERO & STRATEGIC POSITIONING -->
+        <div class="folivio-hero-box">
+          <div class="folivio-badge-pill">
+            <span class="folivio-badge-dot"></span>
+            <span>A Professional Service by Nivas Bennabatthula</span>
+          </div>
+
+          <div class="folivio-brand-row">
+            <div class="folivio-logo-badge">
+              <img src="assets/images/folivio-logo.webp" alt="FOLIVIO Studio Logo" class="folivio-main-logo">
+            </div>
+            <div class="folivio-headings">
+              <h2 class="folivio-title">FOLIVIO</h2>
+              <div class="folivio-subtag">Build. Showcase. Grow.</div>
+              <div class="folivio-pills-row">
+                <span>Career Branding</span>
+                <span class="folivio-pill-sep">&middot;</span>
+                <span>Digital Presence</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="folivio-manifesto">
+            FOLIVIO helps students, freshers and professionals turn their education, skills, projects, certifications and experience into a polished professional identity that is ready to be seen, shared and remembered.
+          </p>
+
+          <div class="folivio-cta-wrap">
+            <a href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="folivio-prime-btn">
+              <span>Connect with FOLIVIO &rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 2. FOLIVIO 4-CARD SERVICE GRID -->
+        <div class="folivio-sub-head">
+          <div class="kicker">// 01 &middot; Career Branding Services</div>
+          <h3 style="font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.4rem);color:#fff;margin-top:0.4rem;">Tailored Services for Every Professional</h3>
+        </div>
+
+        <div class="folivio-services-grid">
+          <div class="folivio-card">
+            <div class="folivio-card-num">01 &mdash; RESUMES</div>
+            <h4>Professional Resumes</h4>
+            <p>Create polished, role-focused resumes designed to present education, skills, projects, certifications and experience clearly.</p>
+          </div>
+          <div class="folivio-card">
+            <div class="folivio-card-num">02 &mdash; PORTFOLIOS</div>
+            <h4>Personal Portfolios</h4>
+            <p>Build modern personal portfolio websites that showcase your work, projects, achievements and professional story.</p>
+          </div>
+          <div class="folivio-card">
+            <div class="folivio-card-num">03 &mdash; LINKEDIN</div>
+            <h4>LinkedIn Makeovers</h4>
+            <p>Improve your LinkedIn presence with stronger positioning, profile content, project presentation and professional branding.</p>
+          </div>
+          <div class="folivio-card">
+            <div class="folivio-card-num">04 &mdash; WEBSITES</div>
+            <h4>Portfolio Websites</h4>
+            <p>Create a dedicated personal website that gives recruiters, clients and collaborators one place to understand your professional profile.</p>
+          </div>
+        </div>
+
+        <!-- 3. FOLIVIO BENEFITS -->
+        <div class="folivio-sub-head">
+          <div class="kicker">// 02 &middot; Strategic Benefits</div>
+          <h3 style="font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.4rem);color:#fff;margin-top:0.4rem;">Why FOLIVIO?</h3>
+        </div>
+
+        <div class="folivio-benefits-grid">
+          <div class="folivio-benefit-card">
+            <h5>Stronger First Impression</h5>
+            <p>Present yourself professionally from the first interaction.</p>
+          </div>
+          <div class="folivio-benefit-card">
+            <h5>Clear Professional Identity</h5>
+            <p>Turn scattered education, skills and experiences into one coherent career story.</p>
+          </div>
+          <div class="folivio-benefit-card">
+            <h5>Better Project Visibility</h5>
+            <p>Showcase projects and achievements instead of simply listing them.</p>
+          </div>
+          <div class="folivio-benefit-card">
+            <h5>Recruiter-Friendly Presentation</h5>
+            <p>Make important information easier to discover and understand.</p>
+          </div>
+          <div class="folivio-benefit-card">
+            <h5>Consistent Personal Brand</h5>
+            <p>Maintain a professional identity across your resume, LinkedIn and portfolio.</p>
+          </div>
+          <div class="folivio-benefit-card">
+            <h5>Ready to Showcase</h5>
+            <p>Create digital assets that can be shared with recruiters, employers, clients and collaborators.</p>
+          </div>
+        </div>
+
+        <!-- 4. FOLIVIO PROCESS -->
+        <div class="folivio-sub-head">
+          <div class="kicker">// 03 &middot; The Methodology</div>
+          <h3 style="font-family:var(--font-display);font-size:clamp(1.8rem,3vw,2.4rem);color:#fff;margin-top:0.4rem;">The FOLIVIO Process</h3>
+        </div>
+
+        <div class="folivio-process-steps">
+          <div class="folivio-step-card">
+            <div class="step-badge">01 &middot; DISCOVER</div>
+            <h4>Discover</h4>
+            <p>Understand your background, goals, skills and experience.</p>
+          </div>
+          <div class="folivio-step-arrow">&rarr;</div>
+          <div class="folivio-step-card">
+            <div class="step-badge">02 &middot; DEFINE</div>
+            <h4>Define</h4>
+            <p>Build a clear professional positioning.</p>
+          </div>
+          <div class="folivio-step-arrow">&rarr;</div>
+          <div class="folivio-step-card">
+            <div class="step-badge">03 &middot; DESIGN</div>
+            <h4>Design</h4>
+            <p>Create the required career assets.</p>
+          </div>
+          <div class="folivio-step-arrow">&rarr;</div>
+          <div class="folivio-step-card">
+            <div class="step-badge">04 &middot; SHOWCASE</div>
+            <h4>Showcase</h4>
+            <p>Present everything through a polished digital presence.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 06: INSIGHTS & THOUGHT LEADERSHIP (#insights)
+         ========================================================= -->
+    <section class="section" id="insights">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">// 06 &middot; Perspectives &amp; Knowledge</div>
+          <h2>Insights for Modern<br><span class="grad-accent">Business Builders.</span></h2>
+          <p class="section-intro-text">
+            Practical analyses covering working capital, statutory compliance, tax optimization and operational technology.
+          </p>
+        </div>
+
+        <div class="insights-grid">
+          <!-- ARTICLE 1 -->
+          <article class="insight-card">
+            <div>
+              <div class="insight-meta">
+                <span class="insight-tag">Financial Management</span>
+                <span class="insight-read-time">5 Min Read</span>
+              </div>
+              <h3 class="insight-title">Navigating Working Capital Cycles: How Fast-Growing Businesses Avoid the Cash Trap</h3>
+              <p class="insight-summary">
+                Growth can be hungry. Why profitability on paper doesn't equal liquidity, and how to maintain tight receivables and inventory cycles to ensure solvent expansion.
+              </p>
+            </div>
+            <a href="#contact" class="insight-link" onclick="selectConsultationService('Financial Advisory')">
+              <span>Read Advisory Perspective &rarr;</span>
+            </a>
+          </article>
+
+          <!-- ARTICLE 2 -->
+          <article class="insight-card">
+            <div>
+              <div class="insight-meta">
+                <span class="insight-tag">Tax &amp; Compliance</span>
+                <span class="insight-read-time">4 Min Read</span>
+              </div>
+              <h3 class="insight-title">Demystifying GST Input Tax Credit (ITC) &amp; Monthly GSTR-2B Reconciliation</h3>
+              <p class="insight-summary">
+                A structured walkthrough of vendor compliance, matching invoice data with government portals, and eliminating leakage in indirect tax workflows.
+              </p>
+            </div>
+            <a href="#contact" class="insight-link" onclick="selectConsultationService('GST')">
+              <span>Read Compliance Guide &rarr;</span>
+            </a>
+          </article>
+
+          <!-- ARTICLE 3 -->
+          <article class="insight-card">
+            <div>
+              <div class="insight-meta">
+                <span class="insight-tag">Technology &amp; AI</span>
+                <span class="insight-read-time">6 Min Read</span>
+              </div>
+              <h3 class="insight-title">From Spreadsheets to Automated Workflows: How Small Businesses Modernize with AI</h3>
+              <p class="insight-summary">
+                Practical ways growing ventures can integrate lightweight cloud databases, document parsing, and automated reporting to reduce repetitive back-office overhead.
+              </p>
+            </div>
+            <a href="#contact" class="insight-link" onclick="selectConsultationService('Technology Solutions')">
+              <span>Read Technology Overview &rarr;</span>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 07: CONTACT & CONSULTATION (#contact)
+         ========================================================= -->
+    <section class="section" id="contact">
+      <div class="section-divider"></div>
+      <div class="container">
+        <div class="contact-grid">
+          <!-- Left Column: Business Challenge Callout -->
+          <div class="contact-info">
+            <div class="kicker">// INITIATE ENGAGEMENT</div>
+            <h2>Have a Business Challenge?<br><span class="grad-accent">Let's Build a Better Solution.</span></h2>
+            <p class="section-intro-text">
+              Whether you need help with accounting, compliance, financial planning, business processes or technology, NIVORA can help you identify the right next step.
+            </p>
+
+            <div class="contact-channels">
+              <div class="channel-item">
+                <div class="channel-icon">@</div>
+                <div>
+                  <strong>Primary Communication</strong><br>
+                  <a href="mailto:nivasbennabathula@gmail.com" style="color:#94a3b8;text-decoration:none;">nivasbennabathula@gmail.com</a>
+                </div>
+              </div>
+
+              <div class="channel-item">
+                <div class="channel-icon">&infin;</div>
+                <div>
+                  <strong>Practice Headquarters</strong><br>
+                  <span>NIVORA Consulting &middot; India</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+              <a href="#services" class="btn-explore-products">
+                <span>Explore All Services &rarr;</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Right Column: Consultation Inquiry Form -->
+          <form class="contact-form" id="consultationForm" onsubmit="handleContactSubmit(event)">
+            <h3 class="form-title">Start a Conversation</h3>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cName">Your Name *</label>
+                <input type="text" id="cName" required placeholder="e.g. Rahul Sharma">
+              </div>
+              <div class="form-group">
+                <label for="cOrg">Business / Organization</label>
+                <input type="text" id="cOrg" placeholder="e.g. Apex Innovations">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cEmail">Email Address *</label>
+                <input type="email" id="cEmail" required placeholder="name@company.com">
+              </div>
+              <div class="form-group">
+                <label for="cPhone">Phone / WhatsApp</label>
+                <input type="tel" id="cPhone" placeholder="+91 98765 43210">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cService">Service Required *</label>
+              <select id="cService" required>
+                <option value="">Select a service category...</option>
+                <option value="Accounting & Bookkeeping">Accounting &amp; Bookkeeping</option>
+                <option value="Income Tax">Income Tax Services</option>
+                <option value="GST">GST Compliance &amp; Filing</option>
+                <option value="Payroll">Payroll &amp; Labour Compliance</option>
+                <option value="Financial Advisory">Financial Advisory &amp; Planning</option>
+                <option value="Business Registration">Business Registration &amp; Licensing</option>
+                <option value="Data & Process Support">Data Entry &amp; Process Management</option>
+                <option value="Technology Solutions">Digital &amp; Technology Solutions</option>
+                <option value="Digital Product Development">Digital Product Development</option>
+                <option value="FOLIVIO">FOLIVIO Career Branding</option>
+                <option value="General Business Consultation">General Business Consultation / Other</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cBudget">Estimated Budget Range (Optional)</label>
+                <select id="cBudget">
+                  <option value="Flexible / Discussion">Flexible / Need Recommendation</option>
+                  <option value="Under ₹25,000">Under ₹25,000</option>
+                  <option value="₹25,000 - ₹1,00,000">₹25,000 &ndash; ₹1,00,000</option>
+                  <option value="₹1,00,000 - ₹5,00,000">₹1,00,000 &ndash; ₹5,00,000</option>
+                  <option value="₹5,00,000+">₹5,00,000+</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="cContactMethod">Preferred Contact Channel</label>
+                <select id="cContactMethod">
+                  <option value="Email">Email Communication</option>
+                  <option value="WhatsApp">WhatsApp Message</option>
+                  <option value="Phone Call">Scheduled Phone Call</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cMsg">Describe Your Business Challenge / Project *</label>
+              <textarea id="cMsg" rows="3" required placeholder="Tell us about your venture, current requirements, timeline or questions..."></textarea>
+            </div>
+
+            <button type="submit" class="form-submit-btn" id="contactSubmitBtn">
+              <span>Submit Enquiry &rarr;</span>
+            </button>
+            <div id="contactToast" style="display:none;margin-top:1rem;color:#34d399;font-size:0.9rem;text-align:center;"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================
+       COMPREHENSIVE BUSINESS FOOTER
+       ========================================================= -->
+  <footer class="business-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Col 1: Brand Positioning -->
+        <div class="footer-col-brand">
+          <div class="footer-brand-title">NIVORA</div>
+          <div class="footer-brand-sub">BUSINESS &bull; FINANCE &bull; TECHNOLOGY</div>
+          <p>
+            Building better businesses through financial intelligence, professional services and intelligent technology solutions.
+          </p>
+        </div>
+
+        <!-- Col 2: Services -->
+        <div class="footer-col">
+          <h5>Services</h5>
+          <ul class="footer-links-list">
+            <li><a href="#services" onclick="selectConsultationService('Accounting & Bookkeeping')">Accounting</a></li>
+            <li><a href="#services" onclick="selectConsultationService('Income Tax')">Income Tax</a></li>
+            <li><a href="#services" onclick="selectConsultationService('GST')">GST Services</a></li>
+            <li><a href="#services" onclick="selectConsultationService('Payroll')">Payroll &amp; Labour</a></li>
+            <li><a href="#services" onclick="selectConsultationService('Financial Advisory')">Financial Advisory</a></li>
+            <li><a href="#services" onclick="selectConsultationService('Business Registration')">Registrations</a></li>
+            <li><a href="#services" onclick="selectConsultationService('Data & Process Support')">Data &amp; Process</a></li>
+            <li><a href="#services" onclick="selectConsultationService('Technology Solutions')">Technology</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Solutions -->
+        <div class="footer-col">
+          <h5>Solutions</h5>
+          <ul class="footer-links-list">
+            <li><a href="#solutions">For Startups</a></li>
+            <li><a href="#solutions">For SMEs</a></li>
+            <li><a href="#solutions">For Entrepreneurs</a></li>
+            <li><a href="#solutions">For Professionals</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Products -->
+        <div class="footer-col">
+          <h5>Products</h5>
+          <ul class="footer-links-list">
+            <li><a href="https://checkra-xi.vercel.app/" target="_blank" rel="noopener noreferrer">CHECKRA</a></li>
+            <li><a href="https://homora.vercel.app" target="_blank" rel="noopener noreferrer">HOMORA</a></li>
+            <li><a href="https://bubora.vercel.app" target="_blank" rel="noopener noreferrer">BUBORA</a></li>
+            <li><a href="#products">SAYORA</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 5: Career Branding -->
+        <div class="footer-col">
+          <h5>Career Branding</h5>
+          <ul class="footer-links-list">
+            <li><a href="#folivio">FOLIVIO Studio</a></li>
+            <li><a href="https://www.instagram.com/folivio.ai?utm_source=ig_web_button_share_sheet&rpxt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer">Instagram @folivio.ai</a></li>
+            <li><a href="#folivio">Resume Engineering</a></li>
+            <li><a href="#folivio">Personal Portfolios</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 6: Company -->
+        <div class="footer-col">
+          <h5>Company</h5>
+          <ul class="footer-links-list">
+            <li><a href="#about">About Leadership</a></li>
+            <li><a href="#insights">Insights &amp; Articles</a></li>
+            <li><a href="#contact">Contact &amp; Enquiry</a></li>
+            <li><a href="#hero">Privacy Overview</a></li>
+            <li><a href="#hero">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Legal & Professional Disclaimer -->
+      <div class="footer-disclaimer-box">
+        <p class="footer-disclaimer-text">
+          <strong>Professional &amp; Statutory Disclaimer:</strong> Certain taxation, audit, certification, legal and regulatory services may require services or sign-off by appropriately qualified or authorized professionals. NIVORA provides applicable support, coordination and advisory services within the scope of its professional capabilities.
+        </p>
+      </div>
+
+      <!-- Bottom Copyright Row -->
+      <div class="footer-bottom-bar">
+        <div>
+          &copy; <span id="currentYear">2026</span> NIVORA &middot; Built &amp; Architected by Nivas Bennabatthula. All rights reserved.
+        </div>
+        <div style="font-family:var(--font-mono);font-size:0.75rem;color:#64748b;">
+          BUSINESS &bull; FINANCE &bull; TECHNOLOGY CONSULTANCY
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       CONCEPT MODAL POPUP SYSTEM (FULL PRESERVED)
+       ========================================================= -->
+  <div id="conceptModalOverlay" role="dialog" aria-modal="true" aria-hidden="true" data-lenis-prevent>
+    <div class="modal-container">
+      <header class="modal-top-bar">
+        <div class="modal-top-left">
+          <button type="button" class="btn-return-modal" onclick="closeConceptModal()" aria-label="Return to NIVORA (ESC)">
+            <span>&larr; Return to Overview</span>
+          </button>
+        </div>
+        <button type="button" class="modal-close-icon-btn" onclick="closeConceptModal()" aria-label="Close dialog">&times;</button>
+      </header>
+
+      <div class="modal-scroll-body">
+        <!-- MODAL 1: CHECKRA -->
+        <div id="modal-product-checkra" class="modal-product-panel" style="display:none;">
+          <div class="modal-hero-sec">
+            <div class="modal-product-branding" style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;">
+              <img src="assets/images/checkra-logo.png" alt="CHECKRA" style="width:72px;height:72px;object-fit:contain;">
+              <div>
+                <div class="kicker">// WRITING INTEGRITY INTELLIGENCE</div>
+                <h2>Empowering Writing Truth &amp; Source Accuracy</h2>
+              </div>
+            </div>
+            <div class="modal-lead-box">
+              CHECKRA is an AI-powered writing integrity and source verification platform designed to help students, researchers, educators, professionals, and content creators check, verify, and improve their writing in one connected workspace.
+            </div>
+          </div>
+
+          <div class="modal-caps-grid">
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+              <h4>Similarity Check</h4>
+              <p>Multi-level comparison analyzing exact matches, near phrasing, and semantic overlap across open web sources.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
+              <h4>Source Verification</h4>
+              <p>Indexes live web resources to provide verifiable context, metadata, and direct citations for detected matches.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
+              <h4>Document Analysis</h4>
+              <p>Unified native ingestion of PDF, DOCX, TXT, HTML, and Markdown files with preserved layout parsing.</p>
+            </div>
+            <div class="modal-cap-card">
+              <div class="modal-cap-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+              <h4>AI Evidence Review</h4>
+              <p>Assists reviewers in evaluating matches, distinguishing valid citations and idioms from true duplication.</p>
+            </div>
+          </div>
+
+          <div class="modal-bottom-cta-banner">
+            <div>
+              <h4>Ready to test CHECKRA?</h4>
+              <p>Explore the live application with your documents.</p>
+            </div>
+            <a href="https://checkra-xi.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn-enter-universe" style="padding:0.75rem 1.6rem;">
+              <span>Open CHECKRA App &nearr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- MODAL 2: HOMORA -->
+        <div id="modal-product-homora" class="modal-product-panel" style="display:none;">
+          <div class="modal-hero-sec">
+            <div class="modal-product-branding" style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;">
+              <img src="assets/images/homora-logo.png" alt="HOMORA" style="width:72px;height:72px;object-fit:contain;">
+              <div>
+                <div class="kicker">// SHARED LIVING HARMONY</div>
+                <h2>Autonomous Household Intelligence</h2>
+              </div>
+            </div>
+            <div class="modal-lead-box">
+              HOMORA is an AI-powered financial harmony platform for shared households, roommates, and co-living spaces &mdash; coordinating contributions, recurring expenses, and agreements without friction.
+            </div>
+          </div>
+
+          <div class="modal-caps-grid">
+            <div class="modal-cap-card">
+              <h4>Voice Expense Capture</h4>
+              <p>Speak naturally: "Spent ₹1,400 on groceries with Sarah". Natural language models extract the line items instantly.</p>
+            </div>
+            <div class="modal-cap-card">
+              <h4>Dynamic Fair-Share Math</h4>
+              <p>Weights splitting by room size, days present, guest stays, or custom formulas agreed upon by the household.</p>
+            </div>
+            <div class="modal-cap-card">
+              <h4>Digital Agreement Vault</h4>
+              <p>Store chore pacts, quiet hour understandings, and security deposit terms signed digitally with audit histories.</p>
+            </div>
+            <div class="modal-cap-card">
+              <h4>Utility Reconciliation</h4>
+              <p>Ingests electricity, water, and Wi-Fi bills, parses payment dates, and reminds members with calm notifications.</p>
+            </div>
+          </div>
+
+          <div class="modal-bottom-cta-banner">
+            <div>
+              <h4>Experience HOMORA</h4>
+              <p>Preview the prototype co-living workspace.</p>
+            </div>
+            <a href="https://homora.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-enter-universe" style="padding:0.75rem 1.6rem;">
+              <span>Launch Prototype &nearr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- MODAL 3: BUBORA -->
+        <div id="modal-product-bubora" class="modal-product-panel" style="display:none;">
+          <div class="modal-hero-sec">
+            <div class="modal-product-branding" style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;">
+              <img src="assets/images/bubora-logo.png" alt="BUBORA" style="width:72px;height:72px;object-fit:contain;">
+              <div>
+                <div class="kicker">// PRIVATE DUAL SANCTUARY</div>
+                <h2>Encrypted Intimate Digital Space</h2>
+              </div>
+            </div>
+            <div class="modal-lead-box">
+              BUBORA is an encrypted intimate shared ecosystem for couples &mdash; real-time dual journaling, milestone tracking, memory archiving, and mood harmony in an ad-free, zero-tracker sanctuary.
+            </div>
+          </div>
+
+          <div class="modal-caps-grid">
+            <div class="modal-cap-card">
+              <h4>Zero-Knowledge Security</h4>
+              <p>Client-side encryption ensures only you and your partner hold the keys to journals, photos, and messages.</p>
+            </div>
+            <div class="modal-cap-card">
+              <h4>Living Memory Archive</h4>
+              <p>Geo-tagged milestone albums, audio snippets, and time-capsule letters that unlock on future anniversaries.</p>
+            </div>
+            <div class="modal-cap-card">
+              <h4>Mood &amp; Energy Sync</h4>
+              <p>Gentle non-verbal check-ins to communicate emotional state, bandwidth, and love languages without friction.</p>
+            </div>
+            <div class="modal-cap-card">
+              <h4>Ad-Free Philosophy</h4>
+              <p>No behavioral tracking, no third-party data broker sharing, and no invasive algorithms.</p>
+            </div>
+          </div>
+
+          <div class="modal-bottom-cta-banner">
+            <div>
+              <h4>Explore BUBORA</h4>
+              <p>Experience the private prototype space.</p>
+            </div>
+            <a href="https://bubora.vercel.app" target="_blank" rel="noopener noreferrer" class="btn-enter-universe" style="padding:0.75rem 1.6rem;">
+              <span>Launch Prototype &nearr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- MODAL 4: SAYORA -->
+        <div id="modal-product-sayora" class="modal-product-panel" style="display:none;">
+          <div class="modal-hero-sec">
+            <div class="modal-product-branding" style="display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem;">
+              <img src="assets/images/sayora-logo.png" alt="SAYORA" style="width:72px;height:72px;object-fit:contain;">
+              <div>
+                <div class="kicker">// PARAMETRIC SAFETY NETS</div>
+                <h2>Financial Resilience for Vulnerable Workers</h2>
+              </div>
+            </div>
+            <div class="modal-lead-box">
+              SAYORA builds parametric micro-safety nets for gig delivery riders, daily wage earners, and vulnerable communities. Automatic weather alerts, emergency distress tokens, and localized mutual aid networks.
+            </div>
+          </div>
+
+          <div class="modal-caps-grid">
+            <div class="modal-cap-card">
+              <h4>Parametric Weather Shields</h4>
+              <p>Instant income support triggered automatically by severe rain, extreme heatwaves, or smog-driven operational halts.</p>
+            </div>
+            <div class="modal-cap-card">
+              <h4>Peer Mutual Aid</h4>
+              <p>Localized driver community pools providing zero-interest emergency loans during medical or vehicle emergencies.</p>
+            </div>
+            <div class="modal-cap-card">
+              <h4>Offline USSD &amp; Voice Help</h4>
+              <p>Accessible in 8 regional languages without requiring smartphone data connectivity during crisis moments.</p>
+            </div>
+            <div class="modal-cap-card">
+              <h4>Institutional API Integration</h4>
+              <p>Enables delivery and gig platforms to subsidize worker safety pools programmatically as part of ESG goals.</p>
+            </div>
+          </div>
+
+          <div class="modal-bottom-cta-banner">
+            <div>
+              <h4>Collaborate on SAYORA</h4>
+              <p>Inquire on research partnerships, pilot programs, or CSR deployment.</p>
+            </div>
+            <a href="#contact" class="btn-enter-universe" style="padding:0.75rem 1.6rem;" onclick="closeConceptModal();selectConsultationService('Digital Product Development');">
+              <span>Initiate Conversation &rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       CLIENT-SIDE JAVASCRIPT & THREE.JS ENGINE
+       ========================================================= -->
+  <script>
+    /* -------------------------------------------------------------
+       1. GLOBAL STATE & LENIS SMOOTH SCROLLING
+       ------------------------------------------------------------- */
+    let lenis = null;
+    try {
+      if (typeof Lenis !== 'undefined') {
+        lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+          touchMultiplier: 1.5,
+          infinite: false
+        });
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+      }
+    } catch (err) {
+      console.warn("Lenis init notice:", err);
+    }
+
+    // Dynamic Year
+    const yrEl = document.getElementById('currentYear');
+    if (yrEl) yrEl.innerText = new Date().getFullYear();
+
+    /* -------------------------------------------------------------
+       2. THREE.JS 3D CINEMATIC UNIVERSE ENGINE
+          (PROCEDURAL MILKY WAY + DEEP SPACE STARFIELD + ADAPTIVE QUALITY)
+       ------------------------------------------------------------- */
+    const canvas = document.getElementById('webglUniverseCanvas');
+    let renderer, scene, camera;
+    let milkyWayGroup, galacticBulge, spiralArmStars;
+    let distantStarField, brightBeaconsGroup, distantGalaxiesGroup;
+    let globeGroup, globeHaloSprite;
+    let nebulaPuffs = [];
+
+    // Hyperspace Warp System
+    let warpLinesMesh, warpLinesGeo;
+    const WARP_STAR_COUNT = 3600;
+    const warpStarPositions = new Float32Array(WARP_STAR_COUNT * 6);
+    const warpStarColors = new Float32Array(WARP_STAR_COUNT * 6);
+    const warpStarData = [];
+    let rawScrollVelocity = 0;
+    let smoothedScrollVelocity = 0;
+    let lastScrollPosition = 0;
+    let isUserScrolling = false;
+    let scrollTimeoutId = null;
+
+    let isZoomingTransition = false;
+    let warpSpeedFactor = 1.0;
+    let isWebGLEnabled = false;
+
+    let mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
+    let clock = new THREE.Clock();
+
+    // Base Camera Coordinates (Centered Universe Composition)
+    const baseCamX = 0;
+    const baseCamY = 16;
+    const baseCamZ = 260;
+    const globeCenterX = 0.0;
+    const globeCenterY = 36.0;
+    const globeCenterZ = 0.0;
+
+    let currentCamPos = new THREE.Vector3(baseCamX, baseCamY, baseCamZ);
+    let currentLookAt = new THREE.Vector3(0, 18, 0);
+    let targetScrollP = 0;
+
+    function initUniverseEngineCinematic() {
+      try {
+        if (!canvas) return;
+
+        renderer = new THREE.WebGLRenderer({
+          canvas: canvas,
+          antialias: true,
+          alpha: true,
+          powerPreference: 'high-performance'
+        });
+
+        // Adaptive performance scaling
+        const isMobileDevice = (window.innerWidth < 768) || ('ontouchstart' in window);
+        const cpuCores = navigator.hardwareConcurrency || 4;
+        const isLowPower = isMobileDevice || (cpuCores <= 4);
+        const particleScale = isLowPower ? (isMobileDevice ? 0.45 : 0.65) : 1.0;
+
+        // Limit Device Pixel Ratio to optimize GPU fill-rate (Target: 60 FPS)
+        const maxDpr = isMobileDevice ? 1.5 : 1.75;
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDpr));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x02040a, 0);
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.25;
+
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 4000);
+        camera.position.set(baseCamX, baseCamY, baseCamZ);
+        camera.lookAt(0, 18, 0);
+
+        // Build Universe Elements
+        buildDistantStarfield(particleScale);
+        buildWarpStarfield(particleScale);
+        buildProceduralMilkyWay(particleScale);
+        buildGalacticBulge(particleScale);
+        buildSubtleCosmicNebula();
+        buildBrightStellarBeacons();
+        buildNivoraGlobeCore();
+
+        setupInteractivity();
+        isWebGLEnabled = true;
+        animateUniverseCinematic();
+        runCinematicIntro();
+
+        // Dismiss Universe Loader smoothly
+        const loaderEl = document.getElementById('universeLoader');
+        if (loaderEl) {
+          setTimeout(() => loaderEl.classList.add('loaded'), 200);
+        }
+      } catch (e) {
+        console.warn("WebGL notice, running high-performance fallback:", e);
+        const loaderEl = document.getElementById('universeLoader');
+        if (loaderEl) loaderEl.classList.add('loaded');
+      }
+    }
+
+    /* -------------------------------------------------------------
+       PROCEDURAL MILKY WAY SPIRAL ARMS
+       ------------------------------------------------------------- */
+    function buildProceduralMilkyWay(scale = 1.0) {
+      milkyWayGroup = new THREE.Group();
+      milkyWayGroup.position.set(globeCenterX, globeCenterY, globeCenterZ);
+      milkyWayGroup.rotation.set(0.82, 0.22, -0.15);
+
+      const starCount = Math.floor(42000 * scale);
+      const positions = new Float32Array(starCount * 3);
+      const colors = new Float32Array(starCount * 3);
+
+      const armAngles = [0.45, 0.45 + Math.PI, 1.85, 1.85 + Math.PI];
+      const armWeights = [0.38, 0.38, 0.12, 0.12];
+      const rMin = 22;
+      const rMax = 260;
+
+      const cosX = Math.cos(0.82), sinX = Math.sin(0.82);
+      const cosY = Math.cos(0.22), sinY = Math.sin(0.22);
+
+      for (let i = 0; i < starCount; i++) {
+        const randArm = Math.random();
+        let armIdx = 0;
+        if (randArm < armWeights[0]) armIdx = 0;
+        else if (randArm < armWeights[0] + armWeights[1]) armIdx = 1;
+        else if (randArm < 0.88) armIdx = 2;
+        else armIdx = 3;
+
+        const baseAngle = armAngles[armIdx];
+        const pRand = Math.random();
+        const r = rMin + (rMax - rMin) * Math.pow(pRand, 1.65);
+
+        const spiralAngle = baseAngle + 2.25 * Math.log(r / rMin) + 0.22 * (r / rMax);
+        const armWidth = 4.0 + 20.0 * (r / rMax);
+        const rDisp = (Math.random() + Math.random() - 1.0) * armWidth;
+        const tDisp = (Math.random() + Math.random() - 1.0) * (armWidth / (r + 25));
+
+        const vertThickness = 12.0 * Math.exp(-r / 100) + 3.0 * (1.0 - r / rMax);
+        const yDisp = (Math.random() + Math.random() - 1.0) * vertThickness;
+
+        const actualR = r + rDisp;
+        const actualTheta = spiralAngle + tDisp;
+
+        const lx = actualR * Math.cos(actualTheta);
+        const lz = actualR * Math.sin(actualTheta);
+        const ly = yDisp;
+
+        const wx = globeCenterX + lx * cosY - lz * sinY;
+        const wy = globeCenterY + ly * cosX - (lx * sinY + lz * cosY) * sinX;
+
+        // Clean deep-space quiet zone for centered hero logo & typography
+        let starWeight = 1.0;
+        const distFromLogoCenter = Math.sqrt(wx * wx + (wy - globeCenterY) * (wy - globeCenterY));
+        if (distFromLogoCenter < 30) {
+          starWeight = Math.max(0.0, (distFromLogoCenter - 20) / 10);
+        } else if (Math.abs(wx) < 38 && wy < globeCenterY + 2 && wy > globeCenterY - 56) {
+          starWeight = 0.12;
+        }
+
+        positions[i * 3] = lx;
+        positions[i * 3 + 1] = ly;
+        positions[i * 3 + 2] = lz;
+
+        const frac = r / rMax;
+        let cr, cg, cb;
+        if (frac < 0.18) {
+          cr = 0.96; cg = 0.98; cb = 1.0;
+        } else if (frac < 0.52) {
+          cr = 0.30; cg = 0.72; cb = 1.0;
+        } else if (frac < 0.8) {
+          cr = 0.65; cg = 0.42; cb = 0.95;
+        } else {
+          cr = 0.82; cg = 0.38; cb = 0.78;
+        }
+
+        colors[i * 3] = cr * starWeight;
+        colors[i * 3 + 1] = cg * starWeight;
+        colors[i * 3 + 2] = cb * starWeight;
+      }
+
+      const armGeo = new THREE.BufferGeometry();
+      armGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      armGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const armMat = new THREE.PointsMaterial({
+        size: 1.5,
+        sizeAttenuation: true,
+        vertexColors: true,
+        map: createSoftPointTexture(),
+        transparent: true,
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      spiralArmStars = new THREE.Points(armGeo, armMat);
+      milkyWayGroup.add(spiralArmStars);
+      scene.add(milkyWayGroup);
+    }
+
+    /* -------------------------------------------------------------
+       GALACTIC BULGE PARTICLES
+       ------------------------------------------------------------- */
+    function buildGalacticBulge(scale = 1.0) {
+      const bulgeCount = Math.floor(7500 * scale);
+      const positions = new Float32Array(bulgeCount * 3);
+      const colors = new Float32Array(bulgeCount * 3);
+
+      for (let i = 0; i < bulgeCount; i++) {
+        const r = 22 + Math.pow(Math.random(), 2.0) * 36;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = (Math.random() - 0.5) * Math.PI;
+
+        positions[i * 3] = r * Math.cos(phi) * Math.cos(theta);
+        positions[i * 3 + 1] = r * Math.sin(phi) * 0.38;
+        positions[i * 3 + 2] = r * Math.cos(phi) * Math.sin(theta);
+
+        const p = (r - 22) / 36;
+        let bWeight = 1.0;
+        if (phi < 0 && Math.abs(positions[i * 3]) < 26) {
+          bWeight = 0.15;
+        }
+        colors[i * 3] = (0.95 - p * 0.15) * bWeight;
+        colors[i * 3 + 1] = (0.98 - p * 0.12) * bWeight;
+        colors[i * 3 + 2] = 1.0 * bWeight;
+      }
+
+      const bulgeGeo = new THREE.BufferGeometry();
+      bulgeGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      bulgeGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const bulgeMat = new THREE.PointsMaterial({
+        size: 1.7,
+        sizeAttenuation: true,
+        vertexColors: true,
+        map: createSoftPointTexture(),
+        transparent: true,
+        opacity: 0.88,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      galacticBulge = new THREE.Points(bulgeGeo, bulgeMat);
+      milkyWayGroup.add(galacticBulge);
+    }
+
+    /* -------------------------------------------------------------
+       COSMIC NEBULA PUFFS
+       ------------------------------------------------------------- */
+    function buildSubtleCosmicNebula() {
+      const puffs = [
+        { color1: 'rgba(168, 85, 247, 0.28)', color2: 'rgba(59, 130, 246, 0.14)', scale: 320 },
+        { color1: 'rgba(6, 182, 212, 0.24)', color2: 'rgba(147, 51, 234, 0.12)', scale: 380 },
+        { color1: 'rgba(236, 72, 153, 0.20)', color2: 'rgba(30, 58, 138, 0.14)', scale: 280 },
+        { color1: 'rgba(99, 102, 241, 0.22)', color2: 'rgba(6, 182, 212, 0.10)', scale: 340 }
+      ];
+
+      for (let i = 0; i < 14; i++) {
+        const pCfg = puffs[i % puffs.length];
+        const tex = createProceduralNebulaTexture(pCfg.color1, pCfg.color2);
+        const mat = new THREE.SpriteMaterial({
+          map: tex,
+          transparent: true,
+          opacity: 0.38 + Math.random() * 0.25,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        });
+        const sprite = new THREE.Sprite(mat);
+
+        const r = 30 + Math.pow(Math.random(), 1.3) * 180;
+        const a = Math.random() * Math.PI * 2;
+        sprite.position.set(
+          globeCenterX + Math.cos(a) * r,
+          globeCenterY + (Math.random() - 0.5) * 45,
+          globeCenterZ + Math.sin(a) * r - 20
+        );
+        const s = 150 + Math.random() * 220;
+        sprite.scale.set(s, s, 1);
+        scene.add(sprite);
+        nebulaPuffs.push({ sprite, baseScale: s, seed: Math.random() * 10 });
+      }
+    }
+
+    /* -------------------------------------------------------------
+       WARP STARFIELD (LIGHT TRAILS & HYPERSPACE TRAVEL)
+       ------------------------------------------------------------- */
+    function buildWarpStarfield(scale = 1.0) {
+      const palette = [
+        { r: 1.0, g: 1.0, b: 1.0 },
+        { r: 0.82, g: 0.90, b: 1.0 },
+        { r: 0.22, g: 0.74, b: 0.97 },
+        { r: 0.75, g: 0.52, b: 0.98 },
+        { r: 0.96, g: 0.45, b: 0.72 }
+      ];
+
+      const activeWarpCount = Math.floor(WARP_STAR_COUNT * scale);
+      for (let i = 0; i < activeWarpCount; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const radius = 20 + Math.pow(Math.random(), 0.85) * 540;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        const z = (Math.random() - 0.5) * 2200 - 500;
+        const baseSpeed = 0.25 + Math.random() * 0.45;
+
+        const rand = Math.random();
+        let col = palette[0];
+        if (rand > 0.97) col = palette[4];
+        else if (rand > 0.92) col = palette[3];
+        else if (rand > 0.85) col = palette[2];
+        else if (rand > 0.70) col = palette[1];
+
+        const brightness = 0.5 + Math.random() * 0.5;
+
+        warpStarData.push({
+          x, y, z,
+          baseSpeed,
+          r: col.r * brightness,
+          g: col.g * brightness,
+          b: col.b * brightness
+        });
+
+        const idx6 = i * 6;
+        warpStarPositions[idx6] = x;
+        warpStarPositions[idx6 + 1] = y;
+        warpStarPositions[idx6 + 2] = z;
+
+        warpStarPositions[idx6 + 3] = x;
+        warpStarPositions[idx6 + 4] = y;
+        warpStarPositions[idx6 + 5] = z + 0.5;
+
+        warpStarColors[idx6] = col.r * brightness;
+        warpStarColors[idx6 + 1] = col.g * brightness;
+        warpStarColors[idx6 + 2] = col.b * brightness;
+
+        warpStarColors[idx6 + 3] = col.r * brightness * 0.4;
+        warpStarColors[idx6 + 4] = col.g * brightness * 0.4;
+        warpStarColors[idx6 + 5] = col.b * brightness * 0.4;
+      }
+
+      warpLinesGeo = new THREE.BufferGeometry();
+      warpLinesGeo.setAttribute('position', new THREE.BufferAttribute(warpStarPositions, 3));
+      warpLinesGeo.setAttribute('color', new THREE.BufferAttribute(warpStarColors, 3));
+
+      const lineMat = new THREE.LineBasicMaterial({
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.88,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      warpLinesMesh = new THREE.LineSegments(warpLinesGeo, lineMat);
+      scene.add(warpLinesMesh);
+    }
+
+    /* -------------------------------------------------------------
+       DISTANT STARFIELD ACROSS ENTIRE DEPTH
+       ------------------------------------------------------------- */
+    function buildDistantStarfield(scale = 1.0) {
+      const count = Math.floor(14000 * scale);
+      const pos = new Float32Array(count * 3);
+      const col = new Float32Array(count * 3);
+
+      for (let i = 0; i < count; i++) {
+        pos[i * 3] = (Math.random() - 0.5) * 1600;
+        pos[i * 3 + 1] = (Math.random() - 0.5) * 1000;
+        pos[i * 3 + 2] = -400 - Math.random() * 1100;
+
+        const isCyan = Math.random() < 0.08;
+        if (isCyan) {
+          col[i * 3] = 0.5; col[i * 3 + 1] = 0.85; col[i * 3 + 2] = 1.0;
+        } else {
+          const shade = 0.45 + Math.random() * 0.5;
+          col[i * 3] = shade; col[i * 3 + 1] = shade; col[i * 3 + 2] = shade * 1.05;
+        }
+      }
+
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+
+      const mat = new THREE.PointsMaterial({
+        size: 1.1,
+        sizeAttenuation: true,
+        vertexColors: true,
+        map: createSoftPointTexture(),
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      distantStarField = new THREE.Points(geo, mat);
+      scene.add(distantStarField);
+    }
+
+    /* -------------------------------------------------------------
+       BRIGHT STELLAR BEACONS (DIFFRACTION STARS)
+       ------------------------------------------------------------- */
+    function buildBrightStellarBeacons() {
+      brightBeaconsGroup = new THREE.Group();
+      const count = 160;
+      const starTex = createDiffractionStarTexture();
+
+      for (let i = 0; i < count; i++) {
+        const mat = new THREE.SpriteMaterial({
+          map: starTex,
+          transparent: true,
+          opacity: 0.5 + Math.random() * 0.35,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        });
+        const sprite = new THREE.Sprite(mat);
+
+        let x = (Math.random() - 0.5) * 850;
+        let y = (Math.random() - 0.5) * 550;
+        let z = (Math.random() - 0.5) * 450 - 50;
+
+        if (x < -10 && y > -40 && y < 50) x -= 90;
+
+        sprite.position.set(x, y, z);
+        const s = 3.5 + Math.random() * 6.0;
+        sprite.scale.set(s, s, 1);
+        brightBeaconsGroup.add(sprite);
+      }
+      scene.add(brightBeaconsGroup);
+    }
+
+    /* -------------------------------------------------------------
+       NIVORA UNIVERSE CORE — AURA & DELICATE ORBITAL HALO
+       ------------------------------------------------------------- */
+    function buildNivoraGlobeCore() {
+      globeGroup = new THREE.Group();
+      globeGroup.position.set(globeCenterX, globeCenterY, globeCenterZ);
+
+      const haloMat = new THREE.SpriteMaterial({
+        map: createCoronaHaloTexture(),
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+      globeHaloSprite = new THREE.Sprite(haloMat);
+      globeHaloSprite.scale.set(72, 72, 1);
+      globeHaloSprite.position.set(0, 0, -10);
+      globeHaloSprite.renderOrder = 10;
+      globeGroup.add(globeHaloSprite);
+
+      const haloPointCount = 2200;
+      const haloPos = new Float32Array(haloPointCount * 3);
+      const haloCol = new Float32Array(haloPointCount * 3);
+
+      for (let i = 0; i < haloPointCount; i++) {
+        const r = 22.0 + Math.random() * 9.0;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = (Math.random() - 0.5) * 0.75;
+
+        haloPos[i * 3] = r * Math.cos(phi) * Math.cos(theta);
+        haloPos[i * 3 + 1] = r * Math.sin(phi) + (Math.random() - 0.5) * 2.2;
+        haloPos[i * 3 + 2] = r * Math.cos(phi) * Math.sin(theta);
+
+        const t = (r - 22.0) / 9.0;
+        haloCol[i * 3] = 0.05 + 0.60 * t;
+        haloCol[i * 3 + 1] = 0.75 + 0.10 * (1 - t);
+        haloCol[i * 3 + 2] = 0.95;
+      }
+
+      const haloGeo = new THREE.BufferGeometry();
+      haloGeo.setAttribute('position', new THREE.BufferAttribute(haloPos, 3));
+      haloGeo.setAttribute('color', new THREE.BufferAttribute(haloCol, 3));
+
+      const haloPointsMat = new THREE.PointsMaterial({
+        size: 1.4,
+        sizeAttenuation: true,
+        vertexColors: true,
+        map: createSoftPointTexture(),
+        transparent: true,
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      const coreParticleHalo = new THREE.Points(haloGeo, haloPointsMat);
+      globeGroup.add(coreParticleHalo);
+
+      scene.add(globeGroup);
+    }
+
+    /* -------------------------------------------------------------
+       TEXTURE GENERATORS
+       ------------------------------------------------------------- */
+    function createSoftPointTexture() {
+      const c = document.createElement('canvas');
+      c.width = 64; c.height = 64;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+      grad.addColorStop(0.25, 'rgba(255, 255, 255, 0.75)');
+      grad.addColorStop(0.65, 'rgba(6, 182, 212, 0.25)');
+      grad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 64, 64);
+      return new THREE.CanvasTexture(c);
+    }
+
+    function createDiffractionStarTexture() {
+      const c = document.createElement('canvas');
+      c.width = 128; c.height = 128;
+      const ctx = c.getContext('2d');
+
+      const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+      grad.addColorStop(0.15, 'rgba(224, 242, 254, 0.8)');
+      grad.addColorStop(0.5, 'rgba(139, 92, 246, 0.2)');
+      grad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 128, 128);
+
+      ctx.lineWidth = 1.0;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+      ctx.beginPath();
+      ctx.moveTo(64, 20); ctx.lineTo(64, 108);
+      ctx.moveTo(20, 64); ctx.lineTo(108, 64);
+      ctx.stroke();
+
+      return new THREE.CanvasTexture(c);
+    }
+
+    function createProceduralNebulaTexture(c1, c2) {
+      const c = document.createElement('canvas');
+      c.width = 256; c.height = 256;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createRadialGradient(128, 128, 10, 128, 128, 128);
+      grad.addColorStop(0, c1);
+      grad.addColorStop(0.5, c2);
+      grad.addColorStop(1, 'rgba(2, 6, 23, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 256, 256);
+      return new THREE.CanvasTexture(c);
+    }
+
+    function createCoronaHaloTexture() {
+      const c = document.createElement('canvas');
+      c.width = 256; c.height = 256;
+      const ctx = c.getContext('2d');
+      const grad = ctx.createRadialGradient(128, 128, 10, 128, 128, 128);
+      grad.addColorStop(0, 'rgba(6, 182, 212, 0.45)');
+      grad.addColorStop(0.35, 'rgba(168, 85, 247, 0.35)');
+      grad.addColorStop(0.70, 'rgba(59, 130, 246, 0.18)');
+      grad.addColorStop(1, 'rgba(2, 6, 23, 0)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 256, 256);
+      return new THREE.CanvasTexture(c);
+    }
+
+    /* -------------------------------------------------------------
+       INTERACTIVITY & TRAJECTORY
+       ------------------------------------------------------------- */
+    function setupInteractivity() {
+      window.addEventListener('mousemove', (e) => {
+        mouse.targetX = (e.clientX / window.innerWidth - 0.5) * 1.2;
+        mouse.targetY = -(e.clientY / window.innerHeight - 0.5) * 1.0;
+      }, { passive: true });
+
+      // Setup Mobile Navigation Drawer
+      const toggleBtn = document.getElementById('mobileMenuToggle');
+      const drawer = document.getElementById('mobileDrawer');
+      const closeBtn = document.getElementById('mobileDrawerClose');
+      if (toggleBtn && drawer) {
+        toggleBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          drawer.classList.toggle('open');
+        });
+        if (closeBtn) {
+          closeBtn.addEventListener('click', () => drawer.classList.remove('open'));
+        }
+        drawer.querySelectorAll('.drawer-link').forEach(link => {
+          link.addEventListener('click', () => drawer.classList.remove('open'));
+        });
+        document.addEventListener('click', (e) => {
+          if (drawer.classList.contains('open') && !drawer.contains(e.target) && !toggleBtn.contains(e.target)) {
+            drawer.classList.remove('open');
+          }
+        });
+      }
+    }
+
+    function getCameraTrajectory(p) {
+      if (p <= 0.12) {
+        const t = p / 0.12;
+        const ease = t * t * (3 - 2 * t);
+        return {
+          pos: new THREE.Vector3(
+            0,
+            baseCamY + (8 - baseCamY) * ease,
+            baseCamZ + (-40 - baseCamZ) * ease
+          ),
+          look: new THREE.Vector3(
+            0,
+            currentLookAt.y + (8 - currentLookAt.y) * ease,
+            0 + (-180 - 0) * ease
+          )
+        };
+      } else if (p <= 0.36) {
+        const t = (p - 0.12) / 0.24;
+        const ease = t * t * (3 - 2 * t);
+        return {
+          pos: new THREE.Vector3(
+            0,
+            8,
+            -40 + (-240 - -40) * ease
+          ),
+          look: new THREE.Vector3(
+            0,
+            8,
+            -180 + (-420 - -180) * ease
+          )
+        };
+      } else if (p <= 0.58) {
+        const t = (p - 0.36) / 0.22;
+        const ease = t * t * (3 - 2 * t);
+        return {
+          pos: new THREE.Vector3(
+            0 + (-12 - 0) * ease,
+            8 + (6 - 8) * ease,
+            -240 + (-540 - -240) * ease
+          ),
+          look: new THREE.Vector3(
+            0 + (-8 - 0) * ease,
+            8 + (6 - 8) * ease,
+            -420 + (-740 - -420) * ease
+          )
+        };
+      } else if (p <= 0.76) {
+        const t = (p - 0.58) / 0.18;
+        const ease = t * t * (3 - 2 * t);
+        return {
+          pos: new THREE.Vector3(
+            -12 + (10 - -12) * ease,
+            6 + (10 - 6) * ease,
+            -540 + (-840 - -540) * ease
+          ),
+          look: new THREE.Vector3(
+            -8 + (4 - -8) * ease,
+            6 + (10 - 6) * ease,
+            -740 + (-1040 - -740) * ease
+          )
+        };
+      } else if (p <= 0.88) {
+        const t = (p - 0.76) / 0.12;
+        const ease = t * t * (3 - 2 * t);
+        return {
+          pos: new THREE.Vector3(
+            10 + (-2 - 10) * ease,
+            10 + (8 - 10) * ease,
+            -840 + (-1120 - -840) * ease
+          ),
+          look: new THREE.Vector3(
+            4 + (0 - 4) * ease,
+            10 + (8 - 10) * ease,
+            -1040 + (-1320 - -1040) * ease
+          )
+        };
+      } else {
+        const t = (p - 0.88) / 0.12;
+        const ease = t * t * (3 - 2 * t);
+        return {
+          pos: new THREE.Vector3(
+            -2 + (0 - -2) * ease,
+            8 + (4 - 8) * ease,
+            -1120 + (-1420 - -1120) * ease
+          ),
+          look: new THREE.Vector3(
+            0,
+            8 + (4 - 8) * ease,
+            -1320 + (-1600 - -1320) * ease
+          )
+        };
+      }
+    }
+
+    /* -------------------------------------------------------------
+       ANIMATION LOOP & 60 FPS OPTIMIZATION
+       ------------------------------------------------------------- */
+    let isTabVisible = true;
+    document.addEventListener('visibilitychange', () => {
+      isTabVisible = (document.visibilityState === 'visible');
+      if (isTabVisible && clock) {
+        clock.getDelta();
+      }
+    });
+
+    function animateUniverseCinematic() {
+      requestAnimationFrame(animateUniverseCinematic);
+      if (!isTabVisible) return;
+
+      const elapsed = clock.getElapsedTime();
+
+      mouse.x += (mouse.targetX - mouse.x) * 0.04;
+      mouse.y += (mouse.targetY - mouse.y) * 0.04;
+
+      if (!isZoomingTransition) {
+        const targetTrajectory = getCameraTrajectory(targetScrollP);
+        currentCamPos.lerp(targetTrajectory.pos, 0.055);
+        currentLookAt.lerp(targetTrajectory.look, 0.055);
+
+        const warpShake = Math.min(0.35, Math.abs(smoothedScrollVelocity) * 0.012);
+        const shakeX = (Math.random() - 0.5) * warpShake;
+        const shakeY = (Math.random() - 0.5) * warpShake;
+
+        camera.position.set(
+          currentCamPos.x + mouse.x * 4.0 + shakeX,
+          currentCamPos.y + mouse.y * 3.0 + shakeY,
+          currentCamPos.z
+        );
+        camera.lookAt(
+          currentLookAt.x + mouse.x * 1.5,
+          currentLookAt.y + mouse.y * 1.0,
+          currentLookAt.z
+        );
+      }
+
+      if (milkyWayGroup) {
+        milkyWayGroup.rotation.z += 0.00035 * warpSpeedFactor;
+      }
+
+      nebulaPuffs.forEach(np => {
+        const pulse = 1.0 + 0.06 * Math.sin(elapsed * 0.5 + np.seed);
+        np.sprite.scale.set(np.baseScale * pulse, np.baseScale * pulse, 1);
+      });
+
+      smoothedScrollVelocity += (rawScrollVelocity - smoothedScrollVelocity) * 0.12;
+      rawScrollVelocity *= 0.88;
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const effectiveWarpFactor = prefersReducedMotion ? 0.2 : warpSpeedFactor;
+
+      if (warpLinesGeo && warpLinesMesh) {
+        const travelSpeed = ((0.32 + Math.abs(smoothedScrollVelocity) * 1.6) * Math.sign(smoothedScrollVelocity || 1)) * effectiveWarpFactor;
+        const trailLength = Math.max(0.4, Math.min(30.0, Math.abs(smoothedScrollVelocity) * 2.2));
+
+        const posAttr = warpLinesGeo.attributes.position;
+        const colAttr = warpLinesGeo.attributes.color;
+        const camZ = camera.position.z;
+        const boundFront = camZ + 70;
+        const boundBack = camZ - 1300;
+        const depthSpan = boundFront - boundBack;
+
+        for (let i = 0; i < warpStarData.length; i++) {
+          const s = warpStarData[i];
+          s.z += travelSpeed * s.baseSpeed;
+
+          if (travelSpeed > 0 && s.z > boundFront) {
+            s.z -= depthSpan;
+          } else if (travelSpeed < 0 && s.z < boundBack) {
+            s.z += depthSpan;
+          }
+
+          const idx6 = i * 6;
+          posAttr.array[idx6] = s.x;
+          posAttr.array[idx6 + 1] = s.y;
+          posAttr.array[idx6 + 2] = s.z;
+
+          posAttr.array[idx6 + 3] = s.x;
+          posAttr.array[idx6 + 4] = s.y;
+          posAttr.array[idx6 + 5] = s.z - Math.sign(travelSpeed) * trailLength;
+
+          const boost = Math.min(1.0, Math.abs(smoothedScrollVelocity) * 0.07);
+          colAttr.array[idx6 + 3] = s.r * (0.25 + boost * 0.7);
+          colAttr.array[idx6 + 4] = s.g * (0.25 + boost * 0.7);
+          colAttr.array[idx6 + 5] = s.b * (0.25 + boost * 0.7);
+        }
+
+        posAttr.needsUpdate = true;
+        colAttr.needsUpdate = true;
+      }
+
+      if (globeGroup) {
+        globeGroup.rotation.y += 0.0012 * effectiveWarpFactor;
+        globeGroup.visible = (camera.position.z > 30);
+      }
+
+      if (globeHaloSprite) {
+        const hPulse = 1.0 + 0.05 * Math.sin(elapsed * 2.0);
+        globeHaloSprite.scale.set(72 * hPulse, 72 * hPulse, 1);
+      }
+
+      if (distantGalaxiesGroup) {
+        distantGalaxiesGroup.children.forEach((g) => {
+          g.rotation.z += 0.00015;
+        });
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    /* -------------------------------------------------------------
+       SCROLL CONTROLLER
+       ------------------------------------------------------------- */
+    function updateUniverseScroll(currentScroll) {
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      targetScrollP = Math.min(1.0, Math.max(0.0, currentScroll / maxScroll));
+
+      const delta = currentScroll - lastScrollPosition;
+      rawScrollVelocity = delta;
+      lastScrollPosition = currentScroll;
+      isUserScrolling = true;
+
+      clearTimeout(scrollTimeoutId);
+      scrollTimeoutId = setTimeout(() => {
+        isUserScrolling = false;
+        rawScrollVelocity = 0;
+      }, 150);
+    }
+
+    if (lenis) {
+      lenis.on('scroll', (e) => {
+        updateUniverseScroll(e.scroll);
+      });
+    } else {
+      window.addEventListener('scroll', () => {
+        updateUniverseScroll(window.scrollY);
+      }, { passive: true });
+    }
+
+    /* -------------------------------------------------------------
+       CINEMATIC INTRO & TRANSITIONS
+       ------------------------------------------------------------- */
+    function runCinematicIntro() {
+      gsap.fromTo(camera.position,
+        { z: 420 },
+        { z: baseCamZ, duration: 2.5, ease: "power3.out" }
+      );
+    }
+
+    function triggerCinematicCameraZoom() {
+      if (lenis) {
+        lenis.scrollTo('#services', { duration: 1.8 });
+      } else {
+        const s = document.getElementById('services');
+        if (s) s.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    /* -------------------------------------------------------------
+       SERVICE SELECTION HELPER
+       ------------------------------------------------------------- */
+    function selectConsultationService(serviceName) {
+      const selectEl = document.getElementById('cService');
+      if (selectEl) {
+        for (let i = 0; i < selectEl.options.length; i++) {
+          if (selectEl.options[i].value === serviceName || selectEl.options[i].text.includes(serviceName)) {
+            selectEl.selectedIndex = i;
+            break;
+          }
+        }
+      }
+      const contactSec = document.getElementById('contact');
+      if (contactSec) {
+        if (lenis) {
+          lenis.scrollTo(contactSec, { duration: 1.2 });
+        } else {
+          contactSec.scrollIntoView({ behavior: 'smooth' });
+        }
+        const nameInput = document.getElementById('cName');
+        if (nameInput) setTimeout(() => nameInput.focus(), 600);
+      }
+    }
+
+    /* -------------------------------------------------------------
+       CONCEPT MODAL SYSTEM
+       ------------------------------------------------------------- */
+    function openConceptModal(prodId) {
+      const overlay = document.getElementById('conceptModalOverlay');
+      if (!overlay) return;
+
+      document.querySelectorAll('.modal-product-panel').forEach(p => p.style.display = 'none');
+      const targetPanel = document.getElementById('modal-product-' + prodId);
+      if (targetPanel) targetPanel.style.display = 'block';
+
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      if (lenis) lenis.stop();
+    }
+
+    function closeConceptModal() {
+      const overlay = document.getElementById('conceptModalOverlay');
+      if (!overlay) return;
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (lenis) lenis.start();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeConceptModal();
+    });
+
+    const overlayEl = document.getElementById('conceptModalOverlay');
+    if (overlayEl) {
+      overlayEl.addEventListener('click', (e) => {
+        if (e.target === overlayEl) closeConceptModal();
+      });
+    }
+
+    /* -------------------------------------------------------------
+       CONSULTATION FORM SUBMISSION
+       ------------------------------------------------------------- */
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('contactSubmitBtn');
+      const toast = document.getElementById('contactToast');
+      const origText = btn.innerHTML;
+
+      btn.innerHTML = '<span>Submitting Consultation Request...</span>';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        btn.innerHTML = '<span>Enquiry Dispatched Successfully ✓</span>';
+        if (toast) {
+          toast.style.display = 'inline-block';
+          toast.innerText = 'Thank you. Your consultation request has been received. Nivas will reach out directly.';
+        }
+        e.target.reset();
+
+        setTimeout(() => {
+          btn.innerHTML = origText;
+          btn.disabled = false;
+          setTimeout(() => {
+            if (toast) toast.style.display = 'none';
+          }, 6000);
+        }, 3500);
+      }, 700);
+    }
+
+    // Window Resize Handling
+    window.addEventListener('resize', () => {
+      if (!camera || !renderer) return;
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Start WebGL Engine
+    window.addEventListener('DOMContentLoaded', () => {
+      initUniverseEngineCinematic();
+    });
+  </script>
+</body>
+</html>
+"""
+
+def generate():
+    html = build_consultancy_html()
+    desktop_py = "/Users/bennabathulanivas/Desktop/my projects/NIVORA/builder/assemble_ultimate_3d_universe.py"
+    desktop_html = "/Users/bennabathulanivas/Desktop/my projects/NIVORA/index.html"
+    downloads_html = "/Users/bennabathulanivas/Downloads/NIVORA/index.html"
+
+    # Also update assemble_ultimate_3d_universe.py so it matches exactly
+    with open(desktop_py, 'w', encoding='utf-8') as f:
+        f.write('# builder/assemble_ultimate_3d_universe.py\n# NIVORA — Business • Finance • Technology Consultancy\nimport os\nimport sys\n\ndef build_ultimate_universe_html():\n    return """' + html + '"""\n\ndef generate():\n    html = build_ultimate_universe_html()\n    desktop_path = "/Users/bennabathulanivas/Desktop/my projects/NIVORA/index.html"\n    downloads_path = "/Users/bennabathulanivas/Downloads/NIVORA/index.html"\n    with open(desktop_path, "w", encoding="utf-8") as f:\n        f.write(html)\n    print(f"Generated {len(html)} bytes to {desktop_path}")\n    with open(downloads_path, "w", encoding="utf-8") as f:\n        f.write(html)\n    print(f"Generated {len(html)} bytes to {downloads_path}")\n\nif __name__ == "__main__":\n    generate()\n')
+    print(f"Updated {desktop_py}")
+
+    with open(desktop_html, 'w', encoding='utf-8') as f:
+        f.write(html)
+    print(f"Generated {len(html)} bytes to {desktop_html}")
+
+    with open(downloads_html, 'w', encoding='utf-8') as f:
+        f.write(html)
+    print(f"Generated {len(html)} bytes to {downloads_html}")
+
+if __name__ == '__main__':
+    generate()
